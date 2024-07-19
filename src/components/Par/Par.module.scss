@@ -1,0 +1,14 @@
+.wrap{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    .title{
+        display: flex;
+        align-items: center;
+        gap:1rem;
+        color: #378AB6;
+        font-size: 18px;
+        font-weight: 400;
+    }
+}

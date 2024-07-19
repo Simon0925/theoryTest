@@ -1,0 +1,20 @@
+.wrap{
+    padding: 1.2rem;
+    border-radius: 0.625rem;
+
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    .box{
+        width: 25px;
+        height: 25px;
+        border-radius: 0.25rem;
+        border: 1px solid #E0DFE0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+    }
+}
