@@ -1,14 +1,25 @@
-import styles from './Toggle.module.scss'
+import React, { useEffect, useState } from 'react';
+import styles from './Toggle.module.scss';
+
+export default function Toggle() {
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleToggle = () => {
+        setIsChecked(!isChecked);
+        
+    };
 
 
-
-export default function Toggle () {
-    return(
+    return (
         <>
-            <div className={styles['wrap']}>
-                <input type="checkbox" />
-                <span className={styles['slider']}></span>
-            </div>
+            <label className={styles.switch}>
+                <input 
+                    type="checkbox" 
+                    checked={isChecked} 
+                    onChange={handleToggle} 
+                />
+                <span className={styles.slider}></span>
+            </label>
         </>
-    )
+    );
 }

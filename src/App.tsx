@@ -9,9 +9,8 @@ function App() {
   return (
     <>
       <Header />
-      <Router>
-            <Main />
-      </Router>
+      <Main />
+      
     </>
   )
 }

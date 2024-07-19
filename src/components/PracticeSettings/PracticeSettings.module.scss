@@ -4,6 +4,26 @@
     .toggle-container{
         color: white;
         display: flex;
+        align-items: center;
         gap: 1rem;
+        span{
+            font-size: 18px;
+        }
     }
+
+    .btn{
+        width: 100%;
+        margin-top: 6rem;
+        button{
+            cursor: pointer;
+            background-color: #00BE5D;
+            color: white;
+            border: none;
+            outline: none;
+            width: 100%;
+            padding: 0.3rem 0;
+            font-size: 24px;
+        }
+    }
+   
 }
