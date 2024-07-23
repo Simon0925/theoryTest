@@ -1,27 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './PracticeTools.module.scss';
+import { RootState } from '../../store/store';
+import { updateType } from '../../store/practice.slice'; 
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function PracticeTools() {
+    const dispatch = useDispatch();
+    const practice = useSelector((state: RootState) => state.practice);
+    
+    
     const [active, setActive] = useState({
-        all: true,
-        noSeen: false,
-        wrong: false,
+        all:practice.type === "All",
+        noSeen: practice.type === "noSeen",
+        wrong: practice.type === "wrong",
     });
 
     const select = (type: string) => {
         if (type === 'all') {
+            const newCheckedState = 'all'
+            dispatch(updateType(newCheckedState));
             setActive({
                 all: true,
                 noSeen: false,
                 wrong: false,
             });
         } else if (type === 'noSeen') {
+            const newCheckedState = 'noSeen'
+            dispatch(updateType(newCheckedState));
             setActive({
                 all: false,
                 noSeen: true,
                 wrong: false,
             });
         } else if (type === 'wrong') {
+            const newCheckedState = 'wrong'
+            dispatch(updateType(newCheckedState));
             setActive({
                 all: false,
                 noSeen: false,

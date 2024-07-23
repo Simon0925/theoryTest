@@ -18,6 +18,9 @@
             display: flex;
             gap: 0.4rem;
         }
+        .nav{
+            text-decoration: none;
+        }
     }
 
     .question-wrap{
@@ -41,5 +44,7 @@
         // align-items: flex-end;
         // width: 100%;
         // height: 100%;
+
+        
     }
 }

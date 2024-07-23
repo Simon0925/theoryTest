@@ -1,0 +1,16 @@
+.wrap{
+    padding: 1rem;
+    background-color: #0078AB;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    a{
+        text-decoration: none;
+    }
+    
+    .title{
+        color: white;
+        
+    }
+}

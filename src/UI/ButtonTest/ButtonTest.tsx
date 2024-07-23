@@ -5,13 +5,14 @@ interface ButtonTestProps {
     name: string;
     color: string;
     backgroundColor: string;
-    svg:boolean
+    svg: boolean;
+    click: (() => void) | null;
 }
 
-export default function ButtonTest({ name, color, backgroundColor,svg }: ButtonTestProps) {
+export default function ButtonTest({ click, name, color, backgroundColor, svg }: ButtonTestProps) {
     return (
-        <button style={{ backgroundColor, color }} className={styles['btn']}>
-            {name} {svg ? <FlagSvg /> : null } 
+        <button onClick={click || undefined} style={{ backgroundColor, color }} className={styles['btn']}>
+            {name} {svg ? <FlagSvg /> : null}
         </button>
     );
 }

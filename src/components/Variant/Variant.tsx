@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import CrossSvg from '../../SVG/CrossSvg/CrossSvg';
 import OkVectorSvg from '../../SVG/OkVectorSvg/OkVectorSvg';
 import styles from './Variant.module.scss';
@@ -12,6 +13,8 @@ interface VariantProps {
 }
 
 export default function Variant({ color, selected, click, backgroundColor, correct, question }: VariantProps) {
+
+    
     return (
         <div onClick={click} style={{ backgroundColor, color }} className={styles['wrap']}>
             <span>{question}</span>

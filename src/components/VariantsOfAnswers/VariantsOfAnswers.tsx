@@ -1,59 +1,113 @@
-import { useState } from 'react';
-import Variant from '../Variant/Variant';
+import { useEffect, useState } from 'react';
+
 import styles from './VariantsOfAnswers.module.scss';
+import Variant from '../Variant/Variant';
 
-export default function VariantsOfAnswers() {
-    const [selectedOption, setSelectedOption] = useState<number | null>(null); 
+interface Answer {
+    answer: string;
+    tOF: boolean;
+}
 
-    const [selected,setSelected] = useState(false)
+interface Result {
+    id: string;
+    questions: string;
+    status: boolean;
+}
 
-    const questions = [
-        {
-            question: 'New speed limit 20 mph',
-            correct: false
-        },
-        {
-            question: 'New speed limit 20 mph',
-            correct: true
-        },
-        {
-            question: 'New speed limit 20 mph',
-            correct: false
-        },
-        {
-            question: 'New speed limit 20 mph',
-            correct: false
+interface VariantsOfAnswersProps {
+    id: string;
+    questions: string;
+    par: {
+        v1: Answer;
+        v2: Answer;
+        v3: Answer;
+        v4: Answer;
+    };
+}
+
+export default function VariantsOfAnswers({ par, questions, id }: VariantsOfAnswersProps) {
+    const [currentAnswers, setCurrentAnswers] = useState<Answer[]>([]);
+    const [selectedOption, setSelectedOption] = useState<number | null>(null);
+
+    useEffect(() => {
+
+        setCurrentAnswers(Object.values(par));
+        setSelectedOption(null);
+
+        const localS = localStorage.getItem("result");
+
+        let resultData: Result[] = [];
+        try {
+            
+            if (localS) {
+                resultData = JSON.parse(localS) || [];
+            }
+
+          
+            const isQuestionPresent = resultData.some((elem: Result) => elem.id === id);
+
+            if (!isQuestionPresent) {
+                const newResult: Result = {
+                    id: id,
+                    questions: questions,
+                    status: false, 
+                };
+
+                resultData.push(newResult);
+                localStorage.setItem("result", JSON.stringify(resultData));
+            }
+        } catch (error) {
+            console.error("Failed to parse local storage data:", error);
+            resultData = [];
         }
-    ];
+    }, [par, questions, id]);
 
-    const check = (index:number) => {
+    const handleSelect = (index: number) => {
         if (selectedOption === null) {
-            setSelectedOption(index); 
-            setSelected(true)
-            console.log(questions[index].question,`your answer ${questions[index].correct ? 'correct' : 'not correct'}`)
+            setSelectedOption(index);
+
+            const localS = localStorage.getItem("result");
+            let resultData: Result[] = [];
+
+            try {
+                if (localS) {
+                    resultData = JSON.parse(localS) || [];
+                }
+                const updatedResults = resultData.map((elem: Result) => {
+                    if (elem.id === id) {
+                        return {
+                            ...elem,
+                            status: currentAnswers[index].tOF,
+                        };
+                    }
+                    return elem;
+                });
+
+                localStorage.setItem("result", JSON.stringify(updatedResults));
+            } catch (error) {
+                console.error("Failed to parse or update local storage data:", error);
+            }
         }
     };
-
-
 
     return (
         <div className={styles['wrap']}>
             <span className={styles['title']}>Choose 1 answer</span>
             <div className={styles['variants']}>
-                {questions.map((elem, index) => (
+                {currentAnswers.map((answer, index) => (
                     <Variant
-                        color={selectedOption === index ?'white':'#0078AB'}
-                        selected={selected}
                         key={index}
-                        click={() => check(index)}
-                        question={elem.question}
-                        correct={elem.correct}
+                        color={selectedOption === index ? 'white' : '#0078AB'}
+                        selected={selectedOption === index}
+                        click={() => handleSelect(index)}
+                        question={answer.answer}
+                        correct={answer.tOF}
                         backgroundColor={
                             selectedOption === index
-                                ? elem.correct
+                                ? answer.tOF
                                     ? '#00B676'
                                     : '#AA3B36'
-                                :  'white'
+                                : 'white'
                         }
                     />
                 ))}

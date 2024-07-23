@@ -1,17 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './NumberOfQuestions.module.scss'
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { updateNumberOfQuestions } from '../../store/practice.slice'; 
+
 
 
 export default function NumberOfQuestions () {
+
+    const [quantity,setQuantity] = useState(0)
+
+    const dispatch = useDispatch();
+
+    const practice = useSelector((state: RootState) => state.practice);
+
+
+    const quantityStore = useSelector((state: RootState) => state.practice.quantity);
+    
+
     const [active, setActive] = useState({
-        ten: true,
-        twenty: false,
-        thirty: false,
-        all:false
+            ten: practice.numberOfQuestions === 'ten',
+            twenty: practice.numberOfQuestions === 'twenty',
+            thirty: practice.numberOfQuestions === 'thirty',
+            all:practice.numberOfQuestions === 'All'
     });
+
+    useEffect(()=>{
+        setQuantity(quantityStore)
+    },[quantityStore])
 
     const select = (type: string) => {
         if (type === 'all') {
+            const newCheckedState = 'all'
+            dispatch(updateNumberOfQuestions(newCheckedState));
             setActive({
                 ten: false,
                 twenty: false,
@@ -19,6 +40,8 @@ export default function NumberOfQuestions () {
                 all:true
             });
         } else if (type === 'ten') {
+            const newCheckedState = 'ten'
+            dispatch(updateNumberOfQuestions(newCheckedState));
             setActive({
                 ten: true,
                 twenty: false,
@@ -26,6 +49,8 @@ export default function NumberOfQuestions () {
                 all:false
             });
         } else if (type === 'twenty') {
+            const newCheckedState = 'twenty'
+            dispatch(updateNumberOfQuestions(newCheckedState));
             setActive({
                 ten: false,
                 twenty: true,
@@ -33,6 +58,8 @@ export default function NumberOfQuestions () {
                 all:false
             });
         } else if (type === 'thirty') {
+            const newCheckedState = 'thirty'
+            dispatch(updateNumberOfQuestions(newCheckedState));
             setActive({
                 ten: false,
                 twenty: false,
@@ -56,7 +83,7 @@ export default function NumberOfQuestions () {
                     <p>30</p>
                 </div>
                 <div onClick={() => select('all')} className={active.all ? styles['active'] : styles['not-active']}>
-                    <p>All</p>
+                    <p>All {quantity}</p>
                 </div>
             </div>
         </div>
