@@ -2,22 +2,11 @@ import Toggle from '../../UI/Toggle/Toggle';
 import NumberOfQuestions from '../NumberOfQuestions/NumberOfQuestions';
 import PracticeTools from '../PracticeTools/PracticeTools';
 import styles from './PracticeSettings.module.scss';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
-import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-interface PracticeSettingsProps {
-    quantity: number | null;
-}
-
-export default function PracticeSettings({ quantity }: PracticeSettingsProps) {
 
 
-
-    const practice = useSelector((state: RootState) => state.practice);
-
-
+export default function PracticeSettings() {
 
     
     return (

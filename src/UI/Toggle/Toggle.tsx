@@ -10,10 +10,11 @@ export default function Toggle() {
 
     const [isChecked, setIsChecked] = useState(practice.correct);
 
+
     const handleToggle = () => {
         const newCheckedState = !isChecked;
         setIsChecked(newCheckedState);
-        dispatch(updateCorrect(newCheckedState));
+        dispatch(updateCorrect(newCheckedState));     
     };
 
  

@@ -1,21 +1,9 @@
-const getData = async () => {
+
+
+const getQuestionsGroup = async (userId:string) => {
+    console.log(userId)
     try {
-        const response = await fetch("http://localhost:8000/api/questions");
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Error fetching data:", error); 
-    }
-};
-
-const getQuestionsGroup = async () => {
-    try {
-        const response = await fetch("http://localhost:8000/api/users");
+        const response = await fetch(`http://localhost:8080/api/usersGet?id=${userId}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -29,7 +17,83 @@ const getQuestionsGroup = async () => {
     }
 };
 
+
+
+interface Data {
+    id: string;
+    question: string;
+    status: boolean|string;
+}
+
+interface UserQuestionsResult {
+    userId: string;
+    data: Data[];
+}
+
+const postQuestionsGroup = async (questionsGroup: UserQuestionsResult): Promise<any> => {
+    const jsonString = JSON.stringify(questionsGroup);
+
+    try {
+        const response = await fetch("http://localhost:8080/api/usersPost", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: jsonString,
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error posting questions group:", error);
+        throw error;
+    }
+}; 
+
+
+
+ interface QuestionData {
+    id: string;
+  }
+  
+  interface GetQuestions {
+    type:string;
+    quantity: string;
+    questions: QuestionData[];
+  }
+  
+  export const postQuestionsMDB = async (questions: GetQuestions): Promise<any> => {
+
+    const jsonString = JSON.stringify(questions);
+  
+  
+    try {
+        const response = await fetch("http://localhost:8080/api/questionsMDB", {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json', 
+            },
+            body: jsonString, 
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json(); 
+
+        return data; 
+    } catch (error) {
+        console.error("Error posting questions group:", error);
+        throw error; 
+    }
+};
+
 export default {
-    getData,
+    postQuestionsGroup,
     getQuestionsGroup
 };

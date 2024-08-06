@@ -1,28 +1,44 @@
+import { useEffect, useState } from "react";
 import styles from "./Results.module.scss";
 import OkVectorSvg from "../../SVG/OkVectorSvg/OkVectorSvg";
 import CrossSvg from "../../SVG/CrossSvg/CrossSvg";
-import { useState, useEffect } from "react";
 import HeaderResults from "../../components/HeaderResults/HeaderResults";
-
 import service from "../../service/service";
 
-interface Result {
-    questions: string;
-    status: boolean;
+
+interface QuestionResult {
+    id: string;
+    question: string;
+    status: boolean | string;
+    group: string;
 }
 
+
 export default function Results() {
-
-    const [dataUpdate,setDataUpdate] = useState('')
-
     const localS = localStorage.getItem("result");
 
-    const [data, setData] = useState<Result[]>([]);
+    const [data, setData] = useState<QuestionResult[]>([]);
+    const [answered, setAnswered] = useState(0);
 
     useEffect(() => {
         if (localS) {
             try {
-                const parsedData = JSON.parse(localS);
+                const parsedData: QuestionResult[] = JSON.parse(localS);
+                const dataToSend = {
+                    userId: '66b135f754410f0de9fc2594',
+                    data: parsedData,
+                };
+                service.postQuestionsGroup(dataToSend); 
+            } catch (error) {
+                console.error("Error parsing local storage data during posting:", error);
+            }
+        }
+    }, [localS]);
+
+    useEffect(() => {
+        if (localS) {
+            try {
+                const parsedData: QuestionResult[] = JSON.parse(localS);
                 if (Array.isArray(parsedData)) {
                     setData(parsedData);
                 } else {
@@ -34,44 +50,24 @@ export default function Results() {
         }
     }, [localS]);
 
-    useEffect(()=>{
-        console.log(dataUpdate)
-    },[dataUpdate])
-
-    useEffect(()=>{
-
-      const getData = async () =>{
-
-        try{
-            const result = await service.getQuestionsGroup()
-            
-            const data = []
-
-            // result.map(elem => data.push(elem.))
-            
-            console.log("result:",result)
-            console.log("localS:",localS)
-        }catch(error){
-            console.log(error)
-        }
-
-      }
-
-      getData()
-
-    },[])
+    useEffect(() => {
+        const correctAnswers = data.filter((elem) => elem.status === true || elem.status === 'pass').length;
+        setAnswered(correctAnswers);
+    }, [data]);
 
     return (
         <>
             <HeaderResults />
-            <div className={styles['wrap']}>
-                
+            <span className={styles['title']}>
+                You have answered {answered} out of {data.length} questions correctly
+            </span>
+            <div className={styles.wrap}>
                 {data.length > 0 ? (
                     data.map((elem, index) => (
-                        <div key={index} className={styles['variant']}>
-                            <span>{elem.questions}</span>
-                            <div className={styles['box']}>
-                                {elem.status ? <OkVectorSvg /> : <CrossSvg />}
+                        <div key={index} className={styles.variant}>
+                            <span>{elem.question}</span>
+                            <div className={styles.box}>
+                                {elem.status === false || elem.status === 'pass' ? <CrossSvg /> : <OkVectorSvg /> }
                             </div>
                         </div>
                     ))

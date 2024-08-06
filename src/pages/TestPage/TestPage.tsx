@@ -1,90 +1,61 @@
 import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import styles from './TestPage.module.scss';
-import mphZoneSign from '../../imgSigns/mphZoneSign.png';
 import VariantsOfAnswers from '../../components/VariantsOfAnswers/VariantsOfAnswers';
 import FooterTest from '../../components/FooterTest/FooterTest';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import getData from './service';
+import {postQuestionsMDB} from '../../service/service'
 
 
-interface Answer {
+interface ParData {
     answer: string;
     tOF: boolean;
-}
-
-interface QuestionData {
-    id: string;
-    queston: string; 
-    photo: boolean;
-    par: {
-        v1: Answer;
-        v2: Answer;
-        v3: Answer;
-        v4: Answer;
-    };
-}
-
-
-interface QuestionSet {
-    id: string;
-    data: QuestionData[];
+    photo: string | boolean;
 }
 
 
 interface Question {
-    id: string;
+    _id: string;
     question: string;
-    photo: boolean;
-    par: {
-        v1: Answer;
-        v2: Answer;
-        v3: Answer;
-        v4: Answer;
-    };
+    photo: string | boolean; 
+    group: string;
+    par: ParData[];
 }
 
 export default function TestPage() {
-    const store = useSelector((state: RootState) => state.practice.question);
+    const practiceQuestions = useSelector((state: RootState) => state.practice.question);
+    const numberOfQuestions = useSelector((state: RootState) => state.practice.numberOfQuestions);
+    const questionType = useSelector((state: RootState) => state.practice.type);
+
+    console.log("questionType:",questionType)
+
     const [questions, setQuestions] = useState<Question[]>([]);
     const [current, setCurrent] = useState(0);
     const [selected, setSelected] = useState(false);
     const [currentQuestions, setCurrentQuestions] = useState<Question | undefined>(undefined);
 
+
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const res: QuestionSet[] = await getData();
-               
-                if (store.length !== 0) {
-                    const filteredQuestions: Question[] = [];
-
-                    store.forEach((storeItem) => {
-                        const foundQuestionSet = res.find((elem) => elem.id === storeItem.id);
-                        if (foundQuestionSet) {
-                            foundQuestionSet.data.forEach((elem: QuestionData) => {
-                                const question: Question = {
-                                    id: elem.id.toString(),
-                                    question: elem.queston, 
-                                    photo: elem.photo,
-                                    par: elem.par,
-                                };
-                                filteredQuestions.push(question);
-                            });
-                        }
-                    });
-
-                    setQuestions(filteredQuestions);
-                }
-            } catch (error) {
-                console.error('Error fetching data in useEffect:', error);
-            }
+          try {
+           const response =  await postQuestionsMDB({
+              type:questionType,
+              quantity: numberOfQuestions,
+              questions: practiceQuestions,
+            });
+            localStorage.setItem('result', JSON.stringify([]));
+            setQuestions(response);
+          } catch (error) {
+            console.error('Error posting questions in useEffect:', error);
+          }
         };
-
+    
         fetchData();
-    }, [store]);
+      }, [practiceQuestions, numberOfQuestions]);
+
+
 
     useEffect(() => {
         setCurrentQuestions(questions[current]);
@@ -114,14 +85,30 @@ export default function TestPage() {
                                 <div>{questions[current].question}</div>
                             )}
                         </span>
-                        <img className={styles['img']} src={mphZoneSign} alt="MPH Zone Sign" />
+                        {currentQuestions && currentQuestions.photo && (
+                            <img
+                                className={styles['img']}
+                                src={`http://localhost:8080${currentQuestions.photo}`}
+                                alt="Question Image"
+                            />
+                        )}
                     </div>
                 </div>
                 <div className={styles['container']}>
                     {currentQuestions && (
-                        <VariantsOfAnswers  par={currentQuestions.par} questions={currentQuestions.question} id={currentQuestions.id}/> 
+                        <VariantsOfAnswers
+                            par={currentQuestions.par}
+                            question={currentQuestions.question}
+                            id={currentQuestions._id}
+                            group={currentQuestions.group}
+                        />
                     )}
-                    <FooterTest maxPage={questions.length} currentPage={current} click={setCurrent} selected={selected} />
+                    <FooterTest
+                        maxPage={questions.length}
+                        currentPage={current}
+                        click={setCurrent}
+                        selected={selected}
+                    />
                 </div>
             </div>
         </>

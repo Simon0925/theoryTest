@@ -45,14 +45,11 @@ export const practiceSlice = createSlice({
         },
         updateQuestion: (state, action: PayloadAction<Question[]>) => {
             state.question = action.payload;
-        },
-        updateResults: (state, action: PayloadAction<Result[]>) => {
-            state.results = action.payload;
         }
     },
 });
 
-export const { updateNumberOfQuestions,updateType,updateCorrect,updateQuantity, updateQuestion,updateResults } = practiceSlice.actions;
+export const { updateNumberOfQuestions,updateType,updateCorrect,updateQuantity, updateQuestion } = practiceSlice.actions;
 export default practiceSlice.reducer;
 
 

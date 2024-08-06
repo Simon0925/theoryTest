@@ -7,6 +7,7 @@ export default function Settings () {
         <>
         <div>
         Settings
+        <img src='../../../public/544.png' />
         </div>
         </>
     )

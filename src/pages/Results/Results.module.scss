@@ -1,11 +1,23 @@
-.wrap{
-   
+.title{
+    padding: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+}
+
+.wrap {
     cursor: pointer;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     padding: 1rem;
-    .variant{
+    max-height: 75vh; 
+    overflow-y: auto; 
+    background-color: #0096CE; 
+
+    .variant {
         padding: 1.2rem;
         border-radius: 0.625rem;
         background-color: white;
@@ -13,16 +25,19 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        .box{
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+      
+
+
+        .box {
             width: 25px;
             height: 25px;
             border-radius: 0.25rem;
-            border: 1px solid #E0DFE0;
+            border: 1px solid #e0dfe0;
             display: flex;
             align-items: center;
             justify-content: center;
             background-color: white;
         }
     }
-    
 }

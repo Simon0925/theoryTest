@@ -1,26 +1,58 @@
-import { useEffect } from 'react';
+import React, { useMemo } from 'react';
 import CrossSvg from '../../SVG/CrossSvg/CrossSvg';
 import OkVectorSvg from '../../SVG/OkVectorSvg/OkVectorSvg';
 import styles from './Variant.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface VariantProps {
-    question: string;
+    answer: string;
     correct: boolean;
     backgroundColor: string;
     click: () => void;
-    selected: boolean;
     color: string;
+    photo: boolean | string;
+    selectedOption: null | number;
+    index: number;
 }
 
-export default function Variant({ color, selected, click, backgroundColor, correct, question }: VariantProps) {
+const Variant: React.FC<VariantProps> = ({
+    color,
+    click,
+    backgroundColor,
+    correct,
+    answer,
+    photo,
+    selectedOption,
+    index
+}) => {
+    const practice = useSelector((state: RootState) => state.practice.correct);
 
     
+    const icon = useMemo(() => {
+        if (selectedOption === index) {
+            return correct ? <OkVectorSvg /> : <CrossSvg />;
+        }
+        if (practice && selectedOption !== null) {
+            return correct ? <OkVectorSvg /> : <CrossSvg />;
+        }
+        return null;
+    }, [correct, index, practice, selectedOption]);
+
+  
     return (
         <div onClick={click} style={{ backgroundColor, color }} className={styles['wrap']}>
-            <span>{question}</span>
-            <div className={styles['box']}>
-                {selected ? (correct ? <OkVectorSvg /> : <CrossSvg />) : null}
-            </div>
+            <span>{answer}</span>
+            {photo && (
+                <img
+                    className={styles['img']}
+                    src={`http://localhost:8080${photo}`}
+                    alt="Variant"
+                />
+            )}
+            <div className={styles['box']}>{icon}</div>
         </div>
     );
-}
+};
+
+export default React.memo(Variant);

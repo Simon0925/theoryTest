@@ -1,106 +1,119 @@
-import { useEffect, useState } from 'react';
-
+import { useEffect, useMemo, useState } from 'react';
 import styles from './VariantsOfAnswers.module.scss';
 import Variant from '../Variant/Variant';
 
 interface Answer {
     answer: string;
     tOF: boolean;
+    photo: boolean | string;
 }
 
 interface Result {
     id: string;
-    questions: string;
-    status: boolean;
+    question: string;
+    status: boolean|string;
+    group: string;
+}
+
+interface ParData {
+    answer: string;
+    tOF: boolean;
+    photo: string | boolean;
 }
 
 interface VariantsOfAnswersProps {
     id: string;
-    questions: string;
-    par: {
-        v1: Answer;
-        v2: Answer;
-        v3: Answer;
-        v4: Answer;
-    };
+    question: string;
+    group: string;
+    par: ParData[];
 }
 
-export default function VariantsOfAnswers({ par, questions, id }: VariantsOfAnswersProps) {
-    const [currentAnswers, setCurrentAnswers] = useState<Answer[]>([]);
+export default function VariantsOfAnswers({
+    par,
+    question,
+    id,
+    group,
+}: VariantsOfAnswersProps) {
+
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
+    const currentAnswers: Answer[] = useMemo(() => Object.values(par), [par]);
+
     useEffect(() => {
-
-        setCurrentAnswers(Object.values(par));
         setSelectedOption(null);
+        updateLocalStorage();
+    }, [par, question, id, group]);
 
-        const localS = localStorage.getItem("result");
-
+    const updateLocalStorage = () => {
+        const localS = localStorage.getItem('result');
         let resultData: Result[] = [];
-        try {
-            
-            if (localS) {
-                resultData = JSON.parse(localS) || [];
+
+        if (localS) {
+            try {
+                resultData = JSON.parse(localS);
+            } catch (error) {
+                console.error('Failed to parse local storage data:', error);
             }
-
-          
-            const isQuestionPresent = resultData.some((elem: Result) => elem.id === id);
-
-            if (!isQuestionPresent) {
-                const newResult: Result = {
-                    id: id,
-                    questions: questions,
-                    status: false, 
-                };
-
-                resultData.push(newResult);
-                localStorage.setItem("result", JSON.stringify(resultData));
-            }
-        } catch (error) {
-            console.error("Failed to parse local storage data:", error);
-            resultData = [];
         }
-    }, [par, questions, id]);
+
+        const isQuestionPresent = resultData.some((elem: Result) => elem.id === id);
+
+        if (!isQuestionPresent) {
+            const newResult: Result = {
+                id,
+                question,
+                status: 'pass',
+                group,
+            };
+
+            resultData.push(newResult);
+        }
+        localStorage.setItem('result', JSON.stringify(resultData));
+
+    };
 
     const handleSelect = (index: number) => {
-        if (selectedOption === null) {
-            setSelectedOption(index);
+        if (selectedOption !== null) return;
 
-            const localS = localStorage.getItem("result");
-            let resultData: Result[] = [];
+        setSelectedOption(index);
 
+        const localS = localStorage.getItem('result');
+        let resultData: Result[] = [];
+
+        if (localS) {
             try {
-                if (localS) {
-                    resultData = JSON.parse(localS) || [];
-                }
-                const updatedResults = resultData.map((elem: Result) => {
-                    if (elem.id === id) {
-                        return {
-                            ...elem,
-                            status: currentAnswers[index].tOF,
-                        };
-                    }
-                    return elem;
-                });
-
-                localStorage.setItem("result", JSON.stringify(updatedResults));
+                resultData = JSON.parse(localS);
             } catch (error) {
-                console.error("Failed to parse or update local storage data:", error);
+                console.error('Failed to parse local storage data:', error);
+                return;
             }
         }
+
+        const updatedResults = resultData.map((elem: Result) => {
+            if (elem.id === id) {
+                return {
+                    ...elem,
+                    status: currentAnswers[index].tOF,
+                };
+            }
+            return elem;
+        });
+
+        localStorage.setItem('result', JSON.stringify(updatedResults));
     };
 
     return (
-        <div className={styles['wrap']}>
-            <span className={styles['title']}>Choose 1 answer</span>
-            <div className={styles['variants']}>
+        <div className={styles.wrap}>
+            <span className={styles.title}>Choose 1 answer</span>
+            <div className={styles.variants}>
                 {currentAnswers.map((answer, index) => (
                     <Variant
+                        index={index}
+                        selectedOption={selectedOption}
                         key={index}
                         color={selectedOption === index ? 'white' : '#0078AB'}
-                        selected={selectedOption === index}
                         click={() => handleSelect(index)}
-                        question={answer.answer}
+                        answer={answer.answer}
                         correct={answer.tOF}
                         backgroundColor={
                             selectedOption === index
@@ -109,6 +122,7 @@ export default function VariantsOfAnswers({ par, questions, id }: VariantsOfAnsw
                                     : '#AA3B36'
                                 : 'white'
                         }
+                        photo={answer.photo}
                     />
                 ))}
             </div>
