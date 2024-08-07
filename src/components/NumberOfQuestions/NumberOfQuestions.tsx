@@ -6,7 +6,15 @@ import { updateNumberOfQuestions } from '../../store/practice.slice';
 
 
 
-export default function NumberOfQuestions () {
+
+interface NumberOfQuestionsProps {
+    change:(quantity:string)=>void;
+    type:string;
+    quantityCurrent:number;
+}
+
+
+export default function NumberOfQuestions ({change,type,quantityCurrent}:NumberOfQuestionsProps) {
 
     const [quantity,setQuantity] = useState(0)
 
@@ -14,9 +22,7 @@ export default function NumberOfQuestions () {
 
     const practice = useSelector((state: RootState) => state.practice);
 
-
     const quantityStore = useSelector((state: RootState) => state.practice.quantity);
-    
 
     const [active, setActive] = useState({
             ten: practice.numberOfQuestions === 'ten',
@@ -26,8 +32,13 @@ export default function NumberOfQuestions () {
     });
 
     useEffect(()=>{
-        setQuantity(quantityStore)
-    },[quantityStore])
+        if(type == "all"){
+            setQuantity(quantityStore)
+        }else {
+            setQuantity(quantityCurrent)
+        }
+        
+    },[quantityStore,quantityCurrent])
 
     const select = (type: string) => {
         if (type === 'all') {
@@ -39,6 +50,7 @@ export default function NumberOfQuestions () {
                 thirty: false,
                 all:true
             });
+            change(newCheckedState)
         } else if (type === 'ten') {
             const newCheckedState = 'ten'
             dispatch(updateNumberOfQuestions(newCheckedState));
@@ -48,6 +60,7 @@ export default function NumberOfQuestions () {
                 thirty: false,
                 all:false
             });
+            change(newCheckedState)
         } else if (type === 'twenty') {
             const newCheckedState = 'twenty'
             dispatch(updateNumberOfQuestions(newCheckedState));
@@ -57,6 +70,7 @@ export default function NumberOfQuestions () {
                 thirty: false,
                 all:false
             });
+            change(newCheckedState)
         } else if (type === 'thirty') {
             const newCheckedState = 'thirty'
             dispatch(updateNumberOfQuestions(newCheckedState));
@@ -66,6 +80,7 @@ export default function NumberOfQuestions () {
                 thirty: true,
                 all:false
             });
+            change(newCheckedState)
         }
     };
 

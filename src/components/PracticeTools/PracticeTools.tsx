@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './PracticeTools.module.scss';
 import { RootState } from '../../store/store';
 import { updateType } from '../../store/practice.slice'; 
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function PracticeTools() {
+
+interface NumberOfQuestionsProps {
+    change:(quantity:string)=>void;
+}
+
+export default function PracticeTools({change}:NumberOfQuestionsProps) {
     const dispatch = useDispatch();
     const practice = useSelector((state: RootState) => state.practice);
-    
     
     const [active, setActive] = useState({
         all:practice.type === "All",
@@ -24,6 +28,7 @@ export default function PracticeTools() {
                 noSeen: false,
                 wrong: false,
             });
+            change(newCheckedState)
         } else if (type === 'noSeen') {
             const newCheckedState = 'noSeen'
             dispatch(updateType(newCheckedState));
@@ -32,6 +37,7 @@ export default function PracticeTools() {
                 noSeen: true,
                 wrong: false,
             });
+            change(newCheckedState)
         } else if (type === 'wrong') {
             const newCheckedState = 'wrong'
             dispatch(updateType(newCheckedState));
@@ -40,6 +46,7 @@ export default function PracticeTools() {
                 noSeen: false,
                 wrong: true,
             });
+            change(newCheckedState)
         }
     };
 

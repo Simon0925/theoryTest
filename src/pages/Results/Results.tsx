@@ -25,7 +25,7 @@ export default function Results() {
             try {
                 const parsedData: QuestionResult[] = JSON.parse(localS);
                 const dataToSend = {
-                    userId: '66b135f754410f0de9fc2594',
+                    userId: '66b3c723a19d64ee1672d116',
                     data: parsedData,
                 };
                 service.postQuestionsGroup(dataToSend); 

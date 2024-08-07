@@ -1,7 +1,6 @@
 
 
 const getQuestionsGroup = async (userId:string) => {
-    console.log(userId)
     try {
         const response = await fetch(`http://localhost:8080/api/usersGet?id=${userId}`);
 
@@ -16,7 +15,6 @@ const getQuestionsGroup = async (userId:string) => {
         console.error("Error fetching data:", error); 
     }
 };
-
 
 
 interface Data {
@@ -66,7 +64,7 @@ const postQuestionsGroup = async (questionsGroup: UserQuestionsResult): Promise<
     questions: QuestionData[];
   }
   
-  export const postQuestionsMDB = async (questions: GetQuestions): Promise<any> => {
+   const postQuestionsMDB = async (questions: GetQuestions): Promise<any> => {
 
     const jsonString = JSON.stringify(questions);
   
@@ -93,7 +91,36 @@ const postQuestionsGroup = async (questionsGroup: UserQuestionsResult): Promise<
     }
 };
 
+
+const questionFilter = async (type: { type: string; userId:string;quantity:string; questions: { id: string }[] }) => {
+    const jsonString = JSON.stringify(type);
+
+    try {
+        const response = await fetch("http://localhost:8080/api/questions", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: jsonString,
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error posting questions group:", error);
+        throw error;
+    }
+};
+
+
+
 export default {
     postQuestionsGroup,
-    getQuestionsGroup
+    getQuestionsGroup,
+    postQuestionsMDB,
+    questionFilter
 };

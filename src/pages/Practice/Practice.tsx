@@ -9,6 +9,8 @@ import CarWheelSvg from "../../SVG/CarWheelSvg/CarWheelSvg";
 import RoadSvg from "../../SVG/RoadSvg/RoadSvg";
 import BikeSvg from "../../SVG/BikeSvg/BikeSvg";
 import PedestrianSvg from "../../SVG/PedestrianSvg/PedestrianSvg";
+import ScooterSvg from "../../SVG/ScooterSvg/ScooterSvg";
+import SteeringWheelSvg from "../../SVG/SteeringWheelSvg/SteeringWheelSvg";
 
 interface QuestionGroup {
   name: string;
@@ -26,11 +28,6 @@ export default function Practice() {
   
   const [questionsGroup, setQuestionsGroup] = useState<QuestionGroup[]>([]);
 
-
-  useEffect(()=>{
-
-  })
-  
 
   const pars: ParsItem[] = [
     {
@@ -56,13 +53,21 @@ export default function Practice() {
       {
         name: "Vulnerable road users",
         svg: <PedestrianSvg />,
+      },
+      {
+        name: "Other types of vehicle",
+        svg: <ScooterSvg />,
+      },
+      {
+        name: "Vehide handling",
+        svg: <SteeringWheelSvg />,
       }
   ];
   
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const groupTest = await service.getQuestionsGroup('66b135f754410f0de9fc2594');
+        const groupTest = await service.getQuestionsGroup('66b3c723a19d64ee1672d116');
         setQuestionsGroup(groupTest || []);
       } catch (error) {
         console.error("Error fetching data in useEffect:", error);

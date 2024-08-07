@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import {postQuestionsMDB} from '../../service/service'
+
 
 
 interface ParData {
@@ -25,11 +25,8 @@ interface Question {
 }
 
 export default function TestPage() {
-    const practiceQuestions = useSelector((state: RootState) => state.practice.question);
-    const numberOfQuestions = useSelector((state: RootState) => state.practice.numberOfQuestions);
-    const questionType = useSelector((state: RootState) => state.practice.type);
-
-    console.log("questionType:",questionType)
+   
+    const question = useSelector((state: RootState) => state.practice.currentQuestions);
 
     const [questions, setQuestions] = useState<Question[]>([]);
     const [current, setCurrent] = useState(0);
@@ -37,30 +34,13 @@ export default function TestPage() {
     const [currentQuestions, setCurrentQuestions] = useState<Question | undefined>(undefined);
 
 
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-           const response =  await postQuestionsMDB({
-              type:questionType,
-              quantity: numberOfQuestions,
-              questions: practiceQuestions,
-            });
-            localStorage.setItem('result', JSON.stringify([]));
-            setQuestions(response);
-          } catch (error) {
-            console.error('Error posting questions in useEffect:', error);
-          }
-        };
-    
-        fetchData();
-      }, [practiceQuestions, numberOfQuestions]);
-
-
+    useEffect(()=>{
+        setQuestions(question);
+    },[])
 
     useEffect(() => {
         setCurrentQuestions(questions[current]);
     }, [current, questions]);
-
 
 
     return (
