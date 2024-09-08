@@ -11,6 +11,16 @@ import BikeSvg from "../../SVG/BikeSvg/BikeSvg";
 import PedestrianSvg from "../../SVG/PedestrianSvg/PedestrianSvg";
 import ScooterSvg from "../../SVG/ScooterSvg/ScooterSvg";
 import SteeringWheelSvg from "../../SVG/SteeringWheelSvg/SteeringWheelSvg";
+import MotorwaySvg from "../../SVG/MotorwaySvg/MotorwaySvg";
+import RulesSvg from "../../SVG/RulesSvg/RulesSvg";
+import TrafficSignSvg from "../../SVG/TrafficSignSvg/TrafficSignSvg";
+import DocumentsSvg from "../../SVG/DocumentsSvg/DocumentsSvg";
+import AccidentSvg from "../../SVG/AccidentSvg/AccidentSvg";
+import CarSvg from "../../SVG/CarSvg/CarSvg";
+import FlagSvg from "../../SVG/FlagSvg/FlagSvg";
+import Flag from "../../components/Flag/Flag";
+
+import idUser from "../../config/idUser"
 
 interface QuestionGroup {
   name: string;
@@ -61,13 +71,39 @@ export default function Practice() {
       {
         name: "Vehide handling",
         svg: <SteeringWheelSvg />,
+      },
+      {
+        name: "Motorway rules",
+        svg: <MotorwaySvg />,
+      },
+      {
+        name: "Rules of the road",
+        svg: <RulesSvg />,
+      },
+      {
+        name: "Road and traffic signs",
+        svg: <TrafficSignSvg />,
+      },
+      {
+        name: "Essential documents",
+        svg: <DocumentsSvg />,
+      },
+      {
+        name: "Incidents, accidents and emergencies",
+        svg: <AccidentSvg />,
+      },
+      {
+        name: "Vehicle loading",
+        svg: <CarSvg />,
       }
   ];
+  
+  
   
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const groupTest = await service.getQuestionsGroup('66b3c723a19d64ee1672d116');
+        const groupTest = await service.getQuestionsGroup(idUser);
         setQuestionsGroup(groupTest || []);
       } catch (error) {
         console.error("Error fetching data in useEffect:", error);
@@ -78,7 +114,9 @@ export default function Practice() {
 
   return (
     <div className={styles["wrap"]}>
+       
       <div className={styles["qwestions"]}>
+        <Flag />
         {questionsGroup.map((elem, i) => {
           const matchingPars = pars.find((par) => par.name === elem.name);
           const svg = matchingPars ? matchingPars.svg : null;

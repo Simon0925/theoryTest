@@ -15,7 +15,7 @@ export default function HeaderResults () {
         <>
             <div className={styles['wrap']}>
                 <NavLink  to='/' >
-                    <ButtonTest name={'Exit'} color={'white'} backgroundColor={'#A73530'} svg={false} click={exit} />
+                    <ButtonTest name={'Exit'} color={'white'} backgroundColor={'#A73530'} svg={false} click={exit} svgColor={false} />
                 </NavLink>
                 <span className={styles['title']}>Nice Try!</span>
                 <span></span>

@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { updatecurrentQuestions } from '../../store/practice.slice'; 
 
+import idUser from "../../config/idUser"
+
 export default function PracticeSettings() {
 
     const dispatch = useDispatch();
@@ -21,17 +23,14 @@ export default function PracticeSettings() {
 
     const [quantity,setQuantity] = useState(0)
 
-    useEffect(()=>{
-        console.log("quantity:",quantity)
-    },[quantity])
-
+  
     useEffect(()=>{
         const fetchData = async () => {
             try {
                 const data = await service.questionFilter({
                     type:QuestionType,
                     questions:storeQuestion,
-                    userId:"66b3c723a19d64ee1672d116",
+                    userId:idUser,
                     quantity:quantityOfQuestions
                 });
                 dispatch(updatecurrentQuestions(data.data));

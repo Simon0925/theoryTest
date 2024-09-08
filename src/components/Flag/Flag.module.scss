@@ -1,19 +1,19 @@
-.wrap{
+.flag{
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
+    font-size: 18px;
+    font-weight: 400;
     .title{
-        
         display: flex;
         align-items: center;
-        gap:1rem;
-        color: #378AB6;
-        font-size: 18px;
-        font-weight: 400;
+        gap: 1rem;
+        
         .notActive{
             padding: 0.5rem;
+            border-radius: 0.3rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -25,9 +25,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            svg{
-                fill: white;
-            }
         }
+    }
+
+    .quantityActive{
+        font-weight: 600;
+        margin-right: 1.3rem;
+        color: #FE8000;
+    }
+
+    .quantityNotActive{
+        color: #FFCDA8;
     }
 }

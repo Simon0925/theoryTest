@@ -1,15 +1,21 @@
 .wrap{
-    padding: 0.5rem 1.2rem;
-    border-radius: 0.625rem;
-
-    font-size: 18px;
+   
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
+    border-radius: 0.625rem;   
 
+    padding: 0rem 1.2rem;
+
+    
+    span{
+        padding: 0.9rem 0rem;
+        font-size: 18px;
+    }
     .img{
-        max-width: 50px;
+        max-width: 150px;
+        max-height: 65px;
     }
     .box{
         width: 25px;

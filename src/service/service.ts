@@ -1,15 +1,31 @@
+import hostname from "../config/hostname";
 
-
-const getQuestionsGroup = async (userId:string) => {
+const getFlags = async (userId:string) => {
     try {
-        const response = await fetch(`http://localhost:8080/api/usersGet?id=${userId}`);
+        const response = await fetch(`${hostname}/api/flags?id=${userId}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
-        
+        console.log("getFlags:",data)
+        return data;
+    } catch (error) {
+        console.error("Error fetching data:", error); 
+    }
+}
+
+const getQuestionsGroup = async (userId:string) => {
+    try {
+        const response = await fetch(`${hostname}/api/usersGet?id=${userId}`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+    
         return data;
     } catch (error) {
         console.error("Error fetching data:", error); 
@@ -32,7 +48,7 @@ const postQuestionsGroup = async (questionsGroup: UserQuestionsResult): Promise<
     const jsonString = JSON.stringify(questionsGroup);
 
     try {
-        const response = await fetch("http://localhost:8080/api/usersPost", {
+        const response = await fetch(`${hostname}/api/usersPost`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -70,7 +86,7 @@ const postQuestionsGroup = async (questionsGroup: UserQuestionsResult): Promise<
   
   
     try {
-        const response = await fetch("http://localhost:8080/api/questionsMDB", {
+        const response = await fetch(`${hostname}/api/questionsMDB`, {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json', 
@@ -96,7 +112,7 @@ const questionFilter = async (type: { type: string; userId:string;quantity:strin
     const jsonString = JSON.stringify(type);
 
     try {
-        const response = await fetch("http://localhost:8080/api/questions", {
+        const response = await fetch(`${hostname}/api/questions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -119,6 +135,7 @@ const questionFilter = async (type: { type: string; userId:string;quantity:strin
 
 
 export default {
+    getFlags,
     postQuestionsGroup,
     getQuestionsGroup,
     postQuestionsMDB,

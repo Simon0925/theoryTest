@@ -27,7 +27,6 @@ export default function Par({ name, quantity, percent, svg, id }: ParProps) {
     const click = () => {
         const newSelectedState = !isSelected;
         setIsSelected(newSelectedState);
-        console.log(newSelectedState)
         if (newSelectedState) {
             const updatedQuestions = [...practice.question, { id }];
             dispatch(updateQuestion(updatedQuestions));

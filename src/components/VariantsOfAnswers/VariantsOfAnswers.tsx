@@ -11,7 +11,7 @@ interface Answer {
 interface Result {
     id: string;
     question: string;
-    status: boolean|string;
+    status: boolean | string;
     group: string;
 }
 
@@ -26,6 +26,7 @@ interface VariantsOfAnswersProps {
     question: string;
     group: string;
     par: ParData[];
+    click: (e: string) => void;
 }
 
 export default function VariantsOfAnswers({
@@ -33,16 +34,33 @@ export default function VariantsOfAnswers({
     question,
     id,
     group,
+    click,
 }: VariantsOfAnswersProps) {
-
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
     const currentAnswers: Answer[] = useMemo(() => Object.values(par), [par]);
+
+    const [shuffledAnswers, setShuffledAnswers] = useState<Answer[]>([]);
+
+    
+    function shuffleArray(array: Answer[]) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
 
     useEffect(() => {
         setSelectedOption(null);
         updateLocalStorage();
     }, [par, question, id, group]);
+
+    useEffect(() => {
+        const shuffled = shuffleArray(currentAnswers);
+        setShuffledAnswers(shuffled);
+    }, [currentAnswers]);
 
     const updateLocalStorage = () => {
         const localS = localStorage.getItem('result');
@@ -69,10 +87,11 @@ export default function VariantsOfAnswers({
             resultData.push(newResult);
         }
         localStorage.setItem('result', JSON.stringify(resultData));
-
     };
 
     const handleSelect = (index: number) => {
+        click(id);
+
         if (selectedOption !== null) return;
 
         setSelectedOption(index);
@@ -93,7 +112,7 @@ export default function VariantsOfAnswers({
             if (elem.id === id) {
                 return {
                     ...elem,
-                    status: currentAnswers[index].tOF,
+                    status: shuffledAnswers[index].tOF,
                 };
             }
             return elem;
@@ -106,7 +125,7 @@ export default function VariantsOfAnswers({
         <div className={styles.wrap}>
             <span className={styles.title}>Choose 1 answer</span>
             <div className={styles.variants}>
-                {currentAnswers.map((answer, index) => (
+                {shuffledAnswers.map((answer, index) => (
                     <Variant
                         index={index}
                         selectedOption={selectedOption}

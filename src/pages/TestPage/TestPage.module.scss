@@ -11,7 +11,9 @@
         display: flex;
         justify-content: space-between;
         padding: 1rem;
-        background-color: #0096CE;
+        background-color: #0078AB;
+        position: relative;
+        z-index: 1;
         .count-questions{
             font-size: 20px;
             color: white;
@@ -28,6 +30,19 @@
         padding: 1.5rem;
         display: flex;
         justify-content: space-between;
+        .marker{
+            top: 30px;
+            left: 7px;
+            padding: 3rem 0.45rem;
+            background-color: #F9921A;
+            position: absolute;
+            transform: rotate(45deg);
+            
+            display: block;
+        }
+        .inactive-marker{
+            display: none;
+        }
         .question{
             color: #0078AB;
             font-size: 18px;
@@ -36,6 +51,7 @@
 
         .img{
             max-width: 350px;
+            max-height: 350px;
         }
     }
    

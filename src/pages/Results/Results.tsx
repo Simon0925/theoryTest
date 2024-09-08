@@ -5,6 +5,7 @@ import CrossSvg from "../../SVG/CrossSvg/CrossSvg";
 import HeaderResults from "../../components/HeaderResults/HeaderResults";
 import service from "../../service/service";
 
+import idUser from "../../config/idUser"
 
 interface QuestionResult {
     id: string;
@@ -25,7 +26,7 @@ export default function Results() {
             try {
                 const parsedData: QuestionResult[] = JSON.parse(localS);
                 const dataToSend = {
-                    userId: '66b3c723a19d64ee1672d116',
+                    userId: idUser,
                     data: parsedData,
                 };
                 service.postQuestionsGroup(dataToSend); 

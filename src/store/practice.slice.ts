@@ -1,18 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// Interface for a single question
+
 interface Question {
     id: string;
 }
 
-// Interface for a single result
+
 interface Result {
     question: string;
     status: boolean | string;
     id: string;
 }
 
-// Interface for the main practice data state
 export interface PracticeData {
     question: Question[];
     type: string;
@@ -20,10 +19,9 @@ export interface PracticeData {
     correct: boolean;
     quantity: number;
     results: Result[];
-    currentQuestions: Questions[];  // Update this type to match your expected data structure
+    currentQuestions: Questions[];  
 }
 
-// Initial state for the practice slice
 const initialState: PracticeData = {
     question: [],
     type: "All",
@@ -31,17 +29,17 @@ const initialState: PracticeData = {
     correct: false,
     quantity: 0,
     results: [],
-    currentQuestions: []  // Updated to match the Questions type
+    currentQuestions: []  
 };
 
-// Interface for the par data structure
+
 interface ParData {
     answer: string;
     photo: boolean | string;
     tOF: boolean;
 }
 
-// Interface for a question structure in the currentQuestions array
+
 interface Questions {
     _id: string;
     group: string;
@@ -50,7 +48,7 @@ interface Questions {
     par: ParData[];
 }
 
-// Creating the practice slice with reducers to manage state
+
 export const practiceSlice = createSlice({
     name: 'practice',
     initialState,
@@ -71,13 +69,13 @@ export const practiceSlice = createSlice({
             state.question = action.payload;
         },
         updatecurrentQuestions: (state, action: PayloadAction<Questions[]>) => {
-            state.currentQuestions = action.payload;  // Correctly update the currentQuestions field
+            state.currentQuestions = action.payload;  
         }
     },
 });
 
-// Export actions to be used in components
+
 export const { updateNumberOfQuestions, updateType, updateCorrect, updateQuantity, updateQuestion, updatecurrentQuestions } = practiceSlice.actions;
 
-// Export reducer to be used in the store
+
 export default practiceSlice.reducer;
