@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-
 interface Question {
     id: string;
 }
@@ -12,14 +11,15 @@ interface Result {
     id: string;
 }
 
+
 export interface PracticeData {
-    question: Question[];
-    type: string;
-    numberOfQuestions: string;
-    correct: boolean;
-    quantity: number;
-    results: Result[];
-    currentQuestions: Questions[];  
+    question: Question[];         
+    type: string;                  
+    numberOfQuestions: string;     
+    correct: boolean;              
+    quantity: number;              
+    results: Result[];             
+    currentQuestions: Questions[]; 
 }
 
 const initialState: PracticeData = {
@@ -32,20 +32,18 @@ const initialState: PracticeData = {
     currentQuestions: []  
 };
 
-
 interface ParData {
     answer: string;
     photo: boolean | string;
-    tOF: boolean;
+    tOF: boolean; 
 }
-
 
 interface Questions {
     _id: string;
     group: string;
     photo: boolean | string;
     question: string;
-    par: ParData[];
+    par: ParData[]; 
 }
 
 
@@ -75,7 +73,14 @@ export const practiceSlice = createSlice({
 });
 
 
-export const { updateNumberOfQuestions, updateType, updateCorrect, updateQuantity, updateQuestion, updatecurrentQuestions } = practiceSlice.actions;
+export const { 
+    updateNumberOfQuestions, 
+    updateType, 
+    updateCorrect, 
+    updateQuantity, 
+    updateQuestion, 
+    updatecurrentQuestions 
+} = practiceSlice.actions;
 
 
 export default practiceSlice.reducer;

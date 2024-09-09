@@ -20,6 +20,8 @@ interface Question {
   photo: string | boolean;
   group: string;
   par: ParData[];
+  flag: boolean | undefined;
+  explanation: string;
 }
 
 export default function TestPage() {
@@ -27,41 +29,35 @@ export default function TestPage() {
 
   const [questions, setQuestions] = useState<Question[]>([]);
   const [current, setCurrent] = useState(0);
-  
   const [selected, setSelected] = useState(false);
-
- 
-  const [explanation,setExplanation] = useState(false);
-
-  const [currentId,setCurrentId] = useState('');
-
+  const [explanation, setExplanation] = useState(false);
+  const [currentId, setCurrentId] = useState('');
   const [currentQuestions, setCurrentQuestions] = useState<Question | undefined>(undefined);
-
-
-  const [markers, setMarkers] = useState<boolean[]>([]);
-
-  useEffect(()=>{
-    if (questions.length > 0 && questions[current]._id === currentId) {
-        setSelected(!selected);
-      }
-  },[currentId,question,current])
+  const [markers, setMarkers] = useState(false);
 
   useEffect(() => {
-    setQuestions(question);
-    setMarkers(new Array(question.length).fill(false));
+    const updatedQuestions = question.map((q: any) => ({
+      ...q,
+      flag: q.flag ?? false, 
+      explanation: q.explanation ?? "", 
+    }));
+    setQuestions(updatedQuestions);
   }, [question]);
+
+  useEffect(() => {
+    if (questions.length > 0 && questions[current]._id === currentId) {
+      setSelected(!selected);
+    }
+  }, [currentId, questions, current]);
 
   useEffect(() => {
     setCurrentQuestions(questions[current]);
   }, [current, questions]);
 
-  const toggleMarker = () => {
-    setMarkers((prevMarkers) => {
-      const newMarkers = [...prevMarkers];
-      newMarkers[current] = !newMarkers[current];
-      return newMarkers;
-    });
-  };
+  useEffect(() => {
+    const flag = currentQuestions ? currentQuestions.flag ?? false : false;
+    setMarkers(flag);
+  }, [currentQuestions]);
 
   return (
     <>
@@ -81,7 +77,7 @@ export default function TestPage() {
           </div>
           <div className={styles['question-wrap']}>
             <span className={styles['question']}>
-              <div className={markers[current] ? styles['marker'] : styles['inactive-marker']}></div>
+              <div className={markers ? styles['marker'] : styles['inactive-marker']}></div>
               {questions.length > 0 && <div>{questions[current].question}</div>}
             </span>
             {currentQuestions && currentQuestions.photo && (
@@ -103,17 +99,18 @@ export default function TestPage() {
               group={currentQuestions.group}
             />
           )}
-          {
-            explanation === true ? <Modal close={setExplanation} text={currentQuestions.explanation} title={'DVSA explanation'} /> : null
-
-          }
+          {explanation === true && (
+            <Modal close={setExplanation} text={currentQuestions?.explanation || ""} title={'DVSA explanation'} />
+          )}
           <FooterTest
-                      maxPage={questions.length}
-                      currentPage={current}
-                      click={setCurrent}
-                      selected={selected}
-                      id={currentQuestions ? currentQuestions._id : ""}
-                      modal={setExplanation}            />
+            maxPage={questions.length}
+            currentPage={current}
+            click={setCurrent}
+            selected={selected}
+            id={currentQuestions ? currentQuestions._id : ""}
+            modal={setExplanation}
+            flag={markers}
+          />
         </div>
       </div>
     </>

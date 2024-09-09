@@ -17,7 +17,6 @@ import TrafficSignSvg from "../../SVG/TrafficSignSvg/TrafficSignSvg";
 import DocumentsSvg from "../../SVG/DocumentsSvg/DocumentsSvg";
 import AccidentSvg from "../../SVG/AccidentSvg/AccidentSvg";
 import CarSvg from "../../SVG/CarSvg/CarSvg";
-import FlagSvg from "../../SVG/FlagSvg/FlagSvg";
 import Flag from "../../components/Flag/Flag";
 
 import idUser from "../../config/idUser"
@@ -35,6 +34,8 @@ interface ParsItem {
 }
 
 export default function Practice() {
+
+  localStorage.setItem('result', JSON.stringify([]));
   
   const [questionsGroup, setQuestionsGroup] = useState<QuestionGroup[]>([]);
 

@@ -13,6 +13,7 @@ interface Result {
     question: string;
     status: boolean | string;
     group: string;
+    flag:boolean
 }
 
 interface ParData {
@@ -65,27 +66,33 @@ export default function VariantsOfAnswers({
     const updateLocalStorage = () => {
         const localS = localStorage.getItem('result');
         let resultData: Result[] = [];
-
+   
         if (localS) {
             try {
                 resultData = JSON.parse(localS);
+    
+                if (!Array.isArray(resultData)) {
+                    resultData = [];
+                }
             } catch (error) {
                 console.error('Failed to parse local storage data:', error);
             }
         }
-
+    
         const isQuestionPresent = resultData.some((elem: Result) => elem.id === id);
-
+    
         if (!isQuestionPresent) {
             const newResult: Result = {
                 id,
                 question,
                 status: 'pass',
                 group,
+                flag:false
             };
-
+    
             resultData.push(newResult);
         }
+    
         localStorage.setItem('result', JSON.stringify(resultData));
     };
 
