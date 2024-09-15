@@ -2,15 +2,16 @@ import { useEffect, useState } from "react"
 import FlagSvg from "../../SVG/FlagSvg/FlagSvg"
 import styles from "./Flag.module.scss"
 import service from "../../service/service"
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { useDispatch} from "react-redux";
+import { updateFlagged } from '../../store/practice.slice'; 
+
+
 import idUser from "../../config/idUser"
 
 export default function Flag () {
-
     
-    const currentQuestions = useSelector((state: RootState) => state.practice.currentQuestions);
-
+    const dispatch = useDispatch();
+    
     const [active,setActive] = useState(false)
 
     const [selected,setSelected] = useState(false)
@@ -19,12 +20,7 @@ export default function Flag () {
         quantity:0,
         questions:[]
     }) 
-
-    useEffect(()=>{
-        if(selected){
-            console.log("currentQuestions:",currentQuestions)
-        }
-    },[selected,currentQuestions])
+    
 
     useEffect(()=>{
 
@@ -53,6 +49,7 @@ export default function Flag () {
     
     const marker = () => {
         setSelected(!selected)
+        dispatch(updateFlagged(!selected))
     }
 
     return(

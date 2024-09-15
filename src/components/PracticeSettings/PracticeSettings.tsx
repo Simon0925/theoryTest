@@ -17,6 +17,8 @@ export default function PracticeSettings() {
 
     const storeQuestion = useSelector((state: RootState) => state.practice.question);
 
+    const flagged = useSelector((state: RootState) => state.practice.flagged);
+
     const [quantityOfQuestions,setQuantityOfQuestions] = useState("all")
 
     const [QuestionType,setQuestionType] = useState('all')
@@ -31,7 +33,8 @@ export default function PracticeSettings() {
                     type:QuestionType,
                     questions:storeQuestion,
                     userId:idUser,
-                    quantity:quantityOfQuestions
+                    quantity:quantityOfQuestions,
+                    flagged:flagged
                 });
                 dispatch(updatecurrentQuestions(data.data));
                 setQuantity(data.data.length)
@@ -40,7 +43,7 @@ export default function PracticeSettings() {
             }
           };
           fetchData();
-    },[storeQuestion,QuestionType,quantityOfQuestions])
+    },[storeQuestion,QuestionType,quantityOfQuestions,flagged])
     
     return (
         <div className={styles['wrap']}>

@@ -13,7 +13,7 @@ interface Result {
     question: string;
     status: boolean | string;
     group: string;
-    flag:boolean
+    flag: boolean;
 }
 
 interface ParData {
@@ -28,6 +28,7 @@ interface VariantsOfAnswersProps {
     group: string;
     par: ParData[];
     click: (e: string) => void;
+    currentFlag: boolean | undefined;
 }
 
 export default function VariantsOfAnswers({
@@ -36,14 +37,13 @@ export default function VariantsOfAnswers({
     id,
     group,
     click,
+    currentFlag
 }: VariantsOfAnswersProps) {
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
+    const [shuffledAnswers, setShuffledAnswers] = useState<Answer[]>([]);
 
     const currentAnswers: Answer[] = useMemo(() => Object.values(par), [par]);
 
-    const [shuffledAnswers, setShuffledAnswers] = useState<Answer[]>([]);
-
-    
     function shuffleArray(array: Answer[]) {
         const shuffled = [...array];
         for (let i = shuffled.length - 1; i > 0; i--) {
@@ -56,7 +56,7 @@ export default function VariantsOfAnswers({
     useEffect(() => {
         setSelectedOption(null);
         updateLocalStorage();
-    }, [par, question, id, group]);
+    }, [par, question, id, group, currentFlag]);
 
     useEffect(() => {
         const shuffled = shuffleArray(currentAnswers);
@@ -66,11 +66,10 @@ export default function VariantsOfAnswers({
     const updateLocalStorage = () => {
         const localS = localStorage.getItem('result');
         let resultData: Result[] = [];
-   
+
         if (localS) {
             try {
                 resultData = JSON.parse(localS);
-    
                 if (!Array.isArray(resultData)) {
                     resultData = [];
                 }
@@ -78,21 +77,24 @@ export default function VariantsOfAnswers({
                 console.error('Failed to parse local storage data:', error);
             }
         }
-    
+
         const isQuestionPresent = resultData.some((elem: Result) => elem.id === id);
-    
+
         if (!isQuestionPresent) {
             const newResult: Result = {
                 id,
                 question,
                 status: 'pass',
                 group,
-                flag:false
+                flag: currentFlag ?? false 
             };
-    
             resultData.push(newResult);
+        } else {
+            resultData = resultData.map((elem: Result) =>
+                elem.id === id ? { ...elem, flag: currentFlag ?? false } : elem
+            );
         }
-    
+
         localStorage.setItem('result', JSON.stringify(resultData));
     };
 

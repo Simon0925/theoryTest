@@ -18,7 +18,6 @@ interface FooterTestProps {
 export default function FooterTest({ selected, maxPage, currentPage, click, modal, id, flag }: FooterTestProps) {
     const question = useSelector((state: RootState) => state.practice.currentQuestions);
     const dispatch = useDispatch(); 
-
     
     const [isAnswerSelected, setIsAnswerSelected] = useState(false);
 

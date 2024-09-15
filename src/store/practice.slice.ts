@@ -12,6 +12,7 @@ interface Result {
 }
 
 
+
 export interface PracticeData {
     question: Question[];         
     type: string;                  
@@ -20,6 +21,8 @@ export interface PracticeData {
     quantity: number;              
     results: Result[];             
     currentQuestions: Questions[]; 
+    flagged:boolean
+
 }
 
 const initialState: PracticeData = {
@@ -29,7 +32,8 @@ const initialState: PracticeData = {
     correct: false,
     quantity: 0,
     results: [],
-    currentQuestions: []  
+    currentQuestions:[],
+    flagged: false
 };
 
 interface ParData {
@@ -68,7 +72,10 @@ export const practiceSlice = createSlice({
         },
         updatecurrentQuestions: (state, action: PayloadAction<Questions[]>) => {
             state.currentQuestions = action.payload;  
-        }
+        },
+        updateFlagged: (state, action: PayloadAction<boolean>) => {
+            state.flagged = action.payload;
+        },
     },
 });
 
@@ -79,7 +86,8 @@ export const {
     updateCorrect, 
     updateQuantity, 
     updateQuestion, 
-    updatecurrentQuestions 
+    updatecurrentQuestions,
+    updateFlagged
 } = practiceSlice.actions;
 
 

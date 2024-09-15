@@ -7,9 +7,7 @@ const getFlags = async (userId:string) => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
         const data = await response.json();
-        console.log("getFlags:",data)
         return data;
     } catch (error) {
         console.error("Error fetching data:", error); 
@@ -108,7 +106,7 @@ const postQuestionsGroup = async (questionsGroup: UserQuestionsResult): Promise<
 };
 
 
-const questionFilter = async (type: { type: string; userId:string;quantity:string; questions: { id: string }[] }) => {
+const questionFilter = async (type: { type: string; userId:string;flagged:boolean;quantity:string; questions: { id: string }[] }) => {
     const jsonString = JSON.stringify(type);
 
     try {

@@ -39,8 +39,9 @@ export default function TestPage() {
     const updatedQuestions = question.map((q: any) => ({
       ...q,
       flag: q.flag ?? false, 
-      explanation: q.explanation ?? "", 
+      explanation: q.explanation ?? "",
     }));
+
     setQuestions(updatedQuestions);
   }, [question]);
 
@@ -55,8 +56,10 @@ export default function TestPage() {
   }, [current, questions]);
 
   useEffect(() => {
-    const flag = currentQuestions ? currentQuestions.flag ?? false : false;
-    setMarkers(flag);
+    if (currentQuestions) {
+      const flag = currentQuestions.flag ?? false; 
+      setMarkers(flag);
+    }
   }, [currentQuestions]);
 
   return (
@@ -92,6 +95,7 @@ export default function TestPage() {
         <div className={styles['container']}>
           {currentQuestions && (
             <VariantsOfAnswers
+              currentFlag={markers}
               click={setCurrentId}
               par={currentQuestions.par}
               question={currentQuestions.question}
