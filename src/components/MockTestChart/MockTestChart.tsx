@@ -7,17 +7,17 @@ import { useState } from "react";
 Chart.register(...registerables);
 
 export default function MockTestChart() {
-  const [correctAnswers, setCorrectAnswers] = useState<number>(50);
-  const totalQuestions = 50;
+  const [correctAnswers, setCorrectAnswers] = useState<number>(100);
+  const totalQuestions = 100;
 
   // Line chart data
   const data = {
-    labels: ["Start", "25%", "50%", "75%", "100%"], // Milestones
+    labels: ["0","15%","25%", "25%", "50%","55%","50%", "75%","78%", "100%"], // Milestones
     datasets: [
       {
         label: "Progress", // Label for the chart
         data: [0, 15, 25,25,50,55,50,75,78, correctAnswers], // Data points (mock example)
-        fill: true,
+        fill: false,
         backgroundColor: "rgba(75, 192, 192, 0.1)", // Light fill color
         borderColor: "#4bc0c0", // Main line color
         borderWidth: 2,
@@ -25,7 +25,7 @@ export default function MockTestChart() {
         pointBackgroundColor: "#4bc0c0", // Point fill color
         pointHoverBackgroundColor: "#fff",
         pointHoverBorderColor: "#4bc0c0",
-        tension: 0.4, // Adds smooth curves to the lines
+        tension: 0.5, // Adds smooth curves to the lines
       },
     ],
   };
