@@ -31,7 +31,7 @@ export default function TestPage() {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState(false);
   const [explanation, setExplanation] = useState(false);
-  const [currentId, setCurrentId] = useState('');
+  const [currentId, setCurrentId] = useState(''); 
   const [currentQuestions, setCurrentQuestions] = useState<Question | undefined>(undefined);
   const [markers, setMarkers] = useState(false);
 
@@ -110,7 +110,7 @@ export default function TestPage() {
             maxPage={questions.length}
             currentPage={current}
             click={setCurrent}
-            selected={selected}
+            setSelectedAnswer={currentId}
             id={currentQuestions ? currentQuestions._id : ""}
             modal={setExplanation}
             flag={markers}

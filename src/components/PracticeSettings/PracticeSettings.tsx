@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import service from '../../service/service';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { updatecurrentQuestions } from '../../store/practice.slice'; 
+import { updatecurrentQuestions,updateAllDataLength } from '../../store/practice.slice'; 
 
 import idUser from "../../config/idUser"
 
@@ -23,8 +23,6 @@ export default function PracticeSettings() {
 
     const [QuestionType,setQuestionType] = useState('all')
 
-    const [quantity,setQuantity] = useState(0)
-
   
     useEffect(()=>{
         const fetchData = async () => {
@@ -37,7 +35,7 @@ export default function PracticeSettings() {
                     flagged:flagged
                 });
                 dispatch(updatecurrentQuestions(data.data));
-                setQuantity(data.data.length)
+                dispatch(updateAllDataLength(data.allDataLength));
             } catch (error) {
               console.error('Error posting questions in useEffect:', error);
             }
@@ -52,7 +50,7 @@ export default function PracticeSettings() {
                 <Toggle  />
             </div>
             <PracticeTools change={setQuestionType} />
-            <NumberOfQuestions change={setQuantityOfQuestions} type={QuestionType} quantityCurrent={quantity} />
+            <NumberOfQuestions change={setQuantityOfQuestions}  />
             <div className={styles['btn']}>
             <NavLink  to='/test' >
                     <button>Start</button> 

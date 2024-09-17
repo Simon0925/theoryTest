@@ -1,3 +1,4 @@
+import CircularProgressBar from '../../UI/CircularProgressBar/CircularProgressBar'
 import Modal from '../../components/Modal/Modal'
 import styles from './Settings.module.scss'
 
@@ -8,7 +9,7 @@ export default function Settings () {
         <div>
         Settings
        
-        <Modal text={'If you follow another vehicle with your headlights on full beam, they could dazzle the driver. Leave a safe distance and make sure that the light from your dipped beam falls short of the vehicle in front.'} title={'DVSA explanation'} />
+       <CircularProgressBar correct={30} skipped={35} incorrect={35} />
         </div>
         </>
     )

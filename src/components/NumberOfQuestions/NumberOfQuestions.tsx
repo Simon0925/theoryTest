@@ -1,29 +1,31 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState } from 'react';
 import styles from './NumberOfQuestions.module.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { updateNumberOfQuestions } from '../../store/practice.slice'; 
 
 
-
-
 interface NumberOfQuestionsProps {
     change:(quantity:string)=>void;
-    type:string;
-    quantityCurrent:number;
 }
 
-
-export default function NumberOfQuestions ({change,type,quantityCurrent}:NumberOfQuestionsProps) {
-
-    const [quantity,setQuantity] = useState(0)
+export default function NumberOfQuestions ({change}:NumberOfQuestionsProps) {
 
     const dispatch = useDispatch();
 
     const practice = useSelector((state: RootState) => state.practice);
 
-    const quantityStore = useSelector((state: RootState) => state.practice.quantity);
+    const [quantity, setQuantity] = useState(0)
 
+    useEffect(()=>{
+        if(practice.allDataLength != undefined){
+            setQuantity(practice.allDataLength)
+        }else{
+            setQuantity(0)
+        }
+    },[practice.allDataLength])
+
+    
     const [active, setActive] = useState({
             ten: practice.numberOfQuestions === 'ten',
             twenty: practice.numberOfQuestions === 'twenty',
@@ -31,14 +33,7 @@ export default function NumberOfQuestions ({change,type,quantityCurrent}:NumberO
             all:practice.numberOfQuestions === 'All'
     });
 
-    useEffect(()=>{
-        if(type == "all"){
-            setQuantity(quantityStore)
-        }else {
-            setQuantity(quantityCurrent)
-        }
-        
-    },[quantityStore,quantityCurrent])
+   
 
     const select = (type: string) => {
         if (type === 'all') {

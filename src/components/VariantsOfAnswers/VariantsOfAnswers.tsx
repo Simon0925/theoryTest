@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import styles from './VariantsOfAnswers.module.scss';
 import Variant from '../Variant/Variant';
+import { shuffleArray } from './service/shuffleArray'; 
+import { updateLocalStorage } from './service/updateLocalStorage'; 
 
-interface Answer {
+export interface Answer {
     answer: string;
     tOF: boolean;
     photo: boolean | string;
@@ -40,94 +42,35 @@ export default function VariantsOfAnswers({
     currentFlag
 }: VariantsOfAnswersProps) {
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
-    const [shuffledAnswers, setShuffledAnswers] = useState<Answer[]>([]);
+    const [selected, setSelected] = useState<{ id: string, index: number }[]>([]);
 
-    const currentAnswers: Answer[] = useMemo(() => Object.values(par), [par]);
-
-    function shuffleArray(array: Answer[]) {
-        const shuffled = [...array];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        return shuffled;
-    }
+    const shuffledAnswers = useMemo(() => shuffleArray(par), [par]);
 
     useEffect(() => {
-        setSelectedOption(null);
-        updateLocalStorage();
-    }, [par, question, id, group, currentFlag]);
-
-    useEffect(() => {
-        const shuffled = shuffleArray(currentAnswers);
-        setShuffledAnswers(shuffled);
-    }, [currentAnswers]);
-
-    const updateLocalStorage = () => {
-        const localS = localStorage.getItem('result');
-        let resultData: Result[] = [];
-
-        if (localS) {
-            try {
-                resultData = JSON.parse(localS);
-                if (!Array.isArray(resultData)) {
-                    resultData = [];
-                }
-            } catch (error) {
-                console.error('Failed to parse local storage data:', error);
-            }
-        }
-
-        const isQuestionPresent = resultData.some((elem: Result) => elem.id === id);
-
-        if (!isQuestionPresent) {
-            const newResult: Result = {
-                id,
-                question,
-                status: 'pass',
-                group,
-                flag: currentFlag ?? false 
-            };
-            resultData.push(newResult);
-        } else {
-            resultData = resultData.map((elem: Result) =>
-                elem.id === id ? { ...elem, flag: currentFlag ?? false } : elem
-            );
-        }
-
-        localStorage.setItem('result', JSON.stringify(resultData));
-    };
+        const found = selected.find(e => e.id === id);
+        setSelectedOption(found ? found.index : null);
+        updateLocalStorage(id, question, group, currentFlag); 
+    }, [id, selected, question, group, currentFlag]);
 
     const handleSelect = (index: number) => {
-        click(id);
-
         if (selectedOption !== null) return;
 
+        setSelected(prev => [...prev, { index, id }]);
         setSelectedOption(index);
+        click(id);
 
         const localS = localStorage.getItem('result');
-        let resultData: Result[] = [];
-
         if (localS) {
             try {
-                resultData = JSON.parse(localS);
+                const resultData = JSON.parse(localS) as Result[];
+                const updatedResults = resultData.map(elem =>
+                    elem.id === id ? { ...elem, status: shuffledAnswers[index].tOF } : elem
+                );
+                localStorage.setItem('result', JSON.stringify(updatedResults));
             } catch (error) {
                 console.error('Failed to parse local storage data:', error);
-                return;
             }
         }
-
-        const updatedResults = resultData.map((elem: Result) => {
-            if (elem.id === id) {
-                return {
-                    ...elem,
-                    status: shuffledAnswers[index].tOF,
-                };
-            }
-            return elem;
-        });
-
-        localStorage.setItem('result', JSON.stringify(updatedResults));
     };
 
     return (
@@ -136,18 +79,16 @@ export default function VariantsOfAnswers({
             <div className={styles.variants}>
                 {shuffledAnswers.map((answer, index) => (
                     <Variant
+                        key={index}
                         index={index}
                         selectedOption={selectedOption}
-                        key={index}
                         color={selectedOption === index ? 'white' : '#0078AB'}
                         click={() => handleSelect(index)}
                         answer={answer.answer}
                         correct={answer.tOF}
                         backgroundColor={
                             selectedOption === index
-                                ? answer.tOF
-                                    ? '#00B676'
-                                    : '#AA3B36'
+                                ? answer.tOF ? '#00B676' : '#AA3B36'
                                 : 'white'
                         }
                         photo={answer.photo}

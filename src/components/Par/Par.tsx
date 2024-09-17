@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './Par.module.scss';
 import { CirclePercent } from '../../UI/CirclePercent/CirclePercent';
 import { RootState } from '../../store/store';
-import { updateQuantity, updateQuestion } from '../../store/practice.slice'; 
+import {  updateQuestion } from '../../store/practice.slice'; 
 import { useDispatch, useSelector } from 'react-redux';
 
 interface ParProps {
@@ -18,8 +18,6 @@ export default function Par({ name, quantity, percent, svg, id }: ParProps) {
 
     const practice = useSelector((state: RootState) => state.practice);
 
-    const quantityStore = useSelector((state: RootState) => state.practice.quantity);
-
     const [isSelected, setIsSelected] = useState(() => 
         practice.question.some((element) => element.id === id)
     );
@@ -29,12 +27,10 @@ export default function Par({ name, quantity, percent, svg, id }: ParProps) {
         setIsSelected(newSelectedState);
         if (newSelectedState) {
             const updatedQuestions = [...practice.question, { id }];
-            dispatch(updateQuestion(updatedQuestions));
-            dispatch(updateQuantity(quantityStore + quantity));
+            dispatch(updateQuestion(updatedQuestions));   
         } else {
             const updatedQuestions = practice.question.filter((element) => element.id !== id);
             dispatch(updateQuestion(updatedQuestions));
-            dispatch(updateQuantity(quantityStore - quantity));
         }
     };
 

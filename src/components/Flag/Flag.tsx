@@ -18,7 +18,6 @@ export default function Flag () {
 
     const [currentFlags, setCurrentFlags] = useState({
         quantity:0,
-        questions:[]
     }) 
     
 
@@ -38,7 +37,6 @@ export default function Flag () {
             const groupTest = await service.getFlags(idUser);
             setCurrentFlags({
                 quantity : groupTest.quantity,
-                questions: groupTest.questions
             });
           } catch (error) {
             console.error("Error fetching data in useEffect:", error);

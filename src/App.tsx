@@ -1,5 +1,4 @@
 import Main from './layout/Main/Main'
-import { BrowserRouter as Router } from 'react-router-dom';
 import './App.css'
 import Header from './layout/Main/Header/Header'
 
