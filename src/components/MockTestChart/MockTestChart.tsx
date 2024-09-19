@@ -18,35 +18,35 @@ const MockTestChart = ({ data }: { data: ChartData[] }) => {
   const [linePath, setLinePath] = useState('');
   const [progress, setProgress] = useState(0);
 
-  const maxX = 300; // Maximum width of the chart
-  const maxY = 100; // Maximum height of the chart (Y-axis)
+  const maxX = 300; 
+  const maxY = 100; 
 
-  // Dynamically calculate points based on the data length and percentage values
+  
   const points: Point[] = data.map((item, index) => {
-    const x = (index / (data.length - 1)) * maxX; // Evenly distribute points along the X-axis
-    const y = maxY - parseInt(item.percentage);   // Invert percentage for Y-axis (0% at bottom, 100% at top)
+    const x = (index / (data.length - 1)) * maxX; 
+    const y = maxY - parseInt(item.percentage);   
     return { x, y };
   });
 
   const gridLines: GridLine[] = [
-    { y: 20, label: '86%' },   // Tick for 86%
-    { y: 50, label: '75%' },   // Tick for 75%
-    { y: 60, label: '50%' },   // Tick for 50%
-    { y: 80, label: '25%' },   // Tick for 25%
+    { y: 20, label: '86%' },   
+    { y: 50, label: '75%' },   
+    { y: 60, label: '50%' },   
+    { y: 80, label: '25%' },  
   ];
 
-  // Animation progress for the line drawing
+  
   useEffect(() => {
     const interval = setInterval(() => {
       if (progress < 1) {
-        setProgress((prev) => Math.min(prev + 0.01, 1)); // Smooth line animation
+        setProgress((prev) => Math.min(prev + 0.01, 1)); 
       }
     }, 30);
 
     return () => clearInterval(interval);
   }, [progress]);
 
-  // Interpolating the path as the line draws
+
   useEffect(() => {
     if (progress > 0) {
       const totalLength = points.length - 1;
@@ -72,22 +72,21 @@ const MockTestChart = ({ data }: { data: ChartData[] }) => {
   }, [progress, points]);
 
   if (!data || data.length === 0) {
-    return <div>No data available</div>; // Handle empty or undefined data
+    return <div>No data available</div>; 
   }
 
   return (
     <svg
       width="100%"
       height="350px"
-      viewBox={`0 0 ${maxX} ${maxY + 20}`} // Dynamic viewBox based on chart dimensions
+      viewBox={`0 0 ${maxX} ${maxY + 20}`} 
       preserveAspectRatio="none"
       style={{
         background: 'linear-gradient(180deg, rgba(57,195,245,0.6125043767507004) 0%, rgba(0,150,206,1) 96%)',
       }}
 
     >
-       
-      {/* Drawing grid lines */}
+
       {gridLines.map((line, index) => (
         <g key={index}>
           <line
@@ -113,7 +112,6 @@ const MockTestChart = ({ data }: { data: ChartData[] }) => {
           
       <path d={linePath} stroke="#12B9CB" strokeWidth="1" fill="none" />
 
-      {/* Points */}
       {points.map((point, index) => (
         <circle
           key={index}
