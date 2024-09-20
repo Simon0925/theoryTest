@@ -24,6 +24,7 @@ interface Question {
   explanation: string;
 }
 
+
 export default function TestPage() {
   const question = useSelector((state: RootState) => state.practice.currentQuestions);
 
@@ -103,9 +104,16 @@ export default function TestPage() {
               group={currentQuestions.group}
             />
           )}
-          {explanation === true && (
-            <Modal close={setExplanation} text={currentQuestions?.explanation || ""} title={'DVSA explanation'} />
+         {explanation === true && (
+              <Modal 
+                  close={setExplanation} 
+                  text={currentQuestions?.explanation || ""} 
+                  title={'DVSA explanation'} 
+                  cancel={false} 
+                  blueBtnText={'Ok'} 
+              />
           )}
+
           <FooterTest
             maxPage={questions.length}
             currentPage={current}

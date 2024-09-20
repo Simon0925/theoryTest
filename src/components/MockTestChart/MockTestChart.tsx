@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ChartData {
   percentage: string;
@@ -14,38 +14,78 @@ interface GridLine {
   label: string;
 }
 
-const MockTestChart = ({ data }: { data: ChartData[] }) => {
+const MockTestChart = ({ data }: { data: ChartData[] | null }) => {
+  const defaultData: ChartData[] = [
+    { percentage: '20%' },
+    { percentage: '30%' },
+    { percentage: '50%' },
+    { percentage: '20%' },
+    { percentage: '50%' },
+    { percentage: '75%' },
+    { percentage: '30%' },
+    { percentage: '50%' },
+    { percentage: '20%' },
+    { percentage: '50%' },
+    { percentage: '15%' },
+    { percentage: '86%' },
+    { percentage: '100%' }
+  ];
+
+  const [currentData, setCurrentData] = useState<ChartData[]>([]);
+
+  useEffect(() => {
+    if (data === null || data.length === 0) {
+      setCurrentData(defaultData);
+    } else {
+      setCurrentData(data);
+    }
+  }, [data]);
+
   const [linePath, setLinePath] = useState('');
   const [progress, setProgress] = useState(0);
 
   const maxX = 300; 
-  const maxY = 100; 
+  const maxY = 100;
 
-  
-  const points: Point[] = data.map((item, index) => {
-    const x = (index / (data.length - 1)) * maxX; 
-    const y = maxY - parseInt(item.percentage);   
-    return { x, y };
-  });
+  const isSingleDataPoint = currentData.length === 1;
+
+ 
+  const points: Point[] = isSingleDataPoint
+    ? [
+        { x: 0, y: maxY }, 
+        { x: maxX / 2, y: maxY - parseInt(currentData[0].percentage) }  
+      ]
+    : [
+        { x: 0, y: maxY },  
+        ...currentData.map((item, index) => {
+          let x = ((index + 1) / (currentData.length)) * maxX; 
+          let y = maxY - parseInt(item.percentage);
+
+          if (index === currentData.length - 1 && parseInt(item.percentage) === 100) {
+            x -= 2; 
+            y += 2;
+          }
+
+          return { x, y };
+        })
+      ];
 
   const gridLines: GridLine[] = [
-    { y: 20, label: '86%' },   
-    { y: 50, label: '75%' },   
-    { y: 60, label: '50%' },   
-    { y: 80, label: '25%' },  
+    { y: maxY - 86, label: '86%' },   
+    { y: maxY - 75, label: '75%' },   
+    { y: maxY - 50, label: '50%' },   
+    { y: maxY - 25, label: '25%' },  
   ];
 
-  
   useEffect(() => {
     const interval = setInterval(() => {
       if (progress < 1) {
         setProgress((prev) => Math.min(prev + 0.01, 1)); 
       }
-    }, 30);
+    }, 20);
 
     return () => clearInterval(interval);
   }, [progress]);
-
 
   useEffect(() => {
     if (progress > 0) {
@@ -61,7 +101,7 @@ const MockTestChart = ({ data }: { data: ChartData[] }) => {
       const interpolatedX = currentPoint.x + (nextPoint.x - currentPoint.x) * segmentProgress;
       const interpolatedY = currentPoint.y + (nextPoint.y - currentPoint.y) * segmentProgress;
 
-      let path = `M${points[0].x},${points[0].y}`;
+      let path = `M${points[0].x},${points[0].y}`;  // Старт с первой точки
       for (let i = 1; i <= currentIndex; i++) {
         path += ` L${points[i].x},${points[i].y}`;
       }
@@ -71,7 +111,7 @@ const MockTestChart = ({ data }: { data: ChartData[] }) => {
     }
   }, [progress, points]);
 
-  if (!data || data.length === 0) {
+  if (currentData.length === 0) {
     return <div>No data available</div>; 
   }
 
@@ -84,9 +124,7 @@ const MockTestChart = ({ data }: { data: ChartData[] }) => {
       style={{
         background: 'linear-gradient(180deg, rgba(57,195,245,0.6125043767507004) 0%, rgba(0,150,206,1) 96%)',
       }}
-
     >
-
       {gridLines.map((line, index) => (
         <g key={index}>
           <line
@@ -94,13 +132,13 @@ const MockTestChart = ({ data }: { data: ChartData[] }) => {
             y1={line.y}
             x2={maxX}
             y2={line.y}
-            stroke="rgba(255, 255, 255, 0.1)"
+            stroke={data !== null? "white": "#7DC1E2" }
             strokeDasharray={line.label === '86%' ? 'none' : '3 3'}
           />
           <text
             x="1"
             y={line.y - 2}
-            fill="#7DC1E2"
+            fill={data !== null? "white": "#7DC1E2" }
             fontSize="3.5"
             textAnchor="start"
           >
@@ -108,30 +146,33 @@ const MockTestChart = ({ data }: { data: ChartData[] }) => {
           </text>
         </g>
       ))}
-     
-          
-      <path d={linePath} stroke="#12B9CB" strokeWidth="1" fill="none" />
+
+
+      <path d={linePath} stroke={data !== null? "#32EBC3": "#12B9CB" } strokeWidth="1" fill="none" />
 
       {points.map((point, index) => (
-        <circle
-          key={index}
-          cx={point.x}
-          cy={point.y}
-          r="1"
-          fill="#7DC1E2"
-        />
+        index !== 0 && (  
+          <circle
+            key={index}
+            cx={point.x}
+            cy={point.y}
+            r="1.2"
+            fill={data !== null? "white": "#7DC1E2" }
+          />
+        )
       ))}
-        <text
+
+      <text
         x={130}
         y={50}
         fill="white"
         fontSize="6"
         textAnchor="start"
         fontFamily="Arial, Helvetica, sans-serif" 
-        fontWeight="900" 
-             >
-        {"No results yet"}
-        </text>
+        fontWeight="900"
+      >
+        {data === null ?  "No results yet" : null}
+      </text>
     </svg>
   );
 };

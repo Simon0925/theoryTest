@@ -1,32 +1,22 @@
+import { useState } from 'react';
+import FooterMockTest from '../../components/FooterMockTest/FooterMockTest';
+import MockTestChart from '../../components/MockTestChart/MockTestChart';
+import styles from './MockTest.module.scss';
+import Assessment from '../../components/Assessment/Assessment';
 
-import FooterMockTest from '../../components/FooterMockTest/FooterMockTest'
-import MockTestChart from '../../components/MockTestChart/MockTestChart'
-import styles from './MockTest.module.scss'
+export default function MockTest() {
+    const [isTestStarted, setIsTestStarted] = useState(false);
+   
 
-const data = [
-    { percentage: '0%' },
-    { percentage: '20%' },
-    { percentage: '30%' },
-    { percentage: '50%' },
-    { percentage: '20%' },
-    { percentage: '50%' },
-    { percentage: '75%' },
-    { percentage: '30%' },
-    { percentage: '50%' },
-    { percentage: '20%' },
-    { percentage: '50%' },
-    { percentage: '15%' },
-    { percentage: '86%' },
-    { percentage: '100%' }
-  ];
+    const handleTestClose = () => {
+        setIsTestStarted(false); 
+    };
 
-export default function MockTest () {
-    return(
-        <>
-        <div>
-        <MockTestChart data={data} />
-        <FooterMockTest />
+    return (
+        <div className={styles.mockTestContainer}>
+            {!isTestStarted && <MockTestChart data={null} />}
+            {isTestStarted && <Assessment onClose={handleTestClose} />}
+            {!isTestStarted &&<FooterMockTest onTestStart={() => setIsTestStarted(true)} />}
         </div>
-        </>
-    )
+    );
 }

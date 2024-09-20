@@ -1,0 +1,17 @@
+.title{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: #0078AB;
+    position: relative;
+    z-index: 1;
+    .count-questions{
+        font-size: 20px;
+        color: white;
+        display: flex;
+        gap: 0.4rem;
+    }
+    .nav{
+        text-decoration: none;
+    }
+}

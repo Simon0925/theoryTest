@@ -33,14 +33,28 @@
         font-size: 12px;
     }
 
-    .btn1{
-        padding: 0.3rem;
+    .btn{
+        display: flex;
         width: 100%;
-        border-radius: 0.35rem;
-        border: none;
-        cursor: pointer;
-        background-color: #1470D2;
-        color: white;
+        gap: 1rem;
+        .btn1{
+            padding: 0.3rem;
+            width: 100%;
+            border-radius: 0.35rem;
+            border: none;
+            cursor: pointer;
+            background-color: #1470D2;
+            color: white;
+        }
+        .btn2{
+            padding: 0.3rem;
+            width: 100%;
+            border-radius: 0.35rem;
+            border: none;
+            cursor: pointer;
+            background-color: #686F76;
+            color: white;
+        }
     }
 }
 }
