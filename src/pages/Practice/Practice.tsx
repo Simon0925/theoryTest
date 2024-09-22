@@ -18,8 +18,9 @@ import DocumentsSvg from "../../SVG/DocumentsSvg/DocumentsSvg";
 import AccidentSvg from "../../SVG/AccidentSvg/AccidentSvg";
 import CarSvg from "../../SVG/CarSvg/CarSvg";
 import Flag from "../../components/Flag/Flag";
+import Spinner from "../../UI/Spinner/Spinner"; // Make sure Spinner is imported
 
-import idUser from "../../config/idUser"
+import idUser from "../../config/idUser";
 
 interface QuestionGroup {
   name: string;
@@ -34,11 +35,10 @@ interface ParsItem {
 }
 
 export default function Practice() {
+  localStorage.setItem("result", JSON.stringify([]));
 
-  localStorage.setItem('result', JSON.stringify([]));
-  
   const [questionsGroup, setQuestionsGroup] = useState<QuestionGroup[]>([]);
-
+  const [loading, setLoading] = useState(true); // Add loading state
 
   const pars: ParsItem[] = [
     {
@@ -50,57 +50,54 @@ export default function Practice() {
       svg: <AttitudeSvg />,
     },
     {
-        name: "Sefety and your vehicle",
-        svg: <CarWheelSvg />,
-      },
-      {
-        name: "Sefety margins",
-        svg: <RoadSvg />,
-      },
-      {
-        name: "Hazard awareness",
-        svg: <BikeSvg />,
-      },
-      {
-        name: "Vulnerable road users",
-        svg: <PedestrianSvg />,
-      },
-      {
-        name: "Other types of vehicle",
-        svg: <ScooterSvg />,
-      },
-      {
-        name: "Vehide handling",
-        svg: <SteeringWheelSvg />,
-      },
-      {
-        name: "Motorway rules",
-        svg: <MotorwaySvg />,
-      },
-      {
-        name: "Rules of the road",
-        svg: <RulesSvg />,
-      },
-      {
-        name: "Road and traffic signs",
-        svg: <TrafficSignSvg />,
-      },
-      {
-        name: "Essential documents",
-        svg: <DocumentsSvg />,
-      },
-      {
-        name: "Incidents, accidents and emergencies",
-        svg: <AccidentSvg />,
-      },
-      {
-        name: "Vehicle loading",
-        svg: <CarSvg />,
-      }
+      name: "Safety and your vehicle",
+      svg: <CarWheelSvg />,
+    },
+    {
+      name: "Safety margins", 
+      svg: <RoadSvg />,
+    },
+    {
+      name: "Hazard awareness",
+      svg: <BikeSvg />,
+    },
+    {
+      name: "Vulnerable road users",
+      svg: <PedestrianSvg />,
+    },
+    {
+      name: "Other types of vehicle",
+      svg: <ScooterSvg />,
+    },
+    {
+      name: "Vehicle handling", 
+      svg: <SteeringWheelSvg />,
+    },
+    {
+      name: "Motorway rules",
+      svg: <MotorwaySvg />,
+    },
+    {
+      name: "Rules of the road",
+      svg: <RulesSvg />,
+    },
+    {
+      name: "Road and traffic signs",
+      svg: <TrafficSignSvg />,
+    },
+    {
+      name: "Essential documents",
+      svg: <DocumentsSvg />,
+    },
+    {
+      name: "Incidents, accidents and emergencies",
+      svg: <AccidentSvg />,
+    },
+    {
+      name: "Vehicle loading",
+      svg: <CarSvg />,
+    },
   ];
-  
-  
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -108,33 +105,40 @@ export default function Practice() {
         setQuestionsGroup(groupTest || []);
       } catch (error) {
         console.error("Error fetching data in useEffect:", error);
+      } finally {
+        setLoading(false); 
       }
     };
     fetchData();
   }, []);
 
   return (
-    <div className={styles["wrap"]}>
-       
-      <div className={styles["qwestions"]}>
+    <div className={styles.wrap}>
+      <div className={styles.qwestions}>
         <Flag />
-        {questionsGroup.map((elem, i) => {
-          const matchingPars = pars.find((par) => par.name === elem.name);
-          const svg = matchingPars ? matchingPars.svg : null;
+        {loading ? (
+          <div className={styles.spiner} >
+            <Spinner color={"#0078AB"} />
+          </div>
+        ) : (
+          questionsGroup.map((elem, i) => {
+            const matchingPars = pars.find((par) => par.name === elem.name);
+            const svg = matchingPars ? matchingPars.svg : null;
 
-          return (
-            <Par
-              key={i}
-              id={elem.id}
-              name={elem.name}
-              quantity={elem.quantity}
-              percent={elem.percent}
-              svg={svg}
-            />
-          );
-        })}
+            return (
+              <Par
+                key={i}
+                id={elem.id}
+                name={elem.name}
+                quantity={elem.quantity}
+                percent={elem.percent}
+                svg={svg}
+              />
+            );
+          })
+        )}
       </div>
-      <div className={styles["settings"]}>
+      <div className={styles.settings}>
         <PracticeSettings />
       </div>
     </div>

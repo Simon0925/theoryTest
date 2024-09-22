@@ -1,13 +1,14 @@
 import Logo from "../Logo/Logo";
 import styles from "./Modal.module.scss";
+import { ReactNode } from "react"
 
 interface ModalProps {
     text: string;
-    title: string;
+    title: ReactNode;  
     close: (e: boolean) => void;
     cancel: boolean;
     blueBtnText: string;
-    cancelClick?: (e: boolean) => void | null;  // Make it optional
+    cancelClick?: (e: boolean) => void | null;  
 }
 
 export default function Modal({ text, title, close, cancel, blueBtnText, cancelClick }: ModalProps) {
@@ -21,12 +22,9 @@ export default function Modal({ text, title, close, cancel, blueBtnText, cancelC
                 <span className={styles.title}>{title}</span>
                 <span className={styles.text}>{text}</span>
                 <div className={styles.btn}>
-                    {/* Button to close the modal */}
                     <button onClick={() => close(false)} className={styles.btn1}>
                         {blueBtnText}
                     </button>
-
-                    {/* Conditionally render Cancel button if `cancel` is true and `cancelClick` exists */}
                     {cancel && cancelClick && (
                         <button onClick={() => cancelClick(false)} className={styles.btn2}>
                             Cancel

@@ -1,47 +1,62 @@
 .loader {
-    height: 200px;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Prevent scrollbars */
-}
-
-.car {
-    animation: rotatePath 4s linear infinite; /* Circular path movement */
-    
+  }
+  
+  .car {
     &__body {
-        animation: shake 0.2s ease-in-out infinite alternate; /* Shake effect for body */
+      animation: shake 0.2s ease-in-out infinite alternate;
     }
-    
-    &__wheelLeft,
-    &__wheelRight {
-        animation: rotate 0.5s linear infinite; /* Rotate wheels */
+  
+    &__line {
+      transform-origin: center right;
+      stroke-dasharray: 22;
+      animation: line 0.8s ease-in-out infinite;
+      animation-fill-mode: both;
+      
+      &--top {
+        animation-delay: 0s;
+      }
+  
+      &--middle {
+        animation-delay: 0.2s;
+      }
+  
+      &--bottom {
+        animation-delay: 0.4s;
+      }
     }
-}
-
-@keyframes rotatePath {
+  }
+  
+  @keyframes shake {
     0% {
-        transform: rotate(0deg) translate(50px) rotate(0deg); /* Start position */
+      transform: translateY(-1%);
     }
     100% {
-        transform: rotate(360deg) translate(50px) rotate(-360deg); /* Complete circle */
+      transform: translateY(3%);
     }
-}
-
-@keyframes shake {
+  }
+  
+  @keyframes line {
     0% {
-        transform: translateY(-1%);
+      stroke-dashoffset: 22;
+    }
+    25% {
+      stroke-dashoffset: 22;
+    }
+    50% {
+      stroke-dashoffset: 0;
+    }
+    51% {
+      stroke-dashoffset: 0;
+    }
+    80% {
+      stroke-dashoffset: -22;
     }
     100% {
-        transform: translateY(3%);
+      stroke-dashoffset: -22;
     }
-}
-
-@keyframes rotate {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
+  }
+  

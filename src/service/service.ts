@@ -133,6 +133,7 @@ const questionFilter = async (type: { type: string; userId:string;flagged:boolea
 
 
 const assessmentData = async (userId:string) =>{
+    
     try {
         const response = await fetch(`${hostname}/api/mock-test?id=${userId}`);
 
@@ -140,6 +141,7 @@ const assessmentData = async (userId:string) =>{
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
+       
         return data;
 
     }catch (error) {

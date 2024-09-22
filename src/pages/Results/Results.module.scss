@@ -20,7 +20,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     padding: 1rem;
-    max-height: 75vh; 
+    max-height: 49vh; 
     overflow-y: auto; 
     background-color: #0096CE; 
 
@@ -29,6 +29,7 @@
         border-radius: 0.625rem;
         background-color: white;
         font-size: 18px;
+        gap:1rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -37,8 +38,8 @@
 
 
         .box {
-            width: 25px;
-            height: 25px;
+            min-width: 25px;
+            min-height: 25px;
             border-radius: 0.25rem;
             border: 1px solid #e0dfe0;
             display: flex;

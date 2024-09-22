@@ -14,6 +14,7 @@ interface VariantProps {
     photo: boolean | string;
     selectedOption: null | number;
     index: number;
+    typeOftest:string
 }
 
 const Variant: React.FC<VariantProps> = ({
@@ -24,12 +25,16 @@ const Variant: React.FC<VariantProps> = ({
     answer,
     photo,
     selectedOption,
-    index
+    index,
+    typeOftest
 }) => {
     const practice = useSelector((state: RootState) => state.practice.correct);
 
     
     const icon = useMemo(() => {
+        if(typeOftest === "MockTest" ){
+            return correct 
+        }
         if (selectedOption === index) {
             return correct ? <OkVectorSvg /> : <CrossSvg />;
         }

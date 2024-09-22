@@ -114,7 +114,7 @@ export default function FooterTest({ maxPage, currentPage, click, modal, id, fla
                     click={next}
                     name={maxPage === currentPage + 1 ? 'Results' : 'Next >'}
                     color={'#0078AB'}
-                    backgroundColor={isAnswerSelected ? 'yellow' : 'white'} 
+                    backgroundColor={isAnswerSelected ? '#FFEC4B' : 'white'} 
                     svg={false}
                     svgColor={false}
                 />

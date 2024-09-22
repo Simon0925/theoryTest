@@ -1,22 +1,28 @@
 import { useState, useEffect } from 'react';
 import styles from './TimerAssessment.module.scss';
 
-interface TimerAssessment {
+interface TimerAssessmentProps {
   pause: boolean;
+  time:(e:number) => void;
 }
 
-export default function TimerAssessment({ pause }: TimerAssessment) {
+export default function TimerAssessment({ pause,time }: TimerAssessmentProps) {
   const [timeLeft, setTimeLeft] = useState(57 * 60);
 
-  useEffect(() => {
-    if (!pause && timeLeft > 0) {
-      const intervalId = setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1);
-      }, 1000);
 
-      return () => clearInterval(intervalId); 
+  useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+
+    if (!pause && timeLeft > 0) {
+      intervalId = setInterval(() => {
+        setTimeLeft((prevTime) => Math.max(prevTime - 1, 0)); 
+      }, 1000);
     }
-  }, [pause, timeLeft]); 
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [pause]); 
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
@@ -24,11 +30,13 @@ export default function TimerAssessment({ pause }: TimerAssessment) {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
+  useEffect(() => {
+    time(timeLeft)
+  }, [timeLeft]); 
+
   return (
-    <>
-      <div className={styles.timer}>
-        {formatTime(timeLeft)}
-      </div>
-    </>
+    <div className={styles.timer}>
+      {formatTime(timeLeft)}
+    </div>
   );
 }

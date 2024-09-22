@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
 import styles from './VariantsOfAnswers.module.scss';
+import { useEffect, useMemo, useState } from 'react';
 import Variant from '../Variant/Variant';
 import { shuffleArray } from './service/shuffleArray'; 
 import { updateLocalStorage } from './service/updateLocalStorage'; 
@@ -31,6 +31,7 @@ interface VariantsOfAnswersProps {
     par: ParData[];
     click: (e: string) => void;
     currentFlag: boolean | undefined;
+    
 }
 
 export default function VariantsOfAnswers({
@@ -39,7 +40,8 @@ export default function VariantsOfAnswers({
     id,
     group,
     click,
-    currentFlag
+    currentFlag,
+    
 }: VariantsOfAnswersProps) {
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
     const [selected, setSelected] = useState<{ id: string, index: number }[]>([]);
@@ -86,13 +88,10 @@ export default function VariantsOfAnswers({
                         click={() => handleSelect(index)}
                         answer={answer.answer}
                         correct={answer.tOF}
-                        backgroundColor={
-                            selectedOption === index
-                                ? answer.tOF ? '#00B676' : '#AA3B36'
-                                : 'white'
-                        }
-                        photo={answer.photo}
-                    />
+                        backgroundColor={selectedOption === index
+                            ? answer.tOF ? '#00B676' : '#AA3B36'
+                            : 'white'}
+                        photo={answer.photo} typeOftest={''}                    />
                 ))}
             </div>
         </div>

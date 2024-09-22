@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import practiceReducer from './practice.slice'; 
+import assessmentReducer from './assessment.slice'; 
 
 const store = configureStore({
     reducer: {
-        practice: practiceReducer
+        practice: practiceReducer,
+        assessment: assessmentReducer,
     },
 });
 

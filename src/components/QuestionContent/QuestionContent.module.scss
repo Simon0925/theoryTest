@@ -1,0 +1,29 @@
+.question-wrap{
+    background-color: #FFFFFF;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    .marker{
+        top: 30px;
+        left: 7px;
+        padding: 3rem 0.45rem;
+        background-color: #F9921A;
+        position: absolute;
+        transform: rotate(45deg);
+        
+        display: block;
+    }
+    .inactive-marker{
+        display: none;
+    }
+    .question{
+        color: #0078AB;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .img{
+        max-width: 350px;
+        max-height: 350px;
+    }
+}
