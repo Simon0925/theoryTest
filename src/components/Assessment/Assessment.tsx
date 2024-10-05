@@ -6,12 +6,13 @@ import service from "../../service/service";
 import idUser from "../../config/idUser";
 import Spinner from '../../UI/Spinner/Spinner';
 import HeaderForTest from '../HeaderForTest/HeaderForTest';
-import QuestionContent from '../QuestionContent/QuestionContent';
-import VariantsOfAnswersTestV from '../VariantsOfAnswersTestV/VariantsOfAnswersTestV';
+import QuestionContent from '../QuestionComponent/QuestionContent'
+import VariantsOfAnswers from '../VariantsOfAnswers/VariantsOfAnswers';
 import { useNavigate } from 'react-router-dom';
+import ReviewModal from '../ReviewModal/ReviewModal';
 
 interface AssessmentProps {
-    onClose: () => void; 
+    onClose: (e:boolean) => void; 
 }
 
 interface ParData {
@@ -33,7 +34,7 @@ interface Question {
 export default function Assessment({ onClose }: AssessmentProps) {
     const navigate = useNavigate(); 
     const localS = localStorage.getItem('result')
-
+    
     const [questions, setQuestions] = useState<Question[]>([]);
     const [current, setCurrent] = useState(0);
     const [exit, setExit] = useState(false);
@@ -42,10 +43,35 @@ export default function Assessment({ onClose }: AssessmentProps) {
     const [currentId, setCurrentId] = useState(''); 
     const [loading, setLoading] = useState(true);
     const [pause, setPause] = useState(false);
+    const [answeredQuestions, setAnsweredQuestions] = useState<Question[]>([]);
+    
+    const [reviewUnanswered,setReviewUnanswered] = useState(false)
+
+    const [unanswered, setUnanswered] = useState(50)
+
+    const [reviewModal, setReviewModal] = useState(false)
 
     const [time,setTime] = useState<number | undefined>();
 
     const [timesUp, setTimesUp] = useState(false)
+
+    useEffect(() => {
+        if (questions.length > 0 && localS) {
+            const localStore = JSON.parse(localS);
+            const answeredQuestionIds = new Set(localStore.map((item: any) => item.id)); 
+            const answeredQuestionsCount = questions.filter(q => answeredQuestionIds.has(q._id));
+            setAnsweredQuestions(answeredQuestionsCount)
+            setUnanswered(questions.length - answeredQuestionsCount.length); 
+        }
+    }, [questions, localS]);
+
+    useEffect(()=>{
+        if(reviewUnanswered ){
+            console.log("reviewUnanswered:",answeredQuestions)
+            setReviewModal(false)
+            setReviewUnanswered(false)
+        }
+    },[reviewUnanswered])
 
     useEffect(() => {
         if (time !== undefined && time <= 0) {
@@ -74,9 +100,6 @@ export default function Assessment({ onClose }: AssessmentProps) {
     }, []);
 
    
-    useEffect(() => {
-        console.log("currentId:",currentId)
-    }, [currentId]);
     useEffect(() => {
         if (localS) {
             let data = JSON.parse(localS); 
@@ -108,7 +131,7 @@ export default function Assessment({ onClose }: AssessmentProps) {
     };
 
     const handleExit = () => {
-        setExit(!exit);
+        onClose(!exit);
     };
 
  
@@ -121,21 +144,14 @@ export default function Assessment({ onClose }: AssessmentProps) {
     return (
         <div className={styles.wrap}>
             <div>
-
-           
             <HeaderForTest
-                exitLabel="Exit"
-                exitColor="white"
-                exitBackgroundColor="#A73530"
-                onExitClick={handleExit}
-                questionCount={questions.length}
-                currentQuestion={current}
-                reviewLabel="Review"
-                reviewColor="white"
-                reviewBackgroundColor="#00B06F"
-                reviewLink="/results"
-            />
-
+                    mockTest={true}
+                    onExitClick={handleExit}
+                    questionCount={questions.length}
+                    currentQuestion={current}
+                    finish="Review"
+                    reviewClick={setReviewModal}
+             />
             {pause ? (
                 <div className={styles.pausedMessage}>Test paused</div>
             ) : (
@@ -160,7 +176,7 @@ export default function Assessment({ onClose }: AssessmentProps) {
             {!pause && (
                 <div className={styles.container}>
                     {!loading && currentQuestions && currentQuestions._id && (
-                        <VariantsOfAnswersTestV
+                        <VariantsOfAnswers
                         currentFlag={markers}
                         click={setCurrentId}
                         par={currentQuestions.par}
@@ -188,16 +204,7 @@ export default function Assessment({ onClose }: AssessmentProps) {
                 onFlagChange={handleFlagUpdate}  
             />
             </div>
-            {exit && (
-                <Modal 
-                    close={onClose} 
-                    text={""} 
-                    title="Are you sure you want to exit from the test?" 
-                    cancelClick={() => setExit(!exit)} 
-                    cancel={true} 
-                    blueBtnText={'Exit test'} 
-                />
-            )}
+            
             {timesUp && (
                 <Modal 
                     close={goToResults} 
@@ -212,6 +219,15 @@ export default function Assessment({ onClose }: AssessmentProps) {
                     blueBtnText={'Results'} 
                 />
             )}
+           {reviewModal && (
+                 <ReviewModal 
+                    reviewUnanswered={setReviewUnanswered}
+                    cancelClick={(e) => setReviewModal(e)} 
+                    questionsUnanswered={unanswered} 
+                    questionsFlagged={0}           
+                />
+            )}
+            
         </div>
     );
 }

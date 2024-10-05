@@ -1,12 +1,12 @@
-import ButtonTest from '../../UI/ButtonTest/ButtonTest';
-import styles from './TestPage.module.scss';
-import VariantsOfAnswers from '../../components/VariantsOfAnswers/VariantsOfAnswers';
-import FooterTest from '../../components/FooterTest/FooterTest';
+import styles from './PracticeTest.module.scss';
+import FooterTest from '../FooterTest/FooterTest';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import Modal from '../../components/Modal/Modal';
+import Modal from '../Modal/Modal';
+import VariantsOfAnswers from '../VariantsOfAnswers/VariantsOfAnswers';
+import QuestionContent from '../QuestionComponent/QuestionContent';
+import HeaderForTest from '../HeaderForTest/HeaderForTest';
 
 interface ParData {
   answer: string;
@@ -24,10 +24,13 @@ interface Question {
   explanation: string;
 }
 
+interface PracticeTestProps {
+  closeTest:(e:boolean)=>void
+}
 
-export default function TestPage() {
+export default function PracticeTest({closeTest}:PracticeTestProps) {
+
   const question = useSelector((state: RootState) => state.practice.currentQuestions);
-
   const [questions, setQuestions] = useState<Question[]>([]);
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState(false);
@@ -35,6 +38,13 @@ export default function TestPage() {
   const [currentId, setCurrentId] = useState(''); 
   const [currentQuestions, setCurrentQuestions] = useState<Question | undefined>(undefined);
   const [markers, setMarkers] = useState(false);
+
+  const [exit, setExit] = useState(false);
+
+  useEffect(()=>{
+    closeTest(!exit)
+  },[exit])
+  
 
   useEffect(() => {
     const updatedQuestions = question.map((q: any) => ({
@@ -63,46 +73,43 @@ export default function TestPage() {
     }
   }, [currentQuestions]);
 
+
+
   return (
     <>
       <div className={styles['wrap']}>
         <div>
-          <div className={styles['title']}>
-            <ButtonTest name={'Exit'} color={'white'} backgroundColor={'#A73530'} svg={false} click={null} svgColor={false} />
-            <div className={styles['count-questions']}>
-              <span>Question</span>
-              <span>{current + 1}</span>
-              <span>of</span>
-              <span>{questions.length}</span>
-            </div>
-            <NavLink className={styles['nav']} to="/results">
-              <ButtonTest name={'Results'} color={'white'} backgroundColor={'#00B06F'} svg={false} click={null} svgColor={false} />
-            </NavLink>
-          </div>
+        <HeaderForTest
+          onExitClick={setExit}
+          questionCount={questions.length}
+          currentQuestion={current}
+          finish="Results" 
+        />
           <div className={styles['question-wrap']}>
-            <span className={styles['question']}>
-              <div className={markers ? styles['marker'] : styles['inactive-marker']}></div>
-              {questions.length > 0 && <div>{questions[current].question}</div>}
-            </span>
-            {currentQuestions && currentQuestions.photo && (
-              <img
-                className={styles['img']}
-                src={`http://localhost:8080${currentQuestions.photo}`}
-                alt="Question Image"
+            {
+            currentQuestions && currentQuestions._id && (
+              <QuestionContent
+                question={currentQuestions.question}
+                photo={typeof currentQuestions.photo === 'string' ? currentQuestions.photo : undefined}
+                markers={currentQuestions.flag ?? false}  
               />
-            )}
+            )
+          }
           </div>
         </div>
         <div className={styles['container']}>
           {currentQuestions && (
             <VariantsOfAnswers
-              currentFlag={markers}
-              click={setCurrentId}
-              par={currentQuestions.par}
-              question={currentQuestions.question}
-              id={currentQuestions._id}
-              group={currentQuestions.group}
-            />
+            currentFlag={markers}
+            click={setCurrentId}
+            par={currentQuestions.par}
+            question={currentQuestions.question}
+            id={currentQuestions._id}
+            group={currentQuestions.group}
+            typeOftest={''}
+            nextPage={null}  
+            currentPage={null}
+        />
           )}
          {explanation === true && (
               <Modal 

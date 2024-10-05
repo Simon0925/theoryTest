@@ -1,63 +1,108 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
 import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import styles from './HeaderForTest.module.scss';
+import Modal from '../Modal/Modal';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderForTestProps {
-    exitLabel: string;
-    exitColor: string;
-    exitBackgroundColor: string;
-    onExitClick: () => void;
-    questionCount: number;
-    currentQuestion: number;
-    reviewLabel: string;
-    reviewColor: string;
-    reviewBackgroundColor: string;
-    reviewLink: string;
-    children?: React.ReactNode; 
+  onExitClick: (e: boolean) => void;
+  questionCount: number;
+  currentQuestion: number;
+  children?: React.ReactNode;
+  finish: string;
+  mockTest?: boolean;
+  reviewClick?:(e:boolean) => void 
 }
 
 export default function HeaderForTest({
-    exitLabel = "Exit",
-    exitColor = "white",
-    exitBackgroundColor = "#A73530",
-    onExitClick,
-    questionCount,
-    currentQuestion,
-    reviewLabel = "Review",
-    reviewColor = "white",
-    reviewBackgroundColor = "#00B06F",
-    reviewLink = "/results",
-    children
+  questionCount,
+  currentQuestion,
+  finish,
+  children,
+  onExitClick,
+  mockTest,
+  reviewClick
 }: HeaderForTestProps) {
+  const navigate = useNavigate();
 
-    return (
-        <div className={styles.title}>
-            <ButtonTest
-                name={exitLabel}
-                color={exitColor}
-                backgroundColor={exitBackgroundColor}
-                svg={false}
-                click={onExitClick}
-                svgColor={false}
-            />
-            <div className={styles['count-questions']}>
-                <span>Question</span>
-                <span>{currentQuestion + 1}</span>
-                <span>of</span>
-                <span>{questionCount}</span>
-            </div>
-            <NavLink className={styles.nav} to={reviewLink}>
-                <ButtonTest
-                    name={reviewLabel}
-                    color={reviewColor}
-                    backgroundColor={reviewBackgroundColor}
-                    svg={false}
-                    click={null}
-                    svgColor={false}
-                />
-            </NavLink>
-            {children && <div className={styles.extraContent}>{children}</div>}
-        </div>
-    );
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  const [showResultsModal, setShowResultsModal] = useState(false);
+
+
+  const handleExit = () => {
+    setShowExitModal(true);
+  };
+
+  const handleResults = () => {
+         if (mockTest && reviewClick) {
+            reviewClick(true)
+        }else{
+            setShowResultsModal(!showResultsModal);
+        }
+  };
+
+  const handleModalClose = () => {
+    onExitClick(true);  
+  };
+
+  const handleModalCancel = () => {
+    setShowExitModal(false);
+  };
+
+  const handleResultsModalCancel =  () => {
+    setShowResultsModal(!showResultsModal);
+  };
+  const handleResultsModalClose =  () => {
+    navigate('/results');
+  };
+
+  return (
+    <div className={styles.title}>
+      <ButtonTest
+        name={"Exit"}
+        color={"white"}
+        backgroundColor={"#A73530"}
+        svg={false}
+        click={handleExit}
+        svgColor={false}
+      />
+      <div className={styles['count-questions']}>
+        <span>Question</span>
+        <span>{currentQuestion + 1}</span>
+        <span>of</span>
+        <span>{questionCount}</span>
+      </div>
+      <ButtonTest
+        name={finish}
+        color={"white"}
+        backgroundColor={"#00B06F"}
+        svg={false}
+        click={handleResults} 
+        svgColor={false}
+      />
+      {children && <div className={styles.extraContent}>{children}</div>}
+      {showExitModal && (
+        <Modal 
+          close={handleModalClose} 
+          text={""} 
+          title="Are you sure you want to exit from the test?" 
+          cancelClick={handleModalCancel}
+          cancel={true} 
+          blueBtnText={'Exit test'} 
+        />
+      )}
+      {showResultsModal && mockTest != true && (
+        <Modal 
+          close={handleResultsModalClose} 
+          text={"Are you sure you want to finish current test and see the test results?"} 
+          title="End of test" 
+          cancelClick={handleResultsModalCancel}
+          cancel={true} 
+          blueBtnText={'Show results'} 
+        />
+      )}
+      
+    </div>
+  );
 }

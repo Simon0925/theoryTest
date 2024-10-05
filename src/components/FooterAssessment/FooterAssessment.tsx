@@ -2,6 +2,11 @@ import ButtonTest from "../../UI/ButtonTest/ButtonTest";
 import styles from "./FooterAssessment.module.scss";
 import TimerAssessment from "../TimerAssessment/TimerAssessment";
 import { useEffect, useState } from "react";
+import {
+  toggleFlag,
+  handlePageNavigation,
+  isCurrentQuestionAnswered
+} from "./service/FooterAssessmentService";
 
 interface FooterAssessmentProps {
   currentPage: number;
@@ -14,62 +19,49 @@ interface FooterAssessmentProps {
   onFlagChange: (id: string, newFlag: boolean) => void;
   getTime: (e: number | undefined) => void; 
 }
-
 export default function FooterAssessment({
   currentPage,
   click,
   maxPage,
-  setSelectedAnswer,
+  setSelectedAnswer, // This is a string (selected answer ID)
   id,
   statusPause,
   flag,
   onFlagChange,
-  getTime, 
+  getTime,
 }: FooterAssessmentProps) {
-  const [answered, setAnswered] = useState<string[]>([]);
   const [flagged, setFlagged] = useState(flag);
   const [pause, setPause] = useState(false);
-
   const [time, setTime] = useState<number | undefined>();
+  const [isQuestionAnswered,setisQuestionAnswered] = useState(false)
 
   useEffect(() => {
     setFlagged(flag);
     statusPause(pause);
-  }, [flag, , id, answered, pause, statusPause]);
-
-  useEffect(()=>{
-    if (setSelectedAnswer !== "" && !answered.includes(id)) {
-      setAnswered((prev) => [...prev, id]);
-    }
-  },[setSelectedAnswer])
-
-  const toggleFlag = () => {
-    const localS = localStorage.getItem("result");
-    if (localS) {
-      const data = JSON.parse(localS);
-      const updatedData = data.map((e: any) =>
-        e.id === id ? { ...e, flag: !flagged } : e
-      );
-      localStorage.setItem("result", JSON.stringify(updatedData));
-      setFlagged(!flagged);
-      onFlagChange(id, !flagged);
-    }
-  };
-
-  const previous = () => currentPage > 0 && click(currentPage - 1);
-  const next = () => currentPage < maxPage - 1 && click(currentPage + 1);
-
-  const isQuestionAnswered = answered.includes(id);
+  }, [flag, id, pause, statusPause]);
 
   useEffect(() => {
     getTime(time);
-  }, [time, getTime]); 
+  }, [time, getTime]);
 
+
+  useEffect(() => {
+    let test = isCurrentQuestionAnswered(id, setSelectedAnswer)
+    if(test && setSelectedAnswer ){
+      setisQuestionAnswered(test)
+    }else if(setSelectedAnswer === ""){
+      setisQuestionAnswered(false)
+    }
+  }, [setSelectedAnswer]);
+
+
+
+  
   return (
     <div className={styles.wrap}>
       <div className={styles.container}>
         <ButtonTest
-          click={previous}
+          click={() => handlePageNavigation(currentPage, click, maxPage, "previous")}
           name="< Previous"
           color="#0078AB"
           backgroundColor={currentPage > 0 ? "white" : "#91BCD6"}
@@ -77,7 +69,7 @@ export default function FooterAssessment({
           svgColor={false}
         />
         <ButtonTest
-          click={toggleFlag}
+          click={() => toggleFlag(id, flagged, setFlagged, onFlagChange)}
           name=""
           color="#0078AB"
           backgroundColor="white"
@@ -94,7 +86,7 @@ export default function FooterAssessment({
           svgColor={false}
         />
         <ButtonTest
-          click={next}
+          click={() => handlePageNavigation(currentPage, click, maxPage, "next")}
           name="Next >"
           color="#0078AB"
           backgroundColor={isQuestionAnswered ? "#FFEC4B" : "white"}

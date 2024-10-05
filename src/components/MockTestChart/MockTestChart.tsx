@@ -101,7 +101,7 @@ const MockTestChart = ({ data }: { data: ChartData[] | null }) => {
       const interpolatedX = currentPoint.x + (nextPoint.x - currentPoint.x) * segmentProgress;
       const interpolatedY = currentPoint.y + (nextPoint.y - currentPoint.y) * segmentProgress;
 
-      let path = `M${points[0].x},${points[0].y}`;  // Старт с первой точки
+      let path = `M${points[0].x},${points[0].y}`; 
       for (let i = 1; i <= currentIndex; i++) {
         path += ` L${points[i].x},${points[i].y}`;
       }

@@ -12,7 +12,7 @@
 
 
 .content {
-    width: 250px;
+    width: 230px;
     background-color: #2b3239;
     border-radius: 0.625rem;
     border: 1px solid #555b62;
@@ -23,21 +23,27 @@
     text-align: center; 
     gap: 1rem;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    .title {
-        color: white;
-        font-weight: 900;
-    }
 
-    .text {
-        color: white;
-        text-align: center; 
-        font-size: 12px;
-    }
-
+   .textBlock{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        .text {
+            color: white;
+            text-align: center; 
+            font-size: 12px;
+        }
+   }
     .btn{
         display: flex;
+        flex-direction: column;
         width: 100%;
         gap: 1rem;
+        .btnBlock{
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
         .btn1{
             padding: 0.4rem;
             width: 100%;
@@ -46,6 +52,7 @@
             cursor: pointer;
             background-color: #1470D2;
             color: white;
+
         }
         .btn2{
             padding: 0.4rem;

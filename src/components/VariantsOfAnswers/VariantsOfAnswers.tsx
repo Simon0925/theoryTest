@@ -1,8 +1,9 @@
-import styles from './VariantsOfAnswers.module.scss';
+import styles from "./VariantsOfAnswers.module.scss";
 import { useEffect, useMemo, useState } from 'react';
 import Variant from '../Variant/Variant';
 import { shuffleArray } from './service/shuffleArray'; 
-import { updateLocalStorage } from './service/updateLocalStorage'; 
+import {  handleSelect } from './service/handleSelect'; 
+import {updateLocalStorage} from './service/updateLocalStorage'
 
 export interface Answer {
     answer: string;
@@ -10,7 +11,7 @@ export interface Answer {
     photo: boolean | string;
 }
 
-interface Result {
+export interface Result {
     id: string;
     question: string;
     status: boolean | string;
@@ -24,14 +25,16 @@ interface ParData {
     photo: string | boolean;
 }
 
-interface VariantsOfAnswersProps {
+interface VariantsOfAnswersrops {
     id: string;
     question: string;
     group: string;
     par: ParData[];
     click: (e: string) => void;
     currentFlag: boolean | undefined;
-    
+    typeOftest: string; 
+    nextPage: ((e: number) => void) | null;
+    currentPage: number | null;
 }
 
 export default function VariantsOfAnswers({
@@ -41,8 +44,11 @@ export default function VariantsOfAnswers({
     group,
     click,
     currentFlag,
-    
-}: VariantsOfAnswersProps) {
+    typeOftest,
+    nextPage,
+    currentPage
+}: VariantsOfAnswersrops) {
+
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
     const [selected, setSelected] = useState<{ id: string, index: number }[]>([]);
 
@@ -54,25 +60,14 @@ export default function VariantsOfAnswers({
         updateLocalStorage(id, question, group, currentFlag); 
     }, [id, selected, question, group, currentFlag]);
 
-    const handleSelect = (index: number) => {
-        if (selectedOption !== null) return;
-
-        setSelected(prev => [...prev, { index, id }]);
-        setSelectedOption(index);
-        click(id);
-
-        const localS = localStorage.getItem('result');
-        if (localS) {
-            try {
-                const resultData = JSON.parse(localS) as Result[];
-                const updatedResults = resultData.map(elem =>
-                    elem.id === id ? { ...elem, status: shuffledAnswers[index].tOF } : elem
-                );
-                localStorage.setItem('result', JSON.stringify(updatedResults));
-            } catch (error) {
-                console.error('Failed to parse local storage data:', error);
+    const getBackgroundColor = (index: number, correct: boolean) => {
+        if (selectedOption === index) {
+            if (typeOftest === "MockTest") {
+                return "#FEEC49"; 
             }
+            return correct ? '#00B676' : '#AA3B36'; 
         }
+        return 'white'; 
     };
 
     return (
@@ -84,14 +79,25 @@ export default function VariantsOfAnswers({
                         key={index}
                         index={index}
                         selectedOption={selectedOption}
-                        color={selectedOption === index ? 'white' : '#0078AB'}
-                        click={() => handleSelect(index)}
+                        color={'#0078AB'}
+                        click={() => handleSelect(
+                            index,
+                            id,
+                            setSelectedOption,
+                            setSelected,
+                            selectedOption,
+                            typeOftest,
+                            currentPage,
+                            nextPage,
+                            click,
+                            shuffledAnswers
+                        )} 
                         answer={answer.answer}
                         correct={answer.tOF}
-                        backgroundColor={selectedOption === index
-                            ? answer.tOF ? '#00B676' : '#AA3B36'
-                            : 'white'}
-                        photo={answer.photo} typeOftest={''}                    />
+                        backgroundColor={getBackgroundColor(index, answer.tOF)}
+                        photo={answer.photo}
+                        typeOftest={typeOftest}
+                    />
                 ))}
             </div>
         </div>

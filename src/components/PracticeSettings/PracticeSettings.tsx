@@ -3,7 +3,6 @@ import Toggle from '../../UI/Toggle/Toggle';
 import NumberOfQuestions from '../NumberOfQuestions/NumberOfQuestions';
 import PracticeTools from '../PracticeTools/PracticeTools';
 import styles from './PracticeSettings.module.scss';
-import { NavLink } from 'react-router-dom';
 import service from '../../service/service';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
@@ -11,17 +10,27 @@ import { updatecurrentQuestions,updateAllDataLength } from '../../store/practice
 
 import idUser from "../../config/idUser"
 
-export default function PracticeSettings() {
+interface PracticeSettingsProps {
+    practiceTest:(e:boolean)=>void
+}
+
+export default function PracticeSettings({practiceTest}:PracticeSettingsProps) {
 
     const dispatch = useDispatch();
 
     const storeQuestion = useSelector((state: RootState) => state.practice.question);
+
+    const testQuestion = useSelector((state: RootState) => state.practice.currentQuestions);
 
     const flagged = useSelector((state: RootState) => state.practice.flagged);
 
     const [quantityOfQuestions,setQuantityOfQuestions] = useState("all")
 
     const [QuestionType,setQuestionType] = useState('all')
+
+    const start = () =>{
+        if(testQuestion.length > 0)practiceTest(true)
+    }
 
   
     useEffect(()=>{
@@ -51,10 +60,8 @@ export default function PracticeSettings() {
             </div>
             <PracticeTools change={setQuestionType} />
             <NumberOfQuestions change={setQuantityOfQuestions}  />
-            <div className={styles['btn']}>
-            <NavLink  to='/test' >
-                    <button>Start</button> 
-            </NavLink>
+            <div className={styles['btn']}>      
+                    <button onClick={start}>Start</button> 
             </div>
         </div>
     );

@@ -18,9 +18,10 @@ import DocumentsSvg from "../../SVG/DocumentsSvg/DocumentsSvg";
 import AccidentSvg from "../../SVG/AccidentSvg/AccidentSvg";
 import CarSvg from "../../SVG/CarSvg/CarSvg";
 import Flag from "../../components/Flag/Flag";
-import Spinner from "../../UI/Spinner/Spinner"; // Make sure Spinner is imported
+import Spinner from "../../UI/Spinner/Spinner"; 
 
 import idUser from "../../config/idUser";
+import PracticeTest from "../../components/PracticeTest/PracticeTest";
 
 interface QuestionGroup {
   name: string;
@@ -38,7 +39,9 @@ export default function Practice() {
   localStorage.setItem("result", JSON.stringify([]));
 
   const [questionsGroup, setQuestionsGroup] = useState<QuestionGroup[]>([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true); 
+
+  const [test, setTest] = useState(false)
 
   const pars: ParsItem[] = [
     {
@@ -112,6 +115,9 @@ export default function Practice() {
     fetchData();
   }, []);
 
+
+
+
   return (
     <div className={styles.wrap}>
       <div className={styles.qwestions}>
@@ -139,8 +145,11 @@ export default function Practice() {
         )}
       </div>
       <div className={styles.settings}>
-        <PracticeSettings />
+        <PracticeSettings practiceTest={setTest} />
       </div>
+      {test && (
+        <PracticeTest closeTest={setTest} />
+      )}
     </div>
   );
 }
