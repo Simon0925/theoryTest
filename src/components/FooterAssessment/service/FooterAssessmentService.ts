@@ -4,6 +4,7 @@ export const toggleFlag = (
   setFlagged: (flagged: boolean) => void,
   onFlagChange: (id: string, newFlag: boolean) => void
 ) => {
+  
   const localS = localStorage.getItem("result");
   if (localS) {
     const data = JSON.parse(localS);
@@ -12,9 +13,10 @@ export const toggleFlag = (
     );
     localStorage.setItem("result", JSON.stringify(updatedData));
     setFlagged(!flagged);
-    onFlagChange(id, !flagged);
+    onFlagChange(id, !flagged); 
   }
 };
+
 
 export const handlePageNavigation = (
   currentPage: number,

@@ -2,6 +2,7 @@ import ButtonTest from "../../UI/ButtonTest/ButtonTest";
 import styles from "./FooterAssessment.module.scss";
 import TimerAssessment from "../TimerAssessment/TimerAssessment";
 import { useEffect, useState } from "react";
+
 import {
   toggleFlag,
   handlePageNavigation,
@@ -23,7 +24,7 @@ export default function FooterAssessment({
   currentPage,
   click,
   maxPage,
-  setSelectedAnswer, // This is a string (selected answer ID)
+  setSelectedAnswer, 
   id,
   statusPause,
   flag,
@@ -55,8 +56,6 @@ export default function FooterAssessment({
   }, [setSelectedAnswer]);
 
 
-
-  
   return (
     <div className={styles.wrap}>
       <div className={styles.container}>

@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Assessment.module.scss';
-import service from "../../service/service";
-import idUser from "../../config/idUser";
 import Spinner from '../../UI/Spinner/Spinner';
 import HeaderForTest from '../HeaderForTest/HeaderForTest';
 import QuestionContent from '../QuestionComponent/QuestionContent';
@@ -10,6 +8,10 @@ import VariantsOfAnswers from '../VariantsOfAnswers/VariantsOfAnswers';
 import FooterAssessment from '../FooterAssessment/FooterAssessment';
 import Modal from '../Modal/Modal';
 import ReviewModal from '../ReviewModal/ReviewModal';
+import { getUnansweredQuestions } from './service/getUnansweredQuestions';
+import { fetchQuestions } from './service/fetchQuestions';
+import {changeFlag} from './service/changeFlag'
+
 
 interface AssessmentProps {
   onClose: (e: boolean) => void;
@@ -21,7 +23,7 @@ interface ParData {
   photo: string | boolean  ;
 }
 
-interface Question {
+export interface Question {
   _id: string;
   question: string;
   photo?: string ;
@@ -31,10 +33,10 @@ interface Question {
   explanation: string;
 }
 
-interface AnsweredQuestion {
-    id: string;
-    answer: boolean;
-  }
+export interface FlagChange {
+    id:string;
+    newFlag:boolean
+}
 
 export default function Assessment({ onClose }: AssessmentProps) {
   const navigate = useNavigate();
@@ -51,9 +53,15 @@ export default function Assessment({ onClose }: AssessmentProps) {
   const [timesUp, setTimesUp] = useState(false);
   const [pause, setPause] = useState(false); 
   const [currentAll,setCurrentAll] = useState(0)
+  const [onFlagChange, setOnFlagChange] = useState<FlagChange>({ id: '', newFlag: false });
 
+  useEffect(() => {
+    if (onFlagChange.id) {
+     let updateVisibleQuestions = changeFlag(onFlagChange, visibleQuestions);
+     setVisibleQuestions(updateVisibleQuestions);
+    }
+  }, [onFlagChange]);
  
-
   useEffect(()=>{
         if(reviewMode === "all"){
              setCurrentAll(current)
@@ -61,44 +69,17 @@ export default function Assessment({ onClose }: AssessmentProps) {
   },[current])
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await service.assessmentData(idUser);
-        setQuestions(data);
-      } catch (error) {
-        console.error("Error fetching questions:", error);
-      } finally {
-        setLoading(false);
-      }
+    const loadQuestions = async () => {
+      const data = await fetchQuestions();
+      setQuestions(data);
+      setLoading(false);
     };
-    fetchData();
+    loadQuestions();
   }, []);
 
   useEffect(()=>{
-    const localStore: AnsweredQuestion[] = localS ? JSON.parse(localS) : [];
-    
-    const answeredQuestion = localStore.filter((q) => q.answer === true);
-
-    if (answeredQuestion.length > 0) {
-        const unanswered: Question[] = [];
-
-        questions.forEach((q) => {
-          let isAnswered = false;
-
-          answeredQuestion.forEach((element) => {
-            if (q._id === element.id) {
-              isAnswered = true;
-            }
-          });
-
-          if (!isAnswered) {
-            unanswered.push(q);
-          }
-        });
-        setUnansweredQuestions(unanswered)
-        console.log("unanswered:",unanswered.length)
-    }
-},[localS])
+    setUnansweredQuestions(getUnansweredQuestions(questions));
+  },[localS])
 
 
   useEffect(() => {
@@ -183,15 +164,15 @@ export default function Assessment({ onClose }: AssessmentProps) {
             )}
 
             <FooterAssessment
-            getTime={setTime}
-            statusPause={setPause}
-            currentPage={current}
-            click={setCurrent}
-            maxPage={visibleQuestions.length}
-            id={visibleQuestions[current]?._id || ""}
-            flag={visibleQuestions[current]?.flag || false}
-            onFlagChange={() => {}}
-            setSelectedAnswer={''}
+                getTime={setTime}
+                statusPause={setPause}
+                currentPage={current}
+                click={setCurrent}
+                maxPage={visibleQuestions.length}
+                id={visibleQuestions[current]?._id || ""}
+                flag={visibleQuestions[current]?.flag || false}
+                onFlagChange={(id: string, newFlag: boolean) => setOnFlagChange({ id, newFlag })}
+                setSelectedAnswer={''}
             />
     </div>
       {timesUp && (
@@ -213,7 +194,7 @@ export default function Assessment({ onClose }: AssessmentProps) {
         <ReviewModal
           setShowFlagged={() => handleReviewModeChange('flagged')}
           cancelClick={setReviewModal}
-          questionsUnanswered={unansweredQuestions.length}
+          questionsUnanswered={unansweredQuestions.length <= 0 ?questions.length : unansweredQuestions.length}
           questionsFlagged={questions.filter(q => q.flag).length}
           setShowUnansweredOnly={() => handleReviewModeChange('unanswered')}
           setShowAllOnly={() => handleReviewModeChange('all')}
