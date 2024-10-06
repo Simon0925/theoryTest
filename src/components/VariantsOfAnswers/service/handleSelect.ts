@@ -14,7 +14,6 @@ export const handleSelect = (
     if (selectedOption !== null && typeOftest !== "MockTest") return;
 
     if (typeOftest === "MockTest" && selectedOption !== null) {
-        console.log("working");
         setSelected(prev =>
             prev.map(item => (item.id === id ? { ...item, index } : item))
         );

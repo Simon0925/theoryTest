@@ -8,7 +8,7 @@ export const updateLocalStorageWithAnswer = (index: number, id: string, shuffled
     try {
         const resultData = JSON.parse(localS) as Result[];
         const updatedResults = resultData.map(elem =>
-            elem.id === id ? { ...elem, status: shuffledAnswers[index].tOF } : elem
+            elem.id === id ? { ...elem, status: shuffledAnswers[index].tOF,answer:true } : elem
         );
         localStorage.setItem('result', JSON.stringify(updatedResults));
     } catch (error) {

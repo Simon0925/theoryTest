@@ -5,6 +5,7 @@ import styles from './MockTest.module.scss';
 import Assessment from '../../components/Assessment/Assessment';
 
 export default function MockTest() {
+    localStorage.setItem("result", JSON.stringify([]));
     const [isTestStarted, setIsTestStarted] = useState(false);
    
 
