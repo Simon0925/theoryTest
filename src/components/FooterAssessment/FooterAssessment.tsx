@@ -13,7 +13,7 @@ interface FooterAssessmentProps {
   currentPage: number;
   click: (e: number) => void;
   maxPage: number;
-  setSelectedAnswer: string;
+  setSelectedAnswers: { id: string, index: number }[];
   id: string;
   statusPause: (e: boolean) => void;
   flag: boolean;
@@ -24,7 +24,7 @@ export default function FooterAssessment({
   currentPage,
   click,
   maxPage,
-  setSelectedAnswer, 
+  setSelectedAnswers, 
   id,
   statusPause,
   flag,
@@ -47,13 +47,11 @@ export default function FooterAssessment({
 
 
   useEffect(() => {
-    let test = isCurrentQuestionAnswered(id, setSelectedAnswer)
-    if(test && setSelectedAnswer ){
-      setisQuestionAnswered(test)
-    }else if(setSelectedAnswer === ""){
-      setisQuestionAnswered(false)
-    }
-  }, [setSelectedAnswer]);
+    setSelectedAnswers.forEach(() =>{
+      const questionAnswered = setSelectedAnswers.some(q => q.id === id);
+      setisQuestionAnswered(questionAnswered)
+    })
+  }, [setSelectedAnswers,currentPage]);
 
 
   return (

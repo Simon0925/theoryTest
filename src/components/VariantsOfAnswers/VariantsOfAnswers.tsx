@@ -35,6 +35,7 @@ interface VariantsOfAnswersrops {
     typeOftest: string; 
     nextPage: ((e: number) => void) | null;
     currentPage: number | null;
+    setQuestionsSelected?: (selected: { id: string, index: number }[]) => void; 
 }
 
 export default function VariantsOfAnswers({
@@ -46,7 +47,8 @@ export default function VariantsOfAnswers({
     currentFlag,
     typeOftest,
     nextPage,
-    currentPage
+    currentPage,
+    setQuestionsSelected
 }: VariantsOfAnswersrops) {
 
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -57,7 +59,10 @@ export default function VariantsOfAnswers({
     useEffect(() => {
         const found = selected.find(e => e.id === id);
         setSelectedOption(found ? found.index : null);
-        updateLocalStorage(id, question, group, currentFlag); 
+        updateLocalStorage(id, question, group, currentFlag);
+        if (setQuestionsSelected) {
+            setQuestionsSelected(selected);
+        }
     }, [id, selected, question, group, currentFlag]);
 
     const getBackgroundColor = (index: number, correct: boolean) => {

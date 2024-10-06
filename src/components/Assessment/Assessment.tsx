@@ -54,6 +54,8 @@ export default function Assessment({ onClose }: AssessmentProps) {
   const [pause, setPause] = useState(false); 
   const [currentAll,setCurrentAll] = useState(0)
   const [onFlagChange, setOnFlagChange] = useState<FlagChange>({ id: '', newFlag: false });
+  const [questionsSelected, setQuestionsSelected] = useState<{ id: string, index: number }[]>([]);
+
 
   useEffect(() => {
     if (onFlagChange.id) {
@@ -160,20 +162,25 @@ export default function Assessment({ onClose }: AssessmentProps) {
                 typeOftest={'MockTest'}
                 nextPage={setCurrent}
                 currentPage={current}
+                setQuestionsSelected={setQuestionsSelected}
             />
             )}
-
-            <FooterAssessment
-                getTime={setTime}
-                statusPause={setPause}
-                currentPage={current}
-                click={setCurrent}
-                maxPage={visibleQuestions.length}
-                id={visibleQuestions[current]?._id || ""}
-                flag={visibleQuestions[current]?.flag || false}
-                onFlagChange={(id: string, newFlag: boolean) => setOnFlagChange({ id, newFlag })}
-                setSelectedAnswer={''}
-            />
+            {
+                visibleQuestions[current] && (
+                    <FooterAssessment
+                    getTime={setTime}
+                    statusPause={setPause}
+                    currentPage={current}
+                    click={setCurrent}
+                    maxPage={visibleQuestions.length}
+                    id={visibleQuestions[current]?._id || ""}
+                    flag={visibleQuestions[current]?.flag || false}
+                    onFlagChange={(id: string, newFlag: boolean) => setOnFlagChange({ id, newFlag })}
+                    setSelectedAnswers={questionsSelected}
+                />
+                )
+            }
+           
     </div>
       {timesUp && (
         <Modal
@@ -195,7 +202,7 @@ export default function Assessment({ onClose }: AssessmentProps) {
           setShowFlagged={() => handleReviewModeChange('flagged')}
           cancelClick={setReviewModal}
           questionsUnanswered={unansweredQuestions.length <= 0 ?questions.length : unansweredQuestions.length}
-          questionsFlagged={questions.filter(q => q.flag).length}
+          questionsFlagged={visibleQuestions.filter(q => q.flag).length}
           setShowUnansweredOnly={() => handleReviewModeChange('unanswered')}
           setShowAllOnly={() => handleReviewModeChange('all')}
         />
