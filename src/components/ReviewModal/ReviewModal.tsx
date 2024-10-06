@@ -1,6 +1,7 @@
 import styles from "./ReviewModal.module.scss";
 import Logo from "../Logo/Logo";
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
 interface ReviewModalProps {
     cancelClick: (e: boolean) => void;
     questionsUnanswered: number;
@@ -17,6 +18,9 @@ export default function ReviewModal({
     setShowAllOnly,
     setShowFlagged,
 }: ReviewModalProps) {
+
+    const [showButtons,setshowButtons] = useState(false)
+
     const navigate = useNavigate();
 
     const goToResults = () => {
@@ -37,7 +41,13 @@ export default function ReviewModal({
         setShowFlagged(true)
         cancelClick(false); 
     }
-
+    useEffect(()=>{ 
+        if(questionsUnanswered !== 50){
+            setshowButtons(true)
+        }else{
+            setshowButtons(false)
+        }
+    },[questionsUnanswered])
     return (
         <div className={styles.wrap}>
             <div className={styles.content}>
@@ -53,18 +63,25 @@ export default function ReviewModal({
                         <button  onClick={goToResults} className={styles.btn1}>
                             Show results
                         </button>
-                        <button onClick={handleReviewAll} className={styles.btn2}>
+                        
+                        <button  onClick={handleReviewAll} className={showButtons ?styles.btnHiddenLine : styles.btn2 }>
                             Review all
                         </button>
-                        <button onClick={handleReviewUnanswered} className={styles.btn2}>
+                        
+                        {showButtons ?
+                        <>
+                        <button onClick={handleReviewUnanswered} className={questionsFlagged > 0  ?styles.btnHiddenLine : styles.btnHidden }>
                             Review unanswered
                         </button>
                         {questionsFlagged > 0 ? 
-                         <button onClick={handleReviewFlagged}   className={styles.btn2}>
-                         Review flagged
-                        </button> :
-                        null
-                        }
+                            <button onClick={handleReviewFlagged}   className={styles.btnHidden}>
+                            Review flagged
+                           </button> :
+                           null
+                           }
+                        </>
+                        : null }
+                        
                     </div>
                     <button onClick={() => cancelClick(false)} className={styles.btn2}>
                         Cancel

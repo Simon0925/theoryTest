@@ -63,6 +63,67 @@
             background-color: #686F76;
             color: white;
         }
+        .btnHiddenLine {
+            position: relative; 
+            background-color: #2b3239;
+            color: #A8AEB5;
+            padding: 0.4rem;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+    
+            &::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0; 
+                height: 1px; 
+                background-color: #A8AEB5; 
+            }
+            &:hover {
+                background-color: #686F76;
+                color: white;
+    
+                &::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: 0; 
+                    height: 0px; 
+                    background-color: #A8AEB5; 
+                }
+            }
+        }
+
+       
+        .btnHidden{
+            background-color: #2b3239;
+            color: #A8AEB5;
+            padding: 0.4rem;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+        }
+        .btnHiddenLine:hover{
+            padding: 0.4rem;
+            width: 100%;
+            border-radius: 0.35rem;
+            border: none;
+            cursor: pointer;
+            background-color: #686F76;
+            color: white;
+        }
+        .btnHidden:hover{
+            padding: 0.4rem;
+            width: 100%;
+            border-radius: 0.35rem;
+            // border: none;
+            cursor: pointer;
+            background-color: #686F76;
+            color: white;
+        }
     }
 }
 }
