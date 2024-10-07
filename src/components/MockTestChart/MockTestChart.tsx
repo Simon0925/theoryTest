@@ -1,7 +1,18 @@
+import { elements } from 'chart.js';
 import { useEffect, useState } from 'react';
 
 interface ChartData {
   percentage: string;
+}
+
+interface Data {
+  date:string;
+  time:string;
+  percentage:number;
+}
+
+interface ChartDataProps {
+  data:Data[]
 }
 
 interface Point {
@@ -14,7 +25,9 @@ interface GridLine {
   label: string;
 }
 
-const MockTestChart = ({ data }: { data: ChartData[] | null }) => {
+const MockTestChart = ({ data }: { data: Data[] | null }) => {
+
+ 
   const defaultData: ChartData[] = [
     { percentage: '20%' },
     { percentage: '30%' },
@@ -33,13 +46,24 @@ const MockTestChart = ({ data }: { data: ChartData[] | null }) => {
 
   const [currentData, setCurrentData] = useState<ChartData[]>([]);
 
+  const [percentages , setPercentages] = useState<ChartData[]>([]);
+
+  useEffect(()=>{
+    if (data) {
+      let currentData = data.map(element => {
+        return {percentage:element.percentage + "%"}; 
+      });
+      setPercentages(currentData)
+    }
+  },[data])
+
   useEffect(() => {
-    if (data === null || data.length === 0) {
+    if (percentages === null || percentages.length === 0) {
       setCurrentData(defaultData);
     } else {
-      setCurrentData(data);
+      setCurrentData(percentages);
     }
-  }, [data]);
+  }, [percentages]);
 
   const [linePath, setLinePath] = useState('');
   const [progress, setProgress] = useState(0);
@@ -64,6 +88,8 @@ const MockTestChart = ({ data }: { data: ChartData[] | null }) => {
           if (index === currentData.length - 1 && parseInt(item.percentage) === 100) {
             x -= 2; 
             y += 2;
+          } else if(index === currentData.length - 1){
+            x -= 2; 
           }
 
           return { x, y };
@@ -134,6 +160,7 @@ const MockTestChart = ({ data }: { data: ChartData[] | null }) => {
             y2={line.y}
             stroke={data !== null? "white": "#7DC1E2" }
             strokeDasharray={line.label === '86%' ? 'none' : '3 3'}
+            strokeWidth="0.5"
           />
           <text
             x="1"
@@ -148,7 +175,7 @@ const MockTestChart = ({ data }: { data: ChartData[] | null }) => {
       ))}
 
 
-      <path d={linePath} stroke={data !== null? "#32EBC3": "#12B9CB" } strokeWidth="1" fill="none" />
+      <path d={linePath} stroke={data !== null? "#32EBC3": "#12B9CB" } strokeWidth="0.5" fill="none" />
 
       {points.map((point, index) => (
         index !== 0 && (  
@@ -156,7 +183,7 @@ const MockTestChart = ({ data }: { data: ChartData[] | null }) => {
             key={index}
             cx={point.x}
             cy={point.y}
-            r="1.2"
+            r="0.8"
             fill={data !== null? "white": "#7DC1E2" }
           />
         )

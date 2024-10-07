@@ -70,6 +70,8 @@ export default function Assessment({ onClose }: AssessmentProps) {
         }
   },[current])
 
+  
+
   useEffect(() => {
     const loadQuestions = async () => {
       const data = await fetchQuestions();
@@ -135,7 +137,11 @@ export default function Assessment({ onClose }: AssessmentProps) {
     {pause ? (
         <div className={styles.pausedMessage}>Test paused</div>
       ) : loading ? (
-        <div className={styles.spinner}>
+        <div style={{
+           position:"absolute",
+           top: "40%",
+           left: "50%"
+        }}>
           <Spinner color={'black'} />
         </div>
       ) : (

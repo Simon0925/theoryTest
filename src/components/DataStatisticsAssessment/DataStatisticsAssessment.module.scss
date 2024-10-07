@@ -1,0 +1,21 @@
+.wrap{
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    max-height: 360px;  
+    overflow-y: auto; 
+    .data-wrap{
+        background-color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.2rem 1rem;
+        color: #0078AB;
+        .data-statistic{
+            display: flex;
+            align-items: center;
+            gap:0.5rem;
+            
+        }
+    }
+}
