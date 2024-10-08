@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from './Assessment.module.scss';
 import Spinner from '../../UI/Spinner/Spinner';
 import HeaderForTest from '../HeaderForTest/HeaderForTest';
@@ -16,6 +15,7 @@ import {changeFlag} from './service/changeFlag'
 interface AssessmentProps {
   onClose: (e: boolean) => void;
   result:(e: boolean) => void;
+  getTime:(e : number | undefined) => void
 }
 
 interface ParData {
@@ -39,8 +39,7 @@ export interface FlagChange {
     newFlag:boolean
 }
 
-export default function Assessment({ onClose,result }: AssessmentProps) {
-  const navigate = useNavigate();
+export default function Assessment({ onClose,result,getTime }: AssessmentProps) {
   const localS = localStorage.getItem('result');
 
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -57,9 +56,6 @@ export default function Assessment({ onClose,result }: AssessmentProps) {
   const [onFlagChange, setOnFlagChange] = useState<FlagChange>({ id: '', newFlag: false });
   const [questionsSelected, setQuestionsSelected] = useState<{ id: string, index: number }[]>([]);
   
-
-
-
 
   useEffect(() => {
     if (onFlagChange.id) {
@@ -117,6 +113,7 @@ export default function Assessment({ onClose,result }: AssessmentProps) {
     if (time !== undefined && time <= 0) {
       setTimesUp(true);
     }
+    if (time !== undefined)getTime(time)
   }, [time]);
 
   const handleReviewModeChange = (mode: 'all' | 'unanswered' | 'flagged') => {
@@ -124,7 +121,7 @@ export default function Assessment({ onClose,result }: AssessmentProps) {
     setReviewModal(false);
   };
 
-  const goToResults = () => navigate('/results');
+  const goToResults = () => result(true);
 
   return (
     <div className={styles.wrap}>

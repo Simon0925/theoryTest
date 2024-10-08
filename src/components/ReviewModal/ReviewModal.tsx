@@ -1,6 +1,5 @@
 import styles from "./ReviewModal.module.scss";
 import Logo from "../Logo/Logo";
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 interface ReviewModalProps {
     cancelClick: (e: boolean) => void;
@@ -22,37 +21,8 @@ export default function ReviewModal({
 }: ReviewModalProps) {
 
     const [showButtons,setshowButtons] = useState(false)
-
-    const navigate = useNavigate();
-
-    const formatTime = (time: number) => {
-        const minutes = Math.floor(time / 60);
-        const seconds = time % 60;
-        let result = '';
-        if (minutes > 0) {
-            result += `${minutes}m`;
-        }
-        if (seconds > 0) {
-            if (result.length > 0) {
-                result += ' ';
-            }
-            result += `${seconds}s`;
-        }
-        if (result === '') {
-            result = '0s';
-        }
     
-        return result;
-    };
-
     const goToResults = () => {
-        // navigate('/results');
-        // if(typeof time === "number"){
-        //     const curentTime = (57 * 60) - time
-        //     const curentFormatTime = formatTime(curentTime)
-        //     console.log("time:",time)
-        //     console.log("curentTime:",curentFormatTime)
-        // }
         results(true)
     };
 

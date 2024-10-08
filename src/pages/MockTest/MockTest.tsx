@@ -11,7 +11,9 @@ export default function MockTest() {
     const [isTestStarted, setIsTestStarted] = useState(false);
     const [result, setResult] = useState(false); 
 
-    if(!result) localStorage.setItem("result", JSON.stringify([]));
+    const [time,setTime] = useState<number | undefined>();
+
+    if(!result && !isTestStarted)localStorage.setItem("result", JSON.stringify([]));
 
     useEffect(() => {
         if (result) {
@@ -22,6 +24,34 @@ export default function MockTest() {
     const handleTestClose = () => {
         setIsTestStarted(false); 
     };
+
+    const formatTime = (time: number) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        let result = '';
+        if (minutes > 0) {
+            result += `${minutes}m`;
+        }
+        if (seconds > 0) {
+            if (result.length > 0) {
+                result += ' ';
+            }
+            result += `${seconds}s`;
+        }
+        if (result === '') {
+            result = '0s';
+        }
+    
+        return result;
+    };
+
+    useEffect(()=>{
+        if(typeof time === "number" && result){
+            const curentTime = (57 * 60) - time
+            const curentFormatTime = formatTime(curentTime)
+            console.log("curentTime:",curentFormatTime)
+        }
+    },[time,result])
 
     const data = [
         { date: "6 Oct 2024", time: "22m 52s", percentage: 88 },
@@ -40,7 +70,7 @@ export default function MockTest() {
             ) : (
                 <div className={styles.mockTestContainer}>
                     {!isTestStarted && <MockTestChart data={data} />}
-                    {isTestStarted && <Assessment result={setResult} onClose={handleTestClose} />}
+                    {isTestStarted && <Assessment getTime={setTime} result={setResult} onClose={handleTestClose} />}
                     {!isTestStarted && <DataStatisticsAssessment data={data} />}
                     {!isTestStarted && <FooterMockTest onTestStart={() => setIsTestStarted(true)} />}
                  </div>
