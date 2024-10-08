@@ -109,7 +109,7 @@ export default function Results({exitResult}:ResultsProps) {
                     ))
                 ) : (
                     <div className={styles["no-results"]}>
-                        <p >No results available.</p>
+                        <p >No results available. Take the test first.</p>
                     </div>
                 )}
             </div>

@@ -127,38 +127,41 @@ export default function Practice() {
     <>
       {result ? (
         <Results exitResult={setResult} />
-      ) : test ? (
-        <PracticeTest result={setResult} closeTest={setTest} />
       ) : (
-        <div className={styles.wrap}>
-          <div className={styles.qwestions}>
-            <Flag />
-            {loading ? (
-              <div className={styles.spinner}>
-                <Spinner color={"#0078AB"} />
-              </div>
-            ) : (
-              questionsGroup.map((elem, i) => {
-                const matchingPars = pars.find((par) => par.name === elem.name);
-                const svg = matchingPars ? matchingPars.svg : null;
+        <>
+          {!test && (
+            <div className={styles.wrap}>
+              <div className={styles.qwestions}>
+                <Flag />
+                {loading ? (
+                  <div className={styles.spinner}>
+                    <Spinner color={"#0078AB"} />
+                  </div>
+                ) : (
+                  questionsGroup.map((elem, i) => {
+                    const matchingPars = pars.find((par) => par.name === elem.name);
+                    const svg = matchingPars ? matchingPars.svg : null;
 
-                return (
-                  <Par
-                    key={i}
-                    id={elem.id}
-                    name={elem.name}
-                    quantity={elem.quantity}
-                    percent={elem.percent}
-                    svg={svg}
-                  />
-                );
-              })
-            )}
-          </div>
-          <div className={styles.settings}>
-            <PracticeSettings practiceTest={setTest} />
-          </div>
-        </div>
+                    return (
+                      <Par
+                        key={i}
+                        id={elem.id}
+                        name={elem.name}
+                        quantity={elem.quantity}
+                        percent={elem.percent}
+                        svg={svg}
+                      />
+                    );
+                  })
+                )}
+              </div>
+              <div className={styles.settings}>
+                <PracticeSettings practiceTest={setTest} />
+              </div>
+            </div>
+          )}
+          {test && <PracticeTest result={setResult} closeTest={setTest} />}
+        </>
       )}
     </>
   );

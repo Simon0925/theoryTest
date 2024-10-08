@@ -115,12 +115,12 @@ export default function PracticeTest({closeTest,result}:PracticeTestProps) {
           )}
          {explanation === true && (
               <Modal 
-                  close={setExplanation} 
-                  text={currentQuestions?.explanation || ""} 
-                  title={'DVSA explanation'} 
-                  cancel={false} 
-                  blueBtnText={'Ok'} 
-              />
+              close={() => setExplanation(false)} 
+              text={currentQuestions?.explanation || ""} 
+              title={'DVSA explanation'} 
+              cancel={false} 
+              blueBtnText={'Ok'} 
+          />
           )}
 
           <FooterTest
