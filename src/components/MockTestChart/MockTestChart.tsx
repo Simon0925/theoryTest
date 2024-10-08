@@ -145,7 +145,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
     <svg
       width="100%"
       height="350px"
-      viewBox={`0 0 ${maxX} ${maxY + 20}`} 
+      viewBox={`0 0 ${maxX} ${maxY + 1}`} 
       preserveAspectRatio="none"
       style={{
         background: 'linear-gradient(180deg, rgba(57,195,245,0.6125043767507004) 0%, rgba(0,150,206,1) 96%)',

@@ -1,8 +1,12 @@
+.title{
+    color: white;
+    padding: 0 0 0.5rem 1rem;
+}
 .wrap{
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
-    max-height: 360px;  
+    max-height: 330px;  
     overflow-y: auto; 
     .data-wrap{
         background-color: #FFFFFF;
