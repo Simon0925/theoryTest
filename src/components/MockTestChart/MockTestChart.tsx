@@ -39,24 +39,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
 
   const [currentData, setCurrentData] = useState<ChartData[]>([]);
   const [percentages, setPercentages] = useState<ChartData[]>([]);
-
-  useEffect(() => {
-    if (data) {
-      let currentData = data.map((element) => {
-        return { percentage: element.percentage + '%' };
-      });
-      setPercentages(currentData);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (percentages === null || percentages.length === 0) {
-      setCurrentData(defaultData);
-    } else {
-      setCurrentData(percentages);
-    }
-  }, [percentages]);
-
+  const [lineLength, setLineLength] = useState(0);
   const [linePath, setLinePath] = useState('');
   const [progress, setProgress] = useState(0);
 
@@ -83,15 +66,30 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
     { y: maxY - 25, label: '25%' },
   ];
 
-  const smoothThreshold = 15; 
+  const smoothThreshold = 15;
 
   const generateVariableSmoothPath = (points: Point[]) => {
     if (points.length < 2) return '';
   
     let path = `M${points[0].x},${maxY}`;
-    path += ` L${points[0].x},${points[0].y}`; 
- 
-    for (let i = 1; i < points.length; i++) { 
+  
+    if (points.length > 2) {
+      const firstPoint = points[1];
+  
+      path += ` L${firstPoint.x},${firstPoint.y}`;
+
+      const secondPoint = points[2];
+      const controlX1 = firstPoint.x + (secondPoint.x - firstPoint.x) / 3;
+      const controlY1 = firstPoint.y;
+      const controlX2 = secondPoint.x - (secondPoint.x - firstPoint.x) / 3;
+      const controlY2 = secondPoint.y;
+  
+      path += ` C${controlX1},${controlY1} ${controlX2},${controlY2} ${secondPoint.x},${secondPoint.y}`;
+    } else {
+      path += ` L${points[1].x},${points[1].y}`;
+    }
+  
+    for (let i = 3; i < points.length; i++) {
       const curr = points[i - 1];
       const next = points[i];
       const diffY = Math.abs(next.y - curr.y);
@@ -110,23 +108,56 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
     return path;
   };
   
+  
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (progress < 1) {
-        setProgress((prev) => Math.min(prev + 0.01, 1));
-      }
-    }, 20);
-
-    return () => clearInterval(interval);
-  }, [progress]);
-
-  useEffect(() => {
-    if (progress > 0) {
-      const smoothPath = generateVariableSmoothPath(points);
-      setLinePath(smoothPath);
+    if (data) {
+      let currentData = data.map((element) => ({
+        percentage: element.percentage + '%',
+      }));
+      setPercentages(currentData);
     }
-  }, [progress, points]);
+  }, [data]);
+
+  useEffect(() => {
+    if (percentages.length === 0) {
+      setCurrentData(defaultData);
+    } else {
+      setCurrentData(percentages);
+    }
+  }, [percentages]);
+
+  useEffect(() => {
+    const smoothPath = generateVariableSmoothPath(points);
+    setLinePath(smoothPath);
+  }, [points]);
+
+  useEffect(() => {
+    if (linePath) {
+      const pathElement = document.querySelector('path');
+      if (pathElement) {
+        const length = pathElement.getTotalLength();
+        setLineLength(length);
+        setProgress(0);
+      }
+    }
+  }, [linePath]);
+
+  useEffect(() => {
+    if (lineLength > 0) {
+      const interval = setInterval(() => {
+        setProgress((prev) => {
+          const nextValue = Math.min(prev + 2, lineLength);
+          if (nextValue === lineLength) {
+            clearInterval(interval);
+          }
+          return nextValue;
+        });
+      }, 10);
+
+      return () => clearInterval(interval);
+    }
+  }, [lineLength]);
 
   if (currentData.length === 0) {
     return <div>No data available</div>;
@@ -159,7 +190,14 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
         </g>
       ))}
 
-      <path d={linePath} stroke={data !== null ? '#32EBC3' : '#12B9CB'} strokeWidth="0.5" fill="none" />
+      <path
+        d={linePath}
+        stroke={data !== null ? '#32EBC3' : '#12B9CB'}
+        strokeWidth="0.5"
+        fill="none"
+        strokeDasharray={lineLength}
+        strokeDashoffset={lineLength - progress}
+      />
 
       {points.map((point, index) => (
         index !== 0 && (
