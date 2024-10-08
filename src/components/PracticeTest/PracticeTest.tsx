@@ -26,9 +26,10 @@ interface Question {
 
 interface PracticeTestProps {
   closeTest:(e:boolean)=>void
+  result:(e:boolean)=>void
 }
 
-export default function PracticeTest({closeTest}:PracticeTestProps) {
+export default function PracticeTest({closeTest,result}:PracticeTestProps) {
 
   const question = useSelector((state: RootState) => state.practice.currentQuestions);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -80,6 +81,7 @@ export default function PracticeTest({closeTest}:PracticeTestProps) {
       <div className={styles['wrap']}>
         <div>
         <HeaderForTest
+          result={result}
           onExitClick={setExit}
           questionCount={questions.length}
           currentQuestion={current}

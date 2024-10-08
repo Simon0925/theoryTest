@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import styles from './HeaderForTest.module.scss';
 import Modal from '../Modal/Modal';
-import { useNavigate } from 'react-router-dom';
 
 interface HeaderForTestProps {
   onExitClick: (e: boolean) => void;
@@ -12,6 +11,7 @@ interface HeaderForTestProps {
   finish: string;
   mockTest?: boolean;
   reviewClick?:(e:boolean) => void 
+  result?:(e:boolean) => void 
 }
 
 export default function HeaderForTest({
@@ -21,12 +21,10 @@ export default function HeaderForTest({
   children,
   onExitClick,
   mockTest,
-  reviewClick
+  reviewClick,
+  result
 }: HeaderForTestProps) {
-  const navigate = useNavigate();
-
   const [showExitModal, setShowExitModal] = useState(false);
-
   const [showResultsModal, setShowResultsModal] = useState(false);
 
 
@@ -54,7 +52,9 @@ export default function HeaderForTest({
     setShowResultsModal(!showResultsModal);
   };
   const handleResultsModalClose =  () => {
-    navigate('/results');
+    if(result){
+      result(true)
+    }
   };
 
   return (

@@ -23,7 +23,12 @@
     max-height: 49vh; 
     overflow-y: auto; 
     background-color: #0096CE; 
-
+    
+    .no-results{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
     .variant {
         padding: 1.2rem;
         border-radius: 0.625rem;

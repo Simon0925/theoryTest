@@ -5,6 +5,12 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    .question-wrap{
+        background-color: #FFFFFF;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+    }
     .pausedMessage{
         width: 100%;
         height: 60vh;

@@ -15,6 +15,7 @@ import {changeFlag} from './service/changeFlag'
 
 interface AssessmentProps {
   onClose: (e: boolean) => void;
+  result:(e: boolean) => void;
 }
 
 interface ParData {
@@ -38,7 +39,7 @@ export interface FlagChange {
     newFlag:boolean
 }
 
-export default function Assessment({ onClose }: AssessmentProps) {
+export default function Assessment({ onClose,result }: AssessmentProps) {
   const navigate = useNavigate();
   const localS = localStorage.getItem('result');
 
@@ -55,6 +56,9 @@ export default function Assessment({ onClose }: AssessmentProps) {
   const [currentAll,setCurrentAll] = useState(0)
   const [onFlagChange, setOnFlagChange] = useState<FlagChange>({ id: '', newFlag: false });
   const [questionsSelected, setQuestionsSelected] = useState<{ id: string, index: number }[]>([]);
+  
+
+
 
 
   useEffect(() => {
@@ -146,13 +150,13 @@ export default function Assessment({ onClose }: AssessmentProps) {
         </div>
       ) : (
         visibleQuestions[current] &&  (
-          <>
+            <div className={styles['question-wrap']}>
               <QuestionContent
               question={visibleQuestions[current].question}
               photo={typeof visibleQuestions[current].photo === 'string' ? visibleQuestions[current].photo : undefined}
               markers={visibleQuestions[current].flag}
             />
-            </>
+            </div> 
         )
       )}
         </div>
@@ -205,12 +209,13 @@ export default function Assessment({ onClose }: AssessmentProps) {
 
       {reviewModal && (
         <ReviewModal
-          setShowFlagged={() => handleReviewModeChange('flagged')}
-          cancelClick={setReviewModal}
-          questionsUnanswered={unansweredQuestions.length <= 0 ?questions.length : unansweredQuestions.length}
-          questionsFlagged={visibleQuestions.filter(q => q.flag).length}
-          setShowUnansweredOnly={() => handleReviewModeChange('unanswered')}
-          setShowAllOnly={() => handleReviewModeChange('all')}
+            setShowFlagged={() => handleReviewModeChange('flagged')}
+            cancelClick={setReviewModal}
+            questionsUnanswered={unansweredQuestions.length <= 0 ? questions.length : unansweredQuestions.length}
+            questionsFlagged={visibleQuestions.filter(q => q.flag).length}
+            setShowUnansweredOnly={() => handleReviewModeChange('unanswered')}
+            setShowAllOnly={() => handleReviewModeChange('all')} 
+            results={result}       
         />
       )}
     </div>

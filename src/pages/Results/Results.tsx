@@ -14,7 +14,11 @@ interface QuestionResult {
     group: string;
 }
 
-export default function Results() {
+interface ResultsProps {
+    exitResult:(e:boolean) => void
+}
+
+export default function Results({exitResult}:ResultsProps) {
     const localS = localStorage.getItem("result");
 
     const [data, setData] = useState<QuestionResult[]>([]);
@@ -84,7 +88,7 @@ export default function Results() {
 
     return (
         <>
-            <HeaderResults />
+            <HeaderResults exitResult={exitResult} />
             <div className={styles.ProgressBar}>
                 <CircularProgressBar correct={progressBar.trueAnswer} skipped={progressBar.pass} incorrect={progressBar.falseAnswer} />
             </div>
@@ -104,7 +108,9 @@ export default function Results() {
                         </div>
                     ))
                 ) : (
-                    <p>No results available.</p>
+                    <div className={styles["no-results"]}>
+                        <p >No results available.</p>
+                    </div>
                 )}
             </div>
         </>

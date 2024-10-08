@@ -18,10 +18,11 @@ import DocumentsSvg from "../../SVG/DocumentsSvg/DocumentsSvg";
 import AccidentSvg from "../../SVG/AccidentSvg/AccidentSvg";
 import CarSvg from "../../SVG/CarSvg/CarSvg";
 import Flag from "../../components/Flag/Flag";
-import Spinner from "../../UI/Spinner/Spinner"; 
+import Spinner from "../../UI/Spinner/Spinner";
 
 import idUser from "../../config/idUser";
 import PracticeTest from "../../components/PracticeTest/PracticeTest";
+import Results from "../Results/Results";
 
 interface QuestionGroup {
   name: string;
@@ -36,12 +37,18 @@ interface ParsItem {
 }
 
 export default function Practice() {
-  localStorage.setItem("result", JSON.stringify([]));
-
   const [questionsGroup, setQuestionsGroup] = useState<QuestionGroup[]>([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState(false);
+  const [test, setTest] = useState(false);
 
-  const [test, setTest] = useState(false)
+  if (!result) localStorage.setItem("result", JSON.stringify([]));
+
+  useEffect(() => {
+    if (result) {
+      setTest(false);
+    }
+  }, [result]);
 
   const pars: ParsItem[] = [
     {
@@ -57,7 +64,7 @@ export default function Practice() {
       svg: <CarWheelSvg />,
     },
     {
-      name: "Safety margins", 
+      name: "Safety margins",
       svg: <RoadSvg />,
     },
     {
@@ -73,7 +80,7 @@ export default function Practice() {
       svg: <ScooterSvg />,
     },
     {
-      name: "Vehicle handling", 
+      name: "Vehicle handling",
       svg: <SteeringWheelSvg />,
     },
     {
@@ -101,6 +108,7 @@ export default function Practice() {
       svg: <CarSvg />,
     },
   ];
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -109,47 +117,49 @@ export default function Practice() {
       } catch (error) {
         console.error("Error fetching data in useEffect:", error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
     fetchData();
   }, []);
 
-
-
-
   return (
-    <div className={styles.wrap}>
-      <div className={styles.qwestions}>
-        <Flag />
-        {loading ? (
-          <div className={styles.spiner} >
-            <Spinner color={"#0078AB"} />
-          </div>
-        ) : (
-          questionsGroup.map((elem, i) => {
-            const matchingPars = pars.find((par) => par.name === elem.name);
-            const svg = matchingPars ? matchingPars.svg : null;
+    <>
+      {result ? (
+        <Results exitResult={setResult} />
+      ) : test ? (
+        <PracticeTest result={setResult} closeTest={setTest} />
+      ) : (
+        <div className={styles.wrap}>
+          <div className={styles.qwestions}>
+            <Flag />
+            {loading ? (
+              <div className={styles.spinner}>
+                <Spinner color={"#0078AB"} />
+              </div>
+            ) : (
+              questionsGroup.map((elem, i) => {
+                const matchingPars = pars.find((par) => par.name === elem.name);
+                const svg = matchingPars ? matchingPars.svg : null;
 
-            return (
-              <Par
-                key={i}
-                id={elem.id}
-                name={elem.name}
-                quantity={elem.quantity}
-                percent={elem.percent}
-                svg={svg}
-              />
-            );
-          })
-        )}
-      </div>
-      <div className={styles.settings}>
-        <PracticeSettings practiceTest={setTest} />
-      </div>
-      {test && (
-        <PracticeTest closeTest={setTest} />
+                return (
+                  <Par
+                    key={i}
+                    id={elem.id}
+                    name={elem.name}
+                    quantity={elem.quantity}
+                    percent={elem.percent}
+                    svg={svg}
+                  />
+                );
+              })
+            )}
+          </div>
+          <div className={styles.settings}>
+            <PracticeSettings practiceTest={setTest} />
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 }

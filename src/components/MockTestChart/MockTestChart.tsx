@@ -1,4 +1,3 @@
-import { elements } from 'chart.js';
 import { useEffect, useState } from 'react';
 
 interface ChartData {
@@ -6,13 +5,9 @@ interface ChartData {
 }
 
 interface Data {
-  date:string;
-  time:string;
-  percentage:number;
-}
-
-interface ChartDataProps {
-  data:Data[]
+  date: string;
+  time: string;
+  percentage: number;
 }
 
 interface Point {
@@ -26,8 +21,6 @@ interface GridLine {
 }
 
 const MockTestChart = ({ data }: { data: Data[] | null }) => {
-
- 
   const defaultData: ChartData[] = [
     { percentage: '20%' },
     { percentage: '30%' },
@@ -41,21 +34,20 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
     { percentage: '50%' },
     { percentage: '15%' },
     { percentage: '86%' },
-    { percentage: '100%' }
+    { percentage: '100%' },
   ];
 
   const [currentData, setCurrentData] = useState<ChartData[]>([]);
+  const [percentages, setPercentages] = useState<ChartData[]>([]);
 
-  const [percentages , setPercentages] = useState<ChartData[]>([]);
-
-  useEffect(()=>{
+  useEffect(() => {
     if (data) {
-      let currentData = data.map(element => {
-        return {percentage:element.percentage + "%"}; 
+      let currentData = data.map((element) => {
+        return { percentage: element.percentage + '%' };
       });
-      setPercentages(currentData)
+      setPercentages(currentData);
     }
-  },[data])
+  }, [data]);
 
   useEffect(() => {
     if (percentages === null || percentages.length === 0) {
@@ -68,45 +60,61 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
   const [linePath, setLinePath] = useState('');
   const [progress, setProgress] = useState(0);
 
-  const maxX = 300; 
+  const maxX = 300;
   const maxY = 100;
 
-  const isSingleDataPoint = currentData.length === 1;
+  const points: Point[] = [
+    { x: 0, y: maxY }, 
+    ...currentData.map((item, index) => {
+      const x = ((index + 1) / currentData.length) * maxX;
+      const y = maxY - parseInt(item.percentage);
+      return { x, y };
+    }),
+  ];
 
- 
-  const points: Point[] = isSingleDataPoint
-    ? [
-        { x: 0, y: maxY }, 
-        { x: maxX / 2, y: maxY - parseInt(currentData[0].percentage) }  
-      ]
-    : [
-        { x: 0, y: maxY },  
-        ...currentData.map((item, index) => {
-          let x = ((index + 1) / (currentData.length)) * maxX; 
-          let y = maxY - parseInt(item.percentage);
-
-          if (index === currentData.length - 1 && parseInt(item.percentage) === 100) {
-            x -= 2; 
-            y += 2;
-          } else if(index === currentData.length - 1){
-            x -= 2; 
-          }
-
-          return { x, y };
-        })
-      ];
+  if (points.length > 1) {
+    points[points.length - 1].x -= 1;
+  }
 
   const gridLines: GridLine[] = [
-    { y: maxY - 86, label: '86%' },   
-    { y: maxY - 75, label: '75%' },   
-    { y: maxY - 50, label: '50%' },   
-    { y: maxY - 25, label: '25%' },  
+    { y: maxY - 86, label: '86%' },
+    { y: maxY - 75, label: '75%' },
+    { y: maxY - 50, label: '50%' },
+    { y: maxY - 25, label: '25%' },
   ];
+
+  const smoothThreshold = 15; 
+
+  const generateVariableSmoothPath = (points: Point[]) => {
+    if (points.length < 2) return '';
+  
+    let path = `M${points[0].x},${maxY}`;
+    path += ` L${points[0].x},${points[0].y}`; 
+ 
+    for (let i = 1; i < points.length; i++) { 
+      const curr = points[i - 1];
+      const next = points[i];
+      const diffY = Math.abs(next.y - curr.y);
+  
+      if (diffY < smoothThreshold) {
+        path += ` L${next.x},${next.y}`;
+      } else {
+        const controlX1 = curr.x + (next.x - curr.x) / 3;
+        const controlY1 = curr.y;
+        const controlX2 = next.x - (next.x - curr.x) / 3;
+        const controlY2 = next.y;
+        path += ` C${controlX1},${controlY1} ${controlX2},${controlY2} ${next.x},${next.y}`;
+      }
+    }
+  
+    return path;
+  };
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (progress < 1) {
-        setProgress((prev) => Math.min(prev + 0.01, 1)); 
+        setProgress((prev) => Math.min(prev + 0.01, 1));
       }
     }, 20);
 
@@ -115,37 +123,20 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
 
   useEffect(() => {
     if (progress > 0) {
-      const totalLength = points.length - 1;
-      const currentIndex = Math.floor(progress * totalLength);
-      const nextIndex = currentIndex + 1;
-
-      const currentPoint = points[currentIndex];
-      const nextPoint = points[nextIndex] || points[points.length - 1];
-
-      const segmentProgress = (progress * totalLength) - currentIndex;
-
-      const interpolatedX = currentPoint.x + (nextPoint.x - currentPoint.x) * segmentProgress;
-      const interpolatedY = currentPoint.y + (nextPoint.y - currentPoint.y) * segmentProgress;
-
-      let path = `M${points[0].x},${points[0].y}`; 
-      for (let i = 1; i <= currentIndex; i++) {
-        path += ` L${points[i].x},${points[i].y}`;
-      }
-      path += ` L${interpolatedX},${interpolatedY}`;
-
-      setLinePath(path);
+      const smoothPath = generateVariableSmoothPath(points);
+      setLinePath(smoothPath);
     }
   }, [progress, points]);
 
   if (currentData.length === 0) {
-    return <div>No data available</div>; 
+    return <div>No data available</div>;
   }
 
   return (
     <svg
       width="100%"
       height="350px"
-      viewBox={`0 0 ${maxX} ${maxY + 1}`} 
+      viewBox={`0 0 ${maxX} ${maxY + 1}`}
       preserveAspectRatio="none"
       style={{
         background: 'linear-gradient(180deg, rgba(57,195,245,0.6125043767507004) 0%, rgba(0,150,206,1) 96%)',
@@ -158,34 +149,21 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
             y1={line.y}
             x2={maxX}
             y2={line.y}
-            stroke={data !== null? "white": "#7DC1E2" }
+            stroke={data !== null ? 'white' : '#7DC1E2'}
             strokeDasharray={line.label === '86%' ? 'none' : '3 3'}
             strokeWidth="0.5"
           />
-          <text
-            x="1"
-            y={line.y - 2}
-            fill={data !== null? "white": "#7DC1E2" }
-            fontSize="3.5"
-            textAnchor="start"
-          >
+          <text x="1" y={line.y - 2} fill={data !== null ? 'white' : '#7DC1E2'} fontSize="3.5" textAnchor="start">
             {line.label}
           </text>
         </g>
       ))}
 
-
-      <path d={linePath} stroke={data !== null? "#32EBC3": "#12B9CB" } strokeWidth="0.5" fill="none" />
+      <path d={linePath} stroke={data !== null ? '#32EBC3' : '#12B9CB'} strokeWidth="0.5" fill="none" />
 
       {points.map((point, index) => (
-        index !== 0 && (  
-          <circle
-            key={index}
-            cx={point.x}
-            cy={point.y}
-            r="0.8"
-            fill={data !== null? "white": "#7DC1E2" }
-          />
+        index !== 0 && (
+          <circle key={index} cx={point.x} cy={point.y} r="0.8" fill={data !== null ? 'white' : '#7DC1E2'} />
         )
       ))}
 
@@ -195,10 +173,10 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
         fill="white"
         fontSize="6"
         textAnchor="start"
-        fontFamily="Arial, Helvetica, sans-serif" 
+        fontFamily="Arial, Helvetica, sans-serif"
         fontWeight="900"
       >
-        {data === null ?  "No results yet" : null}
+        {data === null ? 'No results yet' : null}
       </text>
     </svg>
   );
