@@ -2,38 +2,19 @@ import { useEffect, useState } from "react";
 import Par from "../../components/Par/Par";
 import PracticeSettings from "../../components/PracticeSettings/PracticeSettings";
 import styles from "./Practice.module.scss";
-import AlertSvg from "../../SVG/AlertSvg/AlertSvg";
-import AttitudeSvg from "../../SVG/Attitude/AttitudeSvg";
 import service from "../../service/service";
-import CarWheelSvg from "../../SVG/CarWheelSvg/CarWheelSvg";
-import RoadSvg from "../../SVG/RoadSvg/RoadSvg";
-import BikeSvg from "../../SVG/BikeSvg/BikeSvg";
-import PedestrianSvg from "../../SVG/PedestrianSvg/PedestrianSvg";
-import ScooterSvg from "../../SVG/ScooterSvg/ScooterSvg";
-import SteeringWheelSvg from "../../SVG/SteeringWheelSvg/SteeringWheelSvg";
-import MotorwaySvg from "../../SVG/MotorwaySvg/MotorwaySvg";
-import RulesSvg from "../../SVG/RulesSvg/RulesSvg";
-import TrafficSignSvg from "../../SVG/TrafficSignSvg/TrafficSignSvg";
-import DocumentsSvg from "../../SVG/DocumentsSvg/DocumentsSvg";
-import AccidentSvg from "../../SVG/AccidentSvg/AccidentSvg";
-import CarSvg from "../../SVG/CarSvg/CarSvg";
-import Flag from "../../components/Flag/Flag";
-import Spinner from "../../UI/Spinner/Spinner";
-
 import idUser from "../../config/idUser";
 import PracticeTest from "../../components/PracticeTest/PracticeTest";
 import Results from "../Results/Results";
+import {pars} from "./service/parsItem"
+import Flag from "../../components/Flag/Flag";
+import Spinner from "../../UI/Spinner/Spinner";
 
 interface QuestionGroup {
   name: string;
   quantity: number;
   percent: number;
   id: string;
-}
-
-interface ParsItem {
-  name: string;
-  svg: JSX.Element;
 }
 
 export default function Practice() {
@@ -50,64 +31,7 @@ export default function Practice() {
     }
   }, [result]);
 
-  const pars: ParsItem[] = [
-    {
-      name: "Alertness",
-      svg: <AlertSvg />,
-    },
-    {
-      name: "Attitude",
-      svg: <AttitudeSvg />,
-    },
-    {
-      name: "Safety and your vehicle",
-      svg: <CarWheelSvg />,
-    },
-    {
-      name: "Safety margins",
-      svg: <RoadSvg />,
-    },
-    {
-      name: "Hazard awareness",
-      svg: <BikeSvg />,
-    },
-    {
-      name: "Vulnerable road users",
-      svg: <PedestrianSvg />,
-    },
-    {
-      name: "Other types of vehicle",
-      svg: <ScooterSvg />,
-    },
-    {
-      name: "Vehicle handling",
-      svg: <SteeringWheelSvg />,
-    },
-    {
-      name: "Motorway rules",
-      svg: <MotorwaySvg />,
-    },
-    {
-      name: "Rules of the road",
-      svg: <RulesSvg />,
-    },
-    {
-      name: "Road and traffic signs",
-      svg: <TrafficSignSvg />,
-    },
-    {
-      name: "Essential documents",
-      svg: <DocumentsSvg />,
-    },
-    {
-      name: "Incidents, accidents and emergencies",
-      svg: <AccidentSvg />,
-    },
-    {
-      name: "Vehicle loading",
-      svg: <CarSvg />,
-    },
-  ];
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -134,7 +58,7 @@ export default function Practice() {
               <div className={styles.qwestions}>
                 <Flag />
                 {loading ? (
-                  <div className={styles.spinner}>
+                  <div style={{ width: "100%", height: "80vh",display: "flex",alignItems: "center",justifyContent:"center" }} >
                     <Spinner color={"#0078AB"} />
                   </div>
                 ) : (

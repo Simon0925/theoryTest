@@ -39,13 +39,13 @@ export default function PracticeTest({closeTest,result}:PracticeTestProps) {
   const [currentId, setCurrentId] = useState(''); 
   const [currentQuestions, setCurrentQuestions] = useState<Question | undefined>(undefined);
   const [markers, setMarkers] = useState(false);
-
+  const [questionsSelected, setQuestionsSelected] = useState<{ id: string, index: number }[]>([]);
   const [exit, setExit] = useState(false);
 
   useEffect(()=>{
     closeTest(!exit)
   },[exit])
-  
+
 
   useEffect(() => {
     const updatedQuestions = question.map((q: any) => ({
@@ -111,6 +111,7 @@ export default function PracticeTest({closeTest,result}:PracticeTestProps) {
             typeOftest={''}
             nextPage={null}  
             currentPage={null}
+            setQuestionsSelected={setQuestionsSelected}
         />
           )}
          {explanation === true && (
@@ -124,10 +125,11 @@ export default function PracticeTest({closeTest,result}:PracticeTestProps) {
           )}
 
           <FooterTest
+            result={result}
             maxPage={questions.length}
             currentPage={current}
             click={setCurrent}
-            setSelectedAnswer={currentId}
+            setSelectedAnswer={questionsSelected}
             id={currentQuestions ? currentQuestions._id : ""}
             modal={setExplanation}
             flag={markers}

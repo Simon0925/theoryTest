@@ -2,19 +2,25 @@ import { useEffect, useState } from "react";
 import FlagSvg from "../../SVG/FlagSvg/FlagSvg";
 import styles from "./Flag.module.scss";
 import service from "../../service/service";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateFlagged } from '../../store/practice.slice'; 
 import idUser from "../../config/idUser";
+import { RootState } from '../../store/store';
 
 export default function Flag() {
     const dispatch = useDispatch();
     const [active, setActive] = useState(false);
     const [selected, setSelected] = useState(false);
     const [currentFlags, setCurrentFlags] = useState({ quantity: 0 });
+    
+    const practiceFlags = useSelector((state: RootState) => state.practice.flagged);
 
     useEffect(() => {
-        if (!selected) dispatch(updateFlagged(false));
-    }, [selected]);
+        setSelected(practiceFlags)
+        if(currentFlags.quantity <= 0){
+            setSelected(false)
+        }
+    }, [practiceFlags,currentFlags]);
 
     useEffect(() => {
         setActive(currentFlags.quantity > 0);
@@ -33,6 +39,7 @@ export default function Flag() {
     }, []);
 
     const marker = () => {
+        if(currentFlags.quantity <= 0) return null
         setSelected(!selected);
         dispatch(updateFlagged(!selected));
     };

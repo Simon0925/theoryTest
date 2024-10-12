@@ -4,6 +4,7 @@ import styles from './FooterTest.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import { updatecurrentQuestions } from '../../store/practice.slice';
+import Modal from '../Modal/Modal';
 
 interface FooterTestProps {
     maxPage: number;
@@ -12,32 +13,38 @@ interface FooterTestProps {
     modal: (e: boolean) => void;
     id: string;
     flag: boolean;
-    setSelectedAnswer: string; 
+    setSelectedAnswer: { id: string, index: number }[];
+    result?:(e:boolean) => void ;
 }
 
-export default function FooterTest({ maxPage, currentPage, click, modal, id, flag, setSelectedAnswer }: FooterTestProps) {
+export default function FooterTest({ maxPage, currentPage, click, modal, id, flag, setSelectedAnswer,result }: FooterTestProps) {
     const question = useSelector((state: RootState) => state.practice.currentQuestions);
     const dispatch = useDispatch();
-
+    
     const [isAnswerSelected, setIsAnswerSelected] = useState(false); 
-    const [answered, setAnswered] = useState<string[]>([]); 
+
+    const [lastQuestion,setLastQuestion] = useState(false)
+
+    const [modalWindow,setModalWindow] = useState(false)
+    
+    useEffect(() => {
+      const islastQuestion = maxPage === currentPage + 1
+   
+      if(islastQuestion && isAnswerSelected){
+        setLastQuestion(!lastQuestion)
+      }
+    }, [id,isAnswerSelected]);
 
     useEffect(() => {
-        if (setSelectedAnswer !== '') {
-            confirmAnswer(); 
-        }
-    }, [setSelectedAnswer]);
+        confirmAnswer()
+       
+    }, [id,setSelectedAnswer,currentPage]);
 
     const confirmAnswer = () => {
-        if (!answered.includes(id)) {
-            setAnswered((prev) => [...prev, id]); 
-        }
-    };
+        let isAnswer =  setSelectedAnswer.some(e => e.id === id)
+        isAnswer ? setIsAnswerSelected(true) :setIsAnswerSelected(false)
 
-    useEffect(() => {
-        const isQuestionAnswered = answered.includes(id);
-        setIsAnswerSelected(isQuestionAnswered); 
-    }, [id, currentPage, answered]);
+    };
 
     const marker = () => {
         const localS = localStorage.getItem("result");
@@ -73,11 +80,22 @@ export default function FooterTest({ maxPage, currentPage, click, modal, id, fla
     };
 
     const next = () => {
-        confirmAnswer(); 
         if (currentPage < maxPage - 1) {
             click(currentPage + 1);
+        }else if(maxPage === currentPage + 1){
+            setModalWindow(true)
         }
     };
+
+    const cancelClickModal =()=>{
+        setModalWindow(false)
+    }
+
+    const resultClickModal = () => {
+    if (result) { 
+        result(true);
+    }
+};
 
     const explanationModal = () => {
         modal(true); 
@@ -112,12 +130,22 @@ export default function FooterTest({ maxPage, currentPage, click, modal, id, fla
                 />
                 <ButtonTest
                     click={next}
-                    name={maxPage === currentPage + 1 ? 'Results' : 'Next >'}
+                    name={maxPage === currentPage + 1  ? 'Results' : 'Next >'}
                     color={'#0078AB'}
-                    backgroundColor={isAnswerSelected ? '#FFEC4B' : 'white'} 
+                    backgroundColor={isAnswerSelected && lastQuestion ? '#FFEC4B' : 'white'} 
                     svg={false}
                     svgColor={false}
                 />
+                  {modalWindow === true && (
+              <Modal 
+                close={() => resultClickModal()} 
+                text={"End of test reached"} 
+                title={'End of test reached'} 
+                cancel={true}
+                cancelClick={() => cancelClickModal()}
+                blueBtnText={'Show results'} 
+            />
+            )}
             </div>
         </div>
     );
