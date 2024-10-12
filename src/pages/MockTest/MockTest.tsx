@@ -5,76 +5,82 @@ import styles from './MockTest.module.scss';
 import Assessment from '../../components/Assessment/Assessment';
 import DataStatisticsAssessment from '../../components/DataStatisticsAssessment/DataStatisticsAssessment';
 import Results from '../Results/Results';
+import { formatTime } from './service/formatTime';
+import { mockTestStatistics } from './service/mockTestStatistics';
+import Spinner from '../../UI/Spinner/Spinner';
+
+import {Question,statisticsData} from "./interface"
+
 
 export default function MockTest() {
-    
-    const [isTestStarted, setIsTestStarted] = useState(false);
-    const [result, setResult] = useState(false); 
+  const [isTestStarted, setIsTestStarted] = useState(false);
+  const [result, setResult] = useState(false);
+  const [time, setTime] = useState<number | undefined>();
+  const [curentTimeFormat, setCurentTimeFormat] = useState('');
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [data, setData] = useState<statisticsData[] | null>(null);
 
-    const [time,setTime] = useState<number | undefined>();
+  if (!result && !isTestStarted) localStorage.setItem('result', JSON.stringify([]));
 
-    if(!result && !isTestStarted)localStorage.setItem("result", JSON.stringify([]));
+  useEffect(() => {
+    if (result) {
+      setIsTestStarted(false);
+    }
+  }, [result]);
 
-    useEffect(() => {
-        if (result) {
-            setIsTestStarted(false);
-        }
-      }, [result]);
+  const handleTestClose = () => {
+    setIsTestStarted(false);
+  };
 
-    const handleTestClose = () => {
-        setIsTestStarted(false); 
+  useEffect(() => {
+    if (typeof time === 'number' && result) {
+      const curentTime = 57 * 60 - time;
+      const curentFormatTime = formatTime(curentTime);
+      setCurentTimeFormat(curentFormatTime);
+    }
+  }, [time, result]);
+
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      const statistics = await mockTestStatistics();
+      if (statistics) {
+        setData(statistics);
+      }
     };
 
-    const formatTime = (time: number) => {
-        const minutes = Math.floor(time / 60);
-        const seconds = time % 60;
-        let result = '';
-        if (minutes > 0) {
-            result += `${minutes}m`;
-        }
-        if (seconds > 0) {
-            if (result.length > 0) {
-                result += ' ';
-            }
-            result += `${seconds}s`;
-        }
-        if (result === '') {
-            result = '0s';
-        }
-    
-        return result;
-    };
+    fetchStatistics();
+  }, []);
 
-    useEffect(()=>{
-        if(typeof time === "number" && result){
-            const curentTime = (57 * 60) - time
-            const curentFormatTime = formatTime(curentTime)
-            console.log("curentTime:",curentFormatTime)
-        }
-    },[time,result])
-
-    const data = [
-        { date: "6 Oct 2024", time: "22m 52s", percentage: 88 },
-        { date: "6 Oct 2024", time: "22m 52s", percentage: 50 },
-        { date: "6 Oct 2024", time: "22m 52s", percentage: 90 },
-        { date: "6 Oct 2024", time: "22m 52s", percentage: 40 },
-        { date: "6 Oct 2024", time: "22m 52s", percentage: 30 },
-        { date: "6 Oct 2024", time: "22m 52s", percentage: 88 },
-        { date: "6 Oct 2024", time: "22m 52s", percentage: 75 }
-    ];
-
-    return (
-            <>
-            {result ? (
-                <Results exitResult={setResult} />
-            ) : (
-                <div className={styles.mockTestContainer}>
-                    {!isTestStarted && <MockTestChart data={data} />}
-                    {isTestStarted && <Assessment getTime={setTime} result={setResult} onClose={handleTestClose} />}
-                    {!isTestStarted && <DataStatisticsAssessment data={data} />}
-                    {!isTestStarted && <FooterMockTest onTestStart={() => setIsTestStarted(true)} />}
-                 </div>
-            )}
-        </>
-    );
+  return (
+    <>
+      {result ? (
+        <Results
+          question={questions}
+          time={curentTimeFormat}
+          mockTest={true}
+          exitResult={setResult}
+        />
+      ) : data ? (
+        <div className={styles.mockTestContainer}>
+          {!isTestStarted && <MockTestChart data={data} />}
+          {isTestStarted && (
+            <Assessment
+              getQuestion={setQuestions}
+              getTime={setTime}
+              result={setResult}
+              onClose={handleTestClose}
+            />
+          )}
+          {!isTestStarted && <DataStatisticsAssessment data={data} />}
+          {!isTestStarted && (
+            <FooterMockTest onTestStart={() => setIsTestStarted(true)} />
+          )}
+        </div>
+      ) : (
+        <div className={styles.spiner}>
+            <Spinner color={'black'} />
+        </div>
+      )}
+    </>
+  );
 }

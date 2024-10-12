@@ -23,6 +23,7 @@ const getQuestionsGroup = async (userId:string) => {
         }
 
         const data = await response.json();
+        
     
         return data;
     } catch (error) {

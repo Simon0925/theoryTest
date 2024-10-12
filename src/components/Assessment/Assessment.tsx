@@ -16,6 +16,7 @@ interface AssessmentProps {
   onClose: (e: boolean) => void;
   result:(e: boolean) => void;
   getTime:(e : number | undefined) => void
+  getQuestion:(e: Question[]) => void
 }
 
 interface ParData {
@@ -39,7 +40,7 @@ export interface FlagChange {
     newFlag:boolean
 }
 
-export default function Assessment({ onClose,result,getTime }: AssessmentProps) {
+export default function Assessment({ onClose,result,getTime,getQuestion }: AssessmentProps) {
   const localS = localStorage.getItem('result');
 
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -75,6 +76,7 @@ export default function Assessment({ onClose,result,getTime }: AssessmentProps) 
   useEffect(() => {
     const loadQuestions = async () => {
       const data = await fetchQuestions();
+      getQuestion(data)
       setQuestions(data);
       setLoading(false);
     };

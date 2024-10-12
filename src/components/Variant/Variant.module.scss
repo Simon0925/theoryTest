@@ -18,8 +18,8 @@
         max-height: 65px;
     }
     .box{
-        width: 25px;
-        height: 25px;
+        min-width: 25px;
+        min-height: 25px;
         border-radius: 0.25rem;
         border: 1px solid #E0DFE0;
         display: flex;

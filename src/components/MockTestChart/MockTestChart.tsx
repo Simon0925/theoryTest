@@ -56,7 +56,8 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
   ];
 
   if (points.length > 1) {
-    points[points.length - 1].x -= 1;
+    points[points.length - 1].x -= 2;
+    points[points.length - 1].y += 2;
   }
 
   const gridLines: GridLine[] = [

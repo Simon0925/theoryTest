@@ -1,32 +1,42 @@
-.ProgressBar{
-    width: 100%;
-    display: flex;
-    justify-content: center
-}
-.title{
-    padding-bottom: 1rem;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 24px;
-}
+
 
 .wrap {
-    display: grid;
+    
+    padding: 1rem;
+    max-height: 81.7vh;; 
+    overflow-y: auto; 
+    background-color: #0096CE;
+
+
+    .statistic{
+        width: 100%;
+        .progressBar{
+            width: 100%;
+            display: flex;
+            justify-content: center
+        }
+        .title{
+            padding-bottom: 1rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+        }
+    }
+    .question{
+        display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    padding: 1rem;
-    max-height: 49vh; 
-    overflow-y: auto; 
-    background-color: #0096CE; 
-    
+    }
     .no-results{
         width: 100%;
+        height: 50vh;
         display: flex;
         justify-content: center;
+        align-items: center;
         grid-column: span 2; 
         color: white;
         font-size: 24px;
@@ -43,8 +53,8 @@
         justify-content: space-between;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
         color: #0078AB;
-
-
+        position: relative;
+        overflow: hidden;
         .box {
             min-width: 25px;
             min-height: 25px;
@@ -54,6 +64,22 @@
             align-items: center;
             justify-content: center;
             background-color: white;
+        }
+
+        .marker {
+            top: 9px;
+            left: -12px;
+            min-width: 50px;
+            min-height: 10px;
+            background-color: #F9921A;
+            transform: rotate(135deg);
+            position: absolute;
+            display: block;
+            
+        }
+        
+        .inactive-marker{
+            display: none;
         }
     }
 }
