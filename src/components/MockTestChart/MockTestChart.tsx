@@ -21,6 +21,7 @@ interface GridLine {
 }
 
 const MockTestChart = ({ data }: { data: Data[] | null }) => {
+  
   const defaultData: ChartData[] = [
     { percentage: '20%' },
     { percentage: '30%' },
@@ -67,7 +68,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
     { y: maxY - 25, label: '25%' },
   ];
 
-  const smoothThreshold = 15;
+  const smoothThreshold = 20;
 
   const generateVariableSmoothPath = (points: Point[]) => {
     if (points.length < 2) return '';
@@ -181,11 +182,11 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
             y1={line.y}
             x2={maxX}
             y2={line.y}
-            stroke={data !== null ? 'white' : '#7DC1E2'}
+            stroke={data?.length !== 0  ? 'white' : '#7DC1E2'}
             strokeDasharray={line.label === '86%' ? 'none' : '3 3'}
             strokeWidth="0.5"
           />
-          <text x="1" y={line.y - 2} fill={data !== null ? 'white' : '#7DC1E2'} fontSize="3.5" textAnchor="start">
+          <text x="1" y={line.y - 2} fill={data?.length !== 0  ? 'white' : '#7DC1E2'} fontSize="3.5" textAnchor="start">
             {line.label}
           </text>
         </g>
@@ -193,7 +194,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
 
       <path
         d={linePath}
-        stroke={data !== null ? '#32EBC3' : '#12B9CB'}
+        stroke={data?.length !== 0 ? '#32EBC3' : '#12B9CB'}
         strokeWidth="0.5"
         fill="none"
         strokeDasharray={lineLength}
@@ -202,7 +203,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
 
       {points.map((point, index) => (
         index !== 0 && (
-          <circle key={index} cx={point.x} cy={point.y} r="0.8" fill={data !== null ? 'white' : '#7DC1E2'} />
+          <circle key={index} cx={point.x} cy={point.y} r="0.8" fill={data?.length !== 0  ? 'white' : '#7DC1E2'} />
         )
       ))}
 

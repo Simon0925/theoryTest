@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import styles from './CircleTrainer.module.scss';
 
 const CircleTrainer = () => {
-    const [maxPercent, setMaxPercent] = useState(75);
     const [curentPercent, setCurentPercent] = useState(0);
 
     const [circleFilled, setCircleFilled] = useState({
@@ -39,7 +38,7 @@ const CircleTrainer = () => {
     };
 
     useEffect(() => {
-        if (curentPercent < maxPercent) {
+        if (curentPercent < 75) {
             incrementPercent();
         }
     }, [curentPercent]);
@@ -79,7 +78,6 @@ const CircleTrainer = () => {
                     stroke="#00BE5D"
                     strokeWidth="5"
                     strokeDasharray={`${ circleFilled.filled} ${circleFilled.indent}`}
-                    // strokeDasharray={`${ 75} ${25}`}
                     strokeDashoffset="0"
                     transform="rotate(-90 21 21)"
                 />
