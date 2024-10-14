@@ -4,6 +4,10 @@ import PauseSvg from "../../SVG/PauseSvg/PauseSvg";
 import PlayVectorSvg from "../../SVG/PlayVectorSvg/PlayVectorSvg";
 import hostname from "../../config/hostname";
 import NextForwardArrow from "../../SVG/NextForwardArrow/NextForwardArrow";
+import SoundMaxSvg from "../../SVG/SoundMaxSvg/SoundMaxSvg";
+import SoundOffSvg from "../../SVG/SoundOffSvg/SoundOffSvg";
+import CustomSound from "../../UI/CustomSlider/CustomSound";
+import ProgressBar from "../ProgressBar/ProgressBar";
 
 
 const formatTime = (time: number) => {
@@ -22,8 +26,15 @@ const VideoPlayer = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [progressPercentage, setProgressPercentage] = useState(0);
 
+//   useEffect(()=>{
+//     console.log("progressPercentage:",progressPercentage)
+//     console.log("duration:",duration)
+
+//   },[progressPercentage])
+
 
   const togglePlayPause = () => {
+
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play();
@@ -36,13 +47,13 @@ const VideoPlayer = () => {
   };
 
 
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newVolume = parseFloat(e.target.value);
+
+
+  useEffect(()=>{
     if (videoRef.current) {
-      videoRef.current.volume = newVolume;
-      setVolume(newVolume);
-    }
-  };
+        videoRef.current.volume = volume;
+      }
+  },[volume])
 
 
   const updateProgress = () => {
@@ -50,8 +61,10 @@ const VideoPlayer = () => {
       const percentage = (videoRef.current.currentTime / videoRef.current.duration) * 100;
       setProgressPercentage(percentage);
       setCurrentTime(videoRef.current.currentTime);
+      console.log("videoRef.current.currentTime",videoRef.current.currentTime)
     }
   };
+
 
   const handleLoadedMetadata = () => {
     if (videoRef.current) {
@@ -60,59 +73,60 @@ const VideoPlayer = () => {
   };
 
 
-  const handleProgressClick = (e: React.MouseEvent) => {
-    if (videoRef.current && progressBarRef.current) {
-      const rect = progressBarRef.current.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left;
-      const percentage = Math.min(Math.max(offsetX / rect.width, 0), 1);
-      const newTime = percentage * videoRef.current.duration;
-      videoRef.current.currentTime = newTime;
-      setProgressPercentage(percentage * 100);
-      setCurrentTime(newTime);
-    }
-  };
+//   const handleProgressClick = (e: React.MouseEvent) => {
+//     if (videoRef.current && progressBarRef.current) {
+//       const rect = progressBarRef.current.getBoundingClientRect();
+//       const offsetX = e.clientX - rect.left;
+//       const percentage = Math.min(Math.max(offsetX / rect.width, 0), 1);
+//       const newTime = percentage * videoRef.current.duration;
+//       videoRef.current.currentTime = newTime;
+//       setProgressPercentage(percentage * 100);
+//       setCurrentTime(newTime);
+//     }
+//   };
 
 
-  const handleMouseDown = () => {
-    setIsDragging(true);
-  };
+//   const handleMouseDown = () => {
+//     setIsDragging(true);
+//   };
+
+ 
+//   const handleMouseMove = (e: MouseEvent) => {
+//     if (isDragging && progressBarRef.current) {
+//       const rect = progressBarRef.current.getBoundingClientRect();
+//       const offsetX = e.clientX - rect.left;
+//       const percentage = Math.min(Math.max(offsetX / rect.width, 0), 1);
+//       const newTime = percentage * duration;
+//       setProgressPercentage(percentage * 100);
+//       setCurrentTime(newTime);
+//     }
+//   };
+
+ 
+//   const handleMouseUp = () => {
+//     setIsDragging(false);
+//     if (videoRef.current) {
+//       videoRef.current.currentTime = currentTime; 
+//     }
+//   };
 
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging && progressBarRef.current) {
-      const rect = progressBarRef.current.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left;
-      console.log("offsetX:",offsetX)
-      const percentage = Math.min(Math.max(offsetX / rect.width, 0), 1);
-      const newTime = percentage * duration;
-      setProgressPercentage(percentage * 100);
-      setCurrentTime(newTime);
-    }
-  };
+//   useEffect(() => {
+//     if (isDragging) {
+      
+//       document.addEventListener("mousemove", handleMouseMove);
+//       document.addEventListener("mouseup", handleMouseUp);
+//     } else {
+      
+//       document.removeEventListener("mousemove", handleMouseMove);
+//       document.removeEventListener("mouseup", handleMouseUp);
+//     }
 
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    if (videoRef.current) {
-      videoRef.current.currentTime = currentTime;
-    }
-  };
-
-
-  useEffect(() => {
-    if (isDragging) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-    } else {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [isDragging]);
+//     return () => {
+//       document.removeEventListener("mousemove", handleMouseMove);
+//       document.removeEventListener("mouseup", handleMouseUp);
+//     };
+//   }, [isDragging]);
 
 
   useEffect(() => {
@@ -136,16 +150,10 @@ const VideoPlayer = () => {
       <div className={styles.controlPanel}>
         <div className={styles.control}>
           <div className={styles.volumeControl}>
-            <label htmlFor="volume"></label>
-            <input
-              type="range"
-              id="volume"
-              min="0"
-              max="1"
-              step="0.01"
-              value={volume}
-              onChange={handleVolumeChange}
-            />
+            <label htmlFor="volume">
+                {volume > 0? <SoundMaxSvg volume={volume} /> :<SoundOffSvg />}
+                </label>
+            <CustomSound newValue={setVolume} />
           </div>
           <div className={styles.play}>
             <div onClick={togglePlayPause}>
@@ -157,7 +165,7 @@ const VideoPlayer = () => {
 
         <div className={styles.progressPanel}>
           <span className={styles.time}>{formatTime(currentTime)}</span>
-          <div
+          {/* <div
             className={styles.progressBar}
             ref={progressBarRef}
             onClick={handleProgressClick}
@@ -169,7 +177,9 @@ const VideoPlayer = () => {
                 style={{ transform: `translateX(calc(${progressPercentage}%))` }}
               />
             </div>
-          </div>
+          </div> */}
+            <ProgressBar isDraggingProgressBar={setIsDragging} newValue={setProgressPercentage} currentProgressPercentage={progressPercentage} />
+
           <span className={styles.time}>{formatTime(duration)}</span>
         </div>
       </div>
