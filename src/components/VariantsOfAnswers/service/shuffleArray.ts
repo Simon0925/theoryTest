@@ -1,4 +1,4 @@
-import { Answer } from "../VariantsOfAnswers"
+import { Answer } from "../interface"
 
 
 export function shuffleArray(array: Answer[]): Answer[] {

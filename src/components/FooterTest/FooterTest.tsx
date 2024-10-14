@@ -82,7 +82,7 @@ export default function FooterTest({ maxPage, currentPage, click, modal, id, fla
     const next = () => {
         if (currentPage < maxPage - 1) {
             click(currentPage + 1);
-        }else if(maxPage === currentPage + 1){
+        }else if(maxPage -1 === currentPage){
             setModalWindow(true)
         }
     };

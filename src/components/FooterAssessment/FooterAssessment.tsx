@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import {
   toggleFlag,
   handlePageNavigation,
-  isCurrentQuestionAnswered
 } from "./service/FooterAssessmentService";
 
 interface FooterAssessmentProps {
@@ -18,7 +17,8 @@ interface FooterAssessmentProps {
   statusPause: (e: boolean) => void;
   flag: boolean;
   onFlagChange: (id: string, newFlag: boolean) => void;
-  getTime: (e: number | undefined) => void; 
+  getTime: (e: number | undefined) => void;
+  review:(e:boolean) => void
 }
 export default function FooterAssessment({
   currentPage,
@@ -30,6 +30,7 @@ export default function FooterAssessment({
   flag,
   onFlagChange,
   getTime,
+  review,
 }: FooterAssessmentProps) {
   const [flagged, setFlagged] = useState(flag);
   const [pause, setPause] = useState(false);
@@ -58,7 +59,7 @@ export default function FooterAssessment({
     <div className={styles.wrap}>
       <div className={styles.container}>
         <ButtonTest
-          click={() => handlePageNavigation(currentPage, click, maxPage, "previous")}
+          click={() => handlePageNavigation(currentPage, click, maxPage, "previous",review)}
           name="< Previous"
           color="#0078AB"
           backgroundColor={currentPage > 0 ? "white" : "#91BCD6"}
@@ -83,8 +84,8 @@ export default function FooterAssessment({
           svgColor={false}
         />
         <ButtonTest
-          click={() => handlePageNavigation(currentPage, click, maxPage, "next")}
-          name="Next >"
+          click={() => handlePageNavigation(currentPage, click, maxPage, "next",review)}
+          name={currentPage !== maxPage ? "Next >" : "Review"}
           color="#0078AB"
           backgroundColor={isQuestionAnswered ? "#FFEC4B" : "white"}
           svg={false}

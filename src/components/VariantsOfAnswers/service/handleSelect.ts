@@ -1,4 +1,5 @@
 import {updateLocalStorageWithAnswer} from './updateLocalStorageWithAnswer'
+
 export const handleSelect = (
     index: number,
     id: string,

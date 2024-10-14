@@ -1,12 +1,17 @@
 import styles from "./QuestionContent.module.scss";
 
+import hostname from "../../config/hostname";
+
 interface QuestionContentProps {
     question: string;
     photo?: string;
-    markers: boolean;
+    markers: boolean; 
 }
 
 export default function QuestionContent({ question, photo, markers }: QuestionContentProps) {
+
+
+
     return (
         <div className={styles['question-wrap']}>
             <span className={styles['question']}>
@@ -16,8 +21,9 @@ export default function QuestionContent({ question, photo, markers }: QuestionCo
             {photo && (
                 <img
                     className={styles['img']}
-                    src={`http://localhost:8080${photo}`}
-                    alt="Question Image"
+                    src={`${hostname}${photo}`}
+                    alt="Related to the question" 
+                    loading="lazy" 
                 />
             )}
         </div>

@@ -5,38 +5,9 @@ import { shuffleArray } from './service/shuffleArray';
 import {  handleSelect } from './service/handleSelect'; 
 import {updateLocalStorage} from './service/updateLocalStorage'
 
-export interface Answer {
-    answer: string;
-    tOF: boolean;
-    photo: boolean | string;
-}
+import {getBackgroundColor,getTextColor} from "./service/getColor"
 
-export interface Result {
-    id: string;
-    question: string;
-    status: boolean | string;
-    group: string;
-    flag: boolean;
-}
-
-interface ParData {
-    answer: string;
-    tOF: boolean;
-    photo: string | boolean;
-}
-
-interface VariantsOfAnswersrops {
-    id: string;
-    question: string;
-    group: string;
-    par: ParData[];
-    click: (e: string) => void;
-    currentFlag: boolean | undefined;
-    typeOftest: string; 
-    nextPage: ((e: number) => void) | null;
-    currentPage: number | null;
-    setQuestionsSelected?: (selected: { id: string, index: number }[]) => void; 
-}
+import {VariantsOfAnswersrops} from "./interface"
 
 export default function VariantsOfAnswers({
     par,
@@ -65,15 +36,7 @@ export default function VariantsOfAnswers({
         }
     }, [id, selected, question, group, currentFlag]);
 
-    const getBackgroundColor = (index: number, correct: boolean) => {
-        if (selectedOption === index) {
-            if (typeOftest === "MockTest") {
-                return "#FEEC49"; 
-            }
-            return correct ? '#00B676' : '#AA3B36'; 
-        }
-        return 'white'; 
-    };
+    
 
     return (
         <div className={styles.wrap}>
@@ -81,6 +44,7 @@ export default function VariantsOfAnswers({
             <div className={styles.variants}>
                 {shuffledAnswers.map((answer, index) => (
                     <Variant
+                        textColor={getTextColor(index,typeOftest,selectedOption)}
                         key={index}
                         index={index}
                         selectedOption={selectedOption}
@@ -99,7 +63,7 @@ export default function VariantsOfAnswers({
                         )} 
                         answer={answer.answer}
                         correct={answer.tOF}
-                        backgroundColor={getBackgroundColor(index, answer.tOF)}
+                        backgroundColor={getBackgroundColor(index, answer.tOF,typeOftest,selectedOption)}
                         photo={answer.photo}
                         typeOftest={typeOftest}
                     />

@@ -10,8 +10,9 @@ interface HeaderForTestProps {
   children?: React.ReactNode;
   finish: string;
   mockTest?: boolean;
-  reviewClick?:(e:boolean) => void 
-  result?:(e:boolean) => void 
+  reviewClick?:(e:boolean) => void;
+  result?:(e:boolean) => void;
+  trainerTest?: boolean;
 }
 
 export default function HeaderForTest({
@@ -22,7 +23,8 @@ export default function HeaderForTest({
   onExitClick,
   mockTest,
   reviewClick,
-  result
+  result,
+  trainerTest
 }: HeaderForTestProps) {
   const [showExitModal, setShowExitModal] = useState(false);
   const [showResultsModal, setShowResultsModal] = useState(false);
@@ -67,12 +69,17 @@ export default function HeaderForTest({
         click={handleExit}
         svgColor={false}
       />
-      <div className={styles['count-questions']}>
-        <span>Question</span>
-        <span>{currentQuestion + 1}</span>
-        <span>of</span>
-        <span>{questionCount}</span>
-      </div>
+      {trainerTest !== true &&
+        <div className={styles['count-questions']}>
+          <span>Question</span>
+          <span>{currentQuestion + 1}</span>
+          <span>of</span>
+          <span>{questionCount}</span>
+        </div>
+      }
+      {trainerTest === true &&
+        <div className={styles['count-questions']}>Road and traffic signs</div>
+      }
       <ButtonTest
         name={finish}
         color={"white"}

@@ -1,37 +1,48 @@
+import React from 'react';
 import Logo from "../Logo/Logo";
 import styles from "./Modal.module.scss";
-import { ReactNode } from "react";
+
 
 interface ModalProps {
     text: string;
-    title: ReactNode;  
+    title: React.ReactNode;  
     close: () => void; 
-    cancel: boolean;
+    cancel?: boolean; 
     blueBtnText: string;
     cancelClick?: () => void; 
 }
 
-export default function Modal({ text, title, close, cancel, blueBtnText, cancelClick }: ModalProps) {
+
+const Modal = React.memo(function Modal({ 
+    text, 
+    title, 
+    close, 
+    cancel = false,  
+    blueBtnText, 
+    cancelClick = () => {} 
+}: ModalProps) {
 
     return (
-        <div className={styles.wrap}>
+        <div className={styles.wrap} role="dialog" aria-labelledby="modal-title" aria-describedby="modal-text">
             <div className={styles.content}>
                 <div className={styles.logo}>
                     <Logo />
                 </div>
-                <span className={styles.title}>{title}</span>
-                <span className={styles.text}>{text}</span>
+                <span id="modal-title" className={styles.title}>{title}</span>
+                <span id="modal-text" className={styles.text}>{text}</span>
                 <div className={styles.btn}>
-                    {cancel && cancelClick && (
+                    {cancel && (
                         <button onClick={cancelClick} className={styles.btn2}>
                             Cancel
                         </button>
                     )}
-                     <button onClick={close} className={styles.btn1}>
+                    <button onClick={close} className={styles.btn1}>
                         {blueBtnText}
                     </button>
                 </div>
             </div>
         </div>
     );
-}
+});
+
+export default Modal;

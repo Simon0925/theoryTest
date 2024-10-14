@@ -9,26 +9,25 @@ import Modal from '../Modal/Modal';
 import ReviewModal from '../ReviewModal/ReviewModal';
 import { getUnansweredQuestions } from './service/getUnansweredQuestions';
 import { fetchQuestions } from './service/fetchQuestions';
-import {changeFlag} from './service/changeFlag'
-
+import { changeFlag } from './service/changeFlag';
 
 interface AssessmentProps {
   onClose: (e: boolean) => void;
-  result:(e: boolean) => void;
-  getTime:(e : number | undefined) => void
-  getQuestion:(e: Question[]) => void
+  result: (e: boolean) => void;
+  getTime: (e: number | undefined) => void;
+  getQuestion: (e: Question[]) => void;
 }
 
 interface ParData {
   answer: string;
   tOF: boolean;
-  photo: string | boolean  ;
+  photo: string | boolean;
 }
 
 export interface Question {
   _id: string;
   question: string;
-  photo?: string ;
+  photo?: string;
   group: string;
   par: ParData[];
   flag: boolean;
@@ -36,11 +35,11 @@ export interface Question {
 }
 
 export interface FlagChange {
-    id:string;
-    newFlag:boolean
+  id: string;
+  newFlag: boolean;
 }
 
-export default function Assessment({ onClose,result,getTime,getQuestion }: AssessmentProps) {
+export default function Assessment({ onClose, result, getTime, getQuestion }: AssessmentProps) {
   const localS = localStorage.getItem('result');
 
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -52,54 +51,49 @@ export default function Assessment({ onClose,result,getTime,getQuestion }: Asses
   const [reviewMode, setReviewMode] = useState<'all' | 'unanswered' | 'flagged'>('all');
   const [time, setTime] = useState<number | undefined>();
   const [timesUp, setTimesUp] = useState(false);
-  const [pause, setPause] = useState(false); 
-  const [currentAll,setCurrentAll] = useState(0)
+  const [pause, setPause] = useState(false);
+  const [currentAll, setCurrentAll] = useState(0);
   const [onFlagChange, setOnFlagChange] = useState<FlagChange>({ id: '', newFlag: false });
   const [questionsSelected, setQuestionsSelected] = useState<{ id: string, index: number }[]>([]);
-  
 
   useEffect(() => {
     if (onFlagChange.id) {
-     let updateVisibleQuestions = changeFlag(onFlagChange, visibleQuestions);
-     setVisibleQuestions(updateVisibleQuestions);
+      let updateVisibleQuestions = changeFlag(onFlagChange, visibleQuestions);
+      setVisibleQuestions(updateVisibleQuestions);
     }
   }, [onFlagChange]);
- 
-  useEffect(()=>{
-        if(reviewMode === "all"){
-             setCurrentAll(current)
-        }
-  },[current])
 
-  
+  useEffect(() => {
+    if (reviewMode === 'all') {
+      setCurrentAll(current);
+    } 
+  }, [current]);
 
   useEffect(() => {
     const loadQuestions = async () => {
       const data = await fetchQuestions();
-      getQuestion(data)
+      getQuestion(data);
       setQuestions(data);
       setLoading(false);
     };
     loadQuestions();
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     setUnansweredQuestions(getUnansweredQuestions(questions));
-  },[localS])
-
+  }, [localS]);
 
   useEffect(() => {
     switch (reviewMode) {
-        case 'unanswered':
-            if (questions.length > 0) {    
-              if (unansweredQuestions.length > 0) {
-                setVisibleQuestions(unansweredQuestions);
-                setCurrent(0);
-              }else{
-                setReviewMode("all");
-              }
-
-            }
+      case 'unanswered':
+        if (questions.length > 0) {
+          if (unansweredQuestions.length > 0) {
+            setVisibleQuestions(unansweredQuestions);
+            setCurrent(0);
+          } else {
+            setReviewMode('all');
+          }
+        }
         break;
       case 'flagged':
         setVisibleQuestions(questions.filter(q => q.flag));
@@ -115,8 +109,16 @@ export default function Assessment({ onClose,result,getTime,getQuestion }: Asses
     if (time !== undefined && time <= 0) {
       setTimesUp(true);
     }
-    if (time !== undefined)getTime(time)
+    if (time !== undefined) getTime(time);
   }, [time]);
+
+  const nextPage = (page: number) => {
+    if (page >= 0 && page < visibleQuestions.length) {
+      setCurrent(page);
+    } else {
+      setReviewModal(true);
+    }
+  };
 
   const handleReviewModeChange = (mode: 'all' | 'unanswered' | 'flagged') => {
     setReviewMode(mode);
@@ -127,77 +129,78 @@ export default function Assessment({ onClose,result,getTime,getQuestion }: Asses
 
   return (
     <div className={styles.wrap}>
-          <div>
-      <HeaderForTest
-        mockTest={true}
-        onExitClick={() => onClose(false)}
-        questionCount={visibleQuestions.length}
-        currentQuestion={current}
-        finish="Review"
-        reviewClick={() => setReviewModal(true)}
-      />
-    
-    {pause ? (
-        <div className={styles.pausedMessage}>Test paused</div>
-      ) : loading ? (
-        <div style={{
-           position:"absolute",
-           top: "40%",
-           left: "50%"
-        }}>
-          <Spinner color={'black'} />
-        </div>
-      ) : (
-        visibleQuestions[current] &&  (
+      <div>
+        <HeaderForTest
+          mockTest={true}
+          onExitClick={() => onClose(false)}
+          questionCount={visibleQuestions.length}
+          currentQuestion={current}
+          finish="Review"
+          reviewClick={() => setReviewModal(true)}
+        />
+
+        {pause ? (
+          <div className={styles.pausedMessage}>Test paused</div>
+        ) : loading ? (
+          <div
+            style={{
+              position: 'absolute',
+              top: '40%',
+              left: '50%',
+            }}
+          >
+            <Spinner color={'black'} />
+          </div>
+        ) : (
+          visibleQuestions[current] && (
             <div className={styles['question-wrap']}>
               <QuestionContent
-              question={visibleQuestions[current].question}
-              photo={typeof visibleQuestions[current].photo === 'string' ? visibleQuestions[current].photo : undefined}
-              markers={visibleQuestions[current].flag}
-            />
-            </div> 
-        )
-      )}
-        </div>
-        <div>
-        {!pause && visibleQuestions.length > 0 && visibleQuestions[current] && (
-            <VariantsOfAnswers
-                currentFlag={visibleQuestions[current].flag}
-                click={() => {}}
-                par={visibleQuestions[current].par}
                 question={visibleQuestions[current].question}
-                id={visibleQuestions[current]._id}
-                group={visibleQuestions[current].group}
-                typeOftest={'MockTest'}
-                nextPage={setCurrent}
-                currentPage={current}
-                setQuestionsSelected={setQuestionsSelected}
-            />
-            )}
-            {
-                visibleQuestions[current] && (
-                    <FooterAssessment
-                    getTime={setTime}
-                    statusPause={setPause}
-                    currentPage={current}
-                    click={setCurrent}
-                    maxPage={visibleQuestions.length}
-                    id={visibleQuestions[current]?._id || ""}
-                    flag={visibleQuestions[current]?.flag || false}
-                    onFlagChange={(id: string, newFlag: boolean) => setOnFlagChange({ id, newFlag })}
-                    setSelectedAnswers={questionsSelected}
-                />
-                )
-            }
-           
-    </div>
+                photo={typeof visibleQuestions[current].photo === 'string' ? visibleQuestions[current].photo : undefined}
+                markers={visibleQuestions[current].flag}
+              />
+            </div>
+          )
+        )}
+      </div>
+      <div>
+        {!pause && visibleQuestions.length > 0 && visibleQuestions[current] && (
+          <VariantsOfAnswers
+            currentFlag={visibleQuestions[current].flag}
+            click={() => {}}
+            par={visibleQuestions[current].par}
+            question={visibleQuestions[current].question}
+            id={visibleQuestions[current]._id}
+            group={visibleQuestions[current].group}
+            typeOftest={'MockTest'}
+            nextPage={nextPage}
+            currentPage={current}
+            setQuestionsSelected={setQuestionsSelected}
+          />
+        )}
+        {visibleQuestions[current] && (
+          <FooterAssessment
+            review={setReviewModal}
+            getTime={setTime}
+            statusPause={setPause}
+            currentPage={current}
+            click={nextPage}
+            maxPage={visibleQuestions.length}
+            id={visibleQuestions[current]?._id || ''}
+            flag={visibleQuestions[current]?.flag || false}
+            onFlagChange={(id: string, newFlag: boolean) => setOnFlagChange({ id, newFlag })}
+            setSelectedAnswers={questionsSelected}
+          />
+        )}
+      </div>
       {timesUp && (
         <Modal
           close={goToResults}
-          text={""}
+          text={''}
           title={
             <>
-              <h1>Time's up!</h1><br />
+              <h1>Time's up!</h1>
+              <br />
               Click Go to Results to view your assessment results.
             </>
           }
@@ -208,13 +211,13 @@ export default function Assessment({ onClose,result,getTime,getQuestion }: Asses
 
       {reviewModal && (
         <ReviewModal
-            setShowFlagged={() => handleReviewModeChange('flagged')}
-            cancelClick={setReviewModal}
-            questionsUnanswered={unansweredQuestions.length <= 0 ? questions.length : unansweredQuestions.length}
-            questionsFlagged={visibleQuestions.filter(q => q.flag).length}
-            setShowUnansweredOnly={() => handleReviewModeChange('unanswered')}
-            setShowAllOnly={() => handleReviewModeChange('all')} 
-            results={result}       
+          setShowFlagged={() => handleReviewModeChange('flagged')}
+          cancelClick={setReviewModal}
+          questionsUnanswered={unansweredQuestions.length <= 0 ? questions.length : unansweredQuestions.length}
+          questionsFlagged={visibleQuestions.filter(q => q.flag).length}
+          setShowUnansweredOnly={() => handleReviewModeChange('unanswered')}
+          setShowAllOnly={() => handleReviewModeChange('all')}
+          results={result}
         />
       )}
     </div>

@@ -18,47 +18,7 @@
         text-align: center;
     }
 
-    .totalQuestions{
-        width: 225px;
-        height: 150px;
-        position: relative;
-        
-        .once{
-            background-color: #0079AC;
-            width: 175px;
-            height: 75px;           
-        }
-        .container{
-            width: 60%;
-            height: 75px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            .percent{
-                color: white;
-                font-size: 28px;
-            }
-            .title{
-                color: white;
-                font-size: 20px;
-            }
-        }
-       
-        
-        .circle{
-            position: absolute;
-            border-radius: 30rem;
-            width: 169px;
-            right: -35px;
-            top: -9.5px;
-        }
-        .twice{
-            background-color: #00BE5D;
-            width: 175px;
-            height: 75px;
-        }
-    }
+    
 
    
     .btn{

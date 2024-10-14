@@ -1,6 +1,6 @@
 import styles from './PracticeTest.module.scss';
 import FooterTest from '../FooterTest/FooterTest';
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useEffect, useState } from 'react';
 import Modal from '../Modal/Modal';
@@ -31,11 +31,12 @@ interface PracticeTestProps {
 
 export default function PracticeTest({closeTest,result}:PracticeTestProps) {
 
-  const question = useSelector((state: RootState) => state.practice.currentQuestions);
+  const question = useSelector((state: RootState) => state.practice.currentQuestions, shallowEqual);
+
   const [questions, setQuestions] = useState<Question[]>([]);
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState(false);
-  const [explanation, setExplanation] = useState(false);
+  const [isExplanationVisible, setIsExplanationVisible] = useState(false);
   const [currentId, setCurrentId] = useState(''); 
   const [currentQuestions, setCurrentQuestions] = useState<Question | undefined>(undefined);
   const [markers, setMarkers] = useState(false);
@@ -114,9 +115,9 @@ export default function PracticeTest({closeTest,result}:PracticeTestProps) {
             setQuestionsSelected={setQuestionsSelected}
         />
           )}
-         {explanation === true && (
+         {isExplanationVisible === true && (
               <Modal 
-              close={() => setExplanation(false)} 
+              close={() => setIsExplanationVisible(false)} 
               text={currentQuestions?.explanation || ""} 
               title={'DVSA explanation'} 
               cancel={false} 
@@ -131,7 +132,7 @@ export default function PracticeTest({closeTest,result}:PracticeTestProps) {
             click={setCurrent}
             setSelectedAnswer={questionsSelected}
             id={currentQuestions ? currentQuestions._id : ""}
-            modal={setExplanation}
+            modal={setIsExplanationVisible}
             flag={markers}
           />
         </div>

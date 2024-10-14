@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import styles from './CircleTrainer.module.scss';
 
 const CircleTrainer = () => {
@@ -9,20 +9,21 @@ const CircleTrainer = () => {
         indent: 75,
         circleBlueDashoffset: 0.75
     });
+
     const r = 16;
-    const circleLength = 2 * Math.PI * r; 
+    const circleLength = useMemo(() => 2 * Math.PI * r, [r]); 
     const x = 21;
     const y = 21;
 
-    const filled = (percent: number) => {
+    const filled = useCallback((percent:number) => {
         setCircleFilled((prev) => ({
-            filled: prev.filled === 76? 75 :prev.filled + percent,
-            indent: prev.indent === 24? 25 : prev.indent - percent,
+            filled: prev.filled === 76 ? 75 : prev.filled + percent,
+            indent: prev.indent === 24 ? 25 : prev.indent - percent,
             circleBlueDashoffset: Number((prev.circleBlueDashoffset - (percent / 100)).toFixed(2))
         }));
-    };
+    }, []);
 
-    const incrementPercent = () => {
+    const incrementPercent = useCallback(() => {
         if (curentPercent <= 55) {
             setTimeout(() => {
                 filled(1); 
@@ -35,14 +36,14 @@ const CircleTrainer = () => {
                 setCurentPercent((prev) => prev + 1);
             }, 20);
         }
-    };
+    }, [curentPercent, filled]);
 
     useEffect(() => {
         if (curentPercent < 75) {
             incrementPercent();
         }
-    }, [curentPercent]);
- 
+    }, [curentPercent, incrementPercent]);
+
     return (
         <>
             <svg
@@ -99,7 +100,6 @@ const CircleTrainer = () => {
                     dominantBaseline="middle" 
                     fill="white" 
                     fontSize="4" 
-                  
                 >
                     in total
                 </text>
@@ -111,7 +111,7 @@ const CircleTrainer = () => {
                     fill="white" 
                     fontSize="5" 
                 >
-                    756
+                    746
                 </text>
                 <text
                     x="50%" 

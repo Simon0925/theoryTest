@@ -22,13 +22,15 @@ export const handlePageNavigation = (
   currentPage: number,
   click: (e: number) => void,
   maxPage: number,
-  direction: "previous" | "next"
+  direction: "previous" | "next",
+  review:(e: boolean) => void
 ) => {
   if (direction === "previous" && currentPage > 0) {
     click(currentPage - 1);
   } else if (direction === "next" && currentPage < maxPage - 1) {
     click(currentPage + 1);
   }
+  if(direction === "next" && currentPage === maxPage - 1) review(true);
 };
 
 export const isCurrentQuestionAnswered = (

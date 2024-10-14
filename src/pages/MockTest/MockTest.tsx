@@ -62,7 +62,12 @@ export default function MockTest() {
         />
       ) : data ? (
         <div className={styles.mockTestContainer}>
-          {!isTestStarted && <MockTestChart data={data} />}
+          {!isTestStarted &&
+            <div className={styles.statistics}>
+              <MockTestChart data={data} />
+              <DataStatisticsAssessment data={data} />
+            </div>
+          }
           {isTestStarted && (
             <Assessment
               getQuestion={setQuestions}
@@ -71,7 +76,6 @@ export default function MockTest() {
               onClose={handleTestClose}
             />
           )}
-          {!isTestStarted && <DataStatisticsAssessment data={data} />}
           {!isTestStarted && (
             <FooterMockTest onTestStart={() => setIsTestStarted(true)} />
           )}

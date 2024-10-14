@@ -1,4 +1,4 @@
-import { Result } from "../VariantsOfAnswers";
+import { Result } from "../interface"
 
 
 export const updateLocalStorageWithAnswer = (index: number, id: string, shuffledAnswers: { tOF: boolean }[]) => {

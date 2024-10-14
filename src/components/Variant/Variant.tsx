@@ -1,21 +1,11 @@
-import React, { useMemo } from 'react';
+import React, {useMemo } from 'react';
 import CrossSvg from '../../SVG/CrossSvg/CrossSvg';
 import OkVectorSvg from '../../SVG/OkVectorSvg/OkVectorSvg';
 import styles from './Variant.module.scss';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-
-interface VariantProps {
-    answer: string;
-    correct: boolean;
-    backgroundColor: string;
-    click: () => void;
-    color: string;
-    photo: boolean | string;
-    selectedOption: null | number;
-    index: number;
-    typeOftest:string
-}
+import {VariantProps} from "./interface"
+import hostname from '../../config/hostname';
 
 const Variant: React.FC<VariantProps> = ({
     color,
@@ -26,7 +16,8 @@ const Variant: React.FC<VariantProps> = ({
     photo,
     selectedOption,
     index,
-    typeOftest
+    typeOftest,
+    textColor
 }) => {
     const practice = useSelector((state: RootState) => state.practice.correct);
 
@@ -44,14 +35,14 @@ const Variant: React.FC<VariantProps> = ({
         return null;
     }, [correct, index, practice, selectedOption]);
 
-  
+
     return (
         <div onClick={click} style={{ backgroundColor, color }} className={styles['wrap']}>
-            <span>{answer}</span>
+            <span style={{ color: textColor }} >{answer}</span>
             {photo && (
                 <img
                     className={styles['img']}
-                    src={`http://localhost:8080${photo}`}
+                    src={`${hostname}${photo}`}
                     alt="Variant"
                 />
             )}
