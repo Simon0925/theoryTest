@@ -5,7 +5,7 @@ import PlayVectorSvg from "../../SVG/PlayVectorSvg/PlayVectorSvg";
 import hostname from "../../config/hostname";
 import NextForwardArrow from "../../SVG/NextForwardArrow/NextForwardArrow";
 
-// Форматирование времени
+
 const formatTime = (time: number) => {
   const minutes = Math.floor(time / 60);
   const seconds = Math.floor(time % 60);
@@ -22,7 +22,7 @@ const VideoPlayer = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [progressPercentage, setProgressPercentage] = useState(0);
 
-  // Воспроизведение/пауза видео
+
   const togglePlayPause = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
@@ -35,7 +35,7 @@ const VideoPlayer = () => {
     }
   };
 
-  // Изменение громкости
+
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseFloat(e.target.value);
     if (videoRef.current) {
@@ -44,7 +44,7 @@ const VideoPlayer = () => {
     }
   };
 
-  // Обновление прогресса на основе события timeupdate
+
   const updateProgress = () => {
     if (videoRef.current && !isDragging) {
       const percentage = (videoRef.current.currentTime / videoRef.current.duration) * 100;
@@ -53,14 +53,13 @@ const VideoPlayer = () => {
     }
   };
 
-  // Установка продолжительности после загрузки метаданных
   const handleLoadedMetadata = () => {
     if (videoRef.current) {
       setDuration(videoRef.current.duration);
     }
   };
 
-  // Клик по прогресс-бару
+
   const handleProgressClick = (e: React.MouseEvent) => {
     if (videoRef.current && progressBarRef.current) {
       const rect = progressBarRef.current.getBoundingClientRect();
@@ -73,12 +72,12 @@ const VideoPlayer = () => {
     }
   };
 
-  // Начало перетаскивания
+
   const handleMouseDown = () => {
     setIsDragging(true);
   };
 
-  // Перемещение мыши
+
   const handleMouseMove = (e: MouseEvent) => {
     if (isDragging && progressBarRef.current) {
       const rect = progressBarRef.current.getBoundingClientRect();
@@ -91,7 +90,7 @@ const VideoPlayer = () => {
     }
   };
 
-  // Окончание перетаскивания
+
   const handleMouseUp = () => {
     setIsDragging(false);
     if (videoRef.current) {
@@ -99,7 +98,7 @@ const VideoPlayer = () => {
     }
   };
 
-  // Добавляем и удаляем обработчики перетаскивания
+
   useEffect(() => {
     if (isDragging) {
       document.addEventListener("mousemove", handleMouseMove);
@@ -115,7 +114,7 @@ const VideoPlayer = () => {
     };
   }, [isDragging]);
 
-  // Обновление прогресса по времени видео
+
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
