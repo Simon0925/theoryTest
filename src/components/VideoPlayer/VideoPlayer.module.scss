@@ -1,62 +1,70 @@
-.wrap{
+.wrap {
     position: relative;
-    .video{
-        min-width: 100%;
-        height: 90vh;;
-        object-fit: contain;
-        object-position: center;
+  
+    .video {
+      min-width: 100%;
+      height: 90vh;
+      object-fit: contain;
+      object-position: center;
     }
-    .controlPanel{
-        position: absolute;
-        width: 400px;
-        height: 200px;
-        background-color: red;
-        top:60%;
-        left: 40%;
-
-        .control{
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem;
-
-            .volumeControl{
-
-                input{
-                    width: 100px;
-                }
+  
+    .controlPanel {
+      position: absolute;
+      width: 400px;
+      height: 200px;
+      background-color: red;
+      top: 60%;
+      left: 40%;
+  
+      .control {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem;
+  
+        .volumeControl {
+          input {
+            width: 100px;
+          }
+        }
+      }
+  
+    .progressPanel {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+  
+        .progressBar {
+          width: 200px;
+          height: 5px;
+          background-color: blue;
+          
+  
+          .progress {
+            height: 5px;
+            background-color: #909084;
+            width: 0%;
+            position: relative;
+  
+            .slider {
+              position: absolute;
+              right: 0;
+              top: -7.5px;
+              width: 5px;
+              height: 20px;
+              background-color: white;
+              border-radius: 2px;
+              transform: translateX(50%);
+           
             }
+          }
         }
-
-        .progress{
-            padding: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            .progressBar {
-                display: flex;
-                align-items: center;
-                width: 200px;
-                height: 10px;
-                background-color: #67665B;
-                position: relative;
-        
-                .progress {
-                  padding: 0;
-                  height: 100%;
-                  background-color: #909084;
-                  width: 0%;
-
-                  .slider{
-                    width: 3px;
-                    height: 10px;
-                    color: green;
-                  }
-                }
-               
-              }
-              .time{
-                color: #C1C0B4;
-              }
+  
+        .time {
+          color: #c1c0b4;
+          font-size: 14px;
         }
+      }
     }
-}
+  }
+  
