@@ -1,17 +1,18 @@
 
-.sliderContainer {
+.progressContainer {
     width: 100%;
   
+    padding: 0 0.5rem;
   
   
-  .sliderTrack {
+  .progressTrack {
     position: relative;
     width: 100%;
     height: 4px;
     background-color: #55554A; 
     border-radius: 5px;
-  
-    .sliderFilled {
+    cursor: pointer;
+    .progressFilled {
       position: absolute;
       top: 0;
       left: 0;
@@ -20,7 +21,7 @@
       border-radius: 5px 0 0 5px; 
       
     }
-    .sliderThumb{
+    .progressThumb{
       position: absolute;
       top: 50%;
       width: 5px;

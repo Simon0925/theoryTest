@@ -1,6 +1,16 @@
+import styles from "./NextForwardArrow.module.scss"
 
-const NextForwardArrow = () => (
+interface NextForwardArrowProps {
+    click:(e:boolean)=>void;
+    state:boolean
+}
+
+
+const NextForwardArrow = ({click,state}:NextForwardArrowProps) => (
+  
   <svg
+    className={styles.wrap}
+    onClick={()=>click(!state)}
     fill="#C8C7BE"
     width="20px"
     height="20px"

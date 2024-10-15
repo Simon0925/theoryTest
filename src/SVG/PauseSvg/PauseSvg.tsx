@@ -1,6 +1,15 @@
+import { useRef } from "react";
 
 
-const PauseSvg = () => (
+const PauseSvg = () => {
+  const refSvg = useRef<SVGSVGElement>(null);
+
+  const press = () => {
+    if (refSvg.current) {
+      refSvg.current.setAttribute("width", "25px");
+    }
+  };
+  return(
   <svg
     width="30px"
     height="30px"
@@ -9,7 +18,8 @@ const PauseSvg = () => (
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
     fill="#ffffff"
-    
+    onMouseDown={press}
+    ref={refSvg}
   >
     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
@@ -30,6 +40,7 @@ const PauseSvg = () => (
       </g>
     </g>
   </svg>
-);
+  )
+  };
 
 export default PauseSvg;

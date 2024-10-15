@@ -1,5 +1,18 @@
+import { useRef } from "react";
 
-const PlayVectorSvg = () => (
+const PlayVectorSvg = () => {
+
+  const refSvg = useRef<SVGSVGElement>(null);
+
+  const press = () => {
+    if (refSvg.current) {
+      refSvg.current.setAttribute("width", "25px");
+    }
+  };
+
+  return(
+    
+    
   <svg
     width="30px"
     height="30px"
@@ -9,6 +22,8 @@ const PlayVectorSvg = () => (
     xmlnsXlink="http://www.w3.org/1999/xlink"
     fill="#ffffff"
     stroke="#ffffff"
+    onMouseDown={press}
+    ref={refSvg}
   >
     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
@@ -33,6 +48,8 @@ const PlayVectorSvg = () => (
       </g>
     </g>
   </svg>
-);
+  
+  )
+  };
 
 export default PlayVectorSvg;

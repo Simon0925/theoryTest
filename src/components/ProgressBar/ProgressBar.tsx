@@ -1,87 +1,95 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import styles from "./ProgressBar.module.scss";
 
 interface ProgressBarProps {
     newValue: (e: number) => void;
-    currentProgressPercentage:number;
-    isDraggingProgressBar:(e:boolean) => void
+    currentProgressPercentage: number;
+    isDraggingProgressBar: (e: boolean) => void;
+    newTime: (e: number) => void;
 }
-// { newValue }: ProgressBarProps
-const ProgressBar = ({ currentProgressPercentage,newValue ,isDraggingProgressBar}: ProgressBarProps) => {
 
-  const [value, setValue] = useState(0); 
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const sliderRef = useRef<HTMLDivElement | null>(null); 
+const ProgressBar = ({ currentProgressPercentage, newValue, isDraggingProgressBar, newTime }: ProgressBarProps) => {
+    const [value, setValue] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
+    const progressRef = useRef<HTMLDivElement | null>(null);
 
-//   useEffect(() => {
-//     newValue(value / 100); 
-//   }, [value]);
-  useEffect(() => {
-    isDraggingProgressBar(isDragging)
-  }, [isDragging]);
+    useEffect(() => {
+        isDraggingProgressBar(isDragging);
+    }, [isDragging, isDraggingProgressBar]);
 
-useEffect(() => {
-    if (isDragging) {
-    //   console.log("value ProgressBar", value);
-      newValue(value); 
-    }
-  }, [value, isDragging]);
+    useEffect(() => {
+        if (!isDragging && currentProgressPercentage !== value) {
+            setValue(currentProgressPercentage);
+        }
+    }, [currentProgressPercentage, value, isDragging]);
 
-  useEffect(() => {
-    setValue(currentProgressPercentage); 
-  }, [currentProgressPercentage]);
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-  };
-
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging && sliderRef.current) {
-      const slider = sliderRef.current.getBoundingClientRect();
-      let newLeft = e.clientX - slider.left;
-      if (newLeft < 0) newLeft = 0;
-      if (newLeft > slider.width) newLeft = slider.width;
-      const newValue = Math.round((newLeft / slider.width) * 100);
-      setValue(newValue);
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false); 
-  };
-
-  useEffect(() => {
-    if (isDragging) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-    } else {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    }
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+    const updateValueFromPosition = (clientX: number) => {
+        if (progressRef.current) {
+            const progress = progressRef.current.getBoundingClientRect();
+            let newLeft = clientX - progress.left;
+            if (newLeft < 0) newLeft = 0;
+            if (newLeft > progress.width) newLeft = progress.width;
+            const newValue = Math.round((newLeft / progress.width) * 100);
+            setValue(newValue);
+            return newValue;
+        }
+        return value;
     };
-  }, [isDragging]);
 
-  return (
-    <div className={styles.sliderContainer}>
-      <div ref={sliderRef} className={styles.sliderTrack}>
-        <div
-          className={styles.sliderFilled}
-          style={{ width: `${value}%` }} 
-        ></div>
-        <div
-          className={styles.sliderThumb}
-          style={{
-            left: `${value}%`,
-            transform: "translate(-50%, -50%)" 
-          }}
-          onMouseDown={handleMouseDown}
-        ></div>
-      </div>
-    </div>
-  );
+    const handleMouseMove = useCallback(
+        (e: MouseEvent) => {
+            if (isDragging) {
+                const newV = updateValueFromPosition(e.clientX);
+                newValue(newV);
+            }
+        },
+        [isDragging, newValue]
+    );
+
+    const handleMouseUp = useCallback(() => {
+        newValue(value); 
+        setIsDragging(false);
+    }, [value, newValue]);
+
+    useEffect(() => {
+        if (isDragging) {
+            document.addEventListener("mousemove", handleMouseMove);
+            document.addEventListener("mouseup", handleMouseUp);
+        } else {
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
+        }
+        return () => {
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
+        };
+    }, [isDragging, handleMouseMove, handleMouseUp]);
+
+    const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        setIsDragging(true);
+        const newV = updateValueFromPosition(e.clientX);
+        newTime(newV);
+    };
+
+    return (
+        <div className={styles.progressContainer}>
+            <div
+                ref={progressRef}
+                className={styles.progressTrack}
+                onMouseDown={handleMouseDown}
+            >
+                <div className={styles.progressFilled} style={{ width: `${value}%` }}></div>
+                <div
+                    className={styles.progressThumb}
+                    style={{
+                        left: `${value}%`,
+                        transform: "translate(-50%, -50%)"
+                    }}
+                    onMouseDown={() => setIsDragging(true)}
+                ></div>
+            </div>
+        </div>
+    );
 };
 
 export default ProgressBar;
