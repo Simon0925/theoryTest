@@ -1,21 +1,21 @@
 .wrap {
     position: relative;
     width: 100%;
+    display: flex;
+    justify-content: center;
     .video {
         width: 100%;
-        max-height: 89vh;
+        height: 89vh;
         object-position: center;
     }
   
     .controlPanel {
       position: absolute;
-      width: 35%;
       height: 90px;
       background-color: rgba(63, 63, 55, 0.7);
       backdrop-filter: blur(10px);
       border-radius: 0.625rem;
-      top: 75%;
-      left: 35%;
+      bottom: 5rem;
 
     
       .control {
