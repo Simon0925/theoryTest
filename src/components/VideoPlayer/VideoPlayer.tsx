@@ -147,7 +147,14 @@ const VideoPlayer = () => {
     return () => clearTimeout(timer);
   }, [isControlPanelHovered, isVisible]);
 
-
+  useEffect(() => {
+    if (videoRef.current) {
+        setIsPlaying(true)
+      videoRef.current.play().catch((error) => {
+        console.log("Error playing the video:", error);
+      });
+    }
+  }, []);
 
   return (
     <div 
