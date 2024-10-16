@@ -1,4 +1,4 @@
-import styles from "./NextForwardArrow.module.scss"
+import styles from "./NextForwardArrowSvg.module.scss"
 
 interface NextForwardArrowProps {
     click:(e:boolean)=>void;
@@ -6,7 +6,7 @@ interface NextForwardArrowProps {
 }
 
 
-const NextForwardArrow = ({click,state}:NextForwardArrowProps) => (
+const NextForwardArrowSvg = ({click,state}:NextForwardArrowProps) => (
   
   <svg
     className={styles.wrap}
@@ -27,4 +27,4 @@ const NextForwardArrow = ({click,state}:NextForwardArrowProps) => (
   </svg>
 );
 
-export default NextForwardArrow;
+export default NextForwardArrowSvg;

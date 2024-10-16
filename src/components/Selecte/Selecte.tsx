@@ -1,23 +1,28 @@
 import { useEffect, useState } from "react";
 import styles from "./Selecte.module.scss";
 import OkVectorSvg from "../../SVG/OkVectorSvg/OkVectorSvg";
+import { useVideo } from "../../context/VideoContext/VideoContext.tsx";
 
 interface SelecteProps {
   selecteVisible: (e: boolean) => void;
-  speed:string;
-  getSpeed:(e: string) => void;
+  selectionVisible:(e:boolean) => void;
 }
 
-const Selecte = ({ selecteVisible,speed,getSpeed }: SelecteProps) => {
-  const [selectedSpeed, setSelectedSpeed] = useState(speed);
+const Selecte = ({ selecteVisible,selectionVisible }: SelecteProps) => {
+  const {
+    setSelectedSpeed,
+    selectedSpeed
+} = useVideo();
   const [isVisible, setIsVisible] = useState(false);
-
   const speeds = ["0.5x", "1.0x", "1.25x", "1.5x", "2x"];
+
+  useEffect(()=>{
+    selectionVisible(isVisible)
+  },[isVisible])
 
 
   const handleSpeedClick = (e: React.MouseEvent, speed: string) => {
     e.stopPropagation();
-    getSpeed(speed)
     setSelectedSpeed(speed);
     selecteVisible(false);
     setIsVisible(false);

@@ -1,15 +1,16 @@
-import { useRef, useState, useEffect } from "react";
+import {  useState, useEffect, useCallback } from "react";
 import styles from "./VideoPlayer.module.scss";
 import PauseSvg from "../../SVG/PauseSvg/PauseSvg";
 import PlayVectorSvg from "../../SVG/PlayVectorSvg/PlayVectorSvg";
 import hostname from "../../config/hostname";
-import NextForwardArrow from "../../SVG/NextForwardArrow/NextForwardArrow";
 import SoundMaxSvg from "../../SVG/SoundMaxSvg/SoundMaxSvg";
 import SoundOffSvg from "../../SVG/SoundOffSvg/SoundOffSvg";
-import CustomSound from "../../UI/CustomSlider/CustomSound";
+import CustomSound from "../../UI/CustomSound/CustomSound.tsx";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import FastForwardSvg from "../../SVG/FastForwardSvg/FastForwardSvg";
 import Selecte from "../Selecte/Selecte";
+import NextForwardArrowSvg from "../../SVG/NextForwardArrowSvg/NextForwardArrow";
+import { useVideo } from "../../context/VideoContext/VideoContext.tsx";
 
 const formatTime = (time: number) => {
   const minutes = Math.floor(time / 60);
@@ -18,26 +19,23 @@ const formatTime = (time: number) => {
 };
 
 const VideoPlayer = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(1);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [progressPercentage, setProgressPercentage] = useState(0);
-  const [wasPlayingBeforeDrag, setWasPlayingBeforeDrag] = useState(false);
-  const [newTime, setNewTime] = useState<null | number>();
+    const {
+        videoRef,
+        isPlaying,
+        togglePlayPause,
+        volume,
+        currentTime,
+        duration,
+        skipTime,
+        newTime,
+        selectedSpeed,
+        handleLoadedMetadata
+    } = useVideo();
+  
   const [isSpeed, setIsSpeed] = useState(false);
-  const [selectedSpeed, setSelectedSpeed] = useState("1.0x");
-  const [isVisible, setIsVisible] = useState(true); // Control panel visibility
-  const [isControlPanelHovered, setIsControlPanelHovered] = useState(false); // New state to track if the control panel is hovered
-
-  useEffect(() => {
-    if (newTime && videoRef.current) {
-      const newV = (newTime / 100) * videoRef.current.duration;
-      videoRef.current.currentTime = newV;
-    }
-  }, [newTime]);
+  const [isVisible, setIsVisible] = useState(true); 
+  const [isControlPanelHovered, setIsControlPanelHovered] = useState(false);
+  const [selectionVisible ,setSelectionVisible] = useState(false)
 
   useEffect(() => {
     if (videoRef.current) {
@@ -46,132 +44,49 @@ const VideoPlayer = () => {
   }, [selectedSpeed]);
 
   useEffect(() => {
-    if (isDragging && videoRef.current) {
-      const newTime = (progressPercentage / 100) * (videoRef.current.duration || 0);
-      videoRef.current.currentTime = newTime;
+    if (newTime !== null && videoRef.current) {
+      const newVideoTime = (newTime / 100) * videoRef.current.duration;
+      videoRef.current.currentTime = newVideoTime;
     }
-  }, [isDragging, progressPercentage]);
+  }, [newTime]);
 
-  const togglePlayPause = () => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
-        setIsPlaying(true);
-      } else {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
-    }
-  };
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.volume = volume;
-    }
-  }, [volume]);
-
-  const updateProgress = () => {
-    if (videoRef.current && !isDragging) {
-      const percentage = (videoRef.current.currentTime / videoRef.current.duration) * 100;
-      setProgressPercentage(percentage);
-      setCurrentTime(videoRef.current.currentTime);
-    }
-  };
-
-  const handleLoadedMetadata = () => {
-    if (videoRef.current) {
-      setDuration(videoRef.current.duration);
-    }
-  };
-
-  useEffect(() => {
-    if (isDragging) {
-      if (isPlaying) {
-        setWasPlayingBeforeDrag(true);
-        videoRef.current?.pause();
-        setIsPlaying(false);
-      }
-    } else {
-      if (wasPlayingBeforeDrag) {
-        videoRef.current?.play();
-        setIsPlaying(true);
-      }
-      setWasPlayingBeforeDrag(false);
-    }
-  }, [isDragging]);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (video) {
-      video.addEventListener("timeupdate", updateProgress);
-      return () => {
-        video.removeEventListener("timeupdate", updateProgress);
-      };
-    }
-  }, []);
-
-  const skipTime = (direction: string) => {
-    if (videoRef.current) {
-      if (direction === "forward") {
-        videoRef.current.currentTime = Math.min(videoRef.current.currentTime + 3, videoRef.current.duration);
-      } else if (direction === "backward") {
-        videoRef.current.currentTime = Math.max(videoRef.current.currentTime - 3, 0);
-      }
-    }
-  };
-
-  const handleMouseMove = () => {
+  const handleMouseMove = useCallback(() => {
     setIsVisible(true);
-  };
-
-  const handleControlPanelMouseEnter = () => {
-    setIsControlPanelHovered(true);
-    setIsVisible(true); 
-  };
-
-  const handleControlPanelMouseLeave = () => {
-    setIsControlPanelHovered(false);
-    if (!isVisible) {
-      setIsVisible(false); 
-    }
-  };
-
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!isControlPanelHovered && isVisible) {
+      if (!isControlPanelHovered) {
         setIsVisible(false);
       }
-    }, 3000); 
+    }, 3000);
   
     return () => clearTimeout(timer);
-  }, [isControlPanelHovered, isVisible]);
+  }, [isControlPanelHovered]);
 
-  useEffect(() => {
-    if (videoRef.current) {
-        setIsPlaying(true)
-      videoRef.current.play().catch((error) => {
-        console.log("Error playing the video:", error);
-      });
-    }
-  }, []);
+
 
   return (
     <div 
       onMouseMove={handleMouseMove}
       className={styles.wrap}
+      onClick={(e) => {
+        if(isSpeed&&!selectionVisible){
+            setIsSpeed(false)
+        }
+      }}
     >
       <video
         ref={videoRef}
         onLoadedMetadata={handleLoadedMetadata}
-        onMouseDown={()=>setIsSpeed(false)}
         className={styles.video}
         src={`${hostname}/video/introduction.mp4`}
       />
       {isVisible && (
         <div
-          onMouseEnter={handleControlPanelMouseEnter}
-          onMouseLeave={handleControlPanelMouseLeave}
+          onMouseEnter={() => setIsControlPanelHovered(true)}
+          onMouseLeave={() => setIsControlPanelHovered(false)}
           className={styles.controlPanel}
         >
           <div className={styles.control}>
@@ -179,13 +94,13 @@ const VideoPlayer = () => {
               <label htmlFor="volume">
                 {volume > 0 ? <SoundMaxSvg volume={volume} /> : <SoundOffSvg />}
               </label>
-              <CustomSound newValue={setVolume} />
+              <CustomSound  />
             </div>
             <div className={styles.play}>
                 <div className={styles.fastForward}>
                     <FastForwardSvg onClick={() => skipTime("backward")} transform={"rotate(180)"} />
                 </div>
-              <div className={styles.playBtn} onClick={togglePlayPause}>
+                <div className={styles.playBtn} onClick={togglePlayPause}>
                 {isPlaying ? <PauseSvg /> : <PlayVectorSvg />}
               </div>
               <div className={styles.fastForward}>
@@ -193,18 +108,13 @@ const VideoPlayer = () => {
               </div>
             </div>
             <div className={styles.speed}>
-              <NextForwardArrow click={() => setIsSpeed(!isSpeed)} state={isSpeed} />
-              {isSpeed && <Selecte speed={selectedSpeed} getSpeed={setSelectedSpeed} selecteVisible={setIsSpeed} />}
+              <NextForwardArrowSvg click={() => setIsSpeed(!isSpeed)} state={isSpeed} />
+              {isSpeed && <Selecte selectionVisible={setSelectionVisible}  selecteVisible={setIsSpeed} />}
             </div>
           </div>
-
           <div className={styles.progressPanel}>
             <span className={styles.time}>{formatTime(currentTime)}</span>
-            <ProgressBar
-              newTime={setNewTime}
-              isDraggingProgressBar={setIsDragging}
-              newValue={setProgressPercentage}
-              currentProgressPercentage={progressPercentage}
+                <ProgressBar
             />
             <span className={styles.time}>{formatTime(duration)}</span>
           </div>

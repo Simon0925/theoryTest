@@ -1,17 +1,20 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./CustomSound.module.scss";
+import { useVideo } from "../../context/VideoContext/VideoContext.tsx";
 
-interface CustomSoundProps {
-  newValue: (e: number) => void;
-}
 
-const CustomSound = ({ newValue }: CustomSoundProps) => {
+
+const CustomSound = () => {
+
+  const {
+    setVolume
+} = useVideo();
   const [value, setValue] = useState(50); 
   const [isDragging, setIsDragging] = useState(false); 
   const sliderRef = useRef<HTMLDivElement | null>(null); 
 
   useEffect(() => {
-    newValue(value / 100); 
+    setVolume(value / 100); 
   }, [value]);
 
   const handleMouseDown = () => {

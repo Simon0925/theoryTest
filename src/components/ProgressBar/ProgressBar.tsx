@@ -1,27 +1,29 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import styles from "./ProgressBar.module.scss";
+import { useVideo } from "../../context/VideoContext/VideoContext.tsx";
 
-interface ProgressBarProps {
-    newValue: (e: number) => void;
-    currentProgressPercentage: number;
-    isDraggingProgressBar: (e: boolean) => void;
-    newTime: (e: number) => void;
-}
 
-const ProgressBar = ({ currentProgressPercentage, newValue, isDraggingProgressBar, newTime }: ProgressBarProps) => {
+
+const ProgressBar = () => {
+    const {
+        progressPercentage,
+        setProgressPercentage,
+        setNewTime,
+        isDragging,
+        setIsDragging
+    } = useVideo();
     const [value, setValue] = useState(0);
-    const [isDragging, setIsDragging] = useState(false);
     const progressRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        isDraggingProgressBar(isDragging);
-    }, [isDragging, isDraggingProgressBar]);
+        setIsDragging(isDragging);
+    }, [isDragging]);
 
     useEffect(() => {
-        if (!isDragging && currentProgressPercentage !== value) {
-            setValue(currentProgressPercentage);
+        if (!isDragging && progressPercentage !== value) {
+            setValue(progressPercentage);
         }
-    }, [currentProgressPercentage, value, isDragging]);
+    }, [progressPercentage, value, isDragging]);
 
     const updateValueFromPosition = (clientX: number) => {
         if (progressRef.current) {
@@ -40,16 +42,16 @@ const ProgressBar = ({ currentProgressPercentage, newValue, isDraggingProgressBa
         (e: MouseEvent) => {
             if (isDragging) {
                 const newV = updateValueFromPosition(e.clientX);
-                newValue(newV);
+                setProgressPercentage(newV);
             }
         },
-        [isDragging, newValue]
+        [isDragging, progressPercentage]
     );
 
     const handleMouseUp = useCallback(() => {
-        newValue(value); 
+        setProgressPercentage(value); 
         setIsDragging(false);
-    }, [value, newValue]);
+    }, [value, progressPercentage]);
 
     useEffect(() => {
         if (isDragging) {
@@ -68,7 +70,8 @@ const ProgressBar = ({ currentProgressPercentage, newValue, isDraggingProgressBa
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         setIsDragging(true);
         const newV = updateValueFromPosition(e.clientX);
-        newTime(newV);
+        setNewTime(newV);
+        setNewTime(newV)
     };
 
     return (
