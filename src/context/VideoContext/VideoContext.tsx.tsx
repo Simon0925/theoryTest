@@ -19,7 +19,15 @@ interface VideoContextType {
   setNewTime: (value: number) => void;
   setIsDragging:(value:boolean) => void
   isDragging:boolean;
-  handleLoadedMetadata:() => void
+  handleLoadedMetadata:() => void;
+ isControlPanelHovered:boolean;
+  setIsControlPanelHovered:(value:boolean) => void;
+  selectionVisible:boolean; 
+  setSelectionVisible:(value:boolean) => void;
+  isSpeed: boolean; 
+  setIsSpeed:(value:boolean) => void;
+  isVisible:boolean; 
+  setIsVisible:(value:boolean) => void;
 }
 
 const VideoContext = createContext<VideoContextType | undefined>(undefined);
@@ -42,6 +50,10 @@ export const VideoProvider = ({ children }: { children: ReactNode }) => {
   const [selectedSpeed, setSelectedSpeed] = useState("1.0x");
   const [newTime, setNewTime] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isControlPanelHovered, setIsControlPanelHovered] = useState(false);
+  const [selectionVisible ,setSelectionVisible] = useState(false)
+  const [isSpeed, setIsSpeed] = useState(false);
+  const [isVisible, setIsVisible] = useState(true); 
 
   useEffect(() => {
     if (isDragging && videoRef.current) {
@@ -119,6 +131,28 @@ export const VideoProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isControlPanelHovered) {
+        setIsVisible(false);
+      }
+    }, 3000);
+  
+    return () => clearTimeout(timer);
+  }, [isControlPanelHovered]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = parseFloat(selectedSpeed);
+    }
+  }, [selectedSpeed]);
+
+  useEffect(() => {
+    if (newTime !== null && videoRef.current) {
+      const newVideoTime = (newTime / 100) * videoRef.current.duration;
+      videoRef.current.currentTime = newVideoTime;
+    }
+  }, [newTime]);
  
 
   const value = {
@@ -141,7 +175,15 @@ export const VideoProvider = ({ children }: { children: ReactNode }) => {
     setIsDragging,
     newTime,
     setNewTime,
-    handleLoadedMetadata
+    handleLoadedMetadata,
+    isControlPanelHovered, 
+    setIsControlPanelHovered,
+    selectionVisible ,
+    setSelectionVisible,
+    isSpeed, 
+    setIsSpeed,
+    isVisible, 
+    setIsVisible,
   };
 
   return <VideoContext.Provider value={value}>{children}</VideoContext.Provider>;

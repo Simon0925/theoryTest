@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from './Toggle.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { updateCorrect } from '../../store/practice.slice'; 
+import { updateCorrect } from '../../store/practice/practice.slice'; 
 
 export default function Toggle() {
     const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Toggle from '../../UI/Toggle/Toggle';
 import NumberOfQuestions from '../NumberOfQuestions/NumberOfQuestions';
 import PracticeTools from '../PracticeTools/PracticeTools';
@@ -6,7 +6,7 @@ import styles from './PracticeSettings.module.scss';
 import service from '../../service/service';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { updatecurrentQuestions, updateAllDataLength } from '../../store/practice.slice';
+import { updatecurrentQuestions, updateAllDataLength } from '../../store/practice/practice.slice';
 
 import idUser from "../../config/idUser";
 
@@ -30,7 +30,7 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
         if (testQuestion.length > 0) practiceTest(true);
     };
 
-    const updateData = async () => {
+    const updateData = useCallback(async () => {
         setLoading(true);
         try {
             const data = await service.questionFilter({
@@ -47,7 +47,8 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
         } finally {
             setLoading(false);
         }
-    };
+    }, [QuestionType, storeQuestion, quantityOfQuestions, flagged, dispatch, idUser]);
+    
 
     useEffect(() => {
         const parametersChanged =

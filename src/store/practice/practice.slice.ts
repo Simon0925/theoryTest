@@ -1,31 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Question {
-    id: string;
-}
-
-
-interface Result {
-    question: string;
-    status: boolean | string;
-    id: string;
-}
-
-
-
-export interface PracticeData {
-    question: Question[];         
-    type: string;                  
-    numberOfQuestions: string;     
-    correct: boolean;              
-    quantity: number;              
-    results: Result[];             
-    currentQuestions: Questions[]; 
-    flagged:boolean;
-    allDataLength:number
-
-
-}
+import {PracticeData,Question,Questions} from "./interface"
 
 const initialState: PracticeData = {
     question: [],
@@ -38,20 +13,6 @@ const initialState: PracticeData = {
     flagged: false,
     allDataLength:0
 };
-
-interface ParData {
-    answer: string;
-    photo: boolean | string;
-    tOF: boolean; 
-}
-
-interface Questions {
-    _id: string;
-    group: string;
-    photo: boolean | string;
-    question: string;
-    par: ParData[]; 
-}
 
 
 export const practiceSlice = createSlice({

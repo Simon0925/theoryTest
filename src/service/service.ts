@@ -142,7 +142,8 @@ const assessmentData = async (userId:string) =>{
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-       
+        console.log(data)
+    
         return data;
 
     }catch (error) {

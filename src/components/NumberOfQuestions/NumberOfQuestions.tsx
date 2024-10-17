@@ -2,7 +2,7 @@ import {useEffect, useState } from 'react';
 import styles from './NumberOfQuestions.module.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { updateNumberOfQuestions } from '../../store/practice.slice'; 
+import { updateNumberOfQuestions } from '../../store/practice/practice.slice'; 
 
 
 interface NumberOfQuestionsProps {

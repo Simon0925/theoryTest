@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import styles from './HeaderForTest.module.scss';
 import Modal from '../Modal/Modal';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface HeaderForTestProps {
   onExitClick: (e: boolean) => void;
@@ -28,6 +30,8 @@ export default function HeaderForTest({
 }: HeaderForTestProps) {
   const [showExitModal, setShowExitModal] = useState(false);
   const [showResultsModal, setShowResultsModal] = useState(false);
+  const color = useSelector((state: RootState) => state.color);
+
 
 
   const handleExit = () => {
@@ -60,7 +64,7 @@ export default function HeaderForTest({
   };
 
   return (
-    <div className={styles.title}>
+    <div style={{backgroundColor: color.headerColors}} className={styles.wrap}>
       <ButtonTest
         name={"Exit"}
         color={"white"}

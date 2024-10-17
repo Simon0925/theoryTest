@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './PracticeTools.module.scss';
 import { RootState } from '../../store/store';
-import { updateType } from '../../store/practice.slice'; 
+import { updateType } from '../../store/practice/practice.slice'; 
 import { useDispatch, useSelector } from 'react-redux';
 
 

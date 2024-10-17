@@ -3,7 +3,7 @@ import FlagSvg from "../../SVG/FlagSvg/FlagSvg";
 import styles from "./Flag.module.scss";
 import service from "../../service/service";
 import { useDispatch, useSelector } from "react-redux";
-import { updateFlagged } from '../../store/practice.slice'; 
+import { updateFlagged } from '../../store/practice/practice.slice'; 
 import idUser from "../../config/idUser";
 import { RootState } from '../../store/store';
 

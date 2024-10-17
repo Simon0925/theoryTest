@@ -3,7 +3,7 @@ import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import styles from './FooterTest.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
-import { updatecurrentQuestions } from '../../store/practice.slice';
+import { updatecurrentQuestions } from '../../store/practice/practice.slice';
 import Modal from '../Modal/Modal';
 
 interface FooterTestProps {

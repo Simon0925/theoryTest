@@ -1,0 +1,45 @@
+.wrap{
+    background-color: #003048;
+    width: 100%;
+    height: 93vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .coolors{
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        .coolor1{
+            background-color:#F3F3F6 ;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .coolor2{
+            background-color:#FDC93A ;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+
+        }
+        .coolor3{
+            background-color:#0096CE ;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+
+        }
+        .coolor4{
+            background-color:#E8CCEC ;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+
+        }
+    }
+}

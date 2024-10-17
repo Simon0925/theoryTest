@@ -6,6 +6,8 @@ import CameraSvg from '../../../SVG/CameraSvg/CameraSvg';
 import SettingsSvg from '../../../SVG/SettingsSvg/SettingsSvg';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 export default function Header() {
     const [active, setActive] = useState({
@@ -16,6 +18,9 @@ export default function Header() {
         settings:false
     });
     const location = useLocation();
+
+    const color = useSelector((state: RootState) => state.color);
+
 
     useEffect(() => {
         const path = location.pathname.substr(1);
@@ -35,7 +40,7 @@ export default function Header() {
     
     return (
         <>
-            <div className={styles.wrap}>
+            <div style={{backgroundColor: color.headerColors}} className={styles.wrap}>
                 <div className={styles.title}>
                     <h3>Theory Test</h3>
                 </div>

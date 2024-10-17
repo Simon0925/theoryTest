@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from './Par.module.scss';
 import { CirclePercent } from '../../UI/CirclePercent/CirclePercent';
 import { RootState } from '../../store/store';
-import {  updateQuestion } from '../../store/practice.slice'; 
+import {  updateQuestion } from '../../store/practice/practice.slice'; 
 import { useDispatch, useSelector } from 'react-redux';
 
 interface ParProps {

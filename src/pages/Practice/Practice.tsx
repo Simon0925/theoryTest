@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import Par from "../../components/Par/Par";
-import PracticeSettings from "../../components/PracticeSettings/PracticeSettings";
 import styles from "./Practice.module.scss";
 import service from "../../service/service";
 import idUser from "../../config/idUser";
-import PracticeTest from "../../components/PracticeTest/PracticeTest";
-import Results from "../Results/Results";
-import {pars} from "./service/parsItem"
+import { pars } from "./service/parsItem";
 import Flag from "../../components/Flag/Flag";
 import Spinner from "../../UI/Spinner/Spinner";
+
+const PracticeSettings = React.lazy(() => import("../../components/PracticeSettings/PracticeSettings"));
+const PracticeTest = React.lazy(() => import("../../components/PracticeTest/PracticeTest"));
+const Results = React.lazy(() => import("../Results/Results"));
 
 interface QuestionGroup {
   name: string;
@@ -23,15 +25,12 @@ export default function Practice() {
   const [result, setResult] = useState(false);
   const [test, setTest] = useState(false);
 
-  if (!result) localStorage.setItem("result", JSON.stringify([]));
-
   useEffect(() => {
-    if (result) {
-      setTest(false);
+    if (!result) {
+      localStorage.setItem("result", JSON.stringify([]));
     }
   }, [result]);
 
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +38,7 @@ export default function Practice() {
         const groupTest = await service.getQuestionsGroup(idUser);
         setQuestionsGroup(groupTest || []);
       } catch (error) {
-        console.error("Error fetching data in useEffect:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -50,7 +49,7 @@ export default function Practice() {
   return (
     <>
       {result ? (
-        <Results exitResult={setResult} />
+          <Results exitResult={setResult} />
       ) : (
         <>
           {!test && (
@@ -58,8 +57,16 @@ export default function Practice() {
               <div className={styles.qwestions}>
                 <Flag />
                 {loading ? (
-                  <div style={{ width: "100%", height: "80vh",display: "flex",alignItems: "center",justifyContent:"center" }} >
-                    <Spinner color={"#0078AB"} />
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "80vh",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Spinner color="#0078AB" />
                   </div>
                 ) : (
                   questionsGroup.map((elem, i) => {
@@ -68,7 +75,7 @@ export default function Practice() {
 
                     return (
                       <Par
-                        key={i}
+                        key={elem.id} 
                         id={elem.id}
                         name={elem.name}
                         quantity={elem.quantity}
@@ -80,11 +87,13 @@ export default function Practice() {
                 )}
               </div>
               <div className={styles.settings}>
-                <PracticeSettings practiceTest={setTest} />
+                  <PracticeSettings practiceTest={setTest} />
               </div>
             </div>
           )}
-          {test && <PracticeTest result={setResult} closeTest={setTest} />}
+          {test && (
+              <PracticeTest result={setResult} closeTest={setTest} />
+          )}
         </>
       )}
     </>
