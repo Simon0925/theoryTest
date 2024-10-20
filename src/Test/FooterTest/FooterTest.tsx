@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import styles from './FooterTest.module.scss';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
