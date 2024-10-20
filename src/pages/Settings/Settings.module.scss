@@ -5,17 +5,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap:2rem;
 
+    .night{
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        gap:1rem;
+    }
     .coolors{
         display: flex;
         flex-direction: row;
         gap: 1rem;
+        .dote{
+            width:15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #003048;
+        }
+        
         .coolor1{
             background-color:#F3F3F6 ;
             width: 30px;
             height: 30px;
             border-radius: 50%;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .coolor2{
             background-color:#FDC93A ;
@@ -23,7 +43,9 @@
             height: 30px;
             border-radius: 50%;
             cursor: pointer;
-
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .coolor3{
             background-color:#0096CE ;
@@ -31,7 +53,9 @@
             height: 30px;
             border-radius: 50%;
             cursor: pointer;
-
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .coolor4{
             background-color:#E8CCEC ;
@@ -39,7 +63,9 @@
             height: 30px;
             border-radius: 50%;
             cursor: pointer;
-
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 }

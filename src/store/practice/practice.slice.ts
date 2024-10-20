@@ -1,19 +1,75 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Question } from './interface';
+import idUser from '../../config/idUser';
+import service from './sevice/questionFilter';
+import { setCurrentQuestions,setLoading } from '../currentData/currentData.slice';
+import {updateResult} from '../currentData/currentData.slice'
 
-import {PracticeData,Question,Questions} from "./interface"
+interface PracticeData {
+    question: Question[];
+    type: string;
+    numberOfQuestions: string;
+    correct: boolean;
+    flagged: boolean;
+    allQuestionLength: number;
+
+}
 
 const initialState: PracticeData = {
     question: [],
-    type: "All",
-    numberOfQuestions: "All",
+    type: 'all',
+    numberOfQuestions: 'all',
     correct: false,
-    quantity: 0,
-    results: [],
-    currentQuestions:[],
     flagged: false,
-    allDataLength:0
+    allQuestionLength: 0,
 };
 
+export const fetchQuestions = createAsyncThunk<
+  void, 
+  { testId: string }, 
+  { rejectValue: string }
+>(
+  'practice/fetchQuestions',
+  async ({ testId }, { getState, rejectWithValue, dispatch }) => {
+    const state: any = getState();
+    const practice = state.practice;
+    dispatch(setLoading({
+      testId, 
+      isLoading:true
+    }));
+    try {
+      const data = await service.questionFilter({
+        type: practice.type,
+        questions: practice.question,
+        userId: idUser,
+        quantity: practice.numberOfQuestions,
+        flagged: practice.flagged,
+      });
+     
+      dispatch(updateAllQuestionLength(data.allDataLength));
+      dispatch(setCurrentQuestions({
+        testId, 
+        questions: data.data, 
+      }));
+      
+    } catch (error) {
+      return rejectWithValue('Failed to fetch questions');
+    } finally {
+      dispatch(setLoading({
+        testId, 
+        isLoading:false
+      }));
+    }
+  }
+);
+
+export const resetPracticeStateThunk = createAsyncThunk<void, void, { dispatch: any }>(
+  'practice/resetPracticeStateThunk',
+  async (_, { dispatch }) => {
+    dispatch(resetPracticeState()); 
+    dispatch(updateResult({ testId: "PracticeTest", result: [] }));  
+  }
+);
 
 export const practiceSlice = createSlice({
     name: 'practice',
@@ -28,35 +84,31 @@ export const practiceSlice = createSlice({
         updateNumberOfQuestions: (state, action: PayloadAction<string>) => {
             state.numberOfQuestions = action.payload;
         },
-        updateQuantity: (state, action: PayloadAction<number>) => {
-            state.quantity = action.payload;
-        },
-        updateQuestion: (state, action: PayloadAction<Question[]>) => {
-            state.question = action.payload;
-        },
-        updatecurrentQuestions: (state, action: PayloadAction<Questions[]>) => {
-            state.currentQuestions = action.payload;  
-        },
         updateFlagged: (state, action: PayloadAction<boolean>) => {
             state.flagged = action.payload;
         },
-        updateAllDataLength: (state, action: PayloadAction<number>) => {
-            state.allDataLength = action.payload;
-        }
-    },
+        updateAllQuestionLength: (state, action: PayloadAction<number>) => {
+            state.allQuestionLength = action.payload;
+        }, updateQuestion: (state, action: PayloadAction<Question[]>) => {
+            state.question = action.payload;
+        },resetPracticeState: (state) => {
+          state.flagged = false;
+          state.question = [];
+          state.allQuestionLength = 0;
+          state.correct = false;
+      }
+    }
 });
-
 
 export const { 
     updateNumberOfQuestions, 
     updateType, 
     updateCorrect, 
-    updateQuantity, 
-    updateQuestion, 
-    updatecurrentQuestions,
     updateFlagged,
-    updateAllDataLength
+    updateAllQuestionLength,
+    updateQuestion,
+    resetPracticeState
 } = practiceSlice.actions;
 
-
 export default practiceSlice.reducer;
+export type { PracticeData }; 

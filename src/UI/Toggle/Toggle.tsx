@@ -7,7 +7,7 @@ import { updateCorrect } from '../../store/practice/practice.slice';
 export default function Toggle() {
     const dispatch = useDispatch();
     const practice = useSelector((state: RootState) => state.practice);
-
+    const color = useSelector((state: RootState) => state.color);
     const [isChecked, setIsChecked] = useState(practice.correct);
 
 
@@ -26,7 +26,10 @@ export default function Toggle() {
                 checked={isChecked} 
                 onChange={handleToggle} 
             />
-            <span className={styles.slider}></span>
+            <span style={{
+                background:color.toggleBackground,
+                outline: `1px solid ${color.toggleBorder}`
+            }} className={styles.slider}></span>
         </label>
     );
 }

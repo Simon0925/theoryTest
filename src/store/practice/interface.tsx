@@ -16,14 +16,9 @@ export interface PracticeData {
     question: Question[];         
     type: string;                  
     numberOfQuestions: string;     
-    correct: boolean;              
-    quantity: number;              
-    results: Result[];             
-    currentQuestions: Questions[]; 
+    correct: boolean;                          
     flagged:boolean;
-    allDataLength:number
-
-
+    allQuestionLength:number;
 }
 
 
@@ -34,9 +29,13 @@ interface ParData {
 }
 
 export interface Questions {
-    _id: string;
+    id: string;
     group: string;
     photo: boolean | string;
     question: string;
     par: ParData[]; 
+    flag: boolean; 
 }
+
+  
+ 

@@ -1,0 +1,36 @@
+.wrap{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    .title{
+        
+        display: flex;
+        align-items: center;
+        gap:1rem;
+        color: var(--text-color);
+        font-size: 18px;
+        font-weight: 400;
+        svg{
+            fill: var(--header-svg-color);
+        }
+        .notActive{
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .active{
+            background-color: var(--active-background-color);
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            svg{
+                fill: var(--active-svg-color);
+            }
+        }
+    }
+}

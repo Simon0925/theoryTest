@@ -8,6 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { updatecurrentQuestions, updateAllDataLength } from '../../store/practice/practice.slice';
 
+import { setCurrentQuestions } from '../../store/currentData/currentData.slice';
+
+
+
 import idUser from "../../config/idUser";
 
 interface PracticeSettingsProps {
@@ -40,8 +44,9 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
                 quantity: quantityOfQuestions,
                 flagged: flagged,
             });
-            dispatch(updatecurrentQuestions(data.data));
+            dispatch(updatecurrentQuestions(data.data)); // don`t forget remove
             dispatch(updateAllDataLength(data.allDataLength));
+            dispatch(setCurrentQuestions({ testId: "PracticeTest", questions: data.data })); // new setCurrentQuestions
         } catch (error) {
             console.error("Error fetching questions in useEffect:", error);
         } finally {

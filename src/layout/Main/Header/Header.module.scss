@@ -1,23 +1,23 @@
-.wrap{
+.wrap {
     top: 0;
     width: 100%;
     height: 7vh;
-    // background-color: #0078AB;
     position: fixed;
-    color: white;
+    color: var(--text-color);
+    background-color: var(--header-bg-color);
     display: flex;
     padding: 0 1rem;
     align-items: center;
     justify-content: space-between;
 
-    .nav{
+    .nav {
         width: 100%;
         padding-right: 3rem;
         justify-content: flex-end;
         gap: 1rem;
         display: flex;
 
-        .nav-btn{
+        .nav-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -26,15 +26,22 @@
             cursor: pointer;
             border-radius: 0.25rem;
             text-decoration: none;
-            color: white;
-            background-color: #1C85B9;
-            span{
-                font-size: 14px;
+            color: var(--text-color);
+            background-color: var(--hover-bg-color);
+            
+            svg{
+                fill: var(--header-svg-color);
+            }
+            &:hover {
+                background-color: var(--hover-bg-color);
             }
 
-           
+            span {
+                font-size: 14px;
+            }
         }
-        .not-active{
+
+        .not-active {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -43,17 +50,21 @@
             cursor: pointer;
             border-radius: 0.25rem;
             text-decoration: none;
-            color: white;
-            span{
+            color: var(--text-color);
+            svg{
+                fill: var(--header-svg-color);
+            }
+            span {
                 font-size: 14px;
             }
-            &:hover{
-                background-color: #1C85B9;
+
+            &:hover {
+                background-color: var(--hover-bg-color);
             }
         }
-
     }
-    .title{
+
+    .title {
         width: 100%;
     }
 }

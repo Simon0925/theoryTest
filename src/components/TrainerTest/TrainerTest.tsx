@@ -65,7 +65,13 @@ export default function TrainerTest({ onExitClick, data,result }: TrainerTestPro
         <>
             <div className={styles.wrap}>
             <div>
-                <HeaderForTest finish="Results" onExitClick={onExitClick} questionCount={data.length} currentQuestion={0} trainerTest={true}result={result}/>
+                <HeaderForTest 
+                    finish="Results" 
+                    onExitClick={onExitClick} 
+                    questionCount={data.length} 
+                    currentQuestion={0} 
+                    trainerTest={true}result={result}
+                />
                 <div className={styles['question-wrap']}>
                     {
                     currentQuestions && (
@@ -78,39 +84,40 @@ export default function TrainerTest({ onExitClick, data,result }: TrainerTestPro
                     }
                 </div>
             </div>
-            <div className={styles['container']}>
-                {currentQuestions && (
-                    <VariantsOfAnswers
-                        currentFlag={markers}
-                        click={setCurrentId}
-                        par={currentQuestions.par}
-                        question={currentQuestions.question}
-                        id={currentQuestions.id}
-                        group={currentQuestions.group}
-                        typeOftest={''}
-                        nextPage={null}  
-                        currentPage={null}
-                        setQuestionsSelected={setQuestionsSelected}
+                <div className={styles.container}>
+                    {currentQuestions && (
+                        <VariantsOfAnswers
+                            currentFlag={markers}
+                            click={setCurrentId}
+                            par={currentQuestions.par}
+                            question={currentQuestions.question}
+                            id={currentQuestions.id}
+                            group={currentQuestions.group}
+                            typeOftest={''}
+                            nextPage={null}  
+                            currentPage={null}
+                            setQuestionsSelected={setQuestionsSelected}
+                        />
+                    )}
+                    {isExplanationVisible === true && (
+                        <Modal 
+                            close={() => setIsExplanationVisible(false)} 
+                            text={currentQuestions?.explanation || ""} 
+                            title={'DVSA explanation'} 
+                            cancel={false} 
+                            blueBtnText={'Ok'} 
+                        />
+                    )}
+                    <FooterTrainerTest
+                            changeFlag={setChangeFlag}
+                            nextPage={setCurrentPage}
+                            explanation={setIsExplanationVisible}
+                            currentPage={currentPage}
+                            id={currentQuestions?.id ?? ''}
+                            flag={currentQuestions?.flag ?? false} 
+                            isAnswerSelected={isAnswerSelected}                
                     />
-                )}
-                {isExplanationVisible === true && (
-                    <Modal 
-                        close={() => setIsExplanationVisible(false)} 
-                        text={currentQuestions?.explanation || ""} 
-                        title={'DVSA explanation'} 
-                        cancel={false} 
-                        blueBtnText={'Ok'} 
-                    />
-                )}
-                <FooterTrainerTest
-                        changeFlag={setChangeFlag}
-                        nextPage={setCurrentPage}
-                        explanation={setIsExplanationVisible}
-                        currentPage={currentPage}
-                        id={currentQuestions?.id ?? ''}
-                        flag={currentQuestions?.flag ?? false} 
-                        isAnswerSelected={isAnswerSelected}                />
-            </div>
+                </div>
             </div>
         </>
     );

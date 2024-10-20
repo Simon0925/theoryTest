@@ -1,0 +1,16 @@
+.wrap{
+    display: block;
+    padding: 1.5rem;
+    background-color: #0096CE;
+    .title{
+        color: white;
+        padding-bottom: 0.5rem;
+    }
+    .variants{
+        margin-top: 1rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+
+    }
+}

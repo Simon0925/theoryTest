@@ -1,4 +1,15 @@
-const PencilSvg = () => (
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+
+
+
+
+
+
+const PencilSvg = () => {
+  const color = useSelector((state: RootState) => state.color);
+
+  return(
     <svg
     version="1.0"
     id="Layer_1"
@@ -9,14 +20,14 @@ const PencilSvg = () => (
     viewBox="0 0 64 64"
     enableBackground="new 0 0 64 64"
     xmlSpace="preserve"
-    fill="#EDF4FA"
+    fill={color.headerSvgColor}
     transform="rotate(270)"
   >
     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
     <g id="SVGRepo_iconCarrier">
       <path
-        fill="#EDF4FA"
+        fill={color.headerSvgColor}
         d="M62.828,12.482L51.514,1.168c-1.562-1.562-4.093-1.562-5.657,0.001c0,0-44.646,44.646-45.255,45.255
           C-0.006,47.031,0,47.996,0,47.996l0.001,13.999c0,1.105,0.896,2,1.999,2.001h4.99c0.003,0,9.01,0,9.01,0s0.963,0.008,1.572-0.602
           s45.256-45.257,45.256-45.257C64.392,16.575,64.392,14.046,62.828,12.482z M37.356,12.497l3.535,3.536L6.95,49.976l-3.536-3.536
@@ -27,6 +38,7 @@ const PencilSvg = () => (
       ></path>
     </g>
   </svg>
-  );
+  )
+};
   
   export default PencilSvg;

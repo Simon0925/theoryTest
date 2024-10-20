@@ -16,15 +16,13 @@ const getFlags = async (userId:string) => {
 
 const getQuestionsGroup = async (userId:string) => {
     try {
-        const response = await fetch(`${hostname}/api/usersGet?id=${userId}`);
+        const response = await fetch(`${hostname}/api/questionsGroupt?id=${userId}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
-        
-    
         return data;
     } catch (error) {
         console.error("Error fetching data:", error); 
@@ -60,6 +58,7 @@ const postQuestionsGroup = async (questionsGroup: UserQuestionsResult): Promise<
         }
 
         const data = await response.json();
+       
         return data;
     } catch (error) {
         console.error("Error posting questions group:", error);
@@ -124,6 +123,8 @@ const questionFilter = async (type: { type: string; userId:string;flagged:boolea
         }
 
         const data = await response.json();
+       
+
         return data;
     } catch (error) {
         console.error("Error posting questions group:", error);

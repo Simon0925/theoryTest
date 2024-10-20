@@ -18,7 +18,6 @@ export default function Header() {
         settings:false
     });
     const location = useLocation();
-
     const color = useSelector((state: RootState) => state.color);
 
 
@@ -41,29 +40,75 @@ export default function Header() {
     return (
         <>
             <div style={{backgroundColor: color.headerColors}} className={styles.wrap}>
-                <div className={styles.title}>
+                <div 
+                 className={styles.title}
+                 style={{color: color.textColor}} 
+                 >
                     <h3>Theory Test</h3>
                 </div>
                 <nav className={styles.nav}>
-                    <NavLink className={active.practice ? styles['nav-btn'] : styles['not-active']} to='/' >
+                <NavLink
+                    className={active.practice ? styles['nav-btn'] : styles['not-active']}
+                    style={{
+                        '--header-bg-color': color.headerColors,
+                        '--text-color': color.textColor,
+                        '--hover-bg-color': color.hoverColor,
+                        '--header-svg-color':color.textColor
+                    } as React.CSSProperties}
+                    to='/'
+                    >
                         <PencilSvg />
-                        <span>Practice</span>
+                        <span style={{color:color.headerSvgColor}}>Practice</span>
                     </NavLink>
-                    <NavLink className={active.mockTest ? styles['nav-btn'] : styles['not-active']}  to='/mock-test'>
+                    <NavLink 
+                        className={active.mockTest ? styles['nav-btn'] : styles['not-active']} 
+                        style={{
+                            '--header-bg-color': color.headerColors,
+                            '--text-color': color.textColor,
+                            '--hover-bg-color': color.hoverColor,
+                            '--header-svg-color':color.headerSvgColor
+                        } as React.CSSProperties}
+                    to='/mock-test'>
                         <ClockSvg />
-                        <span>Mock Test</span>
+                        <span style={{color:color.headerSvgColor}} >Mock Test</span>
                     </NavLink>
-                    <NavLink className={active.trainer ? styles['nav-btn'] : styles['not-active']} to='/trainer' >
+                    <NavLink 
+                        className={active.trainer ? styles['nav-btn'] : styles['not-active']}
+                        to='/trainer' 
+                        style={{
+                            '--header-bg-color': color.headerColors,
+                            '--text-color': color.textColor,
+                            '--hover-bg-color': color.hoverColor,
+                            '--header-svg-color':color.headerSvgColor
+                        } as React.CSSProperties}
+                    >
                         <LightSvg />
-                        <span>Trainer</span>
+                        <span style={{color:color.headerSvgColor}}>Trainer</span>
                     </NavLink>
-                    <NavLink className={active.hpt ? styles['nav-btn'] : styles['not-active']} to='/hpt' >
+                    <NavLink
+                        className={active.hpt ? styles['nav-btn'] : styles['not-active']}
+                        style={{
+                            '--header-bg-color': color.headerColors,
+                            '--text-color': color.textColor,
+                            '--hover-bg-color': color.hoverColor,
+                            '--header-svg-color':color.headerSvgColor
+                        } as React.CSSProperties} 
+                        to='/hpt' >
                         <CameraSvg />
-                        <span>HPT</span>
+                        <span style={{color:color.headerSvgColor}}>HPT</span>
                     </NavLink>
-                    <NavLink className={active.settings ? styles['nav-btn'] : styles['not-active']} to='/settings' >
+                    <NavLink 
+                        className={active.settings ? styles['nav-btn'] : styles['not-active']}
+                        to='/settings' 
+                        style={{
+                            '--header-bg-color': color.headerColors,
+                            '--text-color': color.textColor,
+                            '--hover-bg-color': color.hoverColor,
+                            '--header-svg-color':color.headerSvgColor
+                        } as React.CSSProperties}
+                    >
                         <SettingsSvg />
-                        <span>Settings</span>
+                        <span style={{color:color.headerSvgColor}}>Settings</span>
                     </NavLink>
                 </nav>
             </div>
