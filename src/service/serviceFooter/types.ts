@@ -1,7 +1,7 @@
 export interface Question {
     correctAnswers: number;
     explanation: string;
-    flag: boolean | undefined;
+    flag: boolean ;
     group: string;
     id: string;
     incorrectAnswers: number;

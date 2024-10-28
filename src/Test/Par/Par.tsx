@@ -48,7 +48,9 @@ export default function Par({ name, quantity, percent, svg, id }: ParProps) {
                 <div className={isSelected ? styles.active : styles.notActive}>{svg}</div>
                 <span>{name} ({quantity})</span>
             </div>
-            <CirclePercent currentPercent={percent} />
+            <div className={styles.containerPercent}>
+                <CirclePercent currentPercent={percent} />
+            </div>
         </div>
     );
 }

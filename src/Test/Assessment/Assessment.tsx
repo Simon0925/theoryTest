@@ -21,7 +21,7 @@ interface AssessmentProps {
 export interface Question {
   correctAnswers: number;
   explanation: string;
-  flag: boolean | undefined;
+  flag: boolean ;
   group: string;
   id: string;
   incorrectAnswers: number;
@@ -63,6 +63,8 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
     return getUnansweredQuestions(answeredVariants, questions);
   }, [answeredVariants, questions]);
 
+  const color = useSelector((state: RootState) => state.color);
+
 
   const currentAll = useMemo(() => currentPage, [currentPage]);
 
@@ -96,7 +98,10 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
   const goToResults = useCallback(() => result(true), [result]);
 
   return (
-    <div className={styles.wrap}>
+    <div
+      style={ {background:color.TestBackground}}
+     className={styles.wrap}
+     >
       {isLoading && visibleQuestions ? (
         <div style={{ position: 'absolute', top: '40%', left: '50%' }}>
           <Spinner color="black" />
@@ -112,7 +117,10 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
               typeOftest={typeOftest}
             />
             {!pause && visibleQuestions ? (
-              <div className={styles['question-wrap']}>
+              <div 
+              style={{backgroundColor:color.QuestionContentBackground}}
+              className={styles['question-wrap']}
+              >
                 <QuestionContent
                   typeOftest={typeOftest}
                   question={visibleQuestions[currentPage]}

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import Modal from '../Modal/Modal';
 import styles from './FooterMockTest.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 const modalText = "The Mock Test replicates the actual DVSA test: 50 questions and a countdown timer of 57 minutes. The pass mark is 43 correct answers, or 86%. You can flag and review questions, and change answers within the time. One difference: you can pause this Mock Test – you can't pause the DVSA test.";
 
@@ -10,6 +12,9 @@ interface FooterMockTestProps {
 }
 
 export default function FooterMockTest({ onTestStart }: FooterMockTestProps) {
+    
+    const color = useSelector((state: RootState) => state.color);
+
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -19,14 +24,19 @@ export default function FooterMockTest({ onTestStart }: FooterMockTestProps) {
 
     return (
         <>
-            <div className={styles.wrap}>
+            <div 
+                className={styles.wrap}
+                style={{
+                    backgroundColor:color.DataStatisticsAssessmentFooter
+                }}
+            >
                 <div className={styles.container}>
                     
                     <ButtonTest
                         click={toggleModal}
                         name="About Mock Test"
-                        color="#0078AB"
-                        backgroundColor="white"
+                        color={color.DataStatisticsAssessmentFooterTextbtn}
+                        backgroundColor={color.DataStatisticsAssessmentFooterBackgroundBtn}
                         svg={false}
                         svgColor={false}
                     />

@@ -33,7 +33,7 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
  
     useEffect(() => {
         dispatch(fetchQuestions({ testId: 'PracticeTest' }));
-    }, [practice]);
+    }, [practice.question,practice.allQuestionLength,practice.flagged,practice.numberOfQuestions,practice.type]);
 
     return (
         <div  className={styles['wrap']}>

@@ -33,10 +33,14 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
 
     const dispatch = useDispatch();
 
+    const color = useSelector((state: RootState) => state.color);
+
+
     const { currentPage, results } = useSelector(
         (state: RootState) => state.currentData.testsData[typeOftest],  
         shallowEqual
     );
+
 
     useEffect(() => {
         if (question) {
@@ -47,7 +51,8 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
                     question: question.question,
                     flag: question.flag ?? false,
                     group: question.group,
-                    status: question.status
+                    status: question.status,
+                    photo:question.photo
                 };
                 dispatch(updateResult({
                     testId: typeOftest,
@@ -62,10 +67,15 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
     }
 
     return (
-        <div className={styles['question-wrap']}>
-            <span className={styles['question']}>
+        <div 
+            className={styles['question-wrap']}
+            style={{backgroundColor:color.QuestionContentBackground}}
+        >
+            <span
+            style={{backgroundColor:color.QuestionContentBackground}}
+             className={styles['question']}>
                 <div className={question.flag ?? false ? styles['marker'] : styles['inactive-marker']}></div>
-                <div>{question.question}</div>
+                <div style={{color:color.TestcolorText}}>{question.question}</div>
             </span>
             {question.photo && (
                 <img

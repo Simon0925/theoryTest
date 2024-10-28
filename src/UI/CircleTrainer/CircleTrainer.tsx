@@ -1,7 +1,13 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import styles from './CircleTrainer.module.scss';
 
-const CircleTrainer = () => {
+interface CircleTrainerProps {
+    colorCircle:string,
+    centerCircle:string,
+    textColor:string,
+}
+
+const CircleTrainer = ({colorCircle,centerCircle,textColor}:CircleTrainerProps) => {
     const [curentPercent, setCurentPercent] = useState(0);
 
     const [circleFilled, setCircleFilled] = useState({
@@ -56,7 +62,7 @@ const CircleTrainer = () => {
                     r={18}
                     cx={x}
                     cy={y}
-                    fill="#0096CE"  
+                    fill={centerCircle}  
                     stroke="none"
                 />
                 <circle
@@ -87,7 +93,7 @@ const CircleTrainer = () => {
                     cx={x}
                     cy={y}
                     fill="transparent"
-                    stroke="#0079AC"
+                    stroke={colorCircle}
                     strokeWidth="5"
                     strokeDasharray={`${circleLength * 0.25} ${circleLength * 0.75}`}
                     strokeDashoffset={circleLength * circleFilled.circleBlueDashoffset}
@@ -98,7 +104,7 @@ const CircleTrainer = () => {
                     y="35%" 
                     textAnchor="middle" 
                     dominantBaseline="middle" 
-                    fill="white" 
+                    fill={textColor} 
                     fontSize="4" 
                 >
                     in total
@@ -108,7 +114,7 @@ const CircleTrainer = () => {
                     y="50%" 
                     textAnchor="middle" 
                     dominantBaseline="middle" 
-                    fill="white" 
+                    fill={textColor} 
                     fontSize="5" 
                 >
                     746
@@ -118,7 +124,7 @@ const CircleTrainer = () => {
                     y="65%" 
                     textAnchor="middle" 
                     dominantBaseline="middle" 
-                    fill="white" 
+                    fill={textColor} 
                     fontSize="4" 
                 >
                     questions

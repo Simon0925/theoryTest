@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface Question {
   correctAnswers: number;
   explanation: string;
-  flag: boolean | undefined;
+  flag: boolean ;
   group: string;
   id: string;
   incorrectAnswers: number;
@@ -21,14 +21,15 @@ interface Variant {
 }
 
 interface Result {
-  flag: boolean;
-  group: string;
-  id: string;
-  question: string;
-  status: string | boolean;
+    id: string;  
+    question: string;
+    group: string;
+    flag: boolean;
+    status: boolean | string;
+    photo?: string | boolean;
 }
 
-export interface CurrentData {
+interface CurrentData {
   questions: Question[] ;
   currentPage: number;
   answeredVariants: Variant[];
@@ -44,13 +45,13 @@ interface ParData {
   tOF: boolean;
 }
 
-interface TestsState {
+interface TestsData {
   testsData: {
     [key: string]: CurrentData;
   };
 }
 
-const initialState: TestsState = {
+const initialState: TestsData = {
   testsData: {
     PracticeTest: {
       questions: [],
@@ -82,8 +83,10 @@ const initialState: TestsState = {
   },
 };
 
+export type { TestsData };
+
 export const questionsSlice = createSlice({
-  name: 'testsData',
+  name: 'currentData',
   initialState,
   reducers: {
     setCurrentQuestions: (

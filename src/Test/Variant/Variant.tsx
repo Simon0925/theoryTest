@@ -12,19 +12,22 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
 
     const practice = useSelector((state: RootState) => state.practice.correct);
 
+    const stateColor = useSelector((state: RootState) => state.color);
+
     const { answeredVariants, questions, currentPage,results } = useSelector(
         (state: RootState) => state.currentData.testsData[typeOftest],
         shallowEqual
     );
 
-    const [color, setColor] = useState({ backgroundColor: "white", color: "rgb(0, 120, 171)" });
+    const [color, setColor] = useState({ backgroundColor: stateColor.VariantBackground, color: stateColor.VariantTextColor });
+
     const dispatch = useDispatch();
 
-  
     const icon = useMemo(() => {
         const checkAnswer = answeredVariants.some(e => questions[currentPage].id === e.id && index === e.index);
         const practiceCheck = answeredVariants.some(e => questions[currentPage].id === e.id);
         if (typeOftest === "MockTest") return correct;
+        if (typeOftest === "Trainer") return correct;
         if (checkAnswer || (practice && practiceCheck && typeOftest === "PracticeTest")) return correct ? <OkVectorSvg /> : <CrossSvg />;
         return null;
     }, [answeredVariants, currentPage, practice]);
@@ -60,33 +63,40 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
             }));
         }
 
-        if(typeOftest === "MockTest")dispatch(updateCurrentPage({ testId: typeOftest, currentPage: currentPage + 1 }));
+        if(typeOftest === "MockTest" )dispatch(updateCurrentPage({ testId: typeOftest, currentPage: questions.length  === currentPage + 1 ? questions.length -1 : currentPage + 1 }));
     };
+
 
     useEffect(() => {
         const checkAnswer = answeredVariants.some(e => questions[currentPage].id === e.id && index === e.index);
-        if(checkAnswer && typeOftest === "PracticeTest"){
+        if(checkAnswer && typeOftest === "PracticeTest"  ){
             setColor({
-                backgroundColor: correct ? "rgb(0, 182, 118)" : "rgb(170, 59, 54)",color: "white"
+                backgroundColor: correct ? "rgb(0, 182, 118)" : "rgb(170, 59, 54)",
+                color: stateColor.VariantSelectedOption 
             })
-         }else if(checkAnswer && typeOftest === "MockTest"){
+         }else if(checkAnswer && typeOftest === "MockTest" ){
             setColor({
-                backgroundColor: "#FFEC4B",
-                color: "rgb(0, 120, 171)"
+                backgroundColor: checkAnswer ? stateColor.VariantSelectedMockBackground :stateColor.VariantSelectedMockBackground ,
+                color: stateColor.VariantSelectedMockTestOption 
             });
-         }else{
+         }else if(checkAnswer && typeOftest === "Trainer" ){
             setColor({
-                backgroundColor: "white",
-                color: "rgb(0, 120, 171)"
+                backgroundColor: correct ? "rgb(0, 182, 118)" : "rgb(170, 59, 54)",
+                color: stateColor.VariantSelectedOption 
+            })
+         }
+          else{
+            setColor({
+                backgroundColor: stateColor.VariantBackground,
+                color: stateColor.VariantTextColor
             });
          }
-           
         
     }, [ correct, currentPage,answeredVariants]);
 
     return (
-        <div onClick={addAnswer} style={color} className={styles['wrap']}>
-            <span style={{ color: color.color }}>{answer}</span>
+        <div onClick={addAnswer} style={{background:color.backgroundColor}} className={styles['wrap']}>
+            <span style={{ color:color.color  }}>{answer}</span>
             {photo && <img className={styles['img']} src={`${hostname}${photo}`} alt="Variant" />}
             <div className={styles['box']}>{icon}</div>
         </div>

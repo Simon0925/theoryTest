@@ -1,33 +1,6 @@
 import hostname from "../config/hostname";
 
-const getFlags = async (userId:string) => {
-    try {
-        const response = await fetch(`${hostname}/api/flags?id=${userId}`);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Error fetching data:", error); 
-    }
-}
-
-const getQuestionsGroup = async (userId:string) => {
-    try {
-        const response = await fetch(`${hostname}/api/questionsGroupt?id=${userId}`);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Error fetching data:", error); 
-    }
-};
 
 
 interface Data {
@@ -43,6 +16,8 @@ interface UserQuestionsResult {
 
 const postQuestionsGroup = async (questionsGroup: UserQuestionsResult): Promise<any> => {
     const jsonString = JSON.stringify(questionsGroup);
+
+    console.log("jsonString",jsonString)
 
     try {
         const response = await fetch(`${hostname}/api/usersPost`, {
@@ -154,9 +129,7 @@ const assessmentData = async (userId:string) =>{
 }
 
 export default {
-    getFlags,
     postQuestionsGroup,
-    getQuestionsGroup,
     postQuestionsMDB,
     questionFilter,
     assessmentData

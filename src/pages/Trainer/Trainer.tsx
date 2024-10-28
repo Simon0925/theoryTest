@@ -6,6 +6,8 @@ import OnceTwiceProgress from '../../UI/OnceTwiceProgress/OnceTwiceProgress';
 import TrainerTest from '../../components/TrainerTest/TrainerTest';
 import {Question} from "./interface"
 import Results from '../Results/Results';
+import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
 
 
 
@@ -13,6 +15,9 @@ export default function Trainer () {
     const [trainerData, setTrainerData] = useState<Question[]>([]);
     const [isTestStarted, setIsTestStarted] = useState(true);
     const [result, setResult] = useState(false);
+
+    const color = useSelector((state: RootState) => state.color);
+
 
     let [trainerOnceTwice,setTrainerOnceTwice] = useState({
         once: null,
@@ -50,7 +55,8 @@ export default function Trainer () {
             {isTestStarted && !result && 
             <div className={styles.wrap}>
                 <OnceTwiceProgress once={trainerOnceTwice.once} twice={trainerOnceTwice.twice} />
-                <div className={styles.description}>
+                <div
+                 className={styles.description}>
                 <p>
                     Personal Trainer uses an algorithm that learns about you as you progress.
                     It first shows you the questions you need to learn the most.

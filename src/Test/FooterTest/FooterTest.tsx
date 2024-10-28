@@ -20,6 +20,9 @@ export default function FooterTest({ result, typeOftest }: FooterTestProps) {
 
   const dispatch = useDispatch();
 
+  const color = useSelector((state: RootState) => state.color);
+
+
   const [isExplanationVisible, setIsExplanationVisible] = useState(false);
   const [modalWindow, setModalWindow] = useState(false);
 
@@ -65,37 +68,40 @@ export default function FooterTest({ result, typeOftest }: FooterTestProps) {
   }, []);
 
   return (
-    <div className={styles.wrap}>
+    <div 
+      className={styles.wrap}
+      style={{backgroundColor:color.headerColors}}
+    >
       <div className={styles.container}>
         <ButtonTest
           click={previous}
           name={'< Previous'}
-          color={'#0078AB'}
-          backgroundColor={'white'}
+          color={color.TestcolorText}
+          backgroundColor={currentPage > 0 ? color.FooterBackgroundBtn : color.PreviousTestBackgroundBtn} 
           svg={false}
           svgColor={false}
         />
         <ButtonTest
           click={changeFlag}
           name={''}
-          color={'#0078AB'}
-          backgroundColor={'white'}
+          color={color.TestcolorText}
+          backgroundColor={color.FooterBackgroundBtn}
           svg={true}
-          svgColor={questions[currentPage]?.flag === true}
+          svgColor={questions[currentPage].flag === true && typeof questions[currentPage].flag === 'boolean' ? true : color.FlagColorSvgBtn}
         />
         <ButtonTest
           click={explanationModal}
           name={'Explanation'}
-          color={'#0078AB'}
-          backgroundColor={'white'}
+          color={color.TestcolorText}
+          backgroundColor={color.FooterBackgroundBtn}
           svg={false}
           svgColor={false}
         />
         <ButtonTest
           click={next}
           name={questions.length === currentPage + 1 ? 'Results' : 'Next >'}
-          color={'#0078AB'}
-          backgroundColor={isAnswerSelected ? '#FFEC4B' : 'white'}
+          color={isAnswerSelected ?  color.FooterColorNextBtnSelectedOption :color.TestcolorText}
+          backgroundColor={isAnswerSelected ? color.FooterBackgroundNextBtnSelectedOption : color.FooterBackgroundBtn}
           svg={false}
           svgColor={false}
         />

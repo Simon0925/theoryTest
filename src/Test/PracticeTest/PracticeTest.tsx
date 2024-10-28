@@ -17,6 +17,7 @@ export default function PracticeTest({ closeTest, result }: PracticeTestProps) {
 
   const [exit, setExit] = useState(false);
 
+  const color = useSelector((state: RootState) => state.color);
 
   const { questions, currentPage, isLoading } = useSelector(
     (state: RootState) => state.currentData.testsData["PracticeTest"],  
@@ -33,7 +34,11 @@ export default function PracticeTest({ closeTest, result }: PracticeTestProps) {
       {isLoading ?
        <Spinner color={'blue'} />
       :
-      <div className={styles['wrap']}>
+      <div 
+      style={{
+        backgroundColor:color.TestBackground
+      }}
+      className={styles['wrap']}>
         <div>
           <HeaderForTest
             typeOftest="PracticeTest"
@@ -41,7 +46,10 @@ export default function PracticeTest({ closeTest, result }: PracticeTestProps) {
             onExitClick={setExit}
             finish="Results"
           />
-          <div className={styles['question-wrap']}>
+          <div
+            style={{backgroundColor:color.QuestionContentBackground}}
+            className={styles['question-wrap']}
+          >
             <QuestionContent 
                 typeOftest="PracticeTest" 
                 question={questions[currentPage]}/>

@@ -76,6 +76,8 @@ export const VideoProvider = ({ children }: { children: ReactNode }) => {
       };
     }
   }, []);
+
+  
   const handleVolumeChange = (volume:number) => {
     setVolume(volume); 
     if (videoRef.current) {

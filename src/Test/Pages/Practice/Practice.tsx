@@ -1,7 +1,7 @@
 import{ Suspense, useEffect, useState, lazy, startTransition } from "react";
 import Par from "../../Par/Par";
 import styles from "./Practice.module.scss";
-import service from "../../../service/service";
+import service from "../../../service/PracticeService/getQuestionsGroup";
 import idUser from "../../../config/idUser";
 import { pars } from "./service/parsItem";
 import Flag from "../../Flag/Flag";

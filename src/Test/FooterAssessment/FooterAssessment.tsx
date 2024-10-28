@@ -25,6 +25,8 @@ export default function FooterAssessment({
   const [time, setTime] = useState<number | undefined>();
   const dispatch = useDispatch();
 
+  const color = useSelector((state: RootState) => state.color);
+
   const { questions, currentPage, answeredVariants, results } = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],
     shallowEqual
@@ -35,9 +37,9 @@ export default function FooterAssessment({
   }, [answeredVariants, currentPage, questions]);
 
   const next = useCallback(() => {
-    if (currentPage < questions.length - 1) {
+    if (currentPage <= questions.length - 1 && questions.length !== currentPage + 1 ) {
       dispatch(updateCurrentPage({ testId: typeOftest, currentPage: currentPage + 1 }));
-    } else if (questions.length - 1 === currentPage) {
+    } else if (questions.length === currentPage + 1) {
       review(true);
     }
   }, [currentPage, questions.length, dispatch, review, typeOftest]);
@@ -71,38 +73,40 @@ export default function FooterAssessment({
   }, [pause, statusPause]);
 
   return (
-    <div className={styles.wrap}>
+    <div 
+      style={{backgroundColor:color.headerColors}}
+      className={styles.wrap}>
       <div className={styles.container}>
         <ButtonTest
           click={previous}
           name="< Previous"
-          color="#0078AB"
-          backgroundColor={currentPage > 0 ? "white" : "#91BCD6"} 
+          color={color.TestcolorText}
+          backgroundColor={currentPage > 0 ? color.FooterBackgroundBtn: color.PreviousTestBackgroundBtn} 
           svg={false}
           svgColor={false}
         />
         <ButtonTest
-          click={changeFlag}
-          name=""
-          color="#0078AB"
-          backgroundColor="white"
-          svg={true}
-          svgColor={questions[currentPage]?.flag === true} 
-        />
+        click={changeFlag}
+        name=""
+        color={color.TestcolorText}
+        backgroundColor={color.FooterBackgroundBtn}
+        svg={true}
+        svgColor={questions[currentPage]?.flag === true ? true : color.FlagColorSvgBtn}
+      />
         <TimerAssessment time={setTime} pause={pause} />
         <ButtonTest
           click={startPause}
           name={!pause ? "Pause" : "Resume"}
-          color="#0078AB"
-          backgroundColor="white"
+          color={color.TestcolorText}
+          backgroundColor={color.FooterBackgroundBtn}
           svg={false}
           svgColor={false}
         />
         <ButtonTest
           click={next}
           name={questions.length !== currentPage + 1 ? "Next >" : "Review"}
-          color="#0078AB"
-          backgroundColor={isAnswerSelected ? "#FFEC4B" : "white"} 
+          color={isAnswerSelected ?  color.FooterColorNextBtnSelectedOption :color.TestcolorText}
+          backgroundColor={isAnswerSelected ? color.FooterBackgroundNextBtnSelectedOption : color.FooterBackgroundBtn}
           svg={false}
           svgColor={false}
         />

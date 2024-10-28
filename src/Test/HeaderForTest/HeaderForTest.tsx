@@ -6,6 +6,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { resetPracticeState, resetPracticeStateThunk } from '../../store/practice/practice.slice'; 
 import { resetState } from '../../store/currentData/currentData.slice';
+import getName from "./service/getName"
 
 interface HeaderForTestProps {
   onExitClick: (e: boolean) => void;
@@ -32,13 +33,12 @@ const HeaderForTest = React.memo(function HeaderForTest({
   const dispatch = useDispatch<AppDispatch>();
 
   const color = useSelector((state: RootState) => state.color, shallowEqual);
-  const { questionsLength, currentPage } = useSelector(
-    (state: RootState) => ({
-      questionsLength: state.currentData.testsData[typeOftest]?.questions?.length || 0,
-      currentPage: state.currentData.testsData[typeOftest]?.currentPage || 0
-    }),
+
+  
+  const { questions, currentPage} = useSelector(
+    (state: RootState) => state.currentData.testsData[typeOftest],  
     shallowEqual
-  );
+);
 
   const handleModalClose = useCallback(() => setShowExitModal(true), []);
   
@@ -59,6 +59,9 @@ const HeaderForTest = React.memo(function HeaderForTest({
       case "MockTest":
         dispatch(resetState({ testId: typeOftest }));
         break;
+        case "Trainer":
+        dispatch(resetState({ testId: typeOftest }));
+        break;
       default:
         console.error(`Test ID "${typeOftest}" does not exist in state.`);
     }
@@ -73,17 +76,17 @@ const HeaderForTest = React.memo(function HeaderForTest({
 
   const questionCounter = useMemo(() => {
     if (trainerTest) {
-      return <div className={styles['count-questions']}>Road and traffic signs</div>;
+      return <div className={styles['count-questions']}>{getName(questions[currentPage].group)}</div>;
     }
     return (
-      <div style={{ color: color.textColor }} className={styles['count-questions']}>
+      <div style={{ color: color.HeaderPracticeTestQuestionColors }} className={styles['count-questions']}>
         <span>Question</span>
         <span>{currentPage + 1}</span>
         <span>of</span>
-        <span>{questionsLength}</span>
+        <span>{questions.length}</span>
       </div>
     );
-  }, [trainerTest, color.textColor, currentPage, questionsLength]);
+  }, [trainerTest, color.textColor, currentPage,questions]);
 
   return (
     <div style={{ backgroundColor: color.headerColors }} className={styles.wrap}>
