@@ -41,6 +41,11 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
         shallowEqual
     );
 
+    useEffect(()=>{
+        console.log("QuestionContent results:",results)
+        console.log("QuestionContent question:",question)
+      },[results])
+
 
     useEffect(() => {
         if (question) {

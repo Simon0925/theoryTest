@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./Results.module.scss";
 import OkVectorSvg from "../../SVG/OkVectorSvg/OkVectorSvg";
 import CrossSvg from "../../SVG/CrossSvg/CrossSvg";
-import HeaderResults from "../HeaderResults/HeaderResults";
+import HeaderResults from "../../components/HeaderResults/HeaderResults";
 import service from "../../service/service";
 import idUser from "../../config/idUser";
 import CircularProgressBar from "../../UI/CircularProgressBar/CircularProgressBar";
@@ -27,9 +27,7 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
     shallowEqual
   );
 
-  useEffect(()=>{
-    console.log("Results results:",results)
-  },[results])
+  
   
   const [statisticData, setStatisticData] = useState<statisticData>();
   const [data, setData] = useState<QuestionResult[]>([]);
@@ -115,7 +113,7 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
 
   return (
     <>
-      <HeaderResults exitResult={exitResult} typeOftest={typeOftest} />
+      <HeaderResults exitResult={exitResult} />
       <div className={styles.wrap}>
         <div className={styles.statistic}>
           <div className={styles.progressBar}>

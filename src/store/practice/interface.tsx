@@ -29,7 +29,7 @@ interface ParData {
 }
 
 export interface Questions {
-    id: string;
+    _id: string;
     group: string;
     photo: boolean | string;
     question: string;

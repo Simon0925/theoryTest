@@ -1,13 +1,27 @@
 import hostname from "../../../config/hostname";
+import idUser from "../../../config/idUser"
+interface Time {
+    time: string;
+}
 
+interface Results {
+    id: string;
+    flag: Time[];
+}
 
-const questionFilter = async (type: { type: string; userId:string;flagged:boolean;quantity:string; questions: { id: string }[] }) => {
+export interface Hpt {
+    results: Results[];
+}
+
+const getResult = async (data:Results[]) => {
+
+    const jsonString =  JSON.stringify({
+        userId:idUser,
+        result:data
+    }); 
     
-    const jsonString = JSON.stringify(type);
-
-    console.log("type:",type)
     try {
-        const response = await fetch(`${hostname}/api/questions`, {
+        const response = await fetch(`${hostname}/api/videoResult`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -20,13 +34,13 @@ const questionFilter = async (type: { type: string; userId:string;flagged:boolea
         }
 
         const data = await response.json();
-        
+       
         return data;
     } catch (error) {
         console.error("Error posting questions group:", error);
         throw error;
     }
-};
-export default {
-    questionFilter,
-};
+}
+
+
+export default getResult
