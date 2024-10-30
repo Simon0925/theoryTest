@@ -1,24 +1,23 @@
-import { useState } from 'react';
 import styles from './Toggle.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { updateCorrect } from '../../store/practice/practice.slice'; 
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
-export default function Toggle() {
-    const dispatch = useDispatch();
-    const practice = useSelector((state: RootState) => state.practice);
+interface ToggleProps{
+    toggle:(e:boolean) => void | undefined;
+}
+
+export default function Toggle({toggle}:ToggleProps) {
+    
     const color = useSelector((state: RootState) => state.color);
-    const [isChecked, setIsChecked] = useState(practice.correct);
 
+    const [isChecked, setIsChecked] = useState(false);
 
     const handleToggle = () => {
-        const newCheckedState = !isChecked;
-        setIsChecked(newCheckedState);
-        dispatch(updateCorrect(newCheckedState));     
+        setIsChecked(!isChecked)
+        toggle(!isChecked)
     };
-
  
-
     return (
         <label className={styles.switch}>
             <input

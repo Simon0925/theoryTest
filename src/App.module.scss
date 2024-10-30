@@ -1,0 +1,33 @@
+.wrap {
+    position: relative;
+    display: flex;
+    overflow: hidden; 
+    height: 100vh; 
+
+    .burgerMenu {
+        position: fixed; 
+        top: 0;
+        left: 0; 
+        transform: translateX(-100%);
+        background-color: #003048;
+        width: 70%; 
+        height: 100vh;
+        transition: transform 0.3s ease;
+    }
+
+    .mainContent {
+        flex-grow: 1; 
+        width: 100%;
+        overflow: hidden;
+        transition: transform 0.3s ease; 
+    }
+
+    &.menuOpen {
+        .burgerMenu {
+            transform: translateX(0); 
+        }
+        .mainContent {
+            transform: translateX(70%); 
+        }
+    }
+}

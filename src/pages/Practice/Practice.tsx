@@ -1,15 +1,13 @@
 import{ Suspense, useEffect, useState, lazy, startTransition } from "react";
 import styles from "./Practice.module.scss";
 import { useDispatch} from "react-redux";
-
 import { updateResult } from "../../store/currentData/currentData.slice";
 import { resetPracticeState } from "../../store/practice/practice.slice";
 
 const PracticeTest = lazy(() => import("../../components/PracticeTest/PracticeTest"));
-const PracticeSettings = lazy(() => import("../../components/PracticeSettings/PracticeSettings"));
+const PracticeQuestionManager = lazy(() => import("../../components/PracticeQuestionManager/PracticeQuestionManager"));
 const Results = lazy(() => import("../../components/Results/Results"));
-const PracticeGroup = lazy(() => import("../../components/PracticeGroup/PracticeGroup"));
-
+const PracticeQuestionsManagerMobile = lazy(() => import("../../components/PracticeQuestionsManagerMobile/PracticeQuestionsManagerMobile"));
 export default function Practice() {
 
   const [result, setResult] = useState(false);
@@ -39,13 +37,15 @@ export default function Practice() {
       ) : (
         <>
           {!test && (
-            <div className={styles.wrap}>
-              <div className={styles.group}>
-                <PracticeGroup />
-              </div>
-              <div className={styles.settings}>
+            <div className={styles.wrap}> 
+              <div className={styles.practiceQuestionManager}>
                 <Suspense >
-                    <PracticeSettings practiceTest={setTest} />
+                  <PracticeQuestionManager practiceTest={setTest} />
+                </Suspense>
+              </div>
+              <div className={styles.PracticeQuestionsManagerMobile}>
+                <Suspense >
+                  <PracticeQuestionsManagerMobile />
                 </Suspense>
               </div>
             </div>

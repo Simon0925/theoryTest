@@ -1,10 +1,20 @@
 .wrap{
-    display: flex;
-
-    .group{
-        width: 100%;
+    .practiceQuestionManager{
+        display: block;
     }
-    .settings{
-        width: 100%;   
+    .PracticeQuestionsManagerMobile{
+        display: none;
+    }
+}
+
+@media (max-width: 800px) {
+
+    .wrap {
+        .practiceQuestionManager{
+            display: none;
+        }
+        .PracticeQuestionsManagerMobile{
+            display: block;
+        }
     }
 }

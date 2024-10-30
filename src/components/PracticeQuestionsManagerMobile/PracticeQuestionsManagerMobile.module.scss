@@ -1,0 +1,15 @@
+.wrap{
+    position: relative;
+
+    .btn{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        border: none;
+        outline: none;
+        background-color: #00BE5D;
+        color: white;
+        height: 9vh;
+        font-size: 24px;
+    }
+}
