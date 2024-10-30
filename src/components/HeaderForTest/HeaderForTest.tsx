@@ -1,119 +1,135 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import styles from './HeaderForTest.module.scss';
 import Modal from '../Modal/Modal';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { resetPracticeState, resetPracticeStateThunk } from '../../store/practice/practice.slice'; 
+import { resetState } from '../../store/currentData/currentData.slice';
+import getName from "./service/getName"
 
 interface HeaderForTestProps {
   onExitClick: (e: boolean) => void;
-  questionCount: number;
-  currentQuestion: number;
   children?: React.ReactNode;
   finish: string;
   mockTest?: boolean;
-  reviewClick?:(e:boolean) => void;
-  result?:(e:boolean) => void;
+  reviewClick?: (e: boolean) => void;
+  result?: (e: boolean) => void;
   trainerTest?: boolean;
+  typeOftest: string;  
 }
 
-export default function HeaderForTest({
-  questionCount,
-  currentQuestion,
+const HeaderForTest = React.memo(function HeaderForTest({
   finish,
   children,
   onExitClick,
-  mockTest,
   reviewClick,
   result,
-  trainerTest
+  trainerTest,
+  typeOftest,
 }: HeaderForTestProps) {
   const [showExitModal, setShowExitModal] = useState(false);
   const [showResultsModal, setShowResultsModal] = useState(false);
-  const color = useSelector((state: RootState) => state.color);
+  const dispatch = useDispatch<AppDispatch>();
 
+  const color = useSelector((state: RootState) => state.color, shallowEqual);
 
+  
+  const { questions, currentPage} = useSelector(
+    (state: RootState) => state.currentData.testsData[typeOftest],  
+    shallowEqual
+);
 
-  const handleExit = () => {
-    setShowExitModal(true);
-  };
-
-  const handleResults = () => {
-         if (mockTest && reviewClick) {
-            reviewClick(true)
-        }else{
-            setShowResultsModal(!showResultsModal);
-        }
-  };
-
-  const handleModalClose = () => {
-    onExitClick(true);  
-  };
-
-  const handleModalCancel = () => {
-    setShowExitModal(false);
-  };
-
-  const handleResultsModalCancel =  () => {
-    setShowResultsModal(!showResultsModal);
-  };
-  const handleResultsModalClose =  () => {
-    if(result){
-      result(true)
+  const handleModalClose = useCallback(() => setShowExitModal(true), []);
+  
+  const handleResults = useCallback(() => {
+    if (typeOftest === "MockTest" && reviewClick) {
+      reviewClick(true);
+    } else {
+      setShowResultsModal((prev) => !prev);
     }
-  };
+  }, [typeOftest, reviewClick]);
+
+  const handleExit = useCallback(() => {
+    switch (typeOftest) {
+      case "PracticeTest":
+        dispatch(resetPracticeState());
+        dispatch(resetPracticeStateThunk());
+        break;
+      case "MockTest":
+        dispatch(resetState({ testId: typeOftest }));
+        break;
+        case "Trainer":
+        dispatch(resetState({ testId: typeOftest }));
+        break;
+      default:
+        console.error(`Test ID "${typeOftest}" does not exist in state.`);
+    }
+    onExitClick(true);
+  }, [dispatch, onExitClick, typeOftest]);
+
+  const handleModalCancel = useCallback(() => setShowExitModal(false), []);
+  const handleResultsModalCancel = useCallback(() => setShowResultsModal((prev) => !prev), []);
+  const handleResultsModalClose = useCallback(() => {
+    if (result) result(true);
+  }, [result]);
+
+  const questionCounter = useMemo(() => {
+    if (trainerTest) {
+      return <div className={styles['count-questions']}>{getName(questions[currentPage].group)}</div>;
+    }
+    return (
+      <div style={{ color: color.HeaderPracticeTestQuestionColors }} className={styles['count-questions']}>
+        <span>Question</span>
+        <span>{currentPage + 1}</span>
+        <span>of</span>
+        <span>{questions.length}</span>
+      </div>
+    );
+  }, [trainerTest, color.textColor, currentPage,questions]);
 
   return (
-    <div style={{backgroundColor: color.headerColors}} className={styles.wrap}>
+    <div style={{ backgroundColor: color.headerColors }} className={styles.wrap}>
       <ButtonTest
-        name={"Exit"}
-        color={"white"}
-        backgroundColor={"#A73530"}
+        name="Exit"
+        color="white"
+        backgroundColor="#A73530"
         svg={false}
-        click={handleExit}
+        click={handleModalClose}
         svgColor={false}
       />
-      {trainerTest !== true &&
-        <div className={styles['count-questions']}>
-          <span>Question</span>
-          <span>{currentQuestion + 1}</span>
-          <span>of</span>
-          <span>{questionCount}</span>
-        </div>
-      }
-      {trainerTest === true &&
-        <div className={styles['count-questions']}>Road and traffic signs</div>
-      }
+      {questionCounter}
       <ButtonTest
         name={finish}
-        color={"white"}
-        backgroundColor={"#00B06F"}
+        color="white"
+        backgroundColor="#00B06F"
         svg={false}
-        click={handleResults} 
+        click={handleResults}
         svgColor={false}
       />
       {children && <div className={styles.extraContent}>{children}</div>}
       {showExitModal && (
         <Modal 
-          close={handleModalClose} 
-          text={""} 
+          close={handleExit} 
+          text="" 
           title="Are you sure you want to exit from the test?" 
           cancelClick={handleModalCancel}
           cancel={true} 
-          blueBtnText={'Exit test'} 
+          blueBtnText="Exit test" 
         />
       )}
-      {showResultsModal && mockTest != true && (
+      {showResultsModal && typeOftest !== "MockTest" && (
         <Modal 
           close={handleResultsModalClose} 
-          text={"Are you sure you want to finish current test and see the test results?"} 
+          text="Are you sure you want to finish current test and see the test results?" 
           title="End of test" 
           cancelClick={handleResultsModalCancel}
           cancel={true} 
-          blueBtnText={'Show results'} 
+          blueBtnText="Show results" 
         />
       )}
-      
     </div>
   );
-}
+});
+
+export default HeaderForTest;

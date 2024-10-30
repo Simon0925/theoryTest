@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from './Par.module.scss';
 import { CirclePercent } from '../../UI/CirclePercent/CirclePercent';
 import { RootState } from '../../store/store';
-import {  updateQuestion } from '../../store/practice/practice.slice'; 
+import {  updateAllQuestionLength,updateQuestion } from '../../store/practice/practice.slice'; 
 import { useDispatch, useSelector } from 'react-redux';
 
 interface ParProps {
@@ -21,26 +21,36 @@ export default function Par({ name, quantity, percent, svg, id }: ParProps) {
     const [isSelected, setIsSelected] = useState(() => 
         practice.question.some((element) => element.id === id)
     );
+    const color = useSelector((state: RootState) => state.color);
 
     const click = () => {
+        
         const newSelectedState = !isSelected;
         setIsSelected(newSelectedState);
         if (newSelectedState) {
             const updatedQuestions = [...practice.question, { id }];
-            dispatch(updateQuestion(updatedQuestions));   
+            dispatch(updateQuestion(updatedQuestions));
         } else {
             const updatedQuestions = practice.question.filter((element) => element.id !== id);
-            dispatch(updateQuestion(updatedQuestions));
+            dispatch(updateQuestion(updatedQuestions)); 
         }
     };
 
     return (
         <div id={id} onClick={click} className={styles.wrap}>
-            <div className={styles.title}>
+            <div style={{
+                        '--text-color': color.svgGroupColor,
+                        '--active-svg-color': color.textColor,
+                        '--header-svg-color':color.svgGroupColor,
+                        '--active-background-color':color.svgAvtiveBackgroundColor,
+                    } as React.CSSProperties}
+                     className={styles.title}>
                 <div className={isSelected ? styles.active : styles.notActive}>{svg}</div>
                 <span>{name} ({quantity})</span>
             </div>
-            <CirclePercent currentPercent={percent} />
+            <div className={styles.containerPercent}>
+                <CirclePercent currentPercent={percent} />
+            </div>
         </div>
     );
 }

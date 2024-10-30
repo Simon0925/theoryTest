@@ -9,6 +9,7 @@ import ClockSvg from '../../SVG/ClockSvg/ClockSvg';
 import LightSvg from '../../SVG/LightSvg/LightSvg';
 import CameraSvg from '../../SVG/CameraSvg/CameraSvg';
 import SettingsSvg from '../../SVG/SettingsSvg/SettingsSvg';
+import BurgerMenuSVG from '../../SVG/BurgerMenuSVG/BurgerMenuSVG';
 
 
 export default function Header() {
@@ -37,7 +38,6 @@ export default function Header() {
     }, [location.pathname]); 
 
 
-
     
     return (
         <>
@@ -46,19 +46,22 @@ export default function Header() {
                  className={styles.title}
                  style={{color: color.textColor}} 
                  >
-                    <h3>Theory Test</h3>
+                    <div className={styles.burgerMenu}>
+                        <BurgerMenuSVG color={color.textColor} />
+                    </div>
+                    <h3 className={styles.titleText}>Theory Test</h3>
                 </div>
                 <nav className={styles.nav}>
-                <NavLink
-                    className={active.practice ? styles['nav-btn'] : styles['not-active']}
-                    style={{
-                        '--header-bg-color': color.headerColors,
-                        '--text-color': color.textColor,
-                        '--hover-bg-color': color.hoverColor,
-                        '--header-svg-color':color.textColor
-                    } as React.CSSProperties}
-                    to='/'
-                    >
+                    <NavLink
+                        className={active.practice ? styles['nav-btn'] : styles['not-active']}
+                        style={{
+                            '--header-bg-color': color.headerColors,
+                            '--text-color': color.textColor,
+                            '--hover-bg-color': color.hoverColor,
+                            '--header-svg-color':color.textColor
+                        } as React.CSSProperties}
+                        to='/'
+                        >
                         <PencilSvg />
                         <span style={{color:color.headerSvgColor}}>Practice</span>
                     </NavLink>
@@ -70,7 +73,7 @@ export default function Header() {
                             '--hover-bg-color': color.hoverColor,
                             '--header-svg-color':color.headerSvgColor
                         } as React.CSSProperties}
-                    to='/mock-test'>
+                        to='/mock-test'>
                         <ClockSvg />
                         <span style={{color:color.headerSvgColor}} >Mock Test</span>
                     </NavLink>

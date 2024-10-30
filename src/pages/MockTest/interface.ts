@@ -1,5 +1,5 @@
 export interface Question {
-    _id: string;
+    id: string;
     question: string;
     photo?: string;
     group: string;

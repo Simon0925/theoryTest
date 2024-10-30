@@ -4,6 +4,24 @@ export interface Answer {
     photo: boolean | string;
 }
 
+export interface Question {
+    correctAnswers: number;
+    explanation: string;
+    flag: boolean | undefined;
+    group: string;
+    id: string;
+    incorrectAnswers: number;
+    par: ParData[];
+    photo: boolean | string;
+    question: string;
+    status: boolean | string;
+}
+
+interface ParData {
+    answer: string;
+    photo: boolean | string;
+    tOF: boolean;
+}
 export interface Result {
     id: string;
     question: string;
@@ -18,15 +36,8 @@ interface ParData {
     photo: string | boolean;
 }
 
- export interface VariantsOfAnswersrops {
-    id: string;
-    question: string;
-    group: string;
-    par: ParData[];
-    click: (e: string) => void;
-    currentFlag: boolean | undefined;
+ export interface VariantsOfAnswersProps {
+    question:Question;
     typeOftest: string; 
-    nextPage: ((e: number) => void) | null;
-    currentPage: number | null;
-    setQuestionsSelected?: (selected: { id: string, index: number }[]) => void; 
+
 }

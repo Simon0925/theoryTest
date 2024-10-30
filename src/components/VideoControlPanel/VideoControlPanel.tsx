@@ -1,16 +1,16 @@
 
 import styles from "./VideoControlPanel.module.scss";
 
-import PauseSvg from "../../SVG/PauseSvg/PauseSvg";
-import PlayVectorSvg from "../../SVG/PlayVectorSvg/PlayVectorSvg";
-import SoundMaxSvg from "../../SVG/SoundMaxSvg/SoundMaxSvg";
-import SoundOffSvg from "../../SVG/SoundOffSvg/SoundOffSvg";
+import PauseSvg from "../../SVG/PauseSvg/PauseSvg.tsx";
+import PlayVectorSvg from "../../SVG/PlayVectorSvg/PlayVectorSvg.tsx";
+import SoundMaxSvg from "../../SVG/SoundMaxSvg/SoundMaxSvg.tsx";
+import SoundOffSvg from "../../SVG/SoundOffSvg/SoundOffSvg.tsx";
 import CustomSound from "../../UI/CustomSound/CustomSound.tsx";
-import ProgressBar from "../ProgressBar/ProgressBar";
-import FastForwardSvg from "../../SVG/FastForwardSvg/FastForwardSvg";
-import Selecte from "../Selecte/Selecte";
-import NextForwardArrowSvg from "../../SVG/NextForwardArrowSvg/NextForwardArrow";
-import { useVideo } from "../../context/VideoContext/VideoContext.tsx";
+import ProgressBar from "../ProgressBar/ProgressBar.tsx";
+import FastForwardSvg from "../../SVG/FastForwardSvg/FastForwardSvg.tsx";
+import Selecte from "../Selecte/Selecte.tsx";
+import NextForwardArrowSvg from "../../SVG/NextForwardArrowSvg/NextForwardArrow.tsx";
+import { useVideo } from "../../context/VideoContext/VideoContext.tsx.tsx";
 
 const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);

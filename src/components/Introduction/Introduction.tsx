@@ -1,7 +1,7 @@
 
-import VideoPlayer from "../VideoPlayer/VideoPlayer"
+import VideoPlayer from "../VideoPlayer/VideoPlayer.tsx"
 import styles from "./Introduction.module.scss"
-import { VideoProvider } from '../../context/VideoContext/VideoContext.tsx'; 
+import { VideoProvider } from '../../context/VideoContext/VideoContext.tsx.tsx'; 
 
 interface VideoProps {
     exit:(e:boolean) => void

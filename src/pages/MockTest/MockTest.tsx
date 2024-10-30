@@ -1,15 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import FooterMockTest from '../../components/FooterMockTest/FooterMockTest';
 import MockTestChart from '../../components/MockTestChart/MockTestChart';
 import styles from './MockTest.module.scss';
 import Assessment from '../../components/Assessment/Assessment';
 import DataStatisticsAssessment from '../../components/DataStatisticsAssessment/DataStatisticsAssessment';
-import Results from '../Results/Results';
+import Results from '../../components/Results/Results';
 import { formatTime } from './service/formatTime';
 import { mockTestStatistics } from './service/mockTestStatistics';
+
+import { statisticsData } from './interface';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
+
+import {assessmentData} from './service/assessmentData'
+import { RootState } from '../../store/store';
 import Spinner from '../../UI/Spinner/Spinner';
 
-import {Question,statisticsData} from "./interface"
 
 
 export default function MockTest() {
@@ -17,10 +23,28 @@ export default function MockTest() {
   const [result, setResult] = useState(false);
   const [time, setTime] = useState<number | undefined>();
   const [curentTimeFormat, setCurentTimeFormat] = useState('');
-  const [questions, setQuestions] = useState<Question[]>([]);
   const [data, setData] = useState<statisticsData[] | null>(null);
 
-  if (!result && !isTestStarted) localStorage.setItem('result', JSON.stringify([]));
+  const dispatch = useDispatch();
+
+  
+  const { results,questions } = useSelector(
+    (state: RootState) => state.currentData.testsData["MockTest"],  
+    shallowEqual
+);
+
+  const fetchStatistics = useMemo(
+    () => async () => {
+      const statistics = await mockTestStatistics();
+      if (statistics) setData(statistics);
+    }, []
+  );
+  
+  const fetchAssessmentData = useCallback(() => {
+    if (questions.length <= 0) {
+      assessmentData(dispatch);
+    }
+  }, [questions.length]);
 
   useEffect(() => {
     if (result) {
@@ -28,49 +52,46 @@ export default function MockTest() {
     }
   }, [result]);
 
-  const handleTestClose = () => {
-    setIsTestStarted(false);
-  };
+  useEffect(() => {
+    if (!data && results.length <= 0) {
+      fetchStatistics();
+    }
+  }, [data,results]);
+
 
   useEffect(() => {
     if (typeof time === 'number' && result) {
       const curentTime = 57 * 60 - time;
-      const curentFormatTime = formatTime(curentTime);
-      setCurentTimeFormat(curentFormatTime);
+      setCurentTimeFormat(formatTime(curentTime));
     }
   }, [time, result]);
 
   useEffect(() => {
-    const fetchStatistics = async () => {
-      const statistics = await mockTestStatistics();
-      if (statistics) {
-        setData(statistics);
-      }
-    };
-
-    fetchStatistics();
+    fetchAssessmentData();
   }, []);
+
+  const handleTestClose = () => {
+    setIsTestStarted(false);
+  };
 
   return (
     <>
       {result ? (
         <Results
-          question={questions}
           time={curentTimeFormat}
-          mockTest={true}
+          typeOftest={'MockTest'}
           exitResult={setResult}
         />
       ) : data ? (
         <div className={styles.mockTestContainer}>
-          {!isTestStarted &&
+          {!isTestStarted && (
             <div className={styles.statistics}>
               <MockTestChart data={data} />
               <DataStatisticsAssessment data={data} />
             </div>
-          }
+          )}
           {isTestStarted && (
             <Assessment
-              getQuestion={setQuestions}
               getTime={setTime}
               result={setResult}
               onClose={handleTestClose}
@@ -82,7 +103,7 @@ export default function MockTest() {
         </div>
       ) : (
         <div className={styles.spiner}>
-            <Spinner color={'black'} />
+          <Spinner color={'black'} />
         </div>
       )}
     </>

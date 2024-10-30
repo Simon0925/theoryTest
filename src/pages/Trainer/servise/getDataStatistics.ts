@@ -1,26 +1,55 @@
+
+import { Dispatch } from "react";
 import hostname from "../../../config/hostname";
-
-import idUser from "../../../config/idUser"
-
-export const getDataStatistics = async () => {
+import idUser from "../../../config/idUser";
+import { setCurrentQuestions, setLoading } from "../../../store/currentData/currentData.slice";
 
 
-    const requestUrl = `${hostname}/api/trainer?id=${idUser}`;
+export const getDataStatistics = async (
+  dispatch: Dispatch<any>,
+  setTrainerOnceTwice: React.Dispatch<React.SetStateAction<{ once: number | null, twice: number | null }>> 
+) => {
+  const requestUrl = `${hostname}/api/trainer?id=${idUser}`;
+  try {
+    dispatch(
+      setLoading({
+        testId: "Trainer",
+        isLoading: true,
+      })
+    );
 
+    const response = await fetch(requestUrl);
 
-    try {
-        const response = await fetch(requestUrl);
-
-        if (!response.ok) {
-            const errorBody = await response.text();
-            console.error('Error fetching data:', errorBody);
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        throw error; 
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
+    const data = await response.json();
+
+    dispatch(
+      setCurrentQuestions({
+        testId: "Trainer",
+        questions: data.trainerQuestions,
+      })
+    );
+
+   
+    setTrainerOnceTwice((prev) => ({
+      ...prev,
+      once: data.correctAnswersOnce,
+      twice: data.correctAnswersTwice,
+    }));
+
+    dispatch(
+      setLoading({
+        testId: "Trainer",
+        isLoading: false,
+      })
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
 };

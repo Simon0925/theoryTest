@@ -2,6 +2,7 @@ import hostname from "../../../config/hostname";
 import idUser from "../../../config/idUser";
 
 
+
 export const hptGetData = async () =>{
     try {
         const response = await fetch(`${hostname}/api/htp-videos?id=${idUser}`);

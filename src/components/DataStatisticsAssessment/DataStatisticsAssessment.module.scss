@@ -1,20 +1,17 @@
 .title{
-    color: white;
     padding: 0 0 0.5rem 1rem;
 }
 .wrap{
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
-    // height: 40vh;
-    // overflow-y: auto; 
+   
     .data-wrap{
-        background-color: #FFFFFF;
+
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0.2rem 1rem;
-        color: #0078AB;
         .data-statistic{
             display: flex;
             align-items: center;

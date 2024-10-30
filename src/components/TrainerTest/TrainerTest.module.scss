@@ -1,7 +1,6 @@
 .wrap{
     min-width: 100%;
     min-height: 93vh;
-    background-color: #0096CE;
     position: fixed;
     bottom: 0;
     display: flex;
@@ -27,9 +26,9 @@
 
     .question-wrap{
         background-color: #FFFFFF;
-        padding: 1.5rem;
         display: flex;
         justify-content: space-between;
+        max-height: 40vh;
         .marker{
             top: 30px;
             left: 7px;

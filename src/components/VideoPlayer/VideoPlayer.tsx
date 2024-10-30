@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 import styles from "./VideoPlayer.module.scss";
 
-import hostname from "../../config/hostname";
+import hostname from "../../config/hostname.ts";
 
-import { useVideo } from "../../context/VideoContext/VideoContext.tsx";
+import { useVideo } from "../../context/VideoContext/VideoContext.tsx.tsx";
 import VideoControlPanel from "../VideoControlPanel/VideoControlPanel.tsx";
 
 
@@ -38,7 +38,7 @@ const VideoPlayer = () => {
         ref={videoRef}
         onLoadedMetadata={handleLoadedMetadata}
         className={styles.video}
-        src={`${hostname}/video/introduction.mp4`}
+        src={`${hostname}/video/introduction/introduction.mp4`}
       />
       {isVisible && (
         <VideoControlPanel />

@@ -1,17 +1,37 @@
 .wrap {
-    width: 100%;
-    padding: 1rem;
-    .videoPicture {
+    position: relative;
+    background-color: white;
+    width: 7rem;    
+    height: 6rem;
+    
 
-        position: relative;
-        img {
+    .videoPicture {
+            cursor: pointer;
+            width: 7rem;    
+            height: 6rem;
+            object-fit: cover; 
+           
+          
+        
+        .videoActive{
             width: 7rem;
             height: 6rem;  
-            object-fit: cover; 
+            object-fit: cover;
+            opacity: 0.5;
+            cursor: pointer; 
+        } 
+        .notActive{
+            width: 7rem;
+            height: 6rem;  
+            object-fit: cover;
+            opacity: 1; 
+            cursor: pointer; 
+
         }
+    
 
         .number{
-            background-color: #0078AB;
+            // background-color: #0078AB;
             width: 1.5rem;
             height: 1.5rem;
             display: flex;
@@ -20,8 +40,9 @@
             color: white;
             border-radius: 30px;
             position: absolute;
-            top: -5px;
-            left: -5px;
+            top: -10px;
+            left: -10px;
+            z-index: 999;
         }
     }
 }

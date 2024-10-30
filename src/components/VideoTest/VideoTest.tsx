@@ -1,11 +1,12 @@
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import styles from './VideoTest.module.scss';
 import hostname from '../../config/hostname';
-import { useCallback, useEffect, useRef, useState, memo } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Modal from '../Modal/Modal';
 import FlagSvg from '../../SVG/FlagSvg/FlagSvg';
 import { addVideoResult, resetVideo } from '../../store/hpt/hpt.slice';
+import VideoProgressCircle from '../../UI/CircularProgressVideoSvg/CircularProgressVideoSvg';
 
 interface VideoTestProps {
     exit: (e: boolean) => void;
@@ -14,41 +15,38 @@ interface VideoTestProps {
 }
 
 const VideoTest = ({ exit, completedVideosActive, isIntroduction }: VideoTestProps) => {
-
     const dispatch = useDispatch();
-    
-    const { videos, results } = useSelector(
-        (state: RootState) => ({ videos: state.hptData.videos, results: state.hptData.results }),
-        shallowEqual
-    );
+    const videos = useSelector((state: RootState) => state.hptData.videos);
+    const results = useSelector((state: RootState) => state.hptData.results);
 
-    const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(true);
-    const [showExitModal, setShowExitModal] = useState(false);
-    const [countFlags, setCountFlags] = useState(0);
+    const [currentVideoIndex, setCurrentVideoIndex] = useState<number>(0);
+    const [isPlaying, setIsPlaying] = useState<boolean>(true);
+    const [showExitModal, setShowExitModal] = useState<boolean>(false);
+    const [countFlags, setCountFlags] = useState<number>(0);
     const videoRef = useRef<HTMLVideoElement>(null);
+    
 
-    const initializeResult = useCallback(() => {
+    const initializeResult = () => {
         const { id, poster } = videos[currentVideoIndex];
         if (!results.some(result => result.id === id)) {
             dispatch(addVideoResult({ id, poster }));
         }
-    }, [dispatch, currentVideoIndex, videos, results]);
+    };
 
     useEffect(() => {
         if (videos.length > 0) initializeResult();
-    }, [initializeResult, videos.length]);
+    }, [currentVideoIndex, videos.length]);
 
-    const togglePlayPause = useCallback(() => {
+    const togglePlayPause = () => {
         if (videoRef.current) {
             isPlaying ? videoRef.current.pause() : videoRef.current.play();
-            setIsPlaying(prev => !prev);
+            setIsPlaying(!isPlaying);
         }
-    }, [isPlaying]);
+    };
 
     const handleVideoEnd = () => {
         if (currentVideoIndex < videos.length - 1) {
-            setCurrentVideoIndex(prev => prev + 1);
+            setCurrentVideoIndex(prevIndex => prevIndex + 1);
             setCountFlags(0);
         } else {
             endVideos();
@@ -61,24 +59,34 @@ const VideoTest = ({ exit, completedVideosActive, isIntroduction }: VideoTestPro
         isIntroduction(false);
     };
 
-    const handleExit = useCallback(() => {
+    const handleExit = () => {
         dispatch(resetVideo());
         exit(false);
-    }, [dispatch, exit]);
+    };
 
-    const addFlag = useCallback(() => {
+    const addFlag = () => {
         setCountFlags(prev => prev + 1);
         const currentTime = videoRef.current?.currentTime?.toFixed(2);
         if (currentTime) {
             const { id, poster } = videos[currentVideoIndex];
             dispatch(addVideoResult({ id, time: currentTime, poster }));
         }
-    }, [currentVideoIndex, dispatch, videos]);
+    };
 
-    const toggleExitModal = useCallback(() => {
+    const toggleExitModal = () => {
         videoRef.current?.pause();
-        setShowExitModal(prev => !prev);
-    }, []);
+        setShowExitModal(!showExitModal);
+    };
+
+    const renderVideo = () => (
+        <video
+            onClick={addFlag}
+            src={`${hostname}/${videos[currentVideoIndex].video}`}
+            autoPlay
+            onEnded={handleVideoEnd}
+            ref={videoRef}
+        />   
+    );
 
     return (
         <>
@@ -96,17 +104,7 @@ const VideoTest = ({ exit, completedVideosActive, isIntroduction }: VideoTestPro
                     </button>
                 </div>
                 <div className={styles.container}>
-                    {videos.length > 0 ? (
-                        <video
-                            onClick={addFlag}
-                            src={`${hostname}/${videos[currentVideoIndex].video}`}
-                            autoPlay
-                            onEnded={handleVideoEnd}
-                            ref={videoRef}
-                        />
-                    ) : (
-                        <p>No videos available</p>
-                    )}
+                    {videos.length > 0 ? renderVideo() : <p>No videos available</p>}
                 </div>
                 <div className={styles.FlagContainer}>
                     {Array.from({ length: countFlags }).map((_, index) => (
@@ -128,4 +126,4 @@ const VideoTest = ({ exit, completedVideosActive, isIntroduction }: VideoTestPro
     );
 };
 
-export default memo(VideoTest);
+export default VideoTest;

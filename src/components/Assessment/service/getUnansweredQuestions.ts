@@ -2,18 +2,15 @@ import { Question } from "../Assessment";
 
 interface AnsweredQuestion {
   id: string;
-  answer: boolean;
+  index: number;
 }
 
-export const getUnansweredQuestions = (questions: Question[]): Question[] => {
-  const localS = localStorage.getItem('result');
-  const localStore: AnsweredQuestion[] = localS ? JSON.parse(localS) : [];
-
-  const answeredQuestion = localStore.filter((q) => q.answer === true);
-
-  if (answeredQuestion.length > 0) {
+export const getUnansweredQuestions = (answeredVariants:AnsweredQuestion[],questions: Question[]): Question[] => {
+  
+  if (answeredVariants.length > 0) {
     const unanswered: Question[] = questions.filter(
-      (q) => !answeredQuestion.some((element) => q._id === element.id)
+
+      (q) => !answeredVariants.some((element) => q.id === element.id)
     );
     return unanswered;
   }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./Selecte.module.scss";
-import OkVectorSvg from "../../SVG/OkVectorSvg/OkVectorSvg";
-import { useVideo } from "../../context/VideoContext/VideoContext.tsx";
+import OkVectorSvg from "../../SVG/OkVectorSvg/OkVectorSvg.tsx";
+import { useVideo } from "../../context/VideoContext/VideoContext.tsx.tsx";
 
 interface SelecteProps {
   selecteVisible: (e: boolean) => void;

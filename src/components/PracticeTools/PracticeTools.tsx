@@ -5,16 +5,13 @@ import { updateType } from '../../store/practice/practice.slice';
 import { useDispatch, useSelector } from 'react-redux';
 
 
-interface NumberOfQuestionsProps {
-    change:(quantity:string)=>void;
-}
-
-export default function PracticeTools({change}:NumberOfQuestionsProps) {
+export default function PracticeTools() {
     const dispatch = useDispatch();
     const practice = useSelector((state: RootState) => state.practice);
+    const color = useSelector((state: RootState) => state.color);
     
     const [active, setActive] = useState({
-        all:practice.type === "All",
+        all:practice.type === "all",
         noSeen: practice.type === "noSeen",
         wrong: practice.type === "wrong",
     });
@@ -28,7 +25,6 @@ export default function PracticeTools({change}:NumberOfQuestionsProps) {
                 noSeen: false,
                 wrong: false,
             });
-            change(newCheckedState)
         } else if (type === 'noSeen') {
             const newCheckedState = 'noSeen'
             dispatch(updateType(newCheckedState));
@@ -37,7 +33,6 @@ export default function PracticeTools({change}:NumberOfQuestionsProps) {
                 noSeen: true,
                 wrong: false,
             });
-            change(newCheckedState)
         } else if (type === 'wrong') {
             const newCheckedState = 'wrong'
             dispatch(updateType(newCheckedState));
@@ -46,14 +41,21 @@ export default function PracticeTools({change}:NumberOfQuestionsProps) {
                 noSeen: false,
                 wrong: true,
             });
-            change(newCheckedState)
         }
     };
 
     return (
         <div className={styles['question-type']}>
-            <p className={styles['title']}>Question type</p>
-            <div className={styles['container']}>
+            <p style={{color:color.titleColorSettings}} className={styles['title']}>Question type</p>
+            <div
+            style={{
+                '--text-active-color': color.textActiveSettingsColor,
+                '--text-not-active-color': color.textNotActiveSettingsColor,
+                '--background-not-active-color':color.btnSettingsColorNotActive,
+                '--background-active-color':color.btnSettingsColor,
+                '--background':color.btnSettingsBackgroundColor
+            } as React.CSSProperties}
+             className={styles['container']}>
                 <div onClick={() => select('all')} className={active.all ? styles['active'] : styles['not-active']}>
                     <p>All</p>
                 </div>

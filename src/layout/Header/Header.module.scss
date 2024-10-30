@@ -68,5 +68,37 @@
 
     .title {
         width: 100%;
+
+        .burgerMenu{
+            display: none;
+        }
+    }
+}
+
+
+@media (max-width: 800px) {
+    .wrap .nav {
+        display: none;
+    }
+    .wrap {
+        width: 100%;
+        display: flex;
+        align-items: center;
+     
+    }
+    .wrap .title{
+        display: flex;
+        width: 100%;
+        .burgerMenu{
+            display: block;
+        }
+
+        .titleText{
+            width: 100%;
+            display: flex;
+       
+            justify-content: center;
+            align-items: center;
+        }
     }
 }

@@ -4,8 +4,6 @@ import hostname from "../../../config/hostname";
 const questionFilter = async (type: { type: string; userId:string;flagged:boolean;quantity:string; questions: { id: string }[] }) => {
     
     const jsonString = JSON.stringify(type);
-
-    console.log("type:",type)
     try {
         const response = await fetch(`${hostname}/api/questions`, {
             method: 'POST',

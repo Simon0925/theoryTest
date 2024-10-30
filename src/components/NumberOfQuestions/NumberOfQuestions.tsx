@@ -1,39 +1,37 @@
 import {useEffect, useState } from 'react';
 import styles from './NumberOfQuestions.module.scss'
-import { useDispatch, useSelector } from 'react-redux';
+import {  shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { updateNumberOfQuestions } from '../../store/practice/practice.slice'; 
 
 
-interface NumberOfQuestionsProps {
-    change:(quantity:string)=>void;
-}
 
-export default function NumberOfQuestions ({change}:NumberOfQuestionsProps) {
-
+export default function NumberOfQuestions () {
+    const {questions} = useSelector(
+        (state: RootState) => state.currentData.testsData["PracticeTest"],
+        shallowEqual
+    );
     const dispatch = useDispatch();
 
     const practice = useSelector((state: RootState) => state.practice);
+    const color = useSelector((state: RootState) => state.color);
+    const [allQuestionLength , setAllQuestionLength] = useState(practice.allQuestionLength)
 
-    const [quantity, setQuantity] = useState(0)
 
     useEffect(()=>{
-        if(practice.allDataLength != undefined){
-            setQuantity(practice.allDataLength)
+        if(practice.type === "noSeen" || practice.type === "wrong"){
+            setAllQuestionLength(questions.length)
         }else{
-            setQuantity(0)
+            setAllQuestionLength(practice.allQuestionLength)
         }
-    },[practice.allDataLength])
+    },[questions,practice])
 
-    
     const [active, setActive] = useState({
             ten: practice.numberOfQuestions === 'ten',
             twenty: practice.numberOfQuestions === 'twenty',
             thirty: practice.numberOfQuestions === 'thirty',
-            all:practice.numberOfQuestions === 'All'
+            all:practice.numberOfQuestions === 'all'
     });
-
-   
 
     const select = (type: string) => {
         if (type === 'all') {
@@ -45,7 +43,6 @@ export default function NumberOfQuestions ({change}:NumberOfQuestionsProps) {
                 thirty: false,
                 all:true
             });
-            change(newCheckedState)
         } else if (type === 'ten') {
             const newCheckedState = 'ten'
             dispatch(updateNumberOfQuestions(newCheckedState));
@@ -55,7 +52,6 @@ export default function NumberOfQuestions ({change}:NumberOfQuestionsProps) {
                 thirty: false,
                 all:false
             });
-            change(newCheckedState)
         } else if (type === 'twenty') {
             const newCheckedState = 'twenty'
             dispatch(updateNumberOfQuestions(newCheckedState));
@@ -65,7 +61,6 @@ export default function NumberOfQuestions ({change}:NumberOfQuestionsProps) {
                 thirty: false,
                 all:false
             });
-            change(newCheckedState)
         } else if (type === 'thirty') {
             const newCheckedState = 'thirty'
             dispatch(updateNumberOfQuestions(newCheckedState));
@@ -75,15 +70,22 @@ export default function NumberOfQuestions ({change}:NumberOfQuestionsProps) {
                 thirty: true,
                 all:false
             });
-            change(newCheckedState)
         }
     };
 
     return (
         <div className={styles['question-type']}>
-            <p className={styles['title']}>Number of questions</p>
-            <div className={styles['container']}>
-                <div onClick={() => select('ten')} className={active.ten ? styles['active'] : styles['not-active']}>
+            <p style={{color:color.titleColorSettings}} className={styles['title']}>Number of questions</p>
+            <div style={{
+                    '--text-active-color': color.textActiveSettingsColor,
+                    '--text-not-active-color': color.textNotActiveSettingsColor,
+                    '--background-not-active-color':color.btnSettingsColorNotActive,
+                    '--background-active-color':color.btnSettingsColor,
+                    '--background':color.btnSettingsBackgroundColor
+                } as React.CSSProperties}
+                className={styles['container']}
+            >
+                <div  onClick={() => select('ten')} className={active.ten ? styles['active'] : styles['not-active']}>
                     <p>10</p>
                 </div>
                 <div onClick={() => select('twenty')} className={active.twenty ? styles['active'] : styles['not-active']}>
@@ -93,7 +95,7 @@ export default function NumberOfQuestions ({change}:NumberOfQuestionsProps) {
                     <p>30</p>
                 </div>
                 <div onClick={() => select('all')} className={active.all ? styles['active'] : styles['not-active']}>
-                    <p>All {quantity}</p>
+                    <p>All {allQuestionLength}</p>
                 </div>
             </div>
         </div>

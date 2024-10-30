@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./Results.module.scss";
 import OkVectorSvg from "../../SVG/OkVectorSvg/OkVectorSvg";
 import CrossSvg from "../../SVG/CrossSvg/CrossSvg";
-import HeaderResults from "../../components/HeaderResults/HeaderResults";
-import service from "../../service/service";
+import HeaderResults from "../HeaderResults/HeaderResults";
 import idUser from "../../config/idUser";
 import CircularProgressBar from "../../UI/CircularProgressBar/CircularProgressBar";
 import currentDate from "./service/date";
@@ -12,6 +11,8 @@ import { mockTestData } from './service/mockTestData';
 import { shallowEqual, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import hostname from "../../config/hostname";
+
+import postResult from './service/postResult';
 
 interface ResultsProps {
   exitResult: (e: boolean) => void;
@@ -28,11 +29,16 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
   );
 
   
-  
   const [statisticData, setStatisticData] = useState<statisticData>();
   const [data, setData] = useState<QuestionResult[]>([]);
   const [answered, setAnswered] = useState(0);
   const [mockTestTrueAnswer, setMockTestTrueAnswer] = useState<number>();
+
+  useEffect(()=>{
+    console.log("results",results)
+    console.log("statisticData",statisticData)
+    console.log("mockTestTrueAnswer",mockTestTrueAnswer)
+  },[results])
 
   const [progressBar, setProgressBar] = useState({
     pass: 0,
@@ -40,6 +46,10 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
     trueAnswer: 0,
   });
 
+  useEffect(() => {
+    const correctAnswers = data.filter((elem) => elem.status === true).length;
+    setAnswered(correctAnswers);
+  }, [data]);
 
   useEffect(() => {
     if (mockTestTrueAnswer !== undefined && typeOftest === "MockTest") {
@@ -66,7 +76,7 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
       const total = data.length;
       const counts = data.reduce(
         (acc, e) => {
-          if (e.status === "pass") acc.pass += 1;
+          if (e.status === "pass" ||e.status === undefined ) acc.pass += 1;
           else if (e.status === false) acc.falseAnswer += 1;
           else if (e.status === true) acc.trueAnswer += 1;
           return acc;
@@ -90,30 +100,29 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
     if (results.length > 0 && typeOftest !== "MockTest") {
       try {
         const dataToSend = { userId: idUser, data: results };
-        service.postQuestionsGroup(dataToSend);
+        postResult.postResult(dataToSend,typeOftest);
       } catch (error) {
         console.error("Error posting local storage data:", error);
       }
-    } else if (data.length > 0 && typeOftest === "MockTest" && statisticData) {
+    } else if (data.length > 0 && typeOftest === "MockTest" && statisticData !== undefined) {
       const dataToSend = {
         userId: idUser,
         data: results,
         statisticData,
         mockTest: typeOftest,
       };
-      service.postQuestionsGroup(dataToSend);
+      console.log("dataToSend",dataToSend)
+
+      postResult.postResult(dataToSend,typeOftest);
     }
   }, [results,questions,statisticData]);
 
   
-  useEffect(() => {
-    const correctAnswers = data.filter((elem) => elem.status === true).length;
-    setAnswered(correctAnswers);
-  }, [data]);
+ 
 
   return (
     <>
-      <HeaderResults exitResult={exitResult} />
+      <HeaderResults exitResult={exitResult} typeOftest={typeOftest} />
       <div className={styles.wrap}>
         <div className={styles.statistic}>
           <div className={styles.progressBar}>
@@ -148,7 +157,11 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
                   <span>{elem.question}</span>
                 </div>
                 <div className={styles.box}>
-                  {elem.status === "pass" ? null : elem.status === false ? <CrossSvg /> : <OkVectorSvg />}
+                {elem.status === null || elem.status === undefined || elem.status === "pass"
+                      ? null 
+                      : elem.status === false 
+                        ? <CrossSvg /> 
+                        : <OkVectorSvg />}
                 </div>
               </div>
             ))

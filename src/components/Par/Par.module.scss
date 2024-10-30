@@ -9,9 +9,12 @@
         display: flex;
         align-items: center;
         gap:1rem;
-        color: #378AB6;
+        color: var(--text-color);
         font-size: 18px;
         font-weight: 400;
+        svg{
+            fill: var(--header-svg-color);
+        }
         .notActive{
             padding: 0.5rem;
             display: flex;
@@ -19,15 +22,19 @@
             justify-content: center;
         }
         .active{
-            background-color: #378AB6;
+            background-color: var(--active-background-color);
             padding: 0.5rem;
             border-radius: 0.3rem;
             display: flex;
             align-items: center;
             justify-content: center;
             svg{
-                fill: white;
+                fill: var(--active-svg-color);
             }
         }
+    }
+
+    .containerPercent{
+        width: 50px;
     }
 }

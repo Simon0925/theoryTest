@@ -1,4 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
+import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
+
 interface ChartData {
   percentage: string;
 }
@@ -20,6 +23,9 @@ interface GridLine {
 }
 
 const MockTestChart = ({ data }: { data: Data[] | null }) => {
+
+  const color = useSelector((state: RootState) => state.color);
+
   const defaultData: ChartData[] = [
     { percentage: '20%' },
     { percentage: '30%' },
@@ -56,16 +62,27 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
     ];
   }, [currentData]);
 
- 
+
   useEffect(() => {
-    if (points.length > 1) {
-      points[points.length - 1] = {
-        ...points[points.length - 1],
-        x: points[points.length - 1].x - 2,  
-        y: points[points.length - 1].y + 2  
-      };
+    if (points.length > 1 && currentData.length > 0) {
+      const lastPercentage = parseInt(currentData[currentData.length - 1]?.percentage);
+      
+      if (lastPercentage === 0) {
+        points[points.length - 1] = {
+          ...points[points.length - 1],
+          y: maxY, 
+          x: maxX - 2 
+        };
+      } 
+      else if (lastPercentage > 0) {
+        points[points.length - 1] = {
+          ...points[points.length - 1],
+          y: points[points.length - 1].y + 2, 
+          x: points[points.length - 1].x - 2 
+        };
+      }
     }
-  }, [points]);
+  }, [points, currentData]);
 
   const gridLines: GridLine[] = useMemo(() => [
     { y: maxY - 86, label: '86%' },
@@ -162,7 +179,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
       viewBox={`0 0 ${maxX} ${maxY + 1}`}
       preserveAspectRatio="none"
       style={{
-        background: 'linear-gradient(180deg, rgba(126,198,212,1) 0%, rgba(0,150,206,1) 100%)'
+        background: color.MockTestChartBackground
       }}
     >
       {gridLines.map((line, index) => (
@@ -172,11 +189,11 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
             y1={line.y}
             x2={maxX}
             y2={line.y}
-            stroke={data?.length !== 0  ? 'white' : '#7DC1E2'}
+            stroke={data?.length !== 0 ? color.MockTestChartLabel : '#7DC1E2'}
             strokeDasharray={line.label === '86%' ? 'none' : '3 3'}
             strokeWidth="0.5"
           />
-          <text x="1" y={line.y - 2} fill={data?.length !== 0  ? 'white' : '#7DC1E2'} fontSize="3.5" textAnchor="start">
+          <text x="1" y={line.y - 2} fill={data?.length !== 0 ? color.MockTestChartLabel : '#7DC1E2'} fontSize="3.5" textAnchor="start">
             {line.label}
           </text>
         </g>
@@ -184,7 +201,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
 
       <path
         d={linePath}
-        stroke={data?.length !== 0 ? '#32EBC3' : '#12B9CB'}
+        stroke={data?.length !== 0 ? color.MockTestChartLinePath: '#12B9CB'}
         strokeWidth="0.5"
         fill="none"
         strokeDasharray={lineLength}
@@ -193,7 +210,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
 
       {points.map((point, index) => (
         index !== 0 && (
-          <circle key={index} cx={point.x} cy={point.y} r="0.8" fill={data?.length !== 0  ? 'white' : '#7DC1E2'} />
+          <circle key={index} cx={point.x} cy={point.y} r="0.8" fill={data?.length !== 0 ? color.MockTestChartPoints : '#7DC1E2'} />
         )
       ))}
 

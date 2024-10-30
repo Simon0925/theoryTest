@@ -1,32 +1,47 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import ButtonTest from '../../UI/ButtonTest/ButtonTest'
 import styles from './HeaderResults.module.scss'
 import Modal from '../Modal/Modal';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store';
+import { resetPracticeState, resetPracticeStateThunk } from '../../store/practice/practice.slice';
+import { resetState } from '../../store/currentData/currentData.slice';
 
 interface HeaderResultsProps {
-    exitResult:(e:boolean) => void 
+    exitResult:(e:boolean) => void;
+    typeOftest:string;
 }
 
 
-export default function HeaderResults ({exitResult}:HeaderResultsProps) {
+export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProps) {
 
     const [showExitModal, setShowExitModal] = useState(false);
+    const dispatch = useDispatch<AppDispatch>();
 
-    const exit = () =>{
-        localStorage.setItem("result", JSON.stringify([]));
-        setShowExitModal(true)
-    }
-    const handleModalCancel =  () => {
+    const handleModalClose = useCallback(() => {
+      switch (typeOftest) {
+        case "PracticeTest":
+          dispatch(resetPracticeState());
+          dispatch(resetPracticeStateThunk());
+          break;
+        case "MockTest":
+          dispatch(resetState({ testId: typeOftest }));
+          break;
+        default:
+          console.error(`Test ID "${typeOftest}" does not exist in state.`);
+      }
+      exitResult(false)
+    }, [dispatch,  typeOftest]);
+    
+    const handleModal =  () => {
         setShowExitModal(!showExitModal);
       };
-      const handleModalClose =  () => {
-        exitResult(false)
-      };
+      
 
     return(
         <>
             <div className={styles['wrap']}>
-                <ButtonTest name={'Exit'} color={'white'} backgroundColor={'#A73530'} svg={false} click={exit} svgColor={false} />
+                <ButtonTest name={'Exit'} color={'white'} backgroundColor={'#A73530'} svg={false} click={handleModal} svgColor={false} />
                 <span className={styles['title']}>Nice Try!</span>
                 <span></span>
             </div>
@@ -36,7 +51,7 @@ export default function HeaderResults ({exitResult}:HeaderResultsProps) {
                   close={handleModalClose} 
                   text={""} 
                   title="Are you sure you want to exit from the test results?" 
-                  cancelClick={handleModalCancel}
+                  cancelClick={handleModal}
                   cancel={true} 
                   blueBtnText={'Exit'} 
                 />

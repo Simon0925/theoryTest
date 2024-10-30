@@ -1,85 +1,96 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import styles from './FooterTrainerTest.module.scss';
 import Modal from '../Modal/Modal';
+import { updateQuestionsAndResults } from '../../service/serviceFooter/updateQuestionsAndResults';
+import { setCurrentQuestions, updateCurrentPage, updateResult } from '../../store/currentData/currentData.slice';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface FooterTrainerTestProps {
-    explanation:(e:boolean) => void
-    currentPage:number
-    nextPage:(e:number) => void
-    id:string
-    flag:boolean
-    changeFlag:(e:boolean) => void
-    isAnswerSelected:boolean
+    result:(e:boolean) => void
 }
 
-export default function FooterTrainerTest({explanation,currentPage,nextPage,id,flag,changeFlag,isAnswerSelected}:FooterTrainerTestProps) {
+export default function FooterTrainerTest({result}:FooterTrainerTestProps) {
 
+    const  typeOftest = "Trainer"
 
     const maxPage = 756
-    // const currentPage = 1
+
+    const color = useSelector((state: RootState) => state.color);
+
+
+    const { questions, currentPage, isLoading, answeredVariants,results} = useSelector(
+        (state: RootState) => state.currentData.testsData["Trainer"],  
+        shallowEqual
+    );
+    const [isExplanationVisible, setIsExplanationVisible] = useState(false);
+
+    const dispatch = useDispatch();
     
-    const [lastQuestion,setLastQuestion] = useState(false)
 
-    const [currentChangeFlag,setCurrentChangeFlag] = useState(false)
+    const isAnswerSelected = useMemo(() => {
+        return answeredVariants.some((e) => questions[currentPage]?.id === e.id);
+      }, [answeredVariants, currentPage, questions]);
    
-    const marker = () => {
-        setCurrentChangeFlag(!currentChangeFlag)
-        changeFlag(!flag)
-        const localS = localStorage.getItem("result");
-        const resultData = localS ? JSON.parse(localS) : [];
-        if (Array.isArray(resultData)) {
-            const updatedResultData = resultData.map((element: any) => {
-                if (element.id === id) {
-                    return { ...element, flag: !flag }; 
-                }
-                return element;
-            });
+    const changeFlag = useCallback(() => {
+        if (!questions[currentPage]) return;
+    
+        const { updatedQuestions, updatedResults } = updateQuestionsAndResults(questions, results, currentPage);
+    
+        dispatch(setCurrentQuestions({ testId: typeOftest, questions: updatedQuestions }));
+        dispatch(updateResult({ testId: typeOftest, result: updatedResults }));
+      }, [currentPage, questions, results, dispatch, typeOftest]);
 
-            localStorage.setItem('result', JSON.stringify(updatedResultData));
-        } else {
-            console.error("Result data from localStorage is not an array");
+      const next = useCallback(() => {
+        if (currentPage < questions.length - 1) {
+          dispatch(updateCurrentPage({ testId: typeOftest, currentPage: currentPage + 1 }));
+        } else if (questions.length - 1 === maxPage) {
+            result(true);
         }
-    }
-
-    const next = () => {
-        if (currentPage < maxPage - 1) {
-            nextPage(currentPage + 1);
-        }
-    }
+      }, [currentPage, questions.length, dispatch, typeOftest]);
 
     const explanationModal = () => {
-        explanation(true)
+        setIsExplanationVisible(true)
     };
     
     return(
-        <div className={styles['wrap']}>
+        <div style={{background:color.headerColors}} className={styles['wrap']}>
             <div className={styles['container']}>
             <ButtonTest
-                    click={marker}
+                    click={changeFlag}
                     name={''}
-                    color={'#0078AB'}
-                    backgroundColor={'white'}
+                    color={color.TestcolorText}
+                    backgroundColor={color.FooterBackgroundBtn}
                     svg={true}
-                    svgColor={flag}
+                    svgColor={questions[currentPage].flag === true && typeof questions[currentPage].flag === 'boolean' ? true : color.FlagColorSvgBtn}
                 />
                 <ButtonTest
                     click={explanationModal}
                     name={'Explanation'}
-                    color={'#0078AB'}
-                    backgroundColor={'white'}
+                    color={color.TestcolorText}
+                    backgroundColor={color.FooterBackgroundBtn}
                     svg={false}
                     svgColor={false}
                 />
                 <ButtonTest
                     click={next}
                     name={isAnswerSelected ? 'Next >' : 'Skip'}
-                    color={'#0078AB'}
-                    backgroundColor={isAnswerSelected ? '#FFEC4B' : 'white'} 
+                    color={isAnswerSelected ?  color.FooterColorNextBtnSelectedOption :color.TestcolorText}
+                    backgroundColor={isAnswerSelected ? color.FooterBackgroundNextBtnSelectedOption : color.FooterBackgroundBtn}
                     svg={false}
                     svgColor={false}
                 />
             </div>
+            {isExplanationVisible === true && (
+                        <Modal 
+                            close={() => setIsExplanationVisible(false)} 
+                            text={questions[currentPage].explanation || ""} 
+                            title={'DVSA explanation'} 
+                            cancel={false} 
+                            blueBtnText={'Ok'} 
+                        />
+                    )}
         </div>
     )
 }
