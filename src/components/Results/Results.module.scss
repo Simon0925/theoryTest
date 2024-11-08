@@ -6,7 +6,9 @@
     max-height: 81.7vh;; 
     overflow-y: auto; 
     background-color: #0096CE;
-
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
 
     .statistic{
         width: 100%;
@@ -28,8 +30,8 @@
     }
     .question{
         display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
     .no-results{
         width: 100%;
@@ -89,6 +91,23 @@
         
         .inactive-marker{
             display: none;
+        }
+    }
+}
+
+
+@media (max-width: 800px) {
+    .wrap {
+
+
+        .question{
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1rem;
+        }
+        
+        .variant{
+            padding: 1rem;
         }
     }
 }

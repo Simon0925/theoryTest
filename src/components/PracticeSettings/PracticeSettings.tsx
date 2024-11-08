@@ -52,7 +52,7 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
             <PracticeTools  />
             <NumberOfQuestions  />
             <div className={!isLoading && questions.length > 0 ? styles['btn'] :styles['btnIsLoading'] }>
-                <button onClick={start} >Start</button> 
+                <button onClick={start} >{isLoading ? 'Loading...' : 'Start'}</button> 
             </div>
         </div>
     );

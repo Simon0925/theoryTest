@@ -1,10 +1,16 @@
 import { useCallback, useState, useMemo } from 'react';
-import ButtonTest from '../../UI/ButtonTest/ButtonTest';
-import styles from './FooterTest.module.scss';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { RootState } from '../../store/store';
-import { setCurrentQuestions, updateCurrentPage, updateResult } from '../../store/currentData/currentData.slice';
+import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import Modal from '../Modal/Modal';
+import ArrowPrevSmallSvg from '../../SVG/ArrowPrevSmallSvg/ArrowPrevSmallSvg';
+import FlagSvg from '../../SVG/FlagSvg/FlagSvg';
+import styles from './FooterTest.module.scss';
+import { RootState } from '../../store/store';
+import {
+  setCurrentQuestions,
+  updateCurrentPage,
+  updateResult,
+} from '../../store/currentData/currentData.slice';
 import { updateQuestionsAndResults } from '../../service/serviceFooter/updateQuestionsAndResults';
 
 interface FooterTestProps {
@@ -13,118 +19,116 @@ interface FooterTestProps {
 }
 
 export default function FooterTest({ result, typeOftest }: FooterTestProps) {
+  const dispatch = useDispatch();
+
   const { questions, currentPage, answeredVariants, results } = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],
     shallowEqual
   );
 
-  const dispatch = useDispatch();
-
   const color = useSelector((state: RootState) => state.color);
-
-
   const [isExplanationVisible, setIsExplanationVisible] = useState(false);
-  const [modalWindow, setModalWindow] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
 
-  const isAnswerSelected = useMemo(() => {
-    return answeredVariants.some((e) => questions[currentPage]?.id === e.id);
-  }, [answeredVariants, currentPage, questions]);
+  const isAnswerSelected = useMemo(
+    () => answeredVariants.some((e) => questions[currentPage]?.id === e.id),
+    [answeredVariants, currentPage, questions]
+  );
 
   const changeFlag = useCallback(() => {
     if (!questions[currentPage]) return;
-
-    const { updatedQuestions, updatedResults } = updateQuestionsAndResults(questions, results, currentPage);
-
+    const { updatedQuestions, updatedResults } = updateQuestionsAndResults(
+      questions,
+      results,
+      currentPage
+    );
     dispatch(setCurrentQuestions({ testId: typeOftest, questions: updatedQuestions }));
     dispatch(updateResult({ testId: typeOftest, result: updatedResults }));
   }, [currentPage, questions, results, dispatch, typeOftest]);
 
-  const previous = useCallback(() => {
-    if (currentPage > 0) {
-      dispatch(updateCurrentPage({ testId: typeOftest, currentPage: currentPage - 1 }));
-    }
-  }, [currentPage, dispatch, typeOftest]);
+  const navigatePage = useCallback(
+    (direction: 'previous' | 'next') => {
+      if (direction === 'previous' && currentPage > 0) {
+        dispatch(updateCurrentPage({ testId: typeOftest, currentPage: currentPage - 1 }));
+      } else if (direction === 'next') {
+        const isLastPage = currentPage === questions.length - 1;
+        if (isLastPage) {
+          setModalVisible(true);
+        } else {
+          dispatch(updateCurrentPage({ testId: typeOftest, currentPage: currentPage + 1 }));
+        }
+      }
+    },
+    [currentPage, dispatch, questions.length, typeOftest]
+  );
 
-  const next = useCallback(() => {
-    if (currentPage < questions.length - 1) {
-      dispatch(updateCurrentPage({ testId: typeOftest, currentPage: currentPage + 1 }));
-    } else if (questions.length - 1 === currentPage) {
-      setModalWindow(true);
-    }
-  }, [currentPage, questions.length, dispatch, typeOftest]);
-
-  const cancelClickModal = useCallback(() => {
-    setModalWindow(false);
-  }, []);
-
-  const resultClickModal = useCallback(() => {
-    if (result) {
-      result(true);
-    }
+  const handleResultModal = useCallback(() => {
+    if (result) result(true);
+    setModalVisible(false);
   }, [result]);
 
-  const explanationModal = useCallback(() => {
-    setIsExplanationVisible(true);
-  }, []);
-
   return (
-    <div 
-      className={styles.wrap}
-      style={{backgroundColor:color.headerColors}}
-    >
+    <div className={styles.wrap} style={{ backgroundColor: color.headerColors }}>
       <div className={styles.container}>
         <ButtonTest
-          click={previous}
-          name={'< Previous'}
+          click={() => navigatePage('previous')}
+          name="< Previous"
           color={color.TestcolorText}
-          backgroundColor={currentPage > 0 ? color.FooterBackgroundBtn : color.PreviousTestBackgroundBtn} 
-          svg={false}
-          svgColor={false}
+          backgroundColor={currentPage > 0 ? color.FooterBackgroundBtn : color.PreviousTestBackgroundBtn}
         />
         <ButtonTest
           click={changeFlag}
-          name={''}
+          name=""
           color={color.TestcolorText}
           backgroundColor={color.FooterBackgroundBtn}
-          svg={true}
-          svgColor={questions[currentPage].flag === true && typeof questions[currentPage].flag === 'boolean' ? true : color.FlagColorSvgBtn}
+          svg
+          svgColor={questions[currentPage].flag ? true : color.FlagColorSvgBtn}
         />
         <ButtonTest
-          click={explanationModal}
-          name={'Explanation'}
+          click={() => setIsExplanationVisible(true)}
+          name="Explanation"
           color={color.TestcolorText}
           backgroundColor={color.FooterBackgroundBtn}
-          svg={false}
-          svgColor={false}
         />
         <ButtonTest
-          click={next}
+          click={() => navigatePage('next')}
           name={questions.length === currentPage + 1 ? 'Results' : 'Next >'}
-          color={isAnswerSelected ?  color.FooterColorNextBtnSelectedOption :color.TestcolorText}
+          color={isAnswerSelected ? color.FooterColorNextBtnSelectedOption : color.TestcolorText}
           backgroundColor={isAnswerSelected ? color.FooterBackgroundNextBtnSelectedOption : color.FooterBackgroundBtn}
-          svg={false}
-          svgColor={false}
         />
-        {modalWindow && (
-          <Modal
-            close={resultClickModal}
-            text={'End of test reached'}
-            title={'End of test reached'}
-            cancel={true}
-            cancelClick={cancelClickModal}
-            blueBtnText={'Show results'}
-          />
-        )}
-        {isExplanationVisible && (
-          <Modal
-            close={() => setIsExplanationVisible(false)}
-            text={questions[currentPage]?.explanation || 'No explanation available'}
-            title="DVSA explanation"
-            cancel={false}
-            blueBtnText="Ok"
-          />
-        )}
       </div>
+      <div className={styles.mobileContainer}>
+        <button onClick={() => navigatePage('previous')} className={styles.prevBtn}>
+          <ArrowPrevSmallSvg color="white" width="30px" height="30px" /> Prev
+        </button>
+        <button onClick={changeFlag} className={styles.flagBtn}>
+          <FlagSvg color={questions[currentPage].flag ? '#F9921A' : 'white'} width="24px" height="24px" />
+        </button>
+        <button onClick={() => setIsExplanationVisible(true)} className={styles.explanationBtn}>
+          ?
+        </button>
+        <button onClick={() => navigatePage('next')} className={styles.nextBtn}>
+          Next <ArrowPrevSmallSvg color="white" width="30px" height="30px" />
+        </button>
+      </div>
+      {isModalVisible && (
+        <Modal
+          close={handleResultModal}
+          text="End of test reached"
+          title="End of test reached"
+          cancel
+          cancelClick={() => setModalVisible(false)}
+          blueBtnText="Show results"
+        />
+      )}
+      {isExplanationVisible && (
+        <Modal
+          close={() => setIsExplanationVisible(false)}
+          text={questions[currentPage]?.explanation || 'No explanation available'}
+          title="Explanation"
+          blueBtnText="Ok"
+        />
+      )}
     </div>
   );
 }

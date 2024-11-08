@@ -45,7 +45,7 @@ export default function Practice() {
               </div>
               <div className={styles.PracticeQuestionsManagerMobile}>
                 <Suspense >
-                  <PracticeQuestionsManagerMobile />
+                  <PracticeQuestionsManagerMobile practiceTest={setTest}/>
                 </Suspense>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import styles from './HeaderForTest.module.scss';
 import Modal from '../Modal/Modal';
@@ -10,7 +10,6 @@ import getName from "./service/getName"
 
 interface HeaderForTestProps {
   onExitClick: (e: boolean) => void;
-  children?: React.ReactNode;
   finish: string;
   mockTest?: boolean;
   reviewClick?: (e: boolean) => void;
@@ -21,7 +20,6 @@ interface HeaderForTestProps {
 
 const HeaderForTest = React.memo(function HeaderForTest({
   finish,
-  children,
   onExitClick,
   reviewClick,
   result,
@@ -74,13 +72,16 @@ const HeaderForTest = React.memo(function HeaderForTest({
     if (result) result(true);
   }, [result]);
 
+
+
   const questionCounter = useMemo(() => {
     if (trainerTest) {
       return <div className={styles['count-questions']}>{getName(questions[currentPage].group)}</div>;
     }
     return (
       <div style={{ color: color.HeaderPracticeTestQuestionColors }} className={styles['count-questions']}>
-        <span>Question</span>
+        <span className={styles.questions} >Question</span>
+        <span className={styles.questionsM} >Q</span>
         <span>{currentPage + 1}</span>
         <span>of</span>
         <span>{questions.length}</span>
@@ -89,26 +90,24 @@ const HeaderForTest = React.memo(function HeaderForTest({
   }, [trainerTest, color.textColor, currentPage,questions]);
 
   return (
+    <>
     <div style={{ backgroundColor: color.headerColors }} className={styles.wrap}>
-      <ButtonTest
-        name="Exit"
-        color="white"
-        backgroundColor="#A73530"
-        svg={false}
-        click={handleModalClose}
-        svgColor={false}
-      />
+      
+      <button onClick={handleModalClose} className={`${styles.exitBtn}`} >
+        Exit
+      </button>
+      <button onClick={handleModalClose} className={`${styles.exitBtnM}`} >
+        Exit
+      </button>
       {questionCounter}
-      <ButtonTest
-        name={finish}
-        color="white"
-        backgroundColor="#00B06F"
-        svg={false}
-        click={handleResults}
-        svgColor={false}
-      />
-      {children && <div className={styles.extraContent}>{children}</div>}
-      {showExitModal && (
+      <button onClick={handleResults} className={styles.finishBtn} >
+        {finish}
+      </button>
+      <button onClick={handleResults} className={styles.finishBtnM} >
+        {finish}
+      </button>
+    </div>
+    {showExitModal && (
         <Modal 
           close={handleExit} 
           text="" 
@@ -128,7 +127,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
           blueBtnText="Show results" 
         />
       )}
-    </div>
+    </>
   );
 });
 

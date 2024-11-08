@@ -1,0 +1,67 @@
+.wrap{
+    width: 300px;
+    background: #0078AB;
+    border-radius: 0.625rem;
+    outline: 2px solid #1C85B9;
+    .nav{
+        width: 100%;
+        
+        display: flex;
+        justify-content: space-between;
+
+        .login{
+            width: 100%;
+            padding: 1rem;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            border-top-left-radius: 0.625rem;
+            background: #0078AB;
+            border: 2px solid #1C85B9;
+            cursor: pointer;
+        }
+
+        .loginActive{
+            width: 100%;
+            padding: 1rem;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            border-top-left-radius: 0.625rem;
+            background-color: #1C85B9;
+            cursor: pointer;
+            border: 2px solid #1C85B9;
+
+        }
+
+        .registration{
+            width: 100%;
+            padding: 1rem;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            border-top-right-radius: 0.625rem;
+            background: #0078AB;
+            cursor: pointer;
+            border: 2px solid #1C85B9;
+
+        }
+
+        .registrationActive{
+            width: 100%;
+            padding: 1rem;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            background-color: #1C85B9;
+            border-top-right-radius: 0.625rem;
+            cursor: pointer;
+            border: 2px solid #1C85B9;
+
+        }
+    }
+}

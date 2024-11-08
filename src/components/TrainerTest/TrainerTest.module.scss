@@ -29,6 +29,8 @@
         display: flex;
         justify-content: space-between;
         max-height: 40vh;
+        position: relative;
+        overflow: hidden;
         .marker{
             top: 30px;
             left: 7px;

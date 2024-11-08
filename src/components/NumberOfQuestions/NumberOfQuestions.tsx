@@ -74,7 +74,7 @@ export default function NumberOfQuestions () {
     };
 
     return (
-        <div className={styles['question-type']}>
+        <div className={styles.wrap}>
             <p style={{color:color.titleColorSettings}} className={styles['title']}>Number of questions</p>
             <div style={{
                     '--text-active-color': color.textActiveSettingsColor,

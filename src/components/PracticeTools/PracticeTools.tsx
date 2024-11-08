@@ -45,8 +45,8 @@ export default function PracticeTools() {
     };
 
     return (
-        <div className={styles['question-type']}>
-            <p style={{color:color.titleColorSettings}} className={styles['title']}>Question type</p>
+        <div className={styles.wrap}>
+            <p style={{color:color.titleColorSettings}} className={styles.title}>Question type</p>
             <div
             style={{
                 '--text-active-color': color.textActiveSettingsColor,

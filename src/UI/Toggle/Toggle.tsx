@@ -25,14 +25,7 @@ export default function Toggle({toggle}:ToggleProps) {
                 checked={isChecked} 
                 onChange={handleToggle} 
             />
-            <span 
-            style={{
-                backgroundColor: isChecked ? '#4FDE6F' : color.toggleBackground, 
-                outline: `1px solid ${color.toggleBorder}`,
-                borderRadius:"1rem"
-                }}
-             className={styles.slider}
-             ></span>
+            <span className={styles.slider}> </span>
         </label>
     );
 }

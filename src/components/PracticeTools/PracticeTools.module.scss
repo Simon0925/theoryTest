@@ -1,10 +1,7 @@
-.question-type{
+.wrap{
     width: 100%;
     margin-top: 2rem;
-    .title{
-        color: white;
-    }
-
+    
     .container{
         margin-top: 0.5rem;
         background-color:var(--background);
@@ -28,6 +25,35 @@
             display: flex;
             justify-content: center;
             padding: 0.5rem;
+        }
+    }
+}
+
+
+@media (max-width: 800px) {
+
+    .wrap {
+        width: 100%;
+        margin-top: 2rem;
+
+        .title{
+           font-weight: bold;
+        }
+
+        .container{
+            border-radius: 1rem;
+        }
+        .not-active{
+            border-radius: 1rem;
+            p{
+                font-weight: bold;
+            }
+        }
+        .active{
+            border-radius: 1rem;
+            p{
+                font-weight: bold;
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ import colorReducer from './coolor/coolor.slise';
 import questionsReducer from './currentData/currentData.slice'; 
 import hptReducer from './hpt/hpt.slice';
 import burgerMenuReducer from './burgerMenu/burgerMenu.slice';
+import authReducer from './auth/auth'
 
 const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
         color: colorReducer,
         currentData: questionsReducer,
         hptData: hptReducer,
-        menu:burgerMenuReducer
+        menu:burgerMenuReducer,
+        auth:authReducer
     },
 });
 

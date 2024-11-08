@@ -12,7 +12,7 @@ interface PracticeData {
     correct: boolean;
     flagged: boolean;
     allQuestionLength: number;
-
+  
 }
 
 const initialState: PracticeData = {

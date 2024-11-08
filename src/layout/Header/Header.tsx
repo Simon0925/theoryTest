@@ -9,12 +9,13 @@ import LightSvg from '../../SVG/LightSvg/LightSvg';
 import CameraSvg from '../../SVG/CameraSvg/CameraSvg';
 import SettingsSvg from '../../SVG/SettingsSvg/SettingsSvg';
 import BurgerMenuSVG from '../../SVG/BurgerMenuSVG/BurgerMenuSVG';
-import { updateBurgerMenu } from '../../store/burgerMenu/burgerMenu.slice';
+import { updateBurgerMenu, updateVisible } from '../../store/burgerMenu/burgerMenu.slice';
+import ArrowPrevSmallSvg from '../../SVG/ArrowPrevSmallSvg/ArrowPrevSmallSvg';
 
 export default function Header() {
     const dispatch = useDispatch();
-    const isMenuOpen = useSelector((state: RootState) => state.menu.open);
-    const color = useSelector((state: RootState) => state.color);
+    const { open: isMenuOpen, visible } = useSelector((state: RootState) => state.menu);
+    const { headerColors, textColor, hoverColor, headerSvgColor } = useSelector((state: RootState) => state.color);
     const location = useLocation();
 
     const getActiveState = (path: string) => ({
@@ -28,19 +29,27 @@ export default function Header() {
     const [active, setActive] = useState(getActiveState(location.pathname.substr(1)));
 
     useEffect(() => {
-        const currentPath = location.pathname.substr(1);
-        setActive(getActiveState(currentPath));
+        setActive(getActiveState(location.pathname.substr(1)));
     }, [location]);
 
+   
+    const renderVisibilityToggle = () => (
+        visible ? (
+            <div onClick={() => dispatch(updateBurgerMenu(!isMenuOpen))} className={styles.burgerMenu}>
+                <BurgerMenuSVG color={textColor} />
+            </div>
+        ) : (
+            <div onClick={() => dispatch(updateVisible(true))} className={styles.arrow}>
+                <ArrowPrevSmallSvg width={'40px'} height={'40px'} color={textColor} />
+            </div>
+        )
+    );
+
+
     return (
-        <div style={{ backgroundColor: color.headerColors }} className={styles.wrap}>
-            <div className={styles.title} style={{ color: color.textColor }}>
-                <div 
-                    onClick={() => dispatch(updateBurgerMenu(!isMenuOpen))} 
-                    className={styles.burgerMenu}
-                >
-                    <BurgerMenuSVG color={color.textColor} />
-                </div>
+        <div style={{ backgroundColor: headerColors }} className={styles.wrap}>
+            <div className={styles.title} style={{ color: textColor }}>
+                {renderVisibilityToggle()}
                 <h3 className={styles.titleText}>Theory Test</h3>
             </div>
             <nav className={styles.nav}>
@@ -58,14 +67,14 @@ export default function Header() {
                             className={isActive ? styles['nav-btn'] : styles['not-active']}
                             to={path}
                             style={{
-                                '--header-bg-color': color.headerColors,
-                                '--text-color': color.textColor,
-                                '--hover-bg-color': color.hoverColor,
-                                '--header-svg-color': color.headerSvgColor,
+                                '--header-bg-color': headerColors,
+                                '--text-color': textColor,
+                                '--hover-bg-color': hoverColor,
+                                '--header-svg-color': headerSvgColor,
                             } as React.CSSProperties}
                         >
                             <Icon />
-                            <span style={{ color: color.headerSvgColor }}>{label}</span>
+                            <span style={{ color: headerSvgColor }}>{label}</span>
                         </NavLink>
                     );
                 })}

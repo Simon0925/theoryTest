@@ -24,3 +24,14 @@
         background-color: white;
     }
 }
+
+@media (max-width: 800px) {
+    .wrap{
+
+        span{
+            padding: 0.9rem 0rem;
+            font-size: 14px;
+            font-weight: 600;
+        }
+    }
+}

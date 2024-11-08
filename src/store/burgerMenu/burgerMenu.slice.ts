@@ -2,12 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
 interface burgerMenu {
-    open:boolean
+    open:boolean;
+    visible:boolean;
 }
 
 
 const initialState: burgerMenu = { 
-    open:false
+    open:false,
+    visible:true
 }
 
 export type { burgerMenu };
@@ -18,12 +20,16 @@ export const burgerMenuSlice = createSlice({
     reducers: {
         updateBurgerMenu:  (state, action: PayloadAction<boolean>) => {
             state.open = action.payload
+        },
+        updateVisible:  (state, action: PayloadAction<boolean>) => {
+            state.visible = action.payload
         }
     }
 })
 
 export const {
-    updateBurgerMenu
+    updateBurgerMenu,
+    updateVisible
   } = burgerMenuSlice.actions;
   
   export default burgerMenuSlice.reducer;

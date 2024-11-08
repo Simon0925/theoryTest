@@ -40,9 +40,16 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
 
     return(
         <>
-            <div className={styles['wrap']}>
-                <ButtonTest name={'Exit'} color={'white'} backgroundColor={'#A73530'} svg={false} click={handleModal} svgColor={false} />
-                <span className={styles['title']}>Nice Try!</span>
+            <div className={styles.wrap}>
+                <div className={styles.btn1}>
+                  <ButtonTest name={'Exit'} color={'white'} backgroundColor={'#A73530'} svg={false} click={handleModal} svgColor={false} />
+                </div>
+                <div className={styles.btn2}>
+                  <button onClick={handleModal}>
+                    Exit
+                  </button>
+                </div>
+                <span className={styles.title}>Nice Try!</span>
                 <span></span>
             </div>
            {

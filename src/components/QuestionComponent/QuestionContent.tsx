@@ -42,7 +42,6 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
     );
 
 
-
     useEffect(() => {
         if (question) {
             const checkResults = results.some(e => e.id === question.id);
@@ -52,7 +51,7 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
                     question: question.question,
                     flag: question.flag ?? false,
                     group: question.group,
-                    status: question.status,
+                    status: "pass",
                     photo:question.photo
                 };
                 dispatch(updateResult({
@@ -64,7 +63,7 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
     }, [currentPage, question]); 
 
     if (!question) {
-        return <div className={styles['question-wrap']}>Loading question...</div>;
+        return <div className={styles['spiner']}>Loading question...</div>;
     }
 
     return (
@@ -72,20 +71,26 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
             className={styles['question-wrap']}
             style={{backgroundColor:color.QuestionContentBackground}}
         >
-            <span
-            style={{backgroundColor:color.QuestionContentBackground}}
-             className={styles['question']}>
-                <div className={question.flag ?? false ? styles['marker'] : styles['inactive-marker']}></div>
-                <div style={{color:color.TestcolorText}}>{question.question}</div>
-            </span>
-            {question.photo && (
-                <img
-                    className={styles['img']}
-                    src={`${hostname}${question.photo}`}
-                    alt="Related to the question" 
-                    loading="lazy" 
-                />
-            )}
+            <div className={question.flag ?? false ? styles['marker'] : styles['inactive-marker']}></div>
+
+            <div className={styles["container"]}>
+                <span
+                style={{backgroundColor:color.QuestionContentBackground}}
+                className={styles['question']}>
+                    <p style={{color:color.TestcolorText}}>{question.question}</p>
+                </span>
+                <div className={styles['question-photo']} >
+                    {question.photo && (
+                        <img
+                            className={styles['img']}
+                            src={`${hostname}${question.photo}`}
+                            alt="Related to the question" 
+                            loading="lazy" 
+                        />
+                    )}
+                </div>
+            </div>
+            
         </div>
     );
 }
