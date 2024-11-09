@@ -11,6 +11,7 @@ import SettingsSvg from '../../SVG/SettingsSvg/SettingsSvg';
 import BurgerMenuSVG from '../../SVG/BurgerMenuSVG/BurgerMenuSVG';
 import { updateBurgerMenu, updateVisible } from '../../store/burgerMenu/burgerMenu.slice';
 import ArrowPrevSmallSvg from '../../SVG/ArrowPrevSmallSvg/ArrowPrevSmallSvg';
+import isTest from './service/isTest'
 
 export default function Header() {
     const dispatch = useDispatch();
@@ -44,7 +45,11 @@ export default function Header() {
             </div>
         )
     );
-
+    
+    const checkTest = (path:string) =>{
+       let test = isTest(path)
+       console.log("test",test)
+    }
 
     return (
         <div style={{ backgroundColor: headerColors }} className={styles.wrap}>
@@ -64,6 +69,7 @@ export default function Header() {
                     return (
                         <NavLink
                             key={path}
+                            onClick={()=>checkTest(path)}
                             className={isActive ? styles['nav-btn'] : styles['not-active']}
                             to={path}
                             style={{

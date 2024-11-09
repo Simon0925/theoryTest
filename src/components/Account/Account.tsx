@@ -1,8 +1,10 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ArrowPrevSmallSvg from "../../SVG/ArrowPrevSmallSvg/ArrowPrevSmallSvg";
 import { RootState } from "../../store/store";
 import Auth from "../Auth/Auth";
 import styles from "./Account.module.scss";
+import { useEffect } from "react";
+import { login } from "../../store/auth/auth";
 
 
 interface AccountProps{
@@ -11,8 +13,19 @@ interface AccountProps{
 
 
 export default function Account({back}:AccountProps){
+    const dispatch = useDispatch();
 
     const isLogin = useSelector((state: RootState) => state.auth.isLogin);
+    const name = useSelector((state: RootState) => state.auth.userName);
+
+    useEffect(()=>{
+        console.log("name:",name)
+    },[name])
+
+    const logOut = () =>{
+        localStorage.setItem("accessToken", "");
+        dispatch(login({ login: false, id: "", userName: "" }));
+    }
 
     
     return (
@@ -24,7 +37,8 @@ export default function Account({back}:AccountProps){
                     {isLogin ?
                     <div className={styles.logOut}>
                         <div className={styles.btnlogOut}>
-                            <button >Log Out</button>
+                            <h1 className={styles.title}>Wellcome {name}</h1>
+                            <button onClick={logOut} >Log Out</button>
                         </div>
                     </div>
                     :

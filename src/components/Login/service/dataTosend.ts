@@ -1,11 +1,11 @@
 import hostname from "../../../config/hostname";
-import { FormValues } from '../interface';
+import  FormValues  from '../interface';
 
 const dataTosend = async (formValues: FormValues) => {
     const jsonString = JSON.stringify(formValues);
 
     try {
-        const response = await fetch(`${hostname}/api/registration`, {
+        const response = await fetch(`${hostname}/api/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -21,7 +21,8 @@ const dataTosend = async (formValues: FormValues) => {
 
      
         const data = await response.json();
-       
+        
+        
         return data;
     } catch (error) {
         console.error("Error posting registration data:", error);

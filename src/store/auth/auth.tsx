@@ -4,12 +4,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface Auth {
     userId:string,
-    isLogin:boolean
+    isLogin:boolean,
+    userName:string
 }
 
 const initialState: Auth = {
     userId:'',
-    isLogin:false
+    isLogin:false,
+    userName:''
 };
 
 
@@ -18,10 +20,12 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        login: (state, action: PayloadAction<{ login: boolean; id: string; }>) => {
+        login: (state, action: PayloadAction<{ login: boolean; id: string; userName:string}>) => {
             if (state) {
               state.isLogin = action.payload.login;
               state.userId = action.payload.id;
+              state.userName = action.payload.userName;
+
             }
           },logout: (state) => {
             if (state) {
@@ -34,5 +38,5 @@ export const authSlice = createSlice({
 
 
 
-export const {  } = authSlice.actions;
+export const { login,logout } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import styles from './Registration.module.scss';
-import{FormValues,FormErrors} from './interface'
-import validateForm from './service/validateForm'
-import dataTosend from './service/dataTosend'
+import { FormValues, FormErrors } from './interface';
+import validateForm from './service/validateForm';
+import dataTosend from './service/dataTosend';
 
 export default function Registration() {
     const [formValues, setFormValues] = useState<FormValues>({
@@ -12,29 +12,54 @@ export default function Registration() {
         confirmPassword: ''
     });
     const [errors, setErrors] = useState<FormErrors>({});
+    const [serverMessage, setServerMessage] = useState<string | null>(null); 
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+    
         const validationErrors = validateForm(formValues);
+    
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
+            setServerMessage(null); 
         } else {
-            dataTosend(formValues)
-            console.log('Form submitted:', formValues);
+            try {
+                const response = await dataTosend(formValues);
+    
+                if (response.errors) {
+                    setServerMessage(null);
+                    if (typeof response.errors === "string") {
+                        setServerMessage(response.errors);
+                    } else {
+                        setErrors(response.errors);
+                    }
+                } else {
+                    setServerMessage('Registration successful!');
+                    setFormValues({ name: '', email: '', password: '', confirmPassword: '' }); 
+                    setErrors({}); 
+                }
+            } catch (error) {
+                setServerMessage("Server error. Please try again later.");
+                console.error("Server error:", error);
+            }
         }
     };
+    
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
+
         if (errors[name as keyof FormErrors]) {
             setErrors({ ...errors, [name]: '' }); 
         }
     };
 
-
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
+          
+            {serverMessage && <p className={styles.serverMessage}>{serverMessage}</p>}
+
             <div className={styles.formInput}>
                 <label htmlFor="name">Name</label>
                 <input

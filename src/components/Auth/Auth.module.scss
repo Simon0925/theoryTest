@@ -18,7 +18,8 @@
             justify-content: center;
             border-top-left-radius: 0.625rem;
             background: #0078AB;
-            border: 2px solid #1C85B9;
+            border: none;
+            border-bottom:  2px solid #1C85B9;
             cursor: pointer;
         }
 
@@ -32,7 +33,8 @@
             border-top-left-radius: 0.625rem;
             background-color: #1C85B9;
             cursor: pointer;
-            border: 2px solid #1C85B9;
+            border: none;
+            border-bottom:  2px solid #1C85B9;
 
         }
 
@@ -46,7 +48,8 @@
             border-top-right-radius: 0.625rem;
             background: #0078AB;
             cursor: pointer;
-            border: 2px solid #1C85B9;
+            border: none;
+            border-bottom:  2px solid #1C85B9;
 
         }
 
@@ -60,7 +63,8 @@
             background-color: #1C85B9;
             border-top-right-radius: 0.625rem;
             cursor: pointer;
-            border: 2px solid #1C85B9;
+            border: none;
+            border-bottom:  2px solid #1C85B9;
 
         }
     }
