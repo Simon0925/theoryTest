@@ -14,7 +14,7 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
 
     const stateColor = useSelector((state: RootState) => state.color);
 
-    const { answeredVariants, questions, currentPage,results } = useSelector(
+    const { answeredVariants, questions, currentPage,results,visibleQuestions } = useSelector(
         (state: RootState) => state.currentData.testsData[typeOftest],
         shallowEqual
     );
@@ -33,42 +33,72 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
     }, [answeredVariants, currentPage, practice]);
 
     const addAnswer = () => {
-
-        const practiceCheck = answeredVariants.some(e => questions[currentPage].id === e.id);
+        console.log("addAnswer");
+    
+        const practiceCheck = answeredVariants.some(e =>
+            typeOftest === "MockTest"
+                ? visibleQuestions?.[currentPage]?.id === e.id
+                : questions[currentPage].id === e.id
+        );
+    
+        console.log("practiceCheck", practiceCheck);
+    
         if (!practiceCheck) {
-            dispatch(updateAnsweredVariants({
-                testId: typeOftest,  
-                answeredVariants: [...answeredVariants, { id: questions[currentPage].id, index }]
-            }));
-
-            const existingResult = results.find(e => questions[currentPage].id === e.id);
-
+            const currentQuestionId = typeOftest === "MockTest" && visibleQuestions
+            ? visibleQuestions[currentPage]?.id
+            : questions[currentPage].id;
+    
+            dispatch(
+                updateAnsweredVariants({
+                    testId: typeOftest,
+                    answeredVariants: [...answeredVariants, { id: currentQuestionId, index }]
+                })
+            );
+    
+            const existingResult = results.find(e => e.id === currentQuestionId);
+            const newResult = {
+                id: currentQuestionId,
+                question: questions[currentPage].question,
+                flag: questions[currentPage].flag ?? false,
+                group: questions[currentPage].group,
+                status: correct
+            };
+    
             const updatedResults = existingResult
                 ? results.map(result =>
-                    result.id === questions[currentPage].id
-                        ? { ...result, status: correct } 
+                    result.id === currentQuestionId
+                        ? { ...result, status: correct }
                         : result
                 )
-                : [...results, { 
-                    id: questions[currentPage].id,
-                    question: questions[currentPage].question, 
-                    flag: questions[currentPage].flag ?? false,
-                    group: questions[currentPage].group, 
-                    status: correct 
-                }];
-
+                : [...results, newResult];
+    
             dispatch(updateResult({
                 testId: typeOftest,
                 result: updatedResults
             }));
         }
-
-        if(typeOftest === "MockTest" )dispatch(updateCurrentPage({ testId: typeOftest, currentPage: questions.length  === currentPage + 1 ? questions.length -1 : currentPage + 1 }));
+    
+        if (typeOftest === "MockTest") {
+            dispatch(
+                updateCurrentPage({
+                    testId: typeOftest,
+                    currentPage: currentPage + 1 < questions.length ? currentPage + 1 : questions.length - 1
+                })
+            );
+        }
     };
+    
+    
 
 
     useEffect(() => {
-        const checkAnswer = answeredVariants.some(e => questions[currentPage].id === e.id && index === e.index);
+        const checkAnswer = answeredVariants.some(e => 
+            (typeOftest === "MockTest"
+                ? visibleQuestions?.[currentPage]?.id === e.id && index === e.index
+                : questions[currentPage].id === e.id && index === e.index
+            )
+        );
+
         if(checkAnswer && typeOftest === "PracticeTest"  ){
             setColor({
                 backgroundColor: correct ? "rgb(0, 182, 118)" : "rgb(170, 59, 54)",
@@ -92,7 +122,7 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
             });
          }
         
-    }, [ correct, currentPage,answeredVariants]);
+    }, [ correct, currentPage,answeredVariants,visibleQuestions]);
 
     return (
         <div onClick={addAnswer} style={{background:color.backgroundColor}} className={styles['wrap']}>

@@ -12,6 +12,11 @@ import { RootState } from '../../store/store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { updateCurrentPage, updatevisibleQuestions } from '../../store/currentData/currentData.slice';
 
+import  {assessmentData}from './service/assessmentData';
+import useUserId from '../../hooks/useUserId';
+
+
+
 interface AssessmentProps {
   onClose: (e: boolean) => void;
   result: (e: boolean) => void;
@@ -47,6 +52,11 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
   const [timesUp, setTimesUp] = useState(false);
   const [pause, setPause] = useState(false);
 
+  const [currentAll,setCurrentAll] = useState(0)
+
+  const userId = useUserId();
+
+
   const {
     questions,
     currentPage,
@@ -58,6 +68,17 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
     shallowEqual
   );
 
+
+  const fetchAssessmentData = useCallback(() => {
+    if (questions.length <= 0) {
+      assessmentData(dispatch,userId);
+    }
+  }, [questions.length]);
+
+  useEffect(() => {
+    fetchAssessmentData();
+  }, []);
+
  
   const unansweredQuestions = useMemo(() => {
     return getUnansweredQuestions(answeredVariants, questions);
@@ -66,7 +87,9 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
   const color = useSelector((state: RootState) => state.color);
 
 
-  const currentAll = useMemo(() => currentPage, [currentPage]);
+  useEffect(() => {
+    if(currentPage>currentAll && reviewMode === 'all')setCurrentAll(currentPage)
+  },[currentPage])
 
   
   useEffect(() => {
@@ -81,6 +104,7 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
 
     dispatch(updatevisibleQuestions({ testId: typeOftest, visibleQuestions }));
     dispatch(updateCurrentPage({ testId: typeOftest, currentPage: reviewMode === 'all' ? currentAll : 0 }));
+
   }, [reviewMode, unansweredQuestions, questions, currentAll, dispatch]);
 
   useEffect(() => {

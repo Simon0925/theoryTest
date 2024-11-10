@@ -9,12 +9,13 @@ import { formatTime } from './service/formatTime';
 import { mockTestStatistics } from './service/mockTestStatistics';
 
 import { statisticsData } from './interface';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 
 
-import {assessmentData} from './service/assessmentData'
 import { RootState } from '../../store/store';
 import Spinner from '../../UI/Spinner/Spinner';
+
+
 
 
 
@@ -24,11 +25,10 @@ export default function MockTest() {
   const [time, setTime] = useState<number | undefined>();
   const [curentTimeFormat, setCurentTimeFormat] = useState('');
   const [data, setData] = useState<statisticsData[] | null>(null);
-
-  const dispatch = useDispatch();
+  
 
   
-  const { results,questions } = useSelector(
+  const { results} = useSelector(
     (state: RootState) => state.currentData.testsData["MockTest"],  
     shallowEqual
 );
@@ -40,11 +40,7 @@ export default function MockTest() {
     }, []
   );
   
-  const fetchAssessmentData = useCallback(() => {
-    if (questions.length <= 0) {
-      assessmentData(dispatch);
-    }
-  }, [questions.length]);
+
 
   useEffect(() => {
     if (result) {
@@ -66,13 +62,14 @@ export default function MockTest() {
     }
   }, [time, result]);
 
-  useEffect(() => {
-    fetchAssessmentData();
-  }, []);
+  
 
   const handleTestClose = () => {
     setIsTestStarted(false);
   };
+
+
+   
 
   return (
     <>

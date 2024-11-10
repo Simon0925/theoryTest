@@ -1,3 +1,4 @@
-const idUser = "672f59fad3953ab92d2efcf9"
+const idUser = "672fdd90e5bb4d08de78da96"
 
 export default idUser;
+

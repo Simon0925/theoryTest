@@ -33,7 +33,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
   const color = useSelector((state: RootState) => state.color, shallowEqual);
 
   
-  const { questions, currentPage} = useSelector(
+  const { questions, currentPage,visibleQuestions} = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],  
     shallowEqual
 );
@@ -84,7 +84,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
         <span className={styles.questionsM} >Q</span>
         <span>{currentPage + 1}</span>
         <span>of</span>
-        <span>{questions.length}</span>
+        <span>{typeOftest === "MockTest" ?visibleQuestions?.length :questions.length}</span>
       </div>
     );
   }, [trainerTest, color.textColor, currentPage,questions]);
