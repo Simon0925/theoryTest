@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Main from './layout/Main/Main';
 import Header from './layout/Header/Header';
@@ -7,6 +7,9 @@ import styles from './App.module.scss';
 import { RootState } from './store/store';
 import tokenVerification from './service/tokenVerification/tokenVerification';
 import { login } from './store/auth/auth';
+import Modal from './components/Modal/Modal';
+import { useNavigate } from 'react-router-dom';
+import { resetStateAll } from './store/currentData/currentData.slice';
 
 export interface TokenVerificationStatus {
   areEqual: boolean;
@@ -16,42 +19,56 @@ export interface TokenVerificationStatus {
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const menu = useSelector((state: RootState) => state.menu.open);
-  const [menuOpen, setMenuOpen] = useState(menu);
+  const isMenuOpen = useSelector((state: RootState) => state.menu.open);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [pendingPath, setPendingPath] = useState("");
 
-  useEffect(() => {
-    const localS = localStorage.getItem('accessToken');
-
-    const checkLoginStatus = async () => {
-
+  
+  const verifyTokenAndLogin = useCallback(async () => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
       const status = (await tokenVerification(dispatch)) as TokenVerificationStatus | boolean;
-    
       if (status && typeof status !== 'boolean') {
         dispatch(login({ login: status.areEqual, id: status.id, userName: status.userName }));
       } else {
         dispatch(login({ login: false, id: "", userName: "" }));
       }
-    };
-
-    if (localS) {
-      checkLoginStatus();
     }
-  }, []); 
+  }, [dispatch]);
 
   useEffect(() => {
-    setMenuOpen(menu);
-  }, [menu]); 
+    verifyTokenAndLogin();
+  }, [verifyTokenAndLogin]);
+
+
+  const handleCloseTest = useCallback(() => {
+    setModalVisible(false);
+    if (pendingPath) {
+      dispatch(resetStateAll());
+      navigate(pendingPath);
+    }
+  }, [pendingPath, navigate, dispatch]);
 
   return (
-    <div className={`${styles.wrap} ${menuOpen ? styles.menuOpen : ''}`}>
+    <div className={`${styles.wrap} ${isMenuOpen ? styles.menuOpen : ''}`}>
       <div className={styles.burgerMenu}>
         <BurgerMenu />
       </div>
       <div className={styles.mainContent}>
-        <Header />
+      <Header setNextPath={setPendingPath} setModal={setModalVisible} />
         <Main />
       </div>
+
+      {modalVisible && (
+        <Modal
+          title="Are you sure you want to exit from the test?"
+          cancel
+          cancelClick={() => setModalVisible(false)}
+          close={handleCloseTest}
+          blueBtnText="Exit Test" text={''}        />
+      )}
     </div>
   );
 }

@@ -137,6 +137,20 @@ export const questionsSlice = createSlice({
         state.testsData[testId].visibleQuestions = [];
       }
     },
+    resetStateAll: (state) => {
+      const typeOftests = ['PracticeTest', 'MockTest', 'Trainer'];
+      for (const elem of typeOftests) {
+        state.testsData[elem] = {
+          questions: [],
+          currentPage: 0,
+          answeredVariants: [],
+          results: [],
+          isLoading: false,
+          error: null,
+          visibleQuestions: [],
+        };
+      }
+    },
     setLoading: (
       state,
       action: PayloadAction<{ testId: string; isLoading: boolean }>
@@ -162,7 +176,8 @@ export const {
   setLoading,
   setError,
   updatevisibleQuestions,
-  resetState
+  resetState,
+  resetStateAll
 } = questionsSlice.actions;
 
 export default questionsSlice.reducer;

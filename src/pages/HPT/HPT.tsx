@@ -8,6 +8,9 @@ import VideoTest from '../../components/VideoTest/VideoTest';
 import CompletedVideos from '../../components/CompletedVideos/CompletedVideos';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
+import useUserId from '../../hooks/useUserId';
+import Spinner from '../../UI/Spinner/Spinner';
+import GoToLogin from '../../components/GoToLogin/GoToLogin';
 
 interface VideoData {
     id: string;
@@ -22,26 +25,29 @@ export default function HPT() {
     const [testIsActive, setTestIsActive] = useState(false);
     const [completedVideosActive, setCompletedVideosActive] = useState(false);
     const [videosData, setVideosData] = useState<VideoData[]>([]);
-    const color = useSelector((state: RootState) => state.color);
 
+    const color = useSelector((state: RootState) => state.color);
+    const userId = useUserId();
+    const auth = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const videos = await hptGetData();
-                setVideosData(videos); 
-            } catch (error) {
-                console.error("Error fetching videos:", error);
+            if (userId && videosData.length === 0) {
+                try {
+                    const videos = await hptGetData(userId);
+                    setVideosData(videos); 
+                } catch (error) {
+                    console.error("Error fetching videos:", error);
+                }
             }
         };
-
-        if (videosData.length === 0) fetchData();
-    }, [videosData]);
+        fetchData();
+    }, [videosData, userId]);
 
     const renderVideosByCategory = (category: string) => (
         <div className={styles.videoContainer}>
             {videosData
-                .filter((video) => video.category === category)
+                .filter(video => video.category === category)
                 .map((video, index) => (
                     <VideosSet
                         key={video.id}
@@ -58,35 +64,38 @@ export default function HPT() {
 
     const renderMainView = () => (
         <div className={styles.wrap}>
-            <div style={{background:color.HtpPlateBackground}}  className={styles.plate}>
-                <p style={{color:color.HptTitleColorText}} >DVSA CGI videos</p>
+            <div style={{ background: color.HtpPlateBackground }} className={styles.plate}>
+                <p style={{ color: color.HptTitleColorText }}>DVSA CGI videos</p>
             </div>
             {renderVideosByCategory("CGI")}
-            <div style={{background:color.HtpPlateBackground}}  className={styles.plate}>
-                <p style={{color:color.HptTitleColorText}} >DVSA non-CGI videos</p>
+            <div style={{ background: color.HtpPlateBackground }} className={styles.plate}>
+                <p style={{ color: color.HptTitleColorText }}>DVSA non-CGI videos</p>
             </div>
             {renderVideosByCategory("non-CGI")}
             <footer>
-                <FooterHPT isTestStart={setTestIsActive} isIntroduction={setIsIntroduction} />
+                <FooterHPT isTestStart={setTestIsActive} isIntroduction={setIsIntroduction}/>
             </footer>
         </div>
     );
+
+    if (!auth.isLogin && !auth.loading) return <GoToLogin />;
+    if (!auth.isLogin || auth.loading || videosData.length === 0) return <div className={styles.spinner}><Spinner color="white" /></div>;
 
     return (
         <>
             {!isIntroduction && !testIsActive && !completedVideosActive && renderMainView()}
             {completedVideosActive && !isIntroduction && !testIsActive && (
                 <CompletedVideos
-                    isIntroduction={setIsIntroduction} 
-                    completedVideosActive={setCompletedVideosActive} 
-                    testIsActive={setTestIsActive} 
+                    isIntroduction={setIsIntroduction}
+                    completedVideosActive={setCompletedVideosActive}
+                    testIsActive={setTestIsActive}
                 />
             )}
             {testIsActive && !isIntroduction && !completedVideosActive && (
-                <VideoTest 
-                    isIntroduction={setIsIntroduction} 
-                    completedVideosActive={setCompletedVideosActive} 
-                    exit={setTestIsActive} 
+                <VideoTest
+                    isIntroduction={setIsIntroduction}
+                    completedVideosActive={setCompletedVideosActive}
+                    exit={setTestIsActive}
                 />
             )}
             {isIntroduction && !testIsActive && !completedVideosActive && (

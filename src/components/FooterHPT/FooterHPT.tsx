@@ -5,16 +5,20 @@ import styles from "./FooterHPT.module.scss"
 interface FooterHPTProps {
     isIntroduction:(e:boolean) => void;
     isTestStart:(e:boolean) => void;
+
 }
 
 
 export default function FooterHPT ({isIntroduction,isTestStart}:FooterHPTProps) {
 
     const color = useSelector((state: RootState) => state.color);
+    const videos = useSelector((state: RootState) => state.hptData.videos);
 
 
     const start = () =>{
+        videos.length !== 0 ?
         isTestStart(true)
+        :null
     }
 
 

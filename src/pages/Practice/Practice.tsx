@@ -34,7 +34,7 @@ export default function Practice() {
   if (!auth.isLogin && !auth.loading) {
     return <GoToLogin />; 
   }else if(!auth.isLogin || auth.loading){
-    return <Spinner color={"white"} />
+    return <div className={styles.spinner}><Spinner color="white" /></div>
   }
 
   return (

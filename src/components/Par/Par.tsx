@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Par.module.scss';
 import { CirclePercent } from '../../UI/CirclePercent/CirclePercent';
 import { RootState } from '../../store/store';
@@ -18,13 +18,16 @@ export default function Par({ name, quantity, percent, svg, id }: ParProps) {
 
     const practice = useSelector((state: RootState) => state.practice);
 
-    const [isSelected, setIsSelected] = useState(() => 
-        practice.question.some((element) => element.id === id)
-    );
+    const [isSelected, setIsSelected] = useState(false);
+
+    useEffect(()=>{
+       const active = practice.question.some((element) => element.id === id)
+       setIsSelected(active)
+    },[practice])
+
     const color = useSelector((state: RootState) => state.color);
 
     const click = () => {
-        
         const newSelectedState = !isSelected;
         setIsSelected(newSelectedState);
         if (newSelectedState) {
@@ -35,6 +38,8 @@ export default function Par({ name, quantity, percent, svg, id }: ParProps) {
             dispatch(updateQuestion(updatedQuestions)); 
         }
     };
+
+
 
     return (
         <div id={id} onClick={click} className={styles.wrap}>
