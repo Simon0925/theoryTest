@@ -14,6 +14,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 
 import { RootState } from '../../store/store';
 import Spinner from '../../UI/Spinner/Spinner';
+import GoToLogin from '../../components/GoToLogin/GoToLogin';
 
 
 
@@ -26,6 +27,7 @@ export default function MockTest() {
   const [curentTimeFormat, setCurentTimeFormat] = useState('');
   const [data, setData] = useState<statisticsData[] | null>(null);
   
+  const auth = useSelector((state: RootState) => state.auth);
 
   
   const { results} = useSelector(
@@ -69,6 +71,11 @@ export default function MockTest() {
   };
 
 
+  if (!auth.isLogin && !auth.loading) {
+    return <GoToLogin />; 
+  }else if(!auth.isLogin || auth.loading){
+    return <Spinner color={"white"} />
+  }
    
 
   return (

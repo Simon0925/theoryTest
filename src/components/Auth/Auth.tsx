@@ -3,7 +3,9 @@ import styles from "./Auth.module.scss";
 import Login from "../Login/Login";
 import Registration from "../Registration/Registration";
 
+
 export default function Auth() {
+
 
     const [active, setActive] = useState("login");
 
@@ -11,6 +13,7 @@ export default function Auth() {
         setActive(view);
         
     };
+
 
     return (
         <div className={styles.wrap}>

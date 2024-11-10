@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { login } from "../../store/auth/auth";
 
 
+
 interface AccountProps{
     back:(e:boolean) => void
 }
@@ -15,12 +16,11 @@ interface AccountProps{
 export default function Account({back}:AccountProps){
     const dispatch = useDispatch();
 
+
     const isLogin = useSelector((state: RootState) => state.auth.isLogin);
     const name = useSelector((state: RootState) => state.auth.userName);
 
-    useEffect(()=>{
-        console.log("name:",name)
-    },[name])
+  
 
     const logOut = () =>{
         localStorage.setItem("accessToken", "");

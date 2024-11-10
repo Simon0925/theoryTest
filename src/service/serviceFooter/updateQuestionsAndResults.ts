@@ -4,11 +4,15 @@ import { Result } from './types.ts';
 export const updateQuestionsAndResults = (
   questions: Question[], 
   results: Result[], 
-  currentPage: number
+  currentPage: number,
+  typeOftest?: string,
+  visibleQuestions: Question[] = []
 ): { updatedQuestions: Question[], updatedResults: Result[] } => {
-  
+
+  const targetQuestions = typeOftest === "MockTest" ? visibleQuestions : questions;
+
   const updatedQuestions = questions.map((element) => {
-    if (element.id === questions[currentPage].id) {
+    if (element.id === targetQuestions[currentPage].id) {
       return { ...element, flag: !element.flag };
     }
     return element;

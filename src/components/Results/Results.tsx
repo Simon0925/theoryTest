@@ -34,12 +34,7 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
   const [answered, setAnswered] = useState(0);
   const [mockTestTrueAnswer, setMockTestTrueAnswer] = useState<number>();
 
-  useEffect(()=>{
-    console.log("results",results)
-    console.log("statisticData",statisticData)
-    console.log("mockTestTrueAnswer",mockTestTrueAnswer)
-  },[results])
-
+  
   const [progressBar, setProgressBar] = useState({
     pass: 0,
     falseAnswer: 0,

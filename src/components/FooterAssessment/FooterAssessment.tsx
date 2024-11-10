@@ -27,14 +27,15 @@ export default function FooterAssessment({
 
   const color = useSelector((state: RootState) => state.color);
 
-  const { questions, currentPage, answeredVariants, results } = useSelector(
+  const { questions, currentPage, answeredVariants, results,visibleQuestions } = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],
     shallowEqual
   );
 
   const isAnswerSelected = useMemo(() => {
-    return answeredVariants.some(e => questions[currentPage]?.id === e.id);
-  }, [answeredVariants, currentPage, questions]);
+    const currentQuestion = visibleQuestions?.[currentPage];
+    return currentQuestion ? answeredVariants.some(e => e.id === currentQuestion.id) : false;
+  }, [answeredVariants, currentPage, visibleQuestions]);
 
   const next = useCallback(() => {
     if (currentPage <= questions.length - 1 && questions.length !== currentPage + 1 ) {
@@ -56,12 +57,14 @@ export default function FooterAssessment({
     const { updatedQuestions, updatedResults } = updateQuestionsAndResults(
       questions, 
       results, 
-      currentPage
+      currentPage,
+      typeOftest,
+      visibleQuestions
     );
    
     dispatch(setCurrentQuestions({ testId: typeOftest, questions: updatedQuestions }));
     dispatch(updateResult({ testId: typeOftest, result: updatedResults }));
-  }, [currentPage, questions, results, dispatch, typeOftest]);
+  }, [currentPage, questions, results, dispatch, typeOftest,visibleQuestions]);
 
   useEffect(() => {
     getTime(time);
@@ -71,6 +74,9 @@ export default function FooterAssessment({
     setPause(prevPause => !prevPause);
     statusPause(!pause);
   }, [pause, statusPause]);
+  useEffect(()=>{
+    console.log("results",results)
+  },[results])
 
   return (
     <div 
@@ -91,7 +97,7 @@ export default function FooterAssessment({
         color={color.TestcolorText}
         backgroundColor={color.FooterBackgroundBtn}
         svg={true}
-        svgColor={questions[currentPage]?.flag === true ? true : color.FlagColorSvgBtn}
+        svgColor={visibleQuestions?.[currentPage]?.flag === true ? true : color.FlagColorSvgBtn}
       />
         <TimerAssessment time={setTime} pause={pause} />
         <ButtonTest

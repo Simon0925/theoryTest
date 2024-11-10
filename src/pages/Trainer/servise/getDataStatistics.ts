@@ -1,55 +1,37 @@
-
 import { Dispatch } from "react";
 import hostname from "../../../config/hostname";
-import idUser from "../../../config/idUser";
-import { setCurrentQuestions, setLoading } from "../../../store/currentData/currentData.slice";
+import { setLoading } from "../../../store/currentData/currentData.slice";
 
+interface TrainerOnceTwice {
+  once: number | null;
+  twice: number | null;
+}
 
 export const getDataStatistics = async (
   dispatch: Dispatch<any>,
-  setTrainerOnceTwice: React.Dispatch<React.SetStateAction<{ once: number | null, twice: number | null }>> 
+  setTrainerOnceTwice: React.Dispatch<React.SetStateAction<TrainerOnceTwice>>,
+  idUser: string
 ) => {
   const requestUrl = `${hostname}/api/trainer?id=${idUser}`;
+
   try {
-    dispatch(
-      setLoading({
-        testId: "Trainer",
-        isLoading: true,
-      })
-    );
-
+    dispatch(setLoading({ testId: "Trainer", isLoading: true }));
     const response = await fetch(requestUrl);
-
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw new Error(`Failed to fetch trainer data: ${response.status} ${response.statusText}`);
     }
-
     const data = await response.json();
-
-    dispatch(
-      setCurrentQuestions({
-        testId: "Trainer",
-        questions: data.trainerQuestions,
-      })
-    );
-
-   
-    setTrainerOnceTwice((prev) => ({
+    setTrainerOnceTwice(prev => ({
       ...prev,
       once: data.correctAnswersOnce,
       twice: data.correctAnswersTwice,
     }));
 
-    dispatch(
-      setLoading({
-        testId: "Trainer",
-        isLoading: false,
-      })
-    );
-
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching trainer statistics:", error);
     throw error;
+  } finally {
+    dispatch(setLoading({ testId: "Trainer", isLoading: false }));
   }
 };
