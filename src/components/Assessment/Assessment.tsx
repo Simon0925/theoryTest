@@ -126,7 +126,7 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
       style={ {background:color.TestBackground}}
      className={styles.wrap}
      >
-      {isLoading && visibleQuestions ? (
+      {isLoading && (visibleQuestions?.length ?? 0) <= 0 ? (
         <div style={{ position: 'absolute', top: '40%', left: '50%' }}>
           <Spinner color="black" />
         </div>

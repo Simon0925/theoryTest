@@ -5,13 +5,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface Auth {
     userId:string,
     isLogin:boolean,
-    userName:string
+    userName:string,
+    loading:boolean
 }
 
 const initialState: Auth = {
     userId:'',
     isLogin:false,
-    userName:''
+    userName:'',
+    loading:false
 };
 
 
@@ -33,10 +35,16 @@ export const authSlice = createSlice({
               state.userId = '';
             }
           },
+          isLoading:(state, action:PayloadAction<boolean>)=>{
+            if (state) {
+              state.loading = action.payload;
+
+            }
+          }
     }
 })
 
 
 
-export const { login,logout } = authSlice.actions;
+export const { login,logout ,isLoading} = authSlice.actions;
 export default authSlice.reducer;

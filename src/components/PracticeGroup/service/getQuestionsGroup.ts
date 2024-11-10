@@ -1,4 +1,4 @@
-import hostname from "../../config/hostname";
+import hostname from "../../../config/hostname";
 
 const getQuestionsGroup = async (userId:string) => {
     try {
@@ -15,6 +15,6 @@ const getQuestionsGroup = async (userId:string) => {
     }
 };
 
-export default {
+export  {
     getQuestionsGroup
 };

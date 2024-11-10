@@ -1,12 +1,12 @@
 import hostname from "../../config/hostname";
-import { loading } from "../../store/auth/auth";
+import { isLoading } from "../../store/auth/auth";
 
 async function tokenVerification(dispatch: any) { 
     const token = localStorage.getItem('accessToken');
     if (!token) return null;
 
     try {
-        dispatch(loading(true)); 
+        dispatch(isLoading(true)); 
         const response = await fetch(`${hostname}/api/verify-token`, {
             method: 'GET',
             headers: {
@@ -16,7 +16,7 @@ async function tokenVerification(dispatch: any) {
         });
 
         const responseData = await response.json();
-        dispatch(loading(false)); 
+        dispatch(isLoading(false)); 
 
         if (responseData.areEqual) {
             return { areEqual: true, id: responseData.userId, userName: responseData.userName };
@@ -25,7 +25,7 @@ async function tokenVerification(dispatch: any) {
         }
     } catch (error) {
         console.log(error);
-        dispatch(loading(false)); 
+        dispatch(isLoading(false)); 
     }
 }
 

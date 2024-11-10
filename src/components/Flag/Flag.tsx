@@ -1,11 +1,12 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import FlagSvg from "../../SVG/FlagSvg/FlagSvg";
 import styles from "./Flag.module.scss";
-import service from "../../service/FlagService/getFlags";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFlagged } from '../../store/practice/practice.slice';
-import idUser from "../../config/idUser";
 import { RootState } from '../../store/store';
+import {getFlags} from './service/getFlags'
+import useUserId from "../../hooks/useUserId";
+
 
 export default function Flag() {
     const dispatch = useDispatch();
@@ -16,6 +17,8 @@ export default function Flag() {
     const flagged = useSelector((state: RootState) => state.practice.flagged);
     const allQuestionLength = useSelector((state: RootState) => state.practice.allQuestionLength);
 
+    const userId = useUserId();
+
     useEffect(() => {
         setSelected(flagged && currentFlags.quantity > 0);
     }, [flagged, currentFlags.quantity]);
@@ -25,10 +28,11 @@ export default function Flag() {
     }, [currentFlags]);
 
     useEffect(() => {
+        if(userId){
         const fetchData = async () => {
             if (currentFlags.quantity === 0) {
                 try {
-                    const groupTest = await service.getFlags(idUser);
+                    const groupTest = await getFlags(userId);
                     setCurrentFlags({ quantity: groupTest.quantity });
                 } catch (error) {
                     console.error("Error fetching data in useEffect:", error);
@@ -36,7 +40,8 @@ export default function Flag() {
             }
         };
         fetchData();
-    }, [currentFlags.quantity]);
+    }
+    }, [currentFlags.quantity,userId]);
 
     const marker = useCallback(() => {
         if (currentFlags.quantity <= 0) return null;

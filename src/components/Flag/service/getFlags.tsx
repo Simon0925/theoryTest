@@ -1,7 +1,7 @@
-import hostname from "../../config/hostname";
+import hostname from "../../../config/hostname";
 
 
-const getFlags = async (userId:string) => {
+ const getFlags = async (userId:string) => {
     try {
         const response = await fetch(`${hostname}/api/flags?id=${userId}`);
 
@@ -15,6 +15,6 @@ const getFlags = async (userId:string) => {
     }
 }
 
-export default {
-    getFlags,
-};
+export {
+    getFlags
+}

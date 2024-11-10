@@ -5,7 +5,7 @@ import Header from './layout/Header/Header';
 import BurgerMenu from './layout/BurgerMenu/BurgerMenu';
 import styles from './App.module.scss';
 import { RootState } from './store/store';
-import tokenVarification from './service/tokenVarification/tokenVarification';
+import tokenVerification from './service/tokenVerification/tokenVerification';
 import { login } from './store/auth/auth';
 
 export interface TokenVerificationStatus {
@@ -25,7 +25,7 @@ function App() {
 
     const checkLoginStatus = async () => {
 
-      const status = (await tokenVarification()) as TokenVerificationStatus | boolean;
+      const status = (await tokenVerification(dispatch)) as TokenVerificationStatus | boolean;
     
       if (status && typeof status !== 'boolean') {
         dispatch(login({ login: status.areEqual, id: status.id, userName: status.userName }));
