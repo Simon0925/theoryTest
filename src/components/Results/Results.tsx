@@ -3,7 +3,6 @@ import styles from "./Results.module.scss";
 import OkVectorSvg from "../../SVG/OkVectorSvg/OkVectorSvg";
 import CrossSvg from "../../SVG/CrossSvg/CrossSvg";
 import HeaderResults from "../HeaderResults/HeaderResults";
-import idUser from "../../config/idUser";
 import CircularProgressBar from "../../UI/CircularProgressBar/CircularProgressBar";
 import currentDate from "./service/date";
 import { QuestionResult, statisticData } from './interface/interface';
@@ -13,6 +12,7 @@ import { RootState } from "../../store/store";
 import hostname from "../../config/hostname";
 
 import postResult from './service/postResult';
+import useUserId from "../../hooks/useUserId";
 
 interface ResultsProps {
   exitResult: (e: boolean) => void;
@@ -27,6 +27,8 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
     (state: RootState) => state.currentData.testsData[typeOftest],
     shallowEqual
   );
+
+  const userId = useUserId();
 
   
   const [statisticData, setStatisticData] = useState<statisticData>();
@@ -94,14 +96,14 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
   useEffect(() => {
     if (results.length > 0 && typeOftest !== "MockTest") {
       try {
-        const dataToSend = { userId: idUser, data: results };
+        const dataToSend = { userId: userId, data: results };
         postResult.postResult(dataToSend,typeOftest);
       } catch (error) {
         console.error("Error posting local storage data:", error);
       }
     } else if (data.length > 0 && typeOftest === "MockTest" && statisticData !== undefined) {
       const dataToSend = {
-        userId: idUser,
+        userId: userId,
         data: results,
         statisticData,
         mockTest: typeOftest,

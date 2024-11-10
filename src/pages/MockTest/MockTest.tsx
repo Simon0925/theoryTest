@@ -1,24 +1,19 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
-import FooterMockTest from '../../components/FooterMockTest/FooterMockTest';
-import MockTestChart from '../../components/MockTestChart/MockTestChart';
-import styles from './MockTest.module.scss';
-import Assessment from '../../components/Assessment/Assessment';
-import DataStatisticsAssessment from '../../components/DataStatisticsAssessment/DataStatisticsAssessment';
-import Results from '../../components/Results/Results';
-import { formatTime } from './service/formatTime';
-import { mockTestStatistics } from './service/mockTestStatistics';
-
-import { statisticsData } from './interface';
+import { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-
-
 import { RootState } from '../../store/store';
+import styles from './MockTest.module.scss';
 import Spinner from '../../UI/Spinner/Spinner';
 import GoToLogin from '../../components/GoToLogin/GoToLogin';
+import useUserId from '../../hooks/useUserId';
+import { formatTime } from './service/formatTime';
+import { mockTestStatistics } from './service/mockTestStatistics';
+import { statisticsData } from './interface';
 
-
-
-
+const Results = lazy(() => import('../../components/Results/Results'));
+const Assessment = lazy(() => import('../../components/Assessment/Assessment'));
+const FooterMockTest = lazy(() => import('../../components/FooterMockTest/FooterMockTest'));
+const MockTestChart = lazy(() => import('../../components/MockTestChart/MockTestChart'));
+const DataStatisticsAssessment = lazy(() => import('../../components/DataStatisticsAssessment/DataStatisticsAssessment'));
 
 export default function MockTest() {
   const [isTestStarted, setIsTestStarted] = useState(false);
@@ -26,23 +21,30 @@ export default function MockTest() {
   const [time, setTime] = useState<number | undefined>();
   const [curentTimeFormat, setCurentTimeFormat] = useState('');
   const [data, setData] = useState<statisticsData[] | null>(null);
-  
-  const auth = useSelector((state: RootState) => state.auth);
 
-  
-  const { results} = useSelector(
+  const auth = useSelector((state: RootState) => state.auth);
+  const userId = useUserId();
+
+  const { results } = useSelector(
     (state: RootState) => state.currentData.testsData["MockTest"],  
     shallowEqual
-);
-
-  const fetchStatistics = useMemo(
-    () => async () => {
-      const statistics = await mockTestStatistics();
-      if (statistics) setData(statistics);
-    }, []
   );
-  
 
+  const fetchStatistics = useCallback(async () => {
+    if (!userId) return;
+    try {
+      const statistics = await mockTestStatistics(userId);
+      if (statistics) setData(statistics);
+    } catch (error) {
+      console.error("Error fetching mock test statistics:", error);
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    if (userId && !data && results.length === 0) {
+      fetchStatistics();
+    }
+  }, [data, results, userId, fetchStatistics]);
 
   useEffect(() => {
     if (result) {
@@ -51,39 +53,25 @@ export default function MockTest() {
   }, [result]);
 
   useEffect(() => {
-    if (!data && results.length <= 0) {
-      fetchStatistics();
-    }
-  }, [data,results]);
-
-
-  useEffect(() => {
     if (typeof time === 'number' && result) {
-      const curentTime = 57 * 60 - time;
-      setCurentTimeFormat(formatTime(curentTime));
+      const currentTime = 57 * 60 - time; 
+      setCurentTimeFormat(formatTime(currentTime));
     }
   }, [time, result]);
-
-  
 
   const handleTestClose = () => {
     setIsTestStarted(false);
   };
 
-
-  if (!auth.isLogin && !auth.loading) {
-    return <GoToLogin />; 
-  }else if(!auth.isLogin || auth.loading){
-    return <Spinner color={"white"} />
-  }
-   
+  if (!auth.isLogin && !auth.loading) return <GoToLogin />;
+  if (auth.loading || !auth.isLogin) return <div className={styles.spinner}><Spinner color="white" /></div>;
 
   return (
-    <>
+    <Suspense fallback={<Spinner color="white" />}>
       {result ? (
         <Results
           time={curentTimeFormat}
-          typeOftest={'MockTest'}
+          typeOftest="MockTest"
           exitResult={setResult}
         />
       ) : data ? (
@@ -106,10 +94,10 @@ export default function MockTest() {
           )}
         </div>
       ) : (
-        <div className={styles.spiner}>
-          <Spinner color={'black'} />
+        <div className={styles.spinner}>
+          <Spinner color="white" />
         </div>
       )}
-    </>
+    </Suspense>
   );
 }

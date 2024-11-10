@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Question } from './interface';
-import idUser from '../../config/idUser';
 import service from './sevice/questionFilter';
 import { setCurrentQuestions,setLoading } from '../currentData/currentData.slice';
 import {updateResult} from '../currentData/currentData.slice'
+import useUserId from '../../hooks/useUserId';
 
 interface PracticeData {
     question: Question[];
@@ -31,41 +31,44 @@ export const fetchQuestions = createAsyncThunk<
 >(
   'practice/fetchQuestions',
   async ({ testId }, { getState, rejectWithValue, dispatch }) => {
+    
     const state: any = getState();
+    const userId = state.auth.userId; 
     const practice = state.practice;
-    dispatch(setLoading({
-      testId, 
-      isLoading:true
-    }));
+
+    dispatch(setLoading({ testId, isLoading: true }));
+
     try {
       const data = await service.questionFilter({
         type: practice.type,
         questions: practice.question,
-        userId: idUser,
+        userId: userId,
         quantity: practice.numberOfQuestions,
         flagged: practice.flagged,
       });
-     
+            
       dispatch(updateAllQuestionLength(data.allDataLength));
       dispatch(setCurrentQuestions({
         testId, 
         questions: data.data, 
       }));
-      
     } catch (error) {
+      console.error("Failed to fetch questions:", error);
       return rejectWithValue('Failed to fetch questions');
     } finally {
       dispatch(setLoading({
         testId, 
-        isLoading:false
+        isLoading: false
       }));
     }
   }
 );
 
+
 export const resetPracticeStateThunk = createAsyncThunk<void, void, { dispatch: any }>(
   'practice/resetPracticeStateThunk',
   async (_, { dispatch }) => {
+    
     dispatch(resetPracticeState()); 
     dispatch(updateResult({ testId: "PracticeTest", result: [] }));  
   }
@@ -107,7 +110,7 @@ export const {
     updateFlagged,
     updateAllQuestionLength,
     updateQuestion,
-    resetPracticeState
+    resetPracticeState,
 } = practiceSlice.actions;
 
 export default practiceSlice.reducer;

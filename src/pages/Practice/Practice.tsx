@@ -16,7 +16,6 @@ export default function Practice() {
   const [result, setResult] = useState(false);
   const [test, setTest] = useState(false);
   const dispatch = useDispatch();
-
   const auth = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
@@ -24,47 +23,35 @@ export default function Practice() {
       startTransition(() => {
         dispatch(updateResult({ testId: "PracticeTest", result: [] }));
       });
-    } else if (result) {
+    } else {
       setTest(false);
       dispatch(resetPracticeState());
     }
   }, [result, dispatch]);
 
- 
-  if (!auth.isLogin && !auth.loading) {
-    return <GoToLogin />; 
-  }else if(!auth.isLogin || auth.loading){
-    return <div className={styles.spinner}><Spinner color="white" /></div>
-  }
+  if (!auth.isLogin && !auth.loading) return <GoToLogin />;
+  if (auth.loading || !auth.isLogin) return <div className={styles.spinner}><Spinner color="white" /></div>;
 
   return (
-    <>
+    <Suspense fallback={<div className={styles.spinner}><Spinner color="white" /></div>}>
       {result ? (
-        <Suspense >
-          <Results typeOftest="PracticeTest" exitResult={setResult} />
-        </Suspense>
+        <Results typeOftest="PracticeTest" exitResult={setResult} />
       ) : (
-        <>
+        <div className={styles.wrap}>
           {!test ? (
-            <div className={styles.wrap}>
+            <>
               <div className={styles.practiceQuestionManager}>
-                <Suspense >
-                  <PracticeQuestionManager practiceTest={setTest} />
-                </Suspense>
+                <PracticeQuestionManager practiceTest={setTest} />
               </div>
               <div className={styles.PracticeQuestionsManagerMobile}>
-                <Suspense >
-                  <PracticeQuestionsManagerMobile practiceTest={setTest} />
-                </Suspense>
+                <PracticeQuestionsManagerMobile practiceTest={setTest} />
               </div>
-            </div>
+            </>
           ) : (
-            <Suspense >
-              <PracticeTest result={setResult} closeTest={setTest} />
-            </Suspense>
+            <PracticeTest result={setResult} closeTest={setTest} />
           )}
-        </>
+        </div>
       )}
-    </>
+    </Suspense>
   );
 }

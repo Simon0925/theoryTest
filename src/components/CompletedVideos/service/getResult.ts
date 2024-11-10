@@ -1,5 +1,5 @@
 import hostname from "../../../config/hostname";
-import idUser from "../../../config/idUser"
+
 interface Time {
     time: string;
 }
@@ -13,7 +13,7 @@ export interface Hpt {
     results: Results[];
 }
 
-const getResult = async (data:Results[]) => {
+const getResult = async (data:Results[],idUser:string) => {
 
     const jsonString =  JSON.stringify({
         userId:idUser,

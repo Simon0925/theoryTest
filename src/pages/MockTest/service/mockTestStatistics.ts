@@ -1,9 +1,8 @@
-
-import userId from "../../../config/idUser"
 import hostname from "../../../config/hostname"
 
-export const mockTestStatistics = async () =>{
-    try{
+export const mockTestStatistics = async (userId: string) => {
+  
+    try {
         const response = await fetch(`${hostname}/api/userGetStatisticsMockTest?id=${userId}`);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -14,5 +13,6 @@ export const mockTestStatistics = async () =>{
 
     } catch (error) {
         console.error("Error fetching data:", error); 
+        return null; 
     }
 }
