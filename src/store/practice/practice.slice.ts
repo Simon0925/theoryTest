@@ -3,7 +3,7 @@ import { Question } from './interface';
 import service from './sevice/questionFilter';
 import { setCurrentQuestions,setLoading } from '../currentData/currentData.slice';
 import {updateResult} from '../currentData/currentData.slice'
-import useUserId from '../../hooks/useUserId';
+
 
 interface PracticeData {
     question: Question[];

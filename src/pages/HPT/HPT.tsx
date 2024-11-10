@@ -1,50 +1,54 @@
-import { useEffect, useState } from 'react';
-import FooterHPT from '../../components/FooterHPT/FooterHPT';
-import VideosSet from '../../components/VideosSet/VideosSet';
+import { useEffect, useState, useCallback, Suspense, lazy } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import styles from './HPT.module.scss';
-import Introduction from '../../components/Introduction/Introduction';
 import { hptGetData } from './servise/hptGetData';
-import VideoTest from '../../components/VideoTest/VideoTest';
-import CompletedVideos from '../../components/CompletedVideos/CompletedVideos';
 import { RootState } from '../../store/store';
-import { useSelector } from 'react-redux';
 import useUserId from '../../hooks/useUserId';
 import Spinner from '../../UI/Spinner/Spinner';
 import GoToLogin from '../../components/GoToLogin/GoToLogin';
 
+// Lazy load components
+const FooterHPT = lazy(() => import('../../components/FooterHPT/FooterHPT'));
+const VideosSet = lazy(() => import('../../components/VideosSet/VideosSet'));
+const VideoTest = lazy(() => import('../../components/VideoTest/VideoTest'));
+const CompletedVideos = lazy(() => import('../../components/CompletedVideos/CompletedVideos'));
+const Introduction = lazy(() => import('../../components/Introduction/Introduction'));
+
 interface VideoData {
     id: string;
     poster: string;
-    category: string; 
+    category: string;
     video: string;
     stars: number;
 }
 
-export default function HPT() {
+const HPT = () => {
     const [isIntroduction, setIsIntroduction] = useState(false);
     const [testIsActive, setTestIsActive] = useState(false);
     const [completedVideosActive, setCompletedVideosActive] = useState(false);
     const [videosData, setVideosData] = useState<VideoData[]>([]);
 
-    const color = useSelector((state: RootState) => state.color);
+    const color = useSelector((state: RootState) => state.color, shallowEqual);
     const userId = useUserId();
     const auth = useSelector((state: RootState) => state.auth);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (userId && videosData.length === 0) {
-                try {
-                    const videos = await hptGetData(userId);
-                    setVideosData(videos); 
-                } catch (error) {
-                    console.error("Error fetching videos:", error);
-                }
+    const fetchData = useCallback(async () => {
+        if (userId && videosData.length === 0) {
+            try {
+                const videos = await hptGetData(userId);
+                setVideosData(videos);
+            } catch (error) {
+                console.error("Error fetching videos:", error);
             }
-        };
-        fetchData();
-    }, [videosData, userId]);
+        }
+    }, [userId, videosData.length]);
 
-    const renderVideosByCategory = (category: string) => (
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+    // Memoize render logic for better performance
+    const renderVideosByCategory = useCallback((category: string) => (
         <div className={styles.videoContainer}>
             {videosData
                 .filter(video => video.category === category)
@@ -60,7 +64,7 @@ export default function HPT() {
                     />
                 ))}
         </div>
-    );
+    ), [videosData]);
 
     const renderMainView = () => (
         <div className={styles.wrap}>
@@ -73,16 +77,20 @@ export default function HPT() {
             </div>
             {renderVideosByCategory("non-CGI")}
             <footer>
-                <FooterHPT isTestStart={setTestIsActive} isIntroduction={setIsIntroduction}/>
+                <FooterHPT isTestStart={setTestIsActive} isIntroduction={setIsIntroduction} />
             </footer>
         </div>
     );
 
     if (!auth.isLogin && !auth.loading) return <GoToLogin />;
-    if (!auth.isLogin || auth.loading || videosData.length === 0) return <div className={styles.spinner}><Spinner color="white" /></div>;
+    if (!auth.isLogin || auth.loading || videosData.length === 0) return (
+        <div className={styles.spinner}>
+            <Spinner color="white" />
+        </div>
+    );
 
     return (
-        <>
+        <Suspense fallback={<div className={styles.spinner}><Spinner color="white" /></div>}>
             {!isIntroduction && !testIsActive && !completedVideosActive && renderMainView()}
             {completedVideosActive && !isIntroduction && !testIsActive && (
                 <CompletedVideos
@@ -101,6 +109,8 @@ export default function HPT() {
             {isIntroduction && !testIsActive && !completedVideosActive && (
                 <Introduction exit={setIsIntroduction} />
             )}
-        </>
+        </Suspense>
     );
-}
+};
+
+export default HPT;

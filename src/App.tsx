@@ -1,15 +1,18 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo, Suspense, lazy } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Main from './layout/Main/Main';
-import Header from './layout/Header/Header';
-import BurgerMenu from './layout/BurgerMenu/BurgerMenu';
-import styles from './App.module.scss';
 import { RootState } from './store/store';
 import tokenVerification from './service/tokenVerification/tokenVerification';
 import { login } from './store/auth/auth';
 import Modal from './components/Modal/Modal';
 import { useNavigate } from 'react-router-dom';
 import { resetStateAll } from './store/currentData/currentData.slice';
+import styles from './App.module.scss';
+
+
+
+const Main = lazy(() => import('./layout/Main/Main'));
+const BurgerMenu = lazy(() => import('./layout/BurgerMenu/BurgerMenu'));
+const Header = lazy(() => import('./layout/Header/Header'));
 
 export interface TokenVerificationStatus {
   areEqual: boolean;
@@ -25,7 +28,7 @@ function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [pendingPath, setPendingPath] = useState("");
 
-  
+
   const verifyTokenAndLogin = useCallback(async () => {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
@@ -37,6 +40,7 @@ function App() {
       }
     }
   }, [dispatch]);
+
 
   useEffect(() => {
     verifyTokenAndLogin();
@@ -51,14 +55,25 @@ function App() {
     }
   }, [pendingPath, navigate, dispatch]);
 
+
+  const menuClassName = useMemo(() => {
+    return `${styles.wrap} ${isMenuOpen ? styles.menuOpen : ''}`;
+  }, [isMenuOpen]);
+
   return (
-    <div className={`${styles.wrap} ${isMenuOpen ? styles.menuOpen : ''}`}>
+    <div className={menuClassName}>
       <div className={styles.burgerMenu}>
-        <BurgerMenu />
+        <Suspense>
+          <BurgerMenu />
+        </Suspense>
       </div>
       <div className={styles.mainContent}>
-      <Header setNextPath={setPendingPath} setModal={setModalVisible} />
-        <Main />
+        <Suspense >
+          <Header setNextPath={setPendingPath} setModal={setModalVisible} />
+        </Suspense>
+        <Suspense >
+          <Main />
+        </Suspense>
       </div>
 
       {modalVisible && (
@@ -67,7 +82,9 @@ function App() {
           cancel
           cancelClick={() => setModalVisible(false)}
           close={handleCloseTest}
-          blueBtnText="Exit Test" text={''}        />
+          blueBtnText="Exit Test"
+          text={''}
+        />
       )}
     </div>
   );

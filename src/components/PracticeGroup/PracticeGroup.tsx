@@ -62,10 +62,9 @@ export default function PracticeGroup () {
                     <Spinner color="#0078AB" />
                   </div> 
                 ) : (
-                  questionsGroup.map((elem, i) => {
+                  questionsGroup.map((elem) => {
                     const matchingPars = pars.find((par) => par.name === elem.name);
                     const svg = matchingPars ? matchingPars.svg : null;
-
                     return (
                       <Par
                         key={elem.id}

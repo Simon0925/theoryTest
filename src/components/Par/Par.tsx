@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, memo } from 'react';
 import styles from './Par.module.scss';
 import { CirclePercent } from '../../UI/CirclePercent/CirclePercent';
 import { RootState } from '../../store/store';
-import {  updateAllQuestionLength,updateQuestion } from '../../store/practice/practice.slice'; 
-import { useDispatch, useSelector } from 'react-redux';
+import { updateQuestion } from '../../store/practice/practice.slice';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 interface ParProps {
     name: string;
@@ -13,43 +13,40 @@ interface ParProps {
     id: string;
 }
 
-export default function Par({ name, quantity, percent, svg, id }: ParProps) {
+const Par = ({ name, quantity, percent, svg, id }: ParProps) => {
     const dispatch = useDispatch();
-
-    const practice = useSelector((state: RootState) => state.practice);
+    
+    const practice = useSelector((state: RootState) => state.practice, shallowEqual);
+    const color = useSelector((state: RootState) => state.color, shallowEqual);
 
     const [isSelected, setIsSelected] = useState(false);
 
-    useEffect(()=>{
-       const active = practice.question.some((element) => element.id === id)
-       setIsSelected(active)
-    },[practice])
+    const active = useMemo(() => practice.question.some((element) => element.id === id), [practice.question, id]);
 
-    const color = useSelector((state: RootState) => state.color);
+    useEffect(() => {
+        setIsSelected(active);
+    }, [active]);
 
     const click = () => {
         const newSelectedState = !isSelected;
         setIsSelected(newSelectedState);
-        if (newSelectedState) {
-            const updatedQuestions = [...practice.question, { id }];
-            dispatch(updateQuestion(updatedQuestions));
-        } else {
-            const updatedQuestions = practice.question.filter((element) => element.id !== id);
-            dispatch(updateQuestion(updatedQuestions)); 
-        }
+        const updatedQuestions = newSelectedState
+            ? [...practice.question, { id }]
+            : practice.question.filter((element) => element.id !== id);
+        dispatch(updateQuestion(updatedQuestions));
     };
 
 
+    const titleStyles = useMemo(() => ({
+        '--text-color': color.svgGroupColor,
+        '--active-svg-color': color.textColor,
+        '--header-svg-color': color.svgGroupColor,
+        '--active-background-color': color.svgAvtiveBackgroundColor,
+    }), [color]);
 
     return (
         <div id={id} onClick={click} className={styles.wrap}>
-            <div style={{
-                        '--text-color': color.svgGroupColor,
-                        '--active-svg-color': color.textColor,
-                        '--header-svg-color':color.svgGroupColor,
-                        '--active-background-color':color.svgAvtiveBackgroundColor,
-                    } as React.CSSProperties}
-                     className={styles.title}>
+            <div style={titleStyles as React.CSSProperties} className={styles.title}>
                 <div className={isSelected ? styles.active : styles.notActive}>{svg}</div>
                 <span>{name} ({quantity})</span>
             </div>
@@ -58,4 +55,6 @@ export default function Par({ name, quantity, percent, svg, id }: ParProps) {
             </div>
         </div>
     );
-}
+};
+
+export default memo(Par);

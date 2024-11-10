@@ -1,14 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
+import { lazy, useCallback, useEffect, useMemo, useState, Suspense } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styles from './Trainer.module.scss';
 import { getDataStatistics } from './servise/getDataStatistics';
 import OnceTwiceProgress from '../../UI/OnceTwiceProgress/OnceTwiceProgress';
-import TrainerTest from '../../components/TrainerTest/TrainerTest';
-import Results from '../../components/Results/Results';
 import Spinner from '../../UI/Spinner/Spinner';
 import GoToLogin from '../../components/GoToLogin/GoToLogin';
 import useUserId from '../../hooks/useUserId';
 import { RootState } from '../../store/store';
+
+const TrainerTest = lazy(() => import('../../components/TrainerTest/TrainerTest'));
+const Results = lazy(() => import('../../components/Results/Results'));
 
 export default function Trainer() {
     const dispatch = useDispatch();
@@ -41,7 +42,7 @@ export default function Trainer() {
         setIsTestStarted(!show);
     };
 
-    const renderDescription = () => (
+    const descriptionContent = useMemo(() => (
         <div style={{ color: color.VariantTitleColor }} className={styles.description}>
             <p>
                 Personal Trainer uses an algorithm that learns about you as you progress. It first shows
@@ -55,34 +56,32 @@ export default function Trainer() {
                 We find this is the best way to coach you for the test.
             </p>
         </div>
-    );
+    ), [color.VariantTitleColor]);
 
     if (!auth.isLogin && !auth.loading) return <GoToLogin />;
-    if (!auth.isLogin || auth.loading) return null;
+    if (isLoading) {
+        return (
+            <div className={styles.spinner}>
+                <Spinner color="white" />
+            </div>
+        );
+    }
 
     return (
-        <>
-            {!isLoading ? (
-                <>
-                    {isTestStarted && !showResults && (
-                        <div className={styles.wrap}>
-                            <OnceTwiceProgress once={trainerProgress.once} twice={trainerProgress.twice} />
-                            {renderDescription()}
-                            <div onClick={handleStartToggle} className={styles.btn}>
-                                <button>Start</button>
-                            </div>
-                        </div>
-                    )}
-                    {!isTestStarted && !showResults && (
-                        <TrainerTest result={setShowResults} onExitClick={setIsTestStarted} />
-                    )}
-                    {showResults && <Results exitResult={handleExitResult} typeOftest={'Trainer'} />}
-                </>
-            ) : (
-                <div className={styles.spinner}>
-                    <Spinner color="white" />
+        <Suspense fallback={<Spinner color="white" />}>
+            {!isTestStarted && !showResults && (
+                <TrainerTest result={setShowResults} onExitClick={setIsTestStarted} />
+            )}
+            {showResults && <Results exitResult={handleExitResult} typeOftest={'Trainer'} />}
+            {isTestStarted && !showResults && (
+                <div className={styles.wrap}>
+                    <OnceTwiceProgress once={trainerProgress.once} twice={trainerProgress.twice} />
+                    {descriptionContent}
+                    <div onClick={handleStartToggle} className={styles.btn}>
+                        <button>Start</button>
+                    </div>
                 </div>
             )}
-        </>
+        </Suspense>
     );
 }
