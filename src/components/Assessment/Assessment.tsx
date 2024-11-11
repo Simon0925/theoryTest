@@ -2,8 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './Assessment.module.scss';
 import Spinner from '../../UI/Spinner/Spinner';
 import HeaderForTest from '../HeaderForTest/HeaderForTest';
-import QuestionContent from '../QuestionComponent/QuestionContent';
-import VariantsOfAnswers from '../VariantsOfAnswers/VariantsOfAnswers';
 import FooterAssessment from '../FooterAssessment/FooterAssessment';
 import Modal from '../Modal/Modal';
 import ReviewModal from '../ReviewModal/ReviewModal';
@@ -14,6 +12,7 @@ import { updateCurrentPage, updatevisibleQuestions } from '../../store/currentDa
 
 import  {assessmentData}from './service/assessmentData';
 import useUserId from '../../hooks/useUserId';
+import QuestionWithAnswers from '../QuestionWithAnswers/QuestionWithAnswers';
 
 
 
@@ -70,8 +69,10 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
 
 
   const fetchAssessmentData = useCallback(() => {
-    if (questions.length <= 0) {
-      assessmentData(dispatch,userId);
+    if(userId){
+      if (questions.length <= 0) {
+        assessmentData(dispatch,userId);
+      }
     }
   }, [questions.length]);
 
@@ -121,18 +122,19 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
 
   const goToResults = useCallback(() => result(true), [result]);
 
+  let test = true
+
   return (
     <div
       style={ {background:color.TestBackground}}
      className={styles.wrap}
      >
       {isLoading && (visibleQuestions?.length ?? 0) <= 0 ? (
-        <div style={{ position: 'absolute', top: '40%', left: '50%' }}>
+        <div className={styles.spinner} style={{ position: 'absolute', top: '40%' }}>
           <Spinner color="black" />
         </div>
       ) : (
         <>
-          <div>
             <HeaderForTest
               mockTest={true}
               onExitClick={() => onClose(false)}
@@ -141,33 +143,22 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
               typeOftest={typeOftest}
             />
             {!pause && visibleQuestions ? (
-              <div 
-              style={{backgroundColor:color.QuestionContentBackground}}
-              className={styles['question-wrap']}
-              >
-                <QuestionContent
-                  typeOftest={typeOftest}
-                  question={visibleQuestions[currentPage]}
-                />
-              </div>
+              <QuestionWithAnswers
+              typeOftest={typeOftest}
+              question={visibleQuestions[currentPage]}
+            />
+             
             ) : (
               <div className={styles.pausedMessage}>Test paused</div>
             )}
-          </div>
-          <div className={styles.container}>
-            {!pause && visibleQuestions ? (
-              <VariantsOfAnswers
-                typeOftest={typeOftest}
-                question={visibleQuestions[currentPage]}
-              />
-            ) : null}
+      
             <FooterAssessment
               review={setReviewModal}
               getTime={setTime}
               statusPause={setPause}
               typeOftest={typeOftest}
             />
-          </div>
+          
         </>
       )}
 

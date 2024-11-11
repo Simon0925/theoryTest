@@ -1,6 +1,15 @@
 .wrap{
     position: relative;
     height: 93vh;
+    overflow: scroll;
+    .container{
+        padding: 1rem;
+
+        .options{
+            padding-bottom: 3rem;
+        }
+    }
+
     .correct{
         padding: 1rem;
         display: flex;
@@ -14,12 +23,10 @@
         padding: 1rem;
         font-weight: bold;
     }
-    .options{
-        padding: 1rem;
-    }
+   
 
     .btn{
-        position: absolute;
+        position: fixed;
         bottom: 0;
         width: 100%;
         button{
@@ -35,7 +42,7 @@
     }
 
     .btnIsLoading{
-        position: absolute;
+        position: fixed;
         bottom: 0;
         width: 100%;
         button{

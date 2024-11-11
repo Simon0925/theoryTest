@@ -1,11 +1,18 @@
 .wrap{
     min-width: 100%;
     min-height: 93vh;
+    max-width: 100vw;
     background-color: #0096CE;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    .spinner{
+        min-width: 100%;
+        max-width: 100vw;
+    }
+    
     .question-wrap{
         background-color: #FFFFFF;
         padding: 1.5rem;
@@ -18,6 +25,7 @@
     }
     .pausedMessage{
         width: 100%;
+        max-width: 100vw;
         height: 60vh;
         display: flex;
         align-items: center;

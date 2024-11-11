@@ -8,6 +8,7 @@ import { RootState } from '../../store/store';
 import MockTest from '../../pages/MockTest/MockTest';
 import Trainer from '../../pages/Trainer/Trainer';
 import HPT from '../../pages/HPT/HPT';
+import NewPassword from '../../pages/NewPassword/NewPassword';
 
 export default function Main() {
     const color = useSelector((state: RootState) => state.color);
@@ -20,6 +21,7 @@ export default function Main() {
                     <Route path="/mock-test" element={<MockTest />} />
                     <Route path="/trainer" element={<Trainer />} />
                     <Route path="/HPT" element={<HPT />} />
+                    <Route path="/new-password" element={<NewPassword />} />
                     <Route path="*" element={<Error />} />
                 </Routes>
             </div>

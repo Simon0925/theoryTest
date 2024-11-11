@@ -26,3 +26,13 @@
         }
     }
 }
+@media (max-width: 932px) and  (max-height: 430px){
+    .wrap {
+        .practiceQuestionManager{
+            display: none;
+        }
+        .PracticeQuestionsManagerMobile{
+            display: block;
+        }
+    }
+}

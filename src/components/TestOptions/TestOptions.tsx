@@ -56,21 +56,20 @@ export default function TestOptions({ practiceTest }: PracticeSettingsProps) {
   return (
     <div className={styles.wrap}>
       <div className={styles.correct} style={correctAnswerStyle}>
-        <span>Show correct answer instantly</span>
-        <Toggle toggle={setIsChecked} />
+          <span>Show correct answer instantly</span>
+          <Toggle toggle={setIsChecked} />
+        </div>
+        <div className={styles.title}>
+          <span style={titleStyle}>
+            When this is OFF, you won't see correct answers until the test ends
+          </span>
+        </div>
+      <div className={styles.container}>
+        <div className={styles.options}>
+          <PracticeTools />
+          <NumberOfQuestions />
+        </div>
       </div>
-
-      <div className={styles.title}>
-        <span style={titleStyle}>
-          When this is OFF, you won't see correct answers until the test ends
-        </span>
-      </div>
-
-      <div className={styles.options}>
-        <PracticeTools />
-        <NumberOfQuestions />
-      </div>
-
       <div className={!isLoading && questions.length > 0 ? styles.btn : styles.btnIsLoading}>
         <button onClick={start} disabled={isLoading || questions.length === 0}>
           {isLoading ? 'Loading...' : 'Start'}

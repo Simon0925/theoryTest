@@ -5,6 +5,8 @@
     display: flex;
     flex-wrap: wrap;
     box-sizing: border-box;
+    position: relative;
+    
     .marker{
         top: -20px;
         left: 0px;
@@ -22,6 +24,7 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
+        padding-left: 1rem;
         .question{
             font-size: 18px;
             font-weight: 600;

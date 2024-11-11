@@ -1,14 +1,13 @@
 import { useCallback, useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import HeaderForTest from "../HeaderForTest/HeaderForTest";
-import QuestionContent from "../QuestionComponent/QuestionContent";
-import VariantsOfAnswers from "../VariantsOfAnswers/VariantsOfAnswers";
 import FooterTrainerTest from "../FooterTrainerTest/FooterTrainerTest";
 import Spinner from "../../UI/Spinner/Spinner";
 import styles from "./TrainerTest.module.scss";
 import useUserId from "../../hooks/useUserId";
 import { getData } from "./service/getData";
 import { RootState } from "../../store/store";
+import QuestionWithAnswers from "../QuestionWithAnswers/QuestionWithAnswers";
 
 interface TrainerTestProps {
     onExitClick: (exit: boolean) => void;
@@ -36,7 +35,6 @@ export default function TrainerTest({ onExitClick, result }: TrainerTestProps) {
 
     const renderContent = () => (
         <div className={styles.wrap}>
-            <div>
                 <HeaderForTest 
                     finish="Results"
                     onExitClick={onExitClick}
@@ -44,20 +42,11 @@ export default function TrainerTest({ onExitClick, result }: TrainerTestProps) {
                     result={result}
                     typeOftest="Trainer"
                 />
-                <div className={styles['question-wrap']}>
-                    <QuestionContent 
-                        typeOftest="Trainer" 
-                        question={questions[currentPage]}                            
-                    />
-                </div>
-            </div>
-            <div className={styles.container}>
-                <VariantsOfAnswers
-                    typeOftest="Trainer" 
-                    question={questions[currentPage]}                    
+               <QuestionWithAnswers
+                typeOftest="Trainer" 
+                question={questions[currentPage]}  
                 />
                 <FooterTrainerTest result={result} />
-            </div>
         </div>
     );
 

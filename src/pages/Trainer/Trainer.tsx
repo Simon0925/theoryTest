@@ -75,10 +75,12 @@ export default function Trainer() {
             {showResults && <Results exitResult={handleExitResult} typeOftest={'Trainer'} />}
             {isTestStarted && !showResults && (
                 <div className={styles.wrap}>
-                    <OnceTwiceProgress once={trainerProgress.once} twice={trainerProgress.twice} />
-                    {descriptionContent}
-                    <div onClick={handleStartToggle} className={styles.btn}>
-                        <button>Start</button>
+                    <div className={styles.container}>
+                        <OnceTwiceProgress once={trainerProgress.once} twice={trainerProgress.twice} />
+                        {descriptionContent}
+                        <div onClick={handleStartToggle} className={styles.btn}>
+                            <button>Start</button>
+                        </div>
                     </div>
                 </div>
             )}

@@ -20,7 +20,7 @@ export default function FooterTrainerTest({result}:FooterTrainerTestProps) {
     const color = useSelector((state: RootState) => state.color);
 
 
-    const { questions, currentPage, isLoading, answeredVariants,results} = useSelector(
+    const { questions, currentPage, answeredVariants,results} = useSelector(
         (state: RootState) => state.currentData.testsData["Trainer"],  
         shallowEqual
     );
