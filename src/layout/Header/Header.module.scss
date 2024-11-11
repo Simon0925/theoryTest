@@ -75,6 +75,10 @@
         .burgerMenu{
             display: none;
         }
+
+        .pageName{
+            display: none;
+        }
     }
 }
 
@@ -99,10 +103,14 @@
         .burgerMenu{
             position: absolute;
             left: 0;
+            top: -4px;
             display: block;
         }
 
         .titleText{
+            display: none;
+        }
+        .pageName{
             width: 100%;
             display: flex;
             text-align: center;
@@ -115,5 +123,6 @@
         position: absolute;
         left: 0;
         display: block;
+        top: -9px;
     }
 }

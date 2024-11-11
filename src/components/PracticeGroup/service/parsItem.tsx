@@ -13,66 +13,22 @@ import ScooterSvg from "../../../SVG/ScooterSvg/ScooterSvg";
 import SteeringWheelSvg from "../../../SVG/SteeringWheelSvg/SteeringWheelSvg";
 import TrafficSignSvg from "../../../SVG/TrafficSignSvg/TrafficSignSvg";
 
-interface ParsItem {
-    name: string;
-    svg: JSX.Element;
-  }
 
-export const pars: ParsItem[] = [
-    {
-      name: "Alertness",
-      svg: <AlertSvg />,
-    },
-    {
-      name: "Attitude",
-      svg: <AttitudeSvg />,
-    },
-    {
-      name: "Safety and your vehicle",
-      svg: <CarWheelSvg />,
-    },
-    {
-      name: "Safety margins",
-      svg: <RoadSvg />,
-    },
-    {
-      name: "Hazard awareness",
-      svg: <BikeSvg />,
-    },
-    {
-      name: "Vulnerable road users",
-      svg: <PedestrianSvg />,
-    },
-    {
-      name: "Other types of vehicle",
-      svg: <ScooterSvg />,
-    },
-    {
-      name: "Vehicle handling",
-      svg: <SteeringWheelSvg />,
-    },
-    {
-      name: "Motorway rules",
-      svg: <MotorwaySvg />,
-    },
-    {
-      name: "Rules of the road",
-      svg: <RulesSvg />,
-    },
-    {
-      name: "Road and traffic signs",
-      svg: <TrafficSignSvg />,
-    },
-    {
-      name: "Essential documents",
-      svg: <DocumentsSvg />,
-    },
-    {
-      name: "Incidents, accidents and emergencies",
-      svg: <AccidentSvg />,
-    },
-    {
-      name: "Vehicle loading",
-      svg: <CarSvg />,
-    },
-  ];
+  const parsMap: { [key: string]: JSX.Element } = {
+    "Alertness": <AlertSvg />,
+    "Attitude": <AttitudeSvg />,
+    "Safety and your vehicle": <CarWheelSvg />,
+    "Safety margins": <RoadSvg />,
+    "Hazard awareness": <BikeSvg />,
+    "Vulnerable road users": <PedestrianSvg />,
+    "Other types of vehicle": <ScooterSvg />,
+    "Vehicle handling": <SteeringWheelSvg />,
+    "Motorway rules": <MotorwaySvg />,
+    "Rules of the road": <RulesSvg />,
+    "Road and traffic signs": <TrafficSignSvg />,
+    "Essential documents": <DocumentsSvg />,
+    "Incidents, accidents and emergencies": <AccidentSvg />,
+    "Vehicle loading": <CarSvg />,
+  };
+
+  export default parsMap

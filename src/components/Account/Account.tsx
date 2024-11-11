@@ -19,8 +19,8 @@ export default function Account({back}:AccountProps){
 
     const isLogin = useSelector((state: RootState) => state.auth.isLogin);
     const name = useSelector((state: RootState) => state.auth.userName);
+    const { headerColors, textColor} = useSelector((state: RootState) => state.color);
 
-  
 
     const logOut = () =>{
         localStorage.setItem("accessToken", "");
@@ -38,14 +38,13 @@ export default function Account({back}:AccountProps){
                     <div className={styles.logOut}>
                         <div className={styles.btnlogOut}>
                             <h1 className={styles.title}>Wellcome {name}</h1>
-                            <button onClick={logOut} >Log Out</button>
+                            <button style={{background:headerColors,color:textColor}} onClick={logOut} >Log Out</button>
                         </div>
                     </div>
                     :
                     <div className={styles.auth}>
                         <Auth />
                     </div>}
-                    
             </div>
         </>
     )

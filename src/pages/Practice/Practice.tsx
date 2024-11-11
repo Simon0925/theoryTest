@@ -27,7 +27,7 @@ export default function Practice() {
       setTest(false);
       dispatch(resetPracticeState());
     }
-  }, [result, dispatch]);
+  }, [result, auth.isLogin]);
 
   if (!auth.isLogin && !auth.loading) return <GoToLogin />;
   if (auth.loading || !auth.isLogin) return <div className={styles.spinner}><Spinner color="white" /></div>;

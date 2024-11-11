@@ -3,9 +3,10 @@ import styles from './Login.module.scss';
 import dataTosend from './service/dataTosend';
 import { FormErrors } from './interface';
 import FormValues from './interface';
-import { login } from '../../store/auth/auth';
-import { useDispatch } from 'react-redux';
+import { isLoading, login } from '../../store/auth/auth';
+import { useDispatch, useSelector } from 'react-redux';
 import ResetPassword from '../ResetPassword/ResetPassword';
+import { RootState } from '../../store/store';
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -18,8 +19,12 @@ export default function Login() {
     const [serverMessage, setServerMessage] = useState<string | null>(null);
     const [reset, setReset] = useState(false);
 
+    const { textColor,hoverColor} = useSelector((state: RootState) => state.color);
+
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        dispatch(isLoading(true));
         try {
             const response = await dataTosend(formValues);
 
@@ -35,11 +40,17 @@ export default function Login() {
                 if (token) {
                     localStorage.setItem("accessToken", token);
                 }
-                dispatch(login({ login: true, id: response.id, userName: response.userName }));
+                dispatch(login({
+                    login: true,
+                    id: response.id,   
+                    userName: response.userName
+                  }));
+                dispatch(isLoading(false));
             }
         } catch (error) {
             console.error("Server error:", error);
             setServerMessage("An error occurred while logging in. Please try again later.");
+            dispatch(isLoading(false));
         }
     };
 
@@ -53,47 +64,49 @@ export default function Login() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.form}>
-            {!reset && (
-                <>
-                    {serverMessage && <p className={styles.serverMessage}>{serverMessage}</p>}
-                    <div className={styles.formInput}>
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Enter your email"
-                            autoComplete="email"
-                            value={formValues.email}
-                            onChange={handleChange}
-                        />
-                        {errors.email && <p className={styles.error}>{errors.email}</p>}
-                    </div>
-                    <div className={styles.formInput}>
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Enter your password"
-                            autoComplete="new-password"
-                            value={formValues.password}
-                            onChange={handleChange}
-                        />
-                        {errors.password && <p className={styles.error}>{errors.password}</p>}
-                    </div>
-                    <p className={styles.reset} onClick={() => setReset(true)}>
-                        Forgot Password?
-                    </p>
-                    <button type="submit" className={styles.submitButton}>
-                        Login
-                    </button>
-                </>
-            )}
-            {reset && (
+        <>
+        {!reset && (
+        <>
+            <form onSubmit={handleSubmit} className={styles.form}> 
+                {serverMessage && <p style={{color:textColor}} className={styles.serverMessage}>{serverMessage}</p>}
+                <div style={{color:textColor}} className={styles.formInput}>
+                    <label  htmlFor="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autoComplete="email"
+                        value={formValues.email}
+                        onChange={handleChange}
+                    />
+                    {errors.email && <p  style={{color:textColor}} className={styles.error}>{errors.email}</p>}
+                </div>
+                <div style={{color:textColor}} className={styles.formInput}>
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autoComplete="new-password"
+                        value={formValues.password}
+                        onChange={handleChange}
+                    />
+                    {errors.password && <p  style={{color:textColor}} className={styles.error}>{errors.password}</p>}
+                </div>
+                <p style={{color:textColor}} className={styles.reset} onClick={() => setReset(true)}>
+                    Forgot Password?
+                </p>
+                <button style={{background:hoverColor,color:textColor}} type="submit" className={styles.submitButton}>
+                    Login
+                </button>
+            </form>
+        </>
+         )}
+        {reset && (
                 <ResetPassword reset={setReset} />
             )}
-        </form>
+        </>
     );
 }

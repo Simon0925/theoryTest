@@ -31,11 +31,12 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
           console.error(`Test ID "${typeOftest}" does not exist in state.`);
       }
       exitResult(false)
+      dispatch(resetState({ testId: typeOftest }));
     }, [dispatch,  typeOftest]);
     
     const handleModal =  () => {
         setShowExitModal(!showExitModal);
-      };
+    };
       
 
     return(

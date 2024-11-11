@@ -16,56 +16,34 @@
             font-weight: 600;
             display: flex;
             justify-content: center;
-            border-top-left-radius: 0.625rem;
-            background: #0078AB;
+            border-top-left-radius: 0.25rem;
             border: none;
             border-bottom:  2px solid #1C85B9;
             cursor: pointer;
         }
 
-        .loginActive{
-            width: 100%;
-            padding: 1rem;
-            color: white;
-            font-weight: 600;
-            display: flex;
-            justify-content: center;
-            border-top-left-radius: 0.625rem;
-            background-color: #1C85B9;
-            cursor: pointer;
-            border: none;
-            border-bottom:  2px solid #1C85B9;
-
-        }
 
         .registration{
             width: 100%;
             padding: 1rem;
-            color: white;
             font-weight: 600;
             display: flex;
             justify-content: center;
-            border-top-right-radius: 0.625rem;
+            border-top-right-radius: 0.25rem;
             background: #0078AB;
             cursor: pointer;
             border: none;
-            border-bottom:  2px solid #1C85B9;
-
         }
 
         .registrationActive{
             width: 100%;
             padding: 1rem;
-            color: white;
             font-weight: 600;
             display: flex;
             justify-content: center;
-            background-color: #1C85B9;
             border-top-right-radius: 0.625rem;
             cursor: pointer;
             border: none;
-            border-bottom:  2px solid #1C85B9;
-
         }
     }
 }

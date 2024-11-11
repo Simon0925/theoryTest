@@ -19,6 +19,7 @@ const Par = ({ name, quantity, percent, svg, id }: ParProps) => {
     const practice = useSelector((state: RootState) => state.practice, shallowEqual);
     const color = useSelector((state: RootState) => state.color, shallowEqual);
 
+
     const [isSelected, setIsSelected] = useState(false);
 
     const active = useMemo(() => practice.question.some((element) => element.id === id), [practice.question, id]);

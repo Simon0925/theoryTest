@@ -3,6 +3,8 @@ import styles from './Registration.module.scss';
 import { FormValues, FormErrors } from './interface';
 import validateForm from './service/validateForm';
 import dataTosend from './service/dataTosend';
+import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
 
 export default function Registration() {
     const [formValues, setFormValues] = useState<FormValues>({
@@ -13,6 +15,9 @@ export default function Registration() {
     });
     const [errors, setErrors] = useState<FormErrors>({});
     const [serverMessage, setServerMessage] = useState<string | null>(null); 
+
+    const { textColor,hoverColor} = useSelector((state: RootState) => state.color);
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -58,9 +63,9 @@ export default function Registration() {
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
           
-            {serverMessage && <p className={styles.serverMessage}>{serverMessage}</p>}
+            {serverMessage && <p style={{color:textColor}} className={styles.serverMessage}>{serverMessage}</p>}
 
-            <div className={styles.formInput}>
+            <div style={{color:textColor}}  className={styles.formInput}>
                 <label htmlFor="name">Name</label>
                 <input
                     type="text"
@@ -71,9 +76,9 @@ export default function Registration() {
                     value={formValues.name}
                     onChange={handleChange}
                 />
-                {errors.name && <p className={styles.error}>{errors.name}</p>}
+                {errors.name && <p style={{color:textColor}} className={styles.error}>{errors.name}</p>}
             </div>
-            <div className={styles.formInput}>
+            <div style={{color:textColor}}  className={styles.formInput}>
                 <label htmlFor="email">Email</label>
                 <input
                     type="email"
@@ -84,9 +89,9 @@ export default function Registration() {
                     value={formValues.email}
                     onChange={handleChange}
                 />
-                {errors.email && <p className={styles.error}>{errors.email}</p>}
+                {errors.email && <p style={{color:textColor}} className={styles.error}>{errors.email}</p>}
             </div>
-            <div className={styles.formInput}>
+            <div style={{color:textColor}}  className={styles.formInput}>
                 <label htmlFor="password">Password</label>
                 <input
                     type="password"
@@ -97,9 +102,9 @@ export default function Registration() {
                     value={formValues.password}
                     onChange={handleChange}
                 />
-                {errors.password && <p className={styles.error}>{errors.password}</p>}
+                {errors.password && <p style={{color:textColor}} className={styles.error}>{errors.password}</p>}
             </div>
-            <div className={styles.formInput}>
+            <div style={{color:textColor}}  className={styles.formInput}>
                 <label htmlFor="confirmPassword">Repeat Password</label>
                 <input
                     type="password"
@@ -110,9 +115,9 @@ export default function Registration() {
                     value={formValues.confirmPassword}
                     onChange={handleChange}
                 />
-                {errors.confirmPassword && <p className={styles.error}>{errors.confirmPassword}</p>}
+                {errors.confirmPassword && <p style={{color:textColor}} className={styles.error}>{errors.confirmPassword}</p>}
             </div>
-            <button type="submit" className={styles.submitButton}>
+            <button style={{background:hoverColor,color:textColor}} type="submit" className={styles.submitButton}>
                 Register
             </button>
         </form>

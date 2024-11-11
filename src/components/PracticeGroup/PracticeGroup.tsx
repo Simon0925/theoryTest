@@ -5,7 +5,7 @@ import Flag from "../Flag/Flag";
 import Spinner from "../../UI/Spinner/Spinner";
 import Par from "../Par/Par";
 import { useEffect, useState } from "react";
-import { pars } from "./service/parsItem";
+import parsMap from "./service/parsItem";
 
 
 
@@ -25,7 +25,6 @@ export default function PracticeGroup () {
     const [loading, setLoading] = useState(true);
     const [questionsGroup, setQuestionsGroup] = useState<QuestionGroup[]>([]);
     const color = useSelector((state: RootState) => state.color);
-
     const userId = useUserId();
 
 
@@ -63,8 +62,7 @@ export default function PracticeGroup () {
                   </div> 
                 ) : (
                   questionsGroup.map((elem) => {
-                    const matchingPars = pars.find((par) => par.name === elem.name);
-                    const svg = matchingPars ? matchingPars.svg : null;
+                    const svg = parsMap[elem.name] || null; 
                     return (
                       <Par
                         key={elem.id}

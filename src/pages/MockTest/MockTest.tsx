@@ -44,7 +44,7 @@ export default function MockTest() {
     if (userId && !data && results.length === 0) {
       fetchStatistics();
     }
-  }, [data, results, userId, fetchStatistics]);
+  }, [results, userId]);
 
   useEffect(() => {
     if (result) {
