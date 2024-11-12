@@ -1,6 +1,6 @@
 .wrap{
-    height: 93vh;
-    padding: 4rem .5rem;
+    height: 100vh;
+    padding: 4rem .5rem 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
@@ -60,8 +60,8 @@
 }
 @media (max-width: 800px) and (max-height: 844px) {
     .wrap {
-        height: 84vh;
-        padding: 4rem .5rem;
+        height: 91vh;
+        padding: 4rem 0.5rem 1rem;
         display: flex;
         flex-direction: column;
         gap: 0.1rem;
