@@ -14,5 +14,100 @@
             }
         }
     }
+
+    .mobileContainer{
+        display: none;
+    }
     
+}
+
+@media (max-width: 800px) {
+    .wrap{
+
+        .container{
+            display: none;
+        }
+        .mobileContainer{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem;
+            height: 5vh;
+
+            .flagBtn{
+                border: none;
+                outline: none;
+                color: white;
+                background-color: rgb(0, 120, 171);
+            }
+            .explanationBtn{
+                border: none;
+                outline: none;
+                color: white;
+                background-color: rgb(0, 120, 171);
+                font-size: 24px;
+                font-weight: 600;
+            }
+            .nextBtn{
+                border: none;
+                outline: none;
+                display: flex;
+                align-items: center;
+                color: white;
+                background-color: rgb(0, 120, 171);
+                font-size: 18px;
+                font-weight: 500;
+
+                svg{
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1024px) and  (max-height: 600px){
+    .wrap{
+
+        .container{
+            display: none;
+        }
+
+        .mobileContainer{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem;
+            height: 5vh;
+
+            .flagBtn{
+                border: none;
+                outline: none;
+                color: white;
+                background-color: rgb(0, 120, 171);
+            }
+            .explanationBtn{
+                border: none;
+                outline: none;
+                color: white;
+                background-color: rgb(0, 120, 171);
+                font-size: 24px;
+                font-weight: 600;
+            }
+            .nextBtn{
+                border: none;
+                outline: none;
+                display: flex;
+                align-items: center;
+                color: white;
+                background-color: rgb(0, 120, 171);
+                font-size: 18px;
+                font-weight: 500;
+
+                svg{
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
 }

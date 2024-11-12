@@ -6,6 +6,8 @@ import { updateQuestionsAndResults } from '../../service/serviceFooter/updateQue
 import { setCurrentQuestions, updateCurrentPage, updateResult } from '../../store/currentData/currentData.slice';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import FlagSvg from '../../SVG/FlagSvg/FlagSvg';
+import ArrowPrevSmallSvg from '../../SVG/ArrowPrevSmallSvg/ArrowPrevSmallSvg';
 
 interface FooterTrainerTestProps {
     result:(e:boolean) => void
@@ -82,6 +84,19 @@ export default function FooterTrainerTest({result}:FooterTrainerTestProps) {
                     svgColor={false}
                 />
             </div>
+            <div className={styles.mobileContainer}>
+            <button onClick={changeFlag} className={styles.flagBtn}>
+                <FlagSvg color={questions[currentPage].flag ? '#F9921A' : 'white'} width="24px" height="24px" />
+            </button>
+            <button onClick={explanationModal} className={styles.explanationBtn}>
+                ?
+            </button>
+            <button onClick={next} className={styles.nextBtn}>
+                {isAnswerSelected ? 'Next >' : 'Skip'} <ArrowPrevSmallSvg color="white" width="30px" height="30px" />
+            </button>
+            </div>
+           
+
             {isExplanationVisible === true && (
                         <Modal 
                             close={() => setIsExplanationVisible(false)} 

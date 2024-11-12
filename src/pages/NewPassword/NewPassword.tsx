@@ -1,4 +1,3 @@
-// NewPassword.tsx
 import { useLocation } from 'react-router-dom';
 import styles from './NewPassword.module.scss';
 import { useEffect, useState } from 'react';
@@ -17,20 +16,17 @@ export default function NewPassword() {
         const queryParams = new URLSearchParams(location.search);
         const tokenFromURL = queryParams.get('token');
         setToken(tokenFromURL);
-        console.log("Extracted token:", tokenFromURL);
     }, [location]);
 
     const fetchData = async () => {
         if (token) {
             try {
                 const response = await tokenVerification(token);
-
                 if(response.isValid){
                     setTokenIsValid(response.isValid)
                 }
-                console.log("Token verification response:", response);
             } catch (err) {
-                setError("Failed to verify token. Please try again.");
+                setError("The link is no longer valid");
                 console.error(err);
             }
         }
@@ -45,7 +41,7 @@ export default function NewPassword() {
     return (
         <div className={styles.wrap}>
             {error && <p className={styles.error}>{error}</p>}
-            <NewPasswordForm token={token} />
+            {tokenIsValid && !error && <NewPasswordForm token={token} />}
         </div>
     );
 }

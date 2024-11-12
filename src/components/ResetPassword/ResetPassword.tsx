@@ -61,6 +61,7 @@ export default function ResetPassword({ reset }: ResetPasswordProps) {
                     Reset
                 </button>
             </form>
+            <div className={styles.btn}>
             <button
                 style={{ background: hoverColor, color: textColor }}
                 type="button"
@@ -69,6 +70,7 @@ export default function ResetPassword({ reset }: ResetPasswordProps) {
             >
                 Back to Login
             </button>
+            </div>
         </div>
     );
 }

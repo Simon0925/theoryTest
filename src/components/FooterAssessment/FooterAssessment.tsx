@@ -108,17 +108,17 @@ export default function FooterAssessment({
       </div>
       <div className={styles.mobileContainer}>
         <button onClick={previous} className={styles.prevBtn}>
-          <ArrowPrevSmallSvg color="white" width="35px" height="35px" />
+          <ArrowPrevSmallSvg color="white" width="30px" height="30px" />
         </button>
         <button onClick={changeFlag} className={styles.flagBtn}>
-          <FlagSvg color={visibleQuestions?.[currentPage]?.flag ? '#F9921A' : 'white'} width="30px" height="30px" />
+          <FlagSvg color={visibleQuestions?.[currentPage]?.flag ? '#F9921A' : 'white'} width="24px" height="24px" />
         </button>
         <TimerAssessment time={setTime} pause={pause} />
         <button onClick={startPause} className={styles.btnPause}>
           {pause ? <PlayVectorSvg /> : <PauseSvg />}
         </button>
         <button onClick={next} className={styles.nextBtn}>
-          <ArrowPrevSmallSvg color="white" width="35px" height="35px" />
+          <ArrowPrevSmallSvg color="white" width="30px" height="30px" />
         </button>
       </div>
     </div>

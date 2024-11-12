@@ -19,6 +19,13 @@
         }
     }
 
+    .groupName{
+        font-size: 20px;
+        color: white;
+        display: flex;
+        gap: 0.4rem;
+    }
+
     .exitBtn{
         display: block;
         background-color: #A73530;
@@ -60,7 +67,7 @@
 
 @media (max-width: 800px) {
     .wrap{
-
+        height: 10vh;
         .count-questions{
             
             .questions{
@@ -68,6 +75,7 @@
             }
             .questionsM{
                 display: block;
+
             }
         }
         .exitBtn{
@@ -102,6 +110,7 @@
 
 @media (max-width: 932px) and  (max-height: 430px){
     .wrap{
+        height: 10vh;
 
         .count-questions{
             
@@ -144,6 +153,7 @@
 
 @media (max-width: 1024px) and  (max-height: 600px){
     .wrap{
+        height: 10vh;
 
         .count-questions{
             

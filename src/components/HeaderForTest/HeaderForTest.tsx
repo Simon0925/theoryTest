@@ -76,7 +76,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
 
   const questionCounter = useMemo(() => {
     if (trainerTest) {
-      return <div className={styles['count-questions']}>{getName(questions[currentPage].group)}</div>;
+      return <div className={styles['groupName']}>{getName(questions[currentPage].group)}</div>;
     }
     return (
       <div style={{ color: color.HeaderPracticeTestQuestionColors }} className={styles['count-questions']}>

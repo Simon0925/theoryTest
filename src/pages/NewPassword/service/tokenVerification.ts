@@ -1,7 +1,6 @@
 import hostname from "../../../config/hostname";
 
 async function tokenVerification(token: string) {
-    console.log("tokenVerification:",token)
     try {
         const response = await fetch(`${hostname}/api/check-reset-token`, {
             method: 'POST',  
