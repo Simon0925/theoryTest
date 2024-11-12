@@ -4,6 +4,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 999;
     color: var(--text-color);
     background-color: var(--header-bg-color);
     display: flex;
