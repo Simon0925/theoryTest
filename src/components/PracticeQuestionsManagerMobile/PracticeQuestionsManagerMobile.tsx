@@ -24,9 +24,7 @@ export default function PracticeQuestionsManagerMobile({ practiceTest }: Practic
         <div className={styles.wrap}>
             {visible && (
                 <>
-                    <div className={styles.group}>
-                        <PracticeGroup />
-                    </div>
+                    <PracticeGroup />
                     <button onClick={next} className={styles.btn}>
                         Next
                     </button>
