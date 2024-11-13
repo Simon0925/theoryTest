@@ -40,8 +40,5 @@
   "main": "index.js",
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "engines": {
-    "node": "18.x"
-  }
+  "license": "ISC"
 }
