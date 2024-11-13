@@ -1,7 +1,10 @@
 .wrap{
     position: relative;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 0fr; 
+    height: 100vh;
+    box-sizing: border-box;
+    overflow: auto;
     .btn{
         position:absolute ;
         bottom: 0;
