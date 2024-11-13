@@ -1,33 +1,35 @@
 .wrap{
-
     height: 100vh;
     overflow: auto;
     display: flex;
     flex-direction: column;
-    .btn{
-        margin: 0 auto;
-        width: 100%;
-        position: absolute;
-        height: 50px;
-        bottom: 0;
-        margin-top: auto;
-        border: none;
-        outline: none;
-        background-color: #00be5d;
-        color: #fff;
-        font-size: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .buttonContainer{
+            margin-bottom: auto; 
+             width: 100%;
+        .btn{
+            width: 100%;
+            position: absolute;
+            height: 50px;
+            bottom: 0;
+            border: none;
+            outline: none;
+            background-color: #00be5d;
+            color: #fff;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        // .btnIsLoading{
+        //     height: 50px;
+        //     // flex: 1;
+        //     width: 100%;
+        //     border: none;
+        //     outline: none;
+        //     background-color: #8cdab2;
+        //     color: white;
+        //     font-size: 24px;
+        // }
     }
-    .btnIsLoading{
-        height: 50px;
-        // flex: 1;
-        width: 100%;
-        border: none;
-        outline: none;
-        background-color: #8cdab2;
-        color: white;
-        font-size: 24px;
-    }
+    
 }
