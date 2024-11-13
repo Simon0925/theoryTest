@@ -1,41 +1,24 @@
 .wrap{
     position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 93vh;
-    margin-top: 7vh;
-    overflow: auto;
+    margin-top: 60px;
     .btn{
-        // position:absolute ;
-        // bottom: 0;
-        flex: 1;
         width: 100%;
+        position: fixed;
+        height: 50px;
+        bottom: 0;
         border: none;
         outline: none;
-        background-color: #00BE5D;
-        color: white;
-        // height: 9vh;
+        background-color: #00be5d;
+        color: #fff;
         font-size: 24px;
     }
     .btnIsLoading{
-        position:absolute ;
-        bottom: 0;
+        height: 50px;
         width: 100%;
         border: none;
         outline: none;
-        background-color: #00BE5D;
+        background-color: #8cdab2;
         color: white;
-        height: 9vh;
         font-size: 24px;
-        button{
-            cursor: pointer;
-            background-color: #8cdab2;
-            border: none;
-            outline: none;
-            width: 100%;
-            color: white;
-            height: 9vh;
-            font-size: 24px;
-        }
     }
 }
