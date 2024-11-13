@@ -1,11 +1,12 @@
 .wrap{
     position: relative;
-    height: 93vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: auto;
     .btn{
-        // position: ;
-        // bottom: 0;
+        position:fixed ;
+        bottom: 0;
         width: 100%;
         border: none;
         outline: none;

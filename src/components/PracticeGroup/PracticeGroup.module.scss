@@ -9,22 +9,24 @@
 
 @media (max-width: 932px) and (max-height: 430px) {
     .wrap {
-        height: 84vh;
-        padding: 0;
+        height: 86vh;
+        margin-top: 3rem;
+        padding: 1rem .5rem;
         display: flex;
         flex-direction: column;
         gap: 0.1rem;
-        overflow-y: auto; 
+        // overflow-y: auto; 
     }
 }
 
 @media (max-width: 800px) and (max-height: 1024px) {
     .wrap {
-        height: 84vh;
-        padding: 0;
+        height: 86vh;
+        margin-top: 3rem;
+        padding: 1rem .5rem;
         display: flex;
         flex-direction: column;
         gap: 0.1rem;
-        overflow-y: auto; 
+        // overflow-y: auto; 
     }
 }
