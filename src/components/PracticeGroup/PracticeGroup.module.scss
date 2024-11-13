@@ -1,5 +1,5 @@
 .wrap{
-    height: 100vh;
+    // height: 100vh;
     padding: 4rem .5rem 1rem;
     display: flex;
     flex: 1;
@@ -12,23 +12,24 @@
 
 @media (max-width: 800px) and (max-height: 1024px) {
     .wrap {
-        height: 90vh;
-        padding: 1rem .5rem 2rem;
+        // flex: 9;
+        margin-top: 60px;
+        padding: 1rem .5rem 4rem;
     }
 }
-@media  (max-height: 915px) {
-    .wrap {
-        height: 88vh;
-    }
-}
+// @media   (max-height: 915px) {
+//     .wrap {
+//         height: 88vh;
+//     }
+// }
 
-@media  (max-height: 745px) {
-    .wrap {
-        height: 85vh;
-    }
-}
-@media  (max-height: 478px) {
-    .wrap {
-        height: 75vh;
-    }
-}
+// @media  (max-height: 745px) {
+//     .wrap {
+//         height: 85vh;
+//     }
+// }
+// @media  (max-height: 478px) {
+//     .wrap {
+//         height: 75vh;
+//     }
+// }
