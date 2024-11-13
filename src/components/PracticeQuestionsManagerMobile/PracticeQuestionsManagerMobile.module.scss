@@ -1,6 +1,8 @@
 .wrap{
     position: relative;
     height: 93vh;
+    display: flex;
+    flex-direction: column;
     .btn{
         // position: ;
         // bottom: 0;
