@@ -25,6 +25,9 @@ export default function PracticeQuestionsManagerMobile({ practiceTest }: Practic
             {visible && (
                 <>
                     <PracticeGroup /> 
+                    <button onClick={next} className={styles.btn}>
+                        Next
+                    </button>
                 </>
             )}
             {!visible && (
@@ -32,9 +35,7 @@ export default function PracticeQuestionsManagerMobile({ practiceTest }: Practic
                     <TestOptions practiceTest={practiceTest} />
                 </>
             )}
-            <button onClick={next} className={styles.btn}>
-                        Next
-            </button>
+          
         </div>
     );
 }
