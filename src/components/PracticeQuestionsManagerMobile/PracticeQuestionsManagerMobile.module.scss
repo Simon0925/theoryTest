@@ -4,17 +4,11 @@
     flex-direction: column;
     position: relative;
 
-    .buttonContainer {
-        display: flex;
-        margin-top: auto;
-        position: sticky; 
-        bottom: 0;
-        width: 100%;
+   
 
         .btn {
-            transform: translateZ(0);
-            flex-grow: 1;
-            height: 50px;
+            flex:1;
+            width: 100%;
             border: none;
             outline: none;
             background-color: #00be5d;
@@ -24,5 +18,17 @@
             align-items: center;
             justify-content: center;
         }
+    .btnIsLoading{
+        flex:1;
+        width: 100%;
+        border: none;
+        outline: none;
+        background-color: #8cdab2;
+        color: #fff;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
     }
 }
