@@ -3,10 +3,12 @@
     overflow: auto;
     display: flex;
     flex-direction: column;
+    // position: relative;
+
     .buttonContainer{
-            margin-bottom: auto; 
-             width: 100%;
+        flex-grow: 1;
         .btn{
+            transform: translateZ(0);
             width: 100%;
             position: absolute;
             height: 50px;
@@ -20,16 +22,7 @@
             align-items: center;
             justify-content: center;
         }
-        // .btnIsLoading{
-        //     height: 50px;
-        //     // flex: 1;
-        //     width: 100%;
-        //     border: none;
-        //     outline: none;
-        //     background-color: #8cdab2;
-        //     color: white;
-        //     font-size: 24px;
-        // }
     }
+        
     
 }
