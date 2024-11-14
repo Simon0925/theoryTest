@@ -1,45 +1,34 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-}
-
 .wrap {
     position: relative;
     overflow: hidden;
-    
-}
+    height: 100dvh;  
+    .burgerMenu {
+        position: fixed; 
+        top: 0;
+        transform: translateX(-100%);
+        background-color: #003048;
+        width: 70%;
+        height: 100dvh; 
+        transition: transform 0.3s ease;
+        overflow: auto;
+    }
 
-.burgerMenu {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translateX(-100%);
-    height: calc(100vh + env(safe-area-inset-top));
-    padding-top: env(safe-area-inset-top);
-    background-color: #003048;
-    width: 70%;
-    transition: transform 0.3s ease;
-    overflow: auto;
-}
+    .mainContent {
+        position: fixed;
+        top: 0;
+        flex-grow: 1; 
+        width: 100%;
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
 
-.mainContent {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.wrap.menuOpen .burgerMenu {
-    transform: translateX(0); 
-}
-
-.wrap.menuOpen .mainContent {
-    transform: translateX(70%);
+    &.menuOpen {
+        .burgerMenu {
+            transform: translateX(0); 
+        }
+        .mainContent {
+            transform: translateX(70%); 
+        }
+    }
 }
