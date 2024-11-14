@@ -1,20 +1,25 @@
 .wrap{
-    display: flex;
-    gap: 1rem;
-    flex-direction: column;
-
-    .night{
+    width: 100%;
+    max-width: 300px;
+    .nightMode{
+        padding: 1rem;
         color: white;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        gap:1rem;
+        justify-content: space-between;
+
+        .container{
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
     }
     .coolors{
         display: flex;
         flex-direction: row;
-        gap: 1rem;
+        padding: 1rem;
+        margin: 0 1rem;
+        justify-content: space-between;
+        border-radius: 2rem;
         .dote{
             width:15px;
             height: 15px;

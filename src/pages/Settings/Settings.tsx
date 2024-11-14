@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import Account from "../../components/Account/Account";
-import SwitchColor from "../../components/SwitchColor/SwitchColor";
 import styles from "./Settings.module.scss";
 import { useLocation } from "react-router-dom";
+import SwitchColor from "../../components/SwitchColor/SwitchColor";
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+
 
 
 export default function Settings() {
@@ -10,6 +13,8 @@ export default function Settings() {
     const location = useLocation();
 
     const [isAccount,setIsAccount] = useState(false)
+    
+    const color = useSelector((state: RootState) => state.color);
 
     useEffect(()=>{
         if(location.hash === "#login"){
@@ -26,10 +31,16 @@ export default function Settings() {
         {
             !isAccount&&(
                 <div className={styles.wrap}>
-                <div className={styles.btns}>   
-                    <button onClick={()=>setIsAccount(true)} >Account </button>
+                <div style={{
+                        "--button-color": color.headerColors,
+                        "--button-hover-color": color.hoverColor,
+                    } as React.CSSProperties}
+                    className={styles.btns}>   
+                    <button  onClick={()=>setIsAccount(true)} >Account </button>
+                    <button>Reset Statisics </button>
+                    <button>Clear all flags</button>
                 </div>
-                 <SwitchColor />
+                 <SwitchColor svgColor={"white"}  />
             </div>
             )
         }

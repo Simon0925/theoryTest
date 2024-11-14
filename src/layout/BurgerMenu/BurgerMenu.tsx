@@ -6,15 +6,27 @@ import ClockSvg from "../../SVG/ClockSvg/ClockSvg";
 import LightSvg from "../../SVG/LightSvg/LightSvg";
 import CameraSvg from "../../SVG/CameraSvg/CameraSvg";
 import SettingsSvg from "../../SVG/SettingsSvg/SettingsSvg";
-import ChangeColor from "../../components/ChangeColor/ChangeColor";
 import { RootState } from "../../store/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import SwitchColor from "../../components/SwitchColor/SwitchColor";
+import Modal from "../../components/Modal/Modal";
+import { resetStateAll, setTestInactive } from "../../store/currentData/currentData.slice";
 
 
 export default function BurgerMenu() {
     
+    const dispatch = useDispatch();
+    
     const location = useLocation();
     const navigate = useNavigate();
+
+    const { headerColors, textColor, hoverColor, headerSvgColor } = useSelector(
+        (state: RootState) => state.color
+      );
+    
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [pendingPath, setPendingPath] = useState("");
 
     const currentTestInProgress = useSelector((state: RootState) => state.currentData.currentTestInProgress);
 
@@ -32,13 +44,7 @@ export default function BurgerMenu() {
         setActive(getActiveState(location.pathname.substr(1)));
     }, [location]);
 
-    const checkTest =  (path:string,event: React.MouseEvent<HTMLAnchorElement>) => {
-        if(currentTestInProgress){
-            event.preventDefault();
-        }else{
-            navigate(path);
-        }
-    }
+    
     
     const navItems = [
         { path: '/', icon: PencilSvg, label: 'Practice' },
@@ -48,8 +54,25 @@ export default function BurgerMenu() {
         { path: '/settings', icon: SettingsSvg, label: 'Settings' },
       ];
 
+      const handleCloseTest = () => {
+        setModalVisible(false);
+        dispatch(resetStateAll());
+        dispatch(setTestInactive(false));
+        navigate(pendingPath);
+      }
+
+      const checkTest =  (path:string,event: React.MouseEvent<HTMLAnchorElement>) => {
+        if(currentTestInProgress){
+            event.preventDefault();
+            setPendingPath(path)
+            setModalVisible(true);
+        }else{
+            navigate(path);
+        }
+      }
+
     return (
-        <div className={styles.wrap}>
+        <div style={{ backgroundColor: headerColors,borderRight:`1px solid${hoverColor}` }} className={styles.wrap}>
             <div className={styles.title}>
                 <h3>Theory Test</h3>
             </div>
@@ -62,7 +85,12 @@ export default function BurgerMenu() {
                     onClick={(e) => checkTest(path, e)}
                     className={isActive ? styles['nav-btn'] : styles['not-active']}
                     to={path}
-                    
+                    style={{
+                        '--header-bg-color': headerColors,
+                        '--text-color': textColor,
+                        '--hover-bg-color': hoverColor,
+                        '--header-svg-color': headerSvgColor,
+                      } as React.CSSProperties}
                     >
                     <Icon />
                     <span >{label}</span>
@@ -71,8 +99,18 @@ export default function BurgerMenu() {
             })}
             </nav>
             <div className={styles.containerColor}>
-                <ChangeColor />
+                <SwitchColor svgColor={headerSvgColor}  />
             </div>
+            {modalVisible && (
+                <Modal
+                title="Are you sure you want to exit from the test?"
+                cancel
+                cancelClick={() => setModalVisible(false)}
+                close={handleCloseTest}
+                blueBtnText="Exit Test"
+                text={''}
+                />
+            )}
         </div>
     );
 }

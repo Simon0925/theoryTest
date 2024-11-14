@@ -1,15 +1,19 @@
-import styles from "./SwitchColor.module.scss"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
+import CrescentMoonAndStarSVG from '../../SVG/CrescentMoonAndStarSVG/CrescentMoonAndStarSVG';
+import Toggle from '../../UI/Toggle/Toggle';
+import styles from './SwitchColor.module.scss';
+import { RootState } from '../../store/store';
+import { useEffect, useState } from 'react';
+import { updateColor, updateCurrentState } from '../../store/coolor/coolor.slise';
 
-import { updateColor, updateCurrentState } from '../../store/coolor/coolor.slise'; 
-import { useState, useEffect } from "react";
-import { RootState } from "../../store/store";
+interface SwitchColorProps {
+    svgColor: string;
+}
 
-
-
-export default function SwitchColor () {
+export default function SwitchColor({ svgColor }: SwitchColorProps) {
     const dispatch = useDispatch();
     const color = useSelector((state: RootState) => state.color);
+    const [nightMode, setNightMode] = useState(false);
 
     const [active, setActive] = useState({
         frostedPearl: false,
@@ -20,58 +24,58 @@ export default function SwitchColor () {
     });
 
     useEffect(() => {
-       
         setActive({
-            frostedPearl: "frostedPearl" === color.currentState,
-            amberSunset: "amberSunset" === color.currentState,
-            oceanicBlue: "oceanicBlue" === color.currentState,
-            violetMajesty: "violetMajesty" === color.currentState,
-            nightMode: "nightMode" === color.currentState,
+            frostedPearl: color.currentState === 'frostedPearl' && !nightMode,
+            amberSunset: color.currentState === 'amberSunset' && !nightMode,
+            oceanicBlue: color.currentState === 'oceanicBlue' && !nightMode,
+            violetMajesty: color.currentState === 'violetMajesty' && !nightMode,
+            nightMode: color.currentState === 'nightMode',
         });
-    }, [color.currentState]);
+        const themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
+        if (themeColorMetaTag) {
+            themeColorMetaTag.setAttribute('content', color.headerColors);
+        }
+    }, [color.currentState, nightMode]);
 
     const changeColor = (value: string) => {
+        if (nightMode) setNightMode(false); 
         dispatch(updateColor(value));
         dispatch(updateCurrentState(value));
     };
 
     const toggleNightMode = () => {
-        const newNightModeState = !active.nightMode;
-        const value = newNightModeState ? "nightMode" : "oceanicBlue"; 
+        const newNightModeState = !nightMode;
+        setNightMode(newNightModeState);
+
+        const value = newNightModeState ? 'nightMode' : 'oceanicBlue'; 
         dispatch(updateColor(value));
         dispatch(updateCurrentState(value));
 
-        setActive((prevActive) => ({
-            ...prevActive,
-            nightMode: newNightModeState,
-        }));
     };
-    return(
+
+    return (
         <div className={styles.wrap}>
-            <div className={`${styles.wrap} ${active.nightMode ? styles.nightMode : ''}`}>
-                <div className={styles.night}>
-                    <span>Night mode</span>
-                    <input
-                        type="checkbox"
-                        checked={active.nightMode}
-                        onChange={toggleNightMode}
-                    />
+            <div className={styles.nightMode}>
+                <div className={styles.container}>
+                    <CrescentMoonAndStarSVG fill={svgColor} />
+                    <span style={{ color: svgColor }}>Night Mode</span>
                 </div>
-                <div className={styles.coolors}>
-                    <div onClick={() => changeColor("frostedPearl")} className={styles.coolor1}>
-                        {active.frostedPearl && !active.nightMode && <div className={styles.dote}></div>}
-                    </div>
-                    <div onClick={() => changeColor("amberSunset")} className={styles.coolor2}>
-                        {active.amberSunset && !active.nightMode && <div className={styles.dote}></div>}
-                    </div>
-                    <div onClick={() => changeColor("oceanicBlue")} className={styles.coolor3}>
-                        {active.oceanicBlue && !active.nightMode && <div className={styles.dote}></div>}
-                    </div>
-                    <div onClick={() => changeColor("violetMajesty")} className={styles.coolor4}>
-                        {active.violetMajesty && !active.nightMode && <div className={styles.dote}></div>}
-                    </div>
+                <Toggle initialSwitch={active.nightMode} toggle={toggleNightMode} />
+            </div>
+            <div style={{ background: color.hoverColor }} className={styles.coolors}>
+                <div onClick={() => changeColor('frostedPearl')} className={styles.coolor1}>
+                    {active.frostedPearl && <div className={styles.dote}></div>}
+                </div>
+                <div onClick={() => changeColor('amberSunset')} className={styles.coolor2}>
+                    {active.amberSunset && <div className={styles.dote}></div>}
+                </div>
+                <div onClick={() => changeColor('oceanicBlue')} className={styles.coolor3}>
+                    {active.oceanicBlue && <div className={styles.dote}></div>}
+                </div>
+                <div onClick={() => changeColor('violetMajesty')} className={styles.coolor4}>
+                    {active.violetMajesty && <div className={styles.dote}></div>}
                 </div>
             </div>
         </div>
-    )
+    );
 }

@@ -77,7 +77,7 @@ const Header = () => {
     }else{
         navigate(path);
     }
-}
+  }
 
   const navItems = [
     { path: '/', icon: PencilSvg, label: 'Practice' },

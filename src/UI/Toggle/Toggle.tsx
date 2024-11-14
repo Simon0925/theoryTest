@@ -1,31 +1,33 @@
 import styles from './Toggle.module.scss';
-import { RootState } from '../../store/store';
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-interface ToggleProps{
-    toggle:(e:boolean) => void | undefined;
+interface ToggleProps {
+    toggle: (e: boolean) => void;
+    initialSwitch?: boolean;
 }
 
-export default function Toggle({toggle}:ToggleProps) {
+export default function Toggle({ toggle, initialSwitch = false }: ToggleProps) {
     
-    const color = useSelector((state: RootState) => state.color);
-
-    const [isChecked, setIsChecked] = useState(false);
+    const [isChecked, setIsChecked] = useState<boolean>(initialSwitch);
 
     const handleToggle = () => {
-        setIsChecked(!isChecked)
-        toggle(!isChecked)
+        const newCheckedState = !isChecked;
+        setIsChecked(newCheckedState);
+        toggle(newCheckedState);
     };
- 
+
+    useEffect(() => {
+        setIsChecked(initialSwitch ?? false); 
+    }, [initialSwitch]);
+
     return (
         <label className={styles.switch}>
             <input
-                type="checkbox" 
-                checked={isChecked} 
-                onChange={handleToggle} 
+                type="checkbox"
+                checked={isChecked}
+                onChange={handleToggle}
             />
-            <span className={styles.slider}> </span>
+            <span className={styles.slider}></span>
         </label>
     );
 }

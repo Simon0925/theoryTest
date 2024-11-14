@@ -53,7 +53,7 @@ export default function PracticeQuestionsManagerMobile({ practiceTest }: Practic
             )}
            
                 <button onClick={visible ?next : start}  className={isLoading &&!visible && questions.length > 0 ?  styles.btnIsLoading:styles.btn }>
-                    {isLoading &&!visible ? 'Loading...' : !visible ?'Start':"Next"}
+                    {isLoading &&!visible ? 'Loading...' : 'Start'}
                 </button>
          
         </div>
