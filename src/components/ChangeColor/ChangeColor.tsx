@@ -31,13 +31,13 @@ export default function ChangeColor (){
             violetMajesty: "violetMajesty" === color.currentState,
             nightMode: "nightMode" === color.currentState,
         });
-    }, [color.currentState]);
-
-    const changeColor = (value: string) => {
         const themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
         if (themeColorMetaTag) {
             themeColorMetaTag.setAttribute('content', color.headerColors);
           }
+    }, [color.currentState]);
+
+    const changeColor = (value: string) => {
         dispatch(updateColor(value));
         dispatch(updateCurrentState(value));
     };
