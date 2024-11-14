@@ -8,6 +8,7 @@ import useUserId from "../../hooks/useUserId";
 import { getData } from "./service/getData";
 import { RootState } from "../../store/store";
 import QuestionWithAnswers from "../QuestionWithAnswers/QuestionWithAnswers";
+import { setTestInactive } from "../../store/currentData/currentData.slice";
 
 interface TrainerTestProps {
     onExitClick: (exit: boolean) => void;
@@ -32,6 +33,12 @@ export default function TrainerTest({ onExitClick, result }: TrainerTestProps) {
     useEffect(() => {
         fetchTrainerQuestions();
     }, [fetchTrainerQuestions]);
+
+    useEffect(()=>{
+        if(questions.length > 0){
+          dispatch(setTestInactive(true))
+        }
+      },[questions])
 
     const renderContent = () => (
         <div className={styles.wrap}>

@@ -1,11 +1,8 @@
-import { useEffect, useState, useCallback, useMemo, Suspense, lazy } from 'react';
+import { useEffect, useCallback, useMemo, Suspense, lazy } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store/store';
 import tokenVerification from './service/tokenVerification/tokenVerification';
 import { login } from './store/auth/auth';
-import Modal from './components/Modal/Modal';
-import { useNavigate } from 'react-router-dom';
-import { resetStateAll } from './store/currentData/currentData.slice';
 import styles from './App.module.scss';
 
 
@@ -22,13 +19,9 @@ export interface TokenVerificationStatus {
 
 function App() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
+ 
   const isMenuOpen = useSelector((state: RootState) => state.menu.open);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [pendingPath, setPendingPath] = useState("");
-
-
+  
   const verifyTokenAndLogin = useCallback(async () => {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
@@ -47,15 +40,6 @@ function App() {
   }, [verifyTokenAndLogin]);
 
 
-  const handleCloseTest = useCallback(() => {
-    setModalVisible(false);
-    if (pendingPath) {
-      dispatch(resetStateAll());
-      navigate(pendingPath);
-    }
-  }, [pendingPath, navigate, dispatch]);
-
-
   const menuClassName = useMemo(() => {
     return `${styles.wrap} ${isMenuOpen ? styles.menuOpen : ''}`;
   }, [isMenuOpen]);
@@ -69,23 +53,12 @@ function App() {
       </div>
       <div className={styles.mainContent}>
         <Suspense >
-          <Header setNextPath={setPendingPath} setModal={setModalVisible} />
+          <Header />
         </Suspense>
         <Suspense >
           <Main />
         </Suspense>
       </div>
-
-      {modalVisible && (
-        <Modal
-          title="Are you sure you want to exit from the test?"
-          cancel
-          cancelClick={() => setModalVisible(false)}
-          close={handleCloseTest}
-          blueBtnText="Exit Test"
-          text={''}
-        />
-      )}
     </div>
   );
 }

@@ -8,7 +8,7 @@ import ReviewModal from '../ReviewModal/ReviewModal';
 import { getUnansweredQuestions } from './service/getUnansweredQuestions';
 import { RootState } from '../../store/store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { updateCurrentPage, updatevisibleQuestions } from '../../store/currentData/currentData.slice';
+import { setTestInactive, updateCurrentPage, updatevisibleQuestions } from '../../store/currentData/currentData.slice';
 
 import  {assessmentData}from './service/assessmentData';
 import useUserId from '../../hooks/useUserId';
@@ -122,7 +122,11 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
 
   const goToResults = useCallback(() => result(true), [result]);
 
-  let test = true
+  useEffect(()=>{
+    if(questions.length > 0){
+      dispatch(setTestInactive(true))
+    }
+  },[questions])
 
   return (
     <div

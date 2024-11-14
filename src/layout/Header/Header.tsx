@@ -11,23 +11,25 @@ import SettingsSvg from '../../SVG/SettingsSvg/SettingsSvg';
 import BurgerMenuSVG from '../../SVG/BurgerMenuSVG/BurgerMenuSVG';
 import { updateBurgerMenu, updateVisible } from '../../store/burgerMenu/burgerMenu.slice';
 import ArrowPrevSmallSvg from '../../SVG/ArrowPrevSmallSvg/ArrowPrevSmallSvg';
-import isTest from './service/isTest';
+import { resetStateAll, setTestInactive } from '../../store/currentData/currentData.slice';
+import Modal from '../../components/Modal/Modal';
 
-interface HeaderProps {
-  setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setNextPath: (e: string) => void;
-}
 
-const Header = ({ setModal, setNextPath }: HeaderProps) => {
+const Header = () => {
   const dispatch = useDispatch();
   const { open: isMenuOpen, visible } = useSelector((state: RootState) => state.menu);
   const { headerColors, textColor, hoverColor, headerSvgColor } = useSelector(
     (state: RootState) => state.color
   );
+  const currentTestInProgress = useSelector((state: RootState) => state.currentData.currentTestInProgress);
+
   const location = useLocation();
   const navigate = useNavigate();
-  const testsData = useSelector((state: RootState) => state.currentData.testsData);
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [pendingPath, setPendingPath] = useState("");
+ 
   const [currentLabel, setCurrentLabel] = useState<string>('Practice');
 
   const getActiveState = useCallback(
@@ -67,20 +69,15 @@ const Header = ({ setModal, setNextPath }: HeaderProps) => {
     );
   }, [dispatch, isMenuOpen, textColor, visible]);
 
-  const checkTest = useCallback(
-    (path: string, event: React.MouseEvent<HTMLAnchorElement>) => {
-      const activeTest = isTest(path, testsData);
-  
-      if (activeTest) {
+  const checkTest =  (path:string,event: React.MouseEvent<HTMLAnchorElement>) => {
+    if(currentTestInProgress){
         event.preventDefault();
-        setNextPath(path);
-        setModal(true);
-      } else {
+        setPendingPath(path)
+        setModalVisible(true);
+    }else{
         navigate(path);
-      }
-    },
-    [testsData, navigate, setModal, setNextPath]
-  );
+    }
+}
 
   const navItems = [
     { path: '/', icon: PencilSvg, label: 'Practice' },
@@ -89,6 +86,13 @@ const Header = ({ setModal, setNextPath }: HeaderProps) => {
     { path: '/hpt', icon: CameraSvg, label: 'HPT' },
     { path: '/settings', icon: SettingsSvg, label: 'Settings' },
   ];
+
+  const handleCloseTest = () => {
+    setModalVisible(false);
+    dispatch(resetStateAll());
+    dispatch(setTestInactive(false));
+    navigate(pendingPath);
+  }
 
   return (
     <div style={{ backgroundColor: headerColors }} className={styles.wrap}>
@@ -119,6 +123,16 @@ const Header = ({ setModal, setNextPath }: HeaderProps) => {
           );
         })}
       </nav>
+      {modalVisible && (
+        <Modal
+          title="Are you sure you want to exit from the test?"
+          cancel
+          cancelClick={() => setModalVisible(false)}
+          close={handleCloseTest}
+          blueBtnText="Exit Test"
+          text={''}
+        />
+      )}
     </div>
   );
 };

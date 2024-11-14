@@ -46,12 +46,14 @@ interface ParData {
 }
 
 interface TestsData {
+  currentTestInProgress:boolean;
   testsData: {
     [key: string]: CurrentData;
   };
 }
 
 const initialState: TestsData = {
+  currentTestInProgress:false,
   testsData: {
     PracticeTest: {
       questions: [],
@@ -89,6 +91,9 @@ export const questionsSlice = createSlice({
   name: 'currentData',
   initialState,
   reducers: {
+    setTestInactive:(state, action: PayloadAction<boolean>) => {
+      state.currentTestInProgress = action.payload;
+  },
     setCurrentQuestions: (
       state,
       action: PayloadAction<{ testId: string; questions: Question[] }>
@@ -177,7 +182,8 @@ export const {
   setError,
   updatevisibleQuestions,
   resetState,
-  resetStateAll
+  resetStateAll,
+  setTestInactive
 } = questionsSlice.actions;
 
 export default questionsSlice.reducer;

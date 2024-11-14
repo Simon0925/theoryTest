@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from "./BurgerMenu.module.scss";
 import { useEffect, useState } from "react";
 import PencilSvg from "../../SVG/PencilSvg/PencilSvg";
@@ -7,12 +7,16 @@ import LightSvg from "../../SVG/LightSvg/LightSvg";
 import CameraSvg from "../../SVG/CameraSvg/CameraSvg";
 import SettingsSvg from "../../SVG/SettingsSvg/SettingsSvg";
 import ChangeColor from "../../components/ChangeColor/ChangeColor";
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 
 
 export default function BurgerMenu() {
     
     const location = useLocation();
-    
+    const navigate = useNavigate();
+
+    const currentTestInProgress = useSelector((state: RootState) => state.currentData.currentTestInProgress);
 
     const getActiveState = (path:string) => ({
         practice: path === '' || path === '/',
@@ -28,47 +32,43 @@ export default function BurgerMenu() {
         setActive(getActiveState(location.pathname.substr(1)));
     }, [location]);
 
+    const checkTest =  (path:string,event: React.MouseEvent<HTMLAnchorElement>) => {
+        if(currentTestInProgress){
+            event.preventDefault();
+        }else{
+            navigate(path);
+        }
+    }
+    
+    const navItems = [
+        { path: '/', icon: PencilSvg, label: 'Practice' },
+        { path: '/mock-test', icon: ClockSvg, label: 'Mock Test' },
+        { path: '/trainer', icon: LightSvg, label: 'Trainer' },
+        { path: '/hpt', icon: CameraSvg, label: 'HPT' },
+        { path: '/settings', icon: SettingsSvg, label: 'Settings' },
+      ];
+
     return (
         <div className={styles.wrap}>
             <div className={styles.title}>
                 <h3>Theory Test</h3>
             </div>
             <nav className={styles.nav}>
-                <NavLink
-                    className={active.practice ? styles['nav-btn'] : styles['not-active']}
-                    to='/'
-                >
-                    <PencilSvg />
-                    <span>Practice</span>
-                </NavLink>
-                <NavLink
-                    className={active.mockTest ? styles['nav-btn'] : styles['not-active']}
-                    to='/mock-test'
-                >
-                    <ClockSvg />
-                    <span>Mock Test</span>
-                </NavLink>
-                <NavLink
-                    className={active.trainer ? styles['nav-btn'] : styles['not-active']}
-                    to='/trainer'
-                >
-                    <LightSvg />
-                    <span>Trainer</span>
-                </NavLink>
-                <NavLink
-                    className={active.hpt ? styles['nav-btn'] : styles['not-active']}
-                    to='/hpt'
-                >
-                    <CameraSvg />
-                    <span>HPT</span>
-                </NavLink>
-                <NavLink
-                    className={active.settings ? styles['nav-btn'] : styles['not-active']}
-                    to='/settings'
-                >
-                    <SettingsSvg />
-                    <span>Settings</span>
-                </NavLink>
+            {navItems.map(({ path, icon: Icon, label }) => {
+                const isActive = active[path === '/' ? 'practice' : path.slice(1).replace('-', '') as keyof typeof active];
+                return (
+                    <NavLink
+                    key={path}
+                    onClick={(e) => checkTest(path, e)}
+                    className={isActive ? styles['nav-btn'] : styles['not-active']}
+                    to={path}
+                    
+                    >
+                    <Icon />
+                    <span >{label}</span>
+                    </NavLink>
+                );
+            })}
             </nav>
             <div className={styles.containerColor}>
                 <ChangeColor />
