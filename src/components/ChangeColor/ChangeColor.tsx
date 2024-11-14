@@ -34,6 +34,10 @@ export default function ChangeColor (){
     }, [color.currentState]);
 
     const changeColor = (value: string) => {
+        const themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
+        if (themeColorMetaTag) {
+            themeColorMetaTag.setAttribute('content', color.headerColors);
+          }
         dispatch(updateColor(value));
         dispatch(updateCurrentState(value));
     };

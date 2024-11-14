@@ -20,6 +20,7 @@ export default function SwitchColor () {
     });
 
     useEffect(() => {
+       
         setActive({
             frostedPearl: "frostedPearl" === color.currentState,
             amberSunset: "amberSunset" === color.currentState,
