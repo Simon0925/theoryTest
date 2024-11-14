@@ -95,7 +95,7 @@ const Header = ({ setModal, setNextPath }: HeaderProps) => {
       <div className={styles.title} style={{ color: textColor }}>
         {renderVisibilityToggle()}
         <h3 className={styles.titleText}>Theory Test</h3>
-        <h3 className={styles.pageName}>{currentLabel}</h3> {/* Display current label */}
+        <h3 className={styles.pageName}>{currentLabel}</h3> 
       </div>
       <nav className={styles.nav}>
         {navItems.map(({ path, icon: Icon, label }) => {
