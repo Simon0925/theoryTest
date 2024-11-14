@@ -20,6 +20,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 70px;
+            height: 70px;
         }
         .active{
             background-color: var(--active-background-color);
@@ -28,6 +30,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 70px;
+            height: 70px;
             svg{
                 fill: var(--active-svg-color);
             }
