@@ -4,10 +4,6 @@
     overflow: scroll;
     .container{
         padding: 1rem;
-
-        .options{
-            padding-bottom: 3rem;
-        }
     }
 
     .correct{
@@ -25,37 +21,8 @@
     }
    
 
-    .btn{
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        button{
-            cursor: pointer;
-            background-color: #00BE5D;
-            border: none;
-            outline: none;
-            width: 100%;
-            color: white;
-            height: 9vh;
-            font-size: 24px;
-        }
-    }
 
-    .btnIsLoading{
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        button{
-            cursor: pointer;
-            background-color: #8cdab2;
-            border: none;
-            outline: none;
-            width: 100%;
-            color: white;
-            height: 9vh;
-            font-size: 24px;
-        }
-    }
+    
 }
 
 

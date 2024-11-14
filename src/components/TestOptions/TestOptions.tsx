@@ -8,8 +8,6 @@ import PracticeTools from '../PracticeTools/PracticeTools';
 import NumberOfQuestions from '../NumberOfQuestions/NumberOfQuestions';
 
 
-
-
 export default function TestOptions() {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -54,10 +52,8 @@ export default function TestOptions() {
           </span>
         </div>
       <div className={styles.container}>
-        <div className={styles.options}>
           <PracticeTools />
           <NumberOfQuestions />
-        </div>
       </div>
     </div>
   );
