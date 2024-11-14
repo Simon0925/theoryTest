@@ -1,6 +1,6 @@
 .wrap{
     height: 100dvh;
-    padding: 4rem .5rem 1rem;
+    padding: 76px .5rem 1rem;
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -13,6 +13,6 @@
 @media (max-width: 800px) and (max-height: 1024px) {
     .wrap {
         flex: 9;
-        padding: 60px .5rem 0;
+        padding: 76px .5rem 1rem;
     }
 }
