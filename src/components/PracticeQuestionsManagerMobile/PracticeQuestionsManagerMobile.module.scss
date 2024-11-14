@@ -6,9 +6,9 @@
     // position: relative;
 
     .buttonContainer{
-        flex-grow: 1;
         .btn{
             transform: translateZ(0);
+            flex-grow: 1;
             width: 100%;
             position: absolute;
             height: 50px;
