@@ -25,30 +25,27 @@ export default function Settings() {
 
     return (
         <>
-
         {
-            
             isAccount&&(
-              
-              
-                    <Account back={setIsAccount} />
-                
-            
+                <Account back={setIsAccount} />
             )
         }
         {
             !isAccount&&(
             <div className={styles.wrap}>
-                <div style={{
-                        "--button-color": color.headerColors,
-                        "--button-hover-color": color.hoverColor,
-                    } as React.CSSProperties}
-                    className={styles.btns}>   
-                    <button  onClick={()=>setIsAccount(true)} >Account </button>
-                    <button>Reset Statisics </button>
-                    <button>Clear all flags</button>
+                <div className={styles.container}>
+                    <div style={{
+                            "--button-color": color.headerColors,
+                            "--button-hover-color": color.hoverColor,
+                            "--text-color":color.textColor,
+                        } as React.CSSProperties}
+                        className={styles.btns}>   
+                        <button onClick={()=>setIsAccount(true)} >Account </button>
+                        <button>Reset Statisics </button>
+                        <button>Clear all flags</button>
+                    </div>
+                    <SwitchColor svgColor={"white"}  />
                 </div>
-                 <SwitchColor svgColor={"white"}  />
             </div>
             )
         }

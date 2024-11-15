@@ -19,7 +19,7 @@ export default function Login() {
     const [serverMessage, setServerMessage] = useState<string | null>(null);
     const [reset, setReset] = useState(false);
 
-    const { textColor,hoverColor} = useSelector((state: RootState) => state.color);
+    const { textColor,hoverColor,headerColors} = useSelector((state: RootState) => state.color);
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,11 +67,12 @@ export default function Login() {
         <>
         {!reset && (
         <>
-            <form onSubmit={handleSubmit} className={styles.form}> 
+            <form style={{background:headerColors,color:textColor}}   onSubmit={handleSubmit} className={styles.form}> 
                 {serverMessage && <p style={{color:textColor}} className={styles.serverMessage}>{serverMessage}</p>}
                 <div style={{color:textColor}} className={styles.formInput}>
                     <label  htmlFor="email">Email</label>
                     <input
+                        style={{border:`3px solid ${hoverColor}`}}
                         type="email"
                         id="email"
                         name="email"
@@ -85,6 +86,7 @@ export default function Login() {
                 <div style={{color:textColor}} className={styles.formInput}>
                     <label htmlFor="password">Password</label>
                     <input
+                        style={{border:`3px solid ${hoverColor}`}}
                         type="password"
                         id="password"
                         name="password"

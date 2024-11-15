@@ -21,6 +21,8 @@ export default function Account({back}:AccountProps){
     const name = useSelector((state: RootState) => state.auth.userName);
     const { headerColors, textColor} = useSelector((state: RootState) => state.color);
 
+    const color = useSelector((state: RootState) => state.color);
+    
 
     const logOut = () =>{
         localStorage.setItem("accessToken", "");

@@ -16,7 +16,7 @@ export default function Registration() {
     const [errors, setErrors] = useState<FormErrors>({});
     const [serverMessage, setServerMessage] = useState<string | null>(null); 
 
-    const { textColor,hoverColor} = useSelector((state: RootState) => state.color);
+    const { textColor,hoverColor,headerColors} = useSelector((state: RootState) => state.color);
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -61,13 +61,14 @@ export default function Registration() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form style={{background:headerColors,color:textColor}}  onSubmit={handleSubmit} className={styles.form}>
           
             {serverMessage && <p style={{color:textColor}} className={styles.serverMessage}>{serverMessage}</p>}
 
             <div style={{color:textColor}}  className={styles.formInput}>
                 <label htmlFor="name">Name</label>
                 <input
+                    style={{border:`3px solid ${hoverColor}`}}
                     type="text"
                     id="name"
                     name="name"
@@ -81,6 +82,7 @@ export default function Registration() {
             <div style={{color:textColor}}  className={styles.formInput}>
                 <label htmlFor="email">Email</label>
                 <input
+                    style={{border:`3px solid ${hoverColor}`}}
                     type="email"
                     id="email"
                     name="email"
@@ -94,6 +96,7 @@ export default function Registration() {
             <div style={{color:textColor}}  className={styles.formInput}>
                 <label htmlFor="password">Password</label>
                 <input
+                    style={{border:`3px solid ${hoverColor}`}}
                     type="password"
                     id="password"
                     name="password"
@@ -107,6 +110,7 @@ export default function Registration() {
             <div style={{color:textColor}}  className={styles.formInput}>
                 <label htmlFor="confirmPassword">Repeat Password</label>
                 <input
+                    style={{border:`3px solid ${hoverColor}`}}
                     type="password"
                     id="confirmPassword"
                     name="confirmPassword"

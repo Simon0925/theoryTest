@@ -7,33 +7,40 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap:2rem;
-    
-
-    .btns{
-        width: 100%;
-        max-width: 250px;
+    overflow: auto;
+    .container{
+        width: 250px;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        button{
-            font-weight: 700;
-            font-size: 24px;
-            padding: 0.5rem 1rem;
-            border-radius: 0.625rem;
-            background-color: var(--button-color); 
-            transition: background-color 0.3s ease;
-            border: none;
-            color: #FDFFFF;
-            cursor: pointer;
+        gap:2rem;
+        padding: 4rem 0 2rem ;
+        .btns{
             width: 100%;
-
-            &:hover {
-                background-color: var(--button-hover-color);
+            max-width: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+           
+            button{
+                font-weight: 700;
+                font-size: 24px;
+                padding: 0.5rem 1rem;
+                border-radius: 0.625rem;
+                background-color: var(--button-color); 
+                transition: background-color 0.3s ease;
+                border: none;
+                color: var(--text-color);
+                cursor: pointer;
+                width: 100%;
+    
+                &:hover {
+                    background-color: var(--button-hover-color);
+                }
             }
+           
         }
-       
     }
+    
 
    
 }

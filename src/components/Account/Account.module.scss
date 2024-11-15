@@ -36,10 +36,9 @@
 
 
     .auth{
-        display: flex;
-        justify-content: center;
-        padding-bottom: 3rem;
-
+        position: absolute;
+        top:20%;
+        padding-bottom: 4rem;
     }
     .logOut{
         width: 100%;

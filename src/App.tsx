@@ -21,6 +21,10 @@ function App() {
   const dispatch = useDispatch();
  
   const isMenuOpen = useSelector((state: RootState) => state.menu.open);
+
+  const { headerColors} = useSelector(
+    (state: RootState) => state.color
+  );
   
   const verifyTokenAndLogin = useCallback(async () => {
     const accessToken = localStorage.getItem('accessToken');
@@ -46,7 +50,7 @@ function App() {
 
   return (
     <div className={menuClassName}>
-      <div className={styles.burgerMenu}>
+      <div style={{ backgroundColor: headerColors}} className={styles.burgerMenu}>
         <Suspense>
           <BurgerMenu />
         </Suspense>
