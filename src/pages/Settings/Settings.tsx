@@ -25,12 +25,20 @@ export default function Settings() {
 
     return (
         <>
+
         {
-            isAccount&&<Account back={setIsAccount} />
+            
+            isAccount&&(
+              
+              
+                    <Account back={setIsAccount} />
+                
+            
+            )
         }
         {
             !isAccount&&(
-                <div className={styles.wrap}>
+            <div className={styles.wrap}>
                 <div style={{
                         "--button-color": color.headerColors,
                         "--button-hover-color": color.hoverColor,
