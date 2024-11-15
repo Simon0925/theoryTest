@@ -63,6 +63,7 @@ function App() {
           <Main />
         </Suspense>
       </div>
+      <div id="modal-root"></div>
     </div>
   );
 }

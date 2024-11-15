@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SwitchColor from "../../components/SwitchColor/SwitchColor";
 import Modal from "../../components/Modal/Modal";
 import { resetStateAll, setTestInactive } from "../../store/currentData/currentData.slice";
-
+import ReactDOM from 'react-dom';
 
 export default function BurgerMenu() {
     
@@ -19,6 +19,7 @@ export default function BurgerMenu() {
     
     const location = useLocation();
     const navigate = useNavigate();
+    const modalRoot = document.getElementById('modal-root');
 
     const { headerColors, textColor, hoverColor, headerSvgColor } = useSelector(
         (state: RootState) => state.color
@@ -101,7 +102,8 @@ export default function BurgerMenu() {
             <div className={styles.containerColor}>
                 <SwitchColor svgColor={headerSvgColor}  />
             </div>
-            {modalVisible && (
+            {modalVisible &&modalRoot &&
+            ReactDOM.createPortal( 
                 <Modal
                 title="Are you sure you want to exit from the test?"
                 cancel
@@ -109,8 +111,8 @@ export default function BurgerMenu() {
                 close={handleCloseTest}
                 blueBtnText="Exit Test"
                 text={''}
-                />
-            )}
+                />,modalRoot)
+            }
         </div>
     );
 }

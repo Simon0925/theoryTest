@@ -53,14 +53,14 @@ export default function OnceTwiceProgress({ once, twice }: OnceTwiceProgressProp
           <p className={styles["title"]}>once</p>
         </div>
       </div>
-      <div className={styles["circle"]}>
-        <CircleTrainer colorCircle={color.OnceTwiceProgressOnesBackground} centerCircle={color.mainColor} textColor={color.VariantTitleColor} />
-      </div>
       <div className={styles["twice"]}>
         <div className={styles["container"]}>
           <p className={styles["percent"]}>{correctDataFormat.twice}%</p>
           <p className={styles["title"]}>twice</p>
         </div>
+      </div>
+      <div className={styles["circle"]}>
+        <CircleTrainer colorCircle={color.OnceTwiceProgressOnesBackground} centerCircle={color.mainColor} textColor={color.VariantTitleColor} />
       </div>
     </div>
   );

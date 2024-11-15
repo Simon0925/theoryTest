@@ -16,7 +16,7 @@ const CircleTrainer = ({colorCircle,centerCircle,textColor}:CircleTrainerProps) 
         circleBlueDashoffset: 0.75
     });
 
-    const r = 16;
+    const r = 18.5;
     const circleLength = useMemo(() => 2 * Math.PI * r, [r]); 
     const x = 21;
     const y = 21;
@@ -51,7 +51,7 @@ const CircleTrainer = ({colorCircle,centerCircle,textColor}:CircleTrainerProps) 
     }, [curentPercent, incrementPercent]);
 
     return (
-        <>
+                
             <svg
                 width="100%"   
                 height="100%"   
@@ -59,7 +59,7 @@ const CircleTrainer = ({colorCircle,centerCircle,textColor}:CircleTrainerProps) 
                 xmlns="http://www.w3.org/2000/svg"
             >
                 <circle
-                    r={18}
+                    r={20}
                     cx={x}
                     cy={y}
                     fill={centerCircle}  
@@ -86,7 +86,7 @@ const CircleTrainer = ({colorCircle,centerCircle,textColor}:CircleTrainerProps) 
                     strokeWidth="5"
                     strokeDasharray={`${ circleFilled.filled} ${circleFilled.indent}`}
                     strokeDashoffset="0"
-                    transform="rotate(-90 21 21)"
+                    transform="rotate(-55 21 21)"
                 />
                 <circle
                     r={r}
@@ -130,7 +130,6 @@ const CircleTrainer = ({colorCircle,centerCircle,textColor}:CircleTrainerProps) 
                     questions
                 </text>
             </svg>
-        </>
     );
 };
 
