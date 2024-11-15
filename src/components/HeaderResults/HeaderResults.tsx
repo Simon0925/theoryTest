@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react';
 import ButtonTest from '../../UI/ButtonTest/ButtonTest'
 import styles from './HeaderResults.module.scss'
 import Modal from '../Modal/Modal';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
 import { resetPracticeState, resetPracticeStateThunk } from '../../store/practice/practice.slice';
 import { resetState } from '../../store/currentData/currentData.slice';
 
@@ -17,6 +17,8 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
 
     const [showExitModal, setShowExitModal] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
+    const color = useSelector((state: RootState) => state.color);
+
 
     const handleModalClose = useCallback(() => {
       switch (typeOftest) {
@@ -41,16 +43,16 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
 
     return(
         <>
-            <div className={styles.wrap}>
+            <div style={{background:color.headerColors}} className={styles.wrap}>
                 <div className={styles.btn1}>
                   <ButtonTest name={'Exit'} color={'white'} backgroundColor={'#A73530'} svg={false} click={handleModal} svgColor={false} />
                 </div>
                 <div className={styles.btn2}>
-                  <button onClick={handleModal}>
+                  <button style={{background:color.headerColors,color:color.textColor}} onClick={handleModal}>
                     Exit
                   </button>
                 </div>
-                <span className={styles.title}>Nice Try!</span>
+                <span style={{color:color.textColor}} className={styles.title}>Nice Try!</span>
                 <span></span>
             </div>
            {

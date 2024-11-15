@@ -17,14 +17,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 70px;
+            height: 70px;
         }
         .active{
-            background-color: #378AB6;
+            background-color:var(--active-background-color);
             padding: 0.5rem;
             border-radius: 0.3rem;
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 70px;
+            height: 70px;
         }
     }
 

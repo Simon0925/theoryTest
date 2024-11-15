@@ -114,15 +114,14 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
                 backgroundColor: correct ? "rgb(0, 182, 118)" : "rgb(170, 59, 54)",
                 color: stateColor.VariantSelectedOption 
             })
-         }
-          else{
+         }else{
             setColor({
                 backgroundColor: stateColor.VariantBackground,
-                color: stateColor.VariantTextColor
+                color: stateColor.TestcolorText
             });
          }
         
-    }, [ correct, currentPage,answeredVariants,visibleQuestions]);
+    }, [ correct, currentPage,answeredVariants,visibleQuestions,stateColor]);
 
     return (
         <div onClick={addAnswer} style={{background:color.backgroundColor}} className={styles['wrap']}>

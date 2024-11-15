@@ -16,6 +16,7 @@ export default function Flag() {
 
     const flagged = useSelector((state: RootState) => state.practice.flagged);
     const allQuestionLength = useSelector((state: RootState) => state.practice.allQuestionLength);
+    const color = useSelector((state: RootState) => state.color);
 
     const userId = useUserId();
 
@@ -52,9 +53,13 @@ export default function Flag() {
 
     const flagColor = useMemo(() => (active ? "#FE8000" : "#FFCDA8"), [active]);
 
+    const titleStyles = useMemo(() => ({
+        '--active-background-color': color.svgAvtiveBackgroundColor,
+    }), [color]);
+
     return (
         <div onClick={marker} className={styles['flag']}>
-            <div className={styles.title}>
+            <div style={titleStyles as React.CSSProperties}  className={styles.title}>
                 <div className={selected ? styles.active : styles.notActive}>
                     <FlagSvg color={flagColor} width={"50px"} height={"50px"} />
                 </div>

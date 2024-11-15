@@ -98,17 +98,17 @@ export default function FooterTest({ result, typeOftest }: FooterTestProps) {
         />
       </div>
       <div className={styles.mobileContainer}>
-        <button onClick={() => navigatePage('previous')} className={styles.prevBtn}>
-          <ArrowPrevSmallSvg color="white" width="30px" height="30px" /> Prev
+        <button style={{ backgroundColor: color.headerColors,color:color.textColor }}  onClick={() => navigatePage('previous')} className={styles.prevBtn}>
+          <ArrowPrevSmallSvg color={color.textColor}  width="30px" height="30px" /> Prev
         </button>
-        <button onClick={changeFlag} className={styles.flagBtn}>
-          <FlagSvg color={questions[currentPage].flag ? '#F9921A' : 'white'} width="24px" height="24px" />
+        <button style={{ backgroundColor: color.headerColors}}  onClick={changeFlag} className={styles.flagBtn}>
+          <FlagSvg color={questions[currentPage].flag ? '#F9921A' : color.textColor} width="24px" height="24px" />
         </button>
-        <button onClick={() => setIsExplanationVisible(true)} className={styles.explanationBtn}>
+        <button style={{ backgroundColor: color.headerColors,color:color.textColor }} onClick={() => setIsExplanationVisible(true)} className={styles.explanationBtn}>
           ?
         </button>
-        <button onClick={() => navigatePage('next')} className={styles.nextBtn}>
-          Next <ArrowPrevSmallSvg color="white" width="30px" height="30px" />
+        <button style={{ backgroundColor: color.headerColors,color:color.textColor }}  onClick={() => navigatePage('next')} className={styles.nextBtn}>
+          Next <ArrowPrevSmallSvg color={color.textColor} width="30px" height="30px" />
         </button>
       </div>
       {isModalVisible && (

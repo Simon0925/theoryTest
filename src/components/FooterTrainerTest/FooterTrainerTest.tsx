@@ -85,14 +85,14 @@ export default function FooterTrainerTest({result}:FooterTrainerTestProps) {
                 />
             </div>
             <div className={styles.mobileContainer}>
-            <button onClick={changeFlag} className={styles.flagBtn}>
-                <FlagSvg color={questions[currentPage].flag ? '#F9921A' : 'white'} width="24px" height="24px" />
+            <button style={{ backgroundColor: color.headerColors }} onClick={changeFlag} className={styles.flagBtn}>
+                <FlagSvg color={questions[currentPage].flag ? '#F9921A' : color.textColor} width="24px" height="24px" />
             </button>
-            <button onClick={explanationModal} className={styles.explanationBtn}>
+            <button style={{ backgroundColor: color.headerColors,color:color.textColor }} onClick={explanationModal} className={styles.explanationBtn}>
                 ?
             </button>
-            <button onClick={next} className={styles.nextBtn}>
-                {isAnswerSelected ? 'Next >' : 'Skip'} <ArrowPrevSmallSvg color="white" width="30px" height="30px" />
+            <button style={{ backgroundColor: color.headerColors }} onClick={next} className={styles.nextBtn}>
+                {isAnswerSelected ? 'Next >' : 'Skip'} <ArrowPrevSmallSvg color={color.textColor } width="30px" height="30px" />
             </button>
             </div>
            

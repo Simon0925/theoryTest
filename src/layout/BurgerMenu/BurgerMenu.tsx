@@ -73,7 +73,7 @@ export default function BurgerMenu() {
 
     return (
         <div style={{ backgroundColor: headerColors,borderRight:`1px solid${hoverColor}` }} className={styles.wrap}>
-            <div className={styles.title}>
+            <div style={{color:textColor}} className={styles.title}>
                 <h3>Theory Test</h3>
             </div>
             <nav className={styles.nav}>

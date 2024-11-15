@@ -13,6 +13,7 @@ import { setTestInactive, updateCurrentPage, updatevisibleQuestions } from '../.
 import  {assessmentData}from './service/assessmentData';
 import useUserId from '../../hooks/useUserId';
 import QuestionWithAnswers from '../QuestionWithAnswers/QuestionWithAnswers';
+import PauseSvg from '../../SVG/PauseSvg/PauseSvg';
 
 
 
@@ -44,6 +45,8 @@ interface ParData {
 export default function Assessment({ onClose, result, getTime }: AssessmentProps) {
   const typeOftest = 'MockTest';
   const dispatch = useDispatch();
+  const color = useSelector((state: RootState) => state.color);
+
 
   const [reviewModal, setReviewModal] = useState(false);
   const [reviewMode, setReviewMode] = useState<'all' | 'unanswered' | 'flagged'>('all');
@@ -85,7 +88,6 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
     return getUnansweredQuestions(answeredVariants, questions);
   }, [answeredVariants, questions]);
 
-  const color = useSelector((state: RootState) => state.color);
 
 
   useEffect(() => {
@@ -153,7 +155,10 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
             />
              
             ) : (
-              <div className={styles.pausedMessage}>Test paused</div>
+              <div style={{ color:color.textColor }}className={styles.pausedMessage}>
+                Test paused
+                <PauseSvg color={color.textColor} />
+              </div>
             )}
       
             <FooterAssessment

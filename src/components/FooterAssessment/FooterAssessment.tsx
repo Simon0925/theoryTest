@@ -92,7 +92,7 @@ export default function FooterAssessment({
           svg={true}
           svgColor={visibleQuestions?.[currentPage]?.flag ? '#F9921A' : color.FlagColorSvgBtn}
         />
-        <TimerAssessment time={setTime} pause={pause} />
+        <TimerAssessment color={color.textColor } time={setTime} pause={pause} />
         <ButtonTest
           click={startPause}
           name={pause ? "Resume" : "Pause"}
@@ -107,18 +107,18 @@ export default function FooterAssessment({
         />
       </div>
       <div className={styles.mobileContainer}>
-        <button onClick={previous} className={styles.prevBtn}>
-          <ArrowPrevSmallSvg color="white" width="30px" height="30px" />
+        <button style={{ backgroundColor: color.headerColors }}  onClick={previous} className={styles.prevBtn}>
+          <ArrowPrevSmallSvg color={color.textColor } width="30px" height="30px" />
         </button>
-        <button onClick={changeFlag} className={styles.flagBtn}>
-          <FlagSvg color={visibleQuestions?.[currentPage]?.flag ? '#F9921A' : 'white'} width="24px" height="24px" />
+        <button style={{ backgroundColor: color.headerColors }} onClick={changeFlag} className={styles.flagBtn}>
+          <FlagSvg  color={visibleQuestions?.[currentPage]?.flag ? '#F9921A' : color.textColor} width="24px" height="24px" />
         </button>
-        <TimerAssessment time={setTime} pause={pause} />
-        <button onClick={startPause} className={styles.btnPause}>
-          {pause ? <PlayVectorSvg /> : <PauseSvg />}
+        <TimerAssessment color={color.textColor } time={setTime} pause={pause} />
+        <button style={{ backgroundColor: color.headerColors }} onClick={startPause} className={styles.btnPause}>
+          {pause ? <PlayVectorSvg color={color.textColor} /> : <PauseSvg color={color.textColor} />}
         </button>
-        <button onClick={next} className={styles.nextBtn}>
-          <ArrowPrevSmallSvg color="white" width="30px" height="30px" />
+        <button style={{ backgroundColor: color.headerColors }}  onClick={next} className={styles.nextBtn}>
+          <ArrowPrevSmallSvg color={color.textColor } width="30px" height="30px" />
         </button>
       </div>
     </div>

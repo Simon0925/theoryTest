@@ -96,14 +96,14 @@ const HeaderForTest = React.memo(function HeaderForTest({
       <button onClick={handleModalClose} className={`${styles.exitBtn}`} >
         Exit
       </button>
-      <button onClick={handleModalClose} className={`${styles.exitBtnM}`} >
+      <button style={{ backgroundColor: color.headerColors,color:color.textColor }} onClick={handleModalClose} className={`${styles.exitBtnM}`} >
         Exit
       </button>
       {questionCounter}
       <button onClick={handleResults} className={styles.finishBtn} >
         {finish}
       </button>
-      <button onClick={handleResults} className={styles.finishBtnM} >
+      <button style={{ backgroundColor: color.headerColors,color:color.textColor }} onClick={handleResults} className={styles.finishBtnM} >
         {finish}
       </button>
     </div>

@@ -22,6 +22,7 @@ interface ResultsProps {
 
 export default function Results({ exitResult, time, typeOftest }: ResultsProps) {
 
+  const color = useSelector((state: RootState) => state.color);
   
   const {results, questions } = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],
@@ -119,19 +120,20 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
 
   return (
     <>
-      <HeaderResults exitResult={exitResult} typeOftest={typeOftest} />
-      <div className={styles.wrap}>
+      <div style={{ backgroundColor: color.hoverColor }}  className={styles.wrap}>
+        <HeaderResults exitResult={exitResult} typeOftest={typeOftest} />
+
         <div className={styles.statistic}>
           <div className={styles.progressBar}>
             <CircularProgressBar
               mockTest={typeOftest === "MockTest"}
               correct={progressBar.trueAnswer}
               skipped={progressBar.pass}
-              incorrect={progressBar.falseAnswer}
-            />
+              incorrect={progressBar.falseAnswer} 
+              colorText={color.textColor}            />
           </div>
           {data.length > 0 && (
-            <span className={styles["title"]}>
+            <span style={{ color: color.textColor }} className={styles["title"]}>
               <p>You have answered</p>
               <p>{answered} out of {data.length} questions correctly</p>
             </span>
@@ -140,7 +142,7 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
         <div className={styles.question}>
           {data.length > 0 ? (
             data.map((elem, index) => (
-              <div key={index} className={styles.variant}>
+              <div style={{background:color.VariantBackground}} key={index} className={styles.variant}>
                 <div className={elem.flag ? styles["marker"] : styles["inactive-marker"]}></div>
                 <div className={styles.content}>
                     {elem.photo && (
@@ -151,7 +153,7 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
                         loading="lazy" 
                     />
                     )}
-                  <span>{elem.question}</span>
+                  <span style={{color:color.TestcolorText}}>{elem.question}</span>
                 </div>
                 <div className={styles.box}>
                 {elem.status === null || elem.status === undefined || elem.status === "pass"

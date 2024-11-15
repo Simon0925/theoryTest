@@ -32,6 +32,7 @@ export interface CoolorState {
     TestBackground:string;
     TestcolorText:string;
     VariantTitleColor:string;
+    // VariantTextColor:string;
     PreviousTestBackgroundBtn:string;
     FlagColorSvgBtn:string;
     QuestionContentBackground:string;

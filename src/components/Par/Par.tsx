@@ -16,8 +16,8 @@ interface ParProps {
 const Par = ({ name, quantity, percent, svg, id }: ParProps) => {
     const dispatch = useDispatch();
     
-    const practice = useSelector((state: RootState) => state.practice, shallowEqual);
-    const color = useSelector((state: RootState) => state.color, shallowEqual);
+    const practice = useSelector((state: RootState) => state.practice);
+    const color = useSelector((state: RootState) => state.color);
 
 
     const [isSelected, setIsSelected] = useState(false);

@@ -3,9 +3,10 @@ interface CircularProgressBarProps {
   skipped: number;
   incorrect: number;
   mockTest?: boolean | undefined;
+  colorText:string;
 }
 
-const CircularProgressBar = ({ correct, skipped, incorrect,mockTest }: CircularProgressBarProps) => {
+const CircularProgressBar = ({ correct, skipped, incorrect,mockTest,colorText }: CircularProgressBarProps) => {
   
   const total = correct + incorrect + skipped;
 
@@ -72,19 +73,19 @@ const CircularProgressBar = ({ correct, skipped, incorrect,mockTest }: CircularP
         transform="rotate(45 21 21)" 
       />
     
-      <text x="50%" y={mockTest ? "35%" : "50%"} dominantBaseline="middle" textAnchor="middle" fontWeight="900" fontSize={mockTest ? "8" : "10" } fill="white">
+      <text x="50%" y={mockTest ? "35%" : "50%"} dominantBaseline="middle" textAnchor="middle" fontWeight="900" fontSize={mockTest ? "8" : "10" } fill={colorText}>
         {Math.round(correctPercentage)}%
       </text>
 
 
       {mockTest &&  (
-         <text x="50%" y="55%" dominantBaseline="middle" textAnchor="middle" fontWeight="900" fontSize="6" fill="white">
+         <text x="50%" y="55%" dominantBaseline="middle" textAnchor="middle" fontWeight="900" fontSize="6" fill={colorText}>
           {title}
        </text>
       )}
      
-      <text x="40" y="22" fontWeight="900" fontSize="3.5" fill="white">PASS</text>
-      <text x="40" y="26" fontWeight="900" fontSize="3.5" fill="white">mark</text>
+      <text x="40" y="22" fontWeight="900" fontSize="3.5" fill={colorText}>PASS</text>
+      <text x="40" y="26" fontWeight="900" fontSize="3.5" fill={colorText}>mark</text>
     </svg>
   );
 };
