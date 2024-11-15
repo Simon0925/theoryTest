@@ -7,7 +7,7 @@ import useUserId from '../../hooks/useUserId';
 import Spinner from '../../UI/Spinner/Spinner';
 import GoToLogin from '../../components/GoToLogin/GoToLogin';
 
-// Lazy load components
+
 const FooterHPT = lazy(() => import('../../components/FooterHPT/FooterHPT'));
 const VideosSet = lazy(() => import('../../components/VideosSet/VideosSet'));
 const VideoTest = lazy(() => import('../../components/VideoTest/VideoTest'));
@@ -47,7 +47,7 @@ const HPT = () => {
         fetchData();
     }, [fetchData]);
 
-    // Memoize render logic for better performance
+ 
     const renderVideosByCategory = useCallback((category: string) => (
         <div className={styles.videoContainer}>
             {videosData

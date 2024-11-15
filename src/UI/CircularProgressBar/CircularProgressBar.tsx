@@ -1,12 +1,18 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+
 interface CircularProgressBarProps {
   correct: number;
   skipped: number;
   incorrect: number;
   mockTest?: boolean | undefined;
   colorText:string;
+  passColor:string;
 }
 
-const CircularProgressBar = ({ correct, skipped, incorrect,mockTest,colorText }: CircularProgressBarProps) => {
+const CircularProgressBar = ({ correct, skipped, incorrect,mockTest,colorText,passColor }: CircularProgressBarProps) => {
+
+  const color = useSelector((state: RootState) => state.color);
   
   const total = correct + incorrect + skipped;
 
@@ -66,26 +72,26 @@ const CircularProgressBar = ({ correct, skipped, incorrect,mockTest,colorText }:
         cx="21"
         cy="21"
         fill="transparent"
-        stroke="#0078AB"
+        stroke={color.OnceTwiceProgressOnesBackground}
         strokeWidth="4"
         strokeDasharray={`${skippedLength} ${circleLength}`}
         strokeDashoffset={skippedOffset}
         transform="rotate(45 21 21)" 
       />
     
-      <text x="50%" y={mockTest ? "35%" : "50%"} dominantBaseline="middle" textAnchor="middle" fontWeight="900" fontSize={mockTest ? "8" : "10" } fill={colorText}>
+      <text x="50%" y={mockTest ? "35%" : "50%"} dominantBaseline="middle" textAnchor="middle" fontWeight="900" fontSize={mockTest ? "8" : "10" } fill={color.textColor}>
         {Math.round(correctPercentage)}%
       </text>
 
 
       {mockTest &&  (
-         <text x="50%" y="55%" dominantBaseline="middle" textAnchor="middle" fontWeight="900" fontSize="6" fill={colorText}>
+         <text x="50%" y="55%" dominantBaseline="middle" textAnchor="middle" fontWeight="900" fontSize="6" fill={color.textColor}>
           {title}
        </text>
       )}
      
-      <text x="40" y="22" fontWeight="900" fontSize="3.5" fill={colorText}>PASS</text>
-      <text x="40" y="26" fontWeight="900" fontSize="3.5" fill={colorText}>mark</text>
+      <text x="40" y="22" fontWeight="900" fontSize="3.5" fill={color.textColor}>PASS</text>
+      <text x="40" y="26" fontWeight="900" fontSize="3.5" fill={color.textColor}>mark</text>
     </svg>
   );
 };

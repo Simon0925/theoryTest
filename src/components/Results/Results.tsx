@@ -129,8 +129,9 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
               mockTest={typeOftest === "MockTest"}
               correct={progressBar.trueAnswer}
               skipped={progressBar.pass}
-              incorrect={progressBar.falseAnswer} 
-              colorText={color.textColor}            />
+              incorrect={progressBar.falseAnswer}
+              colorText={color.textColor}
+              passColor={""}            />
           </div>
           {data.length > 0 && (
             <span style={{ color: color.textColor }} className={styles["title"]}>
