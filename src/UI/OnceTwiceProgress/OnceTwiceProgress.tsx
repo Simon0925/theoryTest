@@ -10,57 +10,79 @@ interface OnceTwiceProgressProps {
 }
 
 export default function OnceTwiceProgress({ once, twice }: OnceTwiceProgressProps) {
-  
-  const [correctDataFormat,setCorrectDataFormat] = useState({
-    once:0,
-    twice:0
-  })
-
   const color = useSelector((state: RootState) => state.color);
 
-  useEffect(() => {
-    if (once === null || twice === null) return;
+  const [currentPercent, setCurrentPercent] = useState({
+    once: 0,
+    twice: 0,
+  });
 
-    let targetOnce = once < 1 ? 0 : Math.floor(once); 
-    let targetTwice = twice < 1 ? 0 : Math.floor(twice); 
-
-    const duration = 500; 
-    const start = performance.now();
-
-    const animate = (time: number) => {
-      const elapsed = time - start;
-      const progress = Math.min(elapsed / duration, 1); 
-
-      setCorrectDataFormat({
-        once: Math.round(targetOnce * progress),
-        twice:Math.round(targetTwice * progress)
-      });
-      
-      if (progress < 1) {
-        requestAnimationFrame(animate); 
-      }
+  const incrementPercent = (
+    delay: number,
+    onesTarget: number,
+    twiceTarget: number,
+    setCurrentPercent: React.Dispatch<React.SetStateAction<{ once: number; twice: number }>>
+  ) => {
+    const updateTwice = () => {
+      let currentValueTwice = 0;
+      const intervalTwice = setInterval(() => {
+        if (currentValueTwice < twiceTarget) {
+          currentValueTwice += 1;
+          setCurrentPercent((prev) => ({ ...prev, twice: currentValueTwice }));
+        } else {
+          clearInterval(intervalTwice);
+        }
+      }, delay);
     };
 
-    requestAnimationFrame(animate); 
-    return () => {};
+    const updateOnce = () => {
+      let currentValueOnce = 0;
+      const intervalOnce = setInterval(() => {
+        if (currentValueOnce < onesTarget) {
+          currentValueOnce += 1;
+          setCurrentPercent((prev) => ({ ...prev, once: currentValueOnce }));
+        } else {
+          clearInterval(intervalOnce);
+        }
+      }, delay);
+    };
+    updateTwice();
+    updateOnce();
+  };
+
+  useEffect(() => {
+    if (typeof once === "number" && typeof twice === "number") {
+      incrementPercent(100, once, twice, setCurrentPercent);
+    }
   }, [once, twice]);
 
   return (
     <div className={styles["wrap"]}>
-      <div style={{backgroundColor:color.OnceTwiceProgressOnesBackground}} className={styles["once"]}>
+      <div
+        style={{ backgroundColor: color.OnceTwiceProgressOnesBackground }}
+        className={styles["once"]}
+      >
         <div className={styles["container"]}>
-          <p className={styles["percent"]}>{correctDataFormat.once}%</p>
+          <p className={styles["percent"]}>{currentPercent.once}%</p>
           <p className={styles["title"]}>once</p>
         </div>
       </div>
       <div className={styles["twice"]}>
         <div className={styles["container"]}>
-          <p className={styles["percent"]}>{correctDataFormat.twice}%</p>
+          <p className={styles["percent"]}>{currentPercent.twice}%</p>
           <p className={styles["title"]}>twice</p>
         </div>
       </div>
       <div className={styles["circle"]}>
-        <CircleTrainer colorCircle={color.OnceTwiceProgressOnesBackground} centerCircle={color.mainColor} textColor={color.VariantTitleColor} />
+        <CircleTrainer
+          centerCirclebackgroundColor={color.mainColor}
+          progressColor={color.CircularTrainerProgressBarColor}
+          progressBarFill2Color={"#00BE5D"}
+          progressBarFill1Color={color.OnceTwiceProgressOnesBackground}
+          textColor={color.VariantTitleColor}
+          twiceData={20}
+          onesData={100}
+        />
       </div>
     </div>
   );

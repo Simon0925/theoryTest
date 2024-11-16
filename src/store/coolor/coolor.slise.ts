@@ -32,7 +32,7 @@ export interface CoolorState {
     TestBackground:string;
     TestcolorText:string;
     VariantTitleColor:string;
-    // CircularProgressBarColor:string;
+    CircularTrainerProgressBarColor:string;
     PreviousTestBackgroundBtn:string;
     FlagColorSvgBtn:string;
     QuestionContentBackground:string;
@@ -100,12 +100,15 @@ const initialState: CoolorState = {
     FooterColorNextBtnSelectedOption:"#0078AB",
     HeaderPracticeTestQuestionColors:"white",
     OnceTwiceProgressOnesBackground:"#0079AC",
+
+    CircularTrainerProgressBarColor:"#008BC8",
+
+
     HptTitleColorText:"#0078AB",
     HtpPlateBackground:"white",
     HtpIntroductionBtnBackground:"#0078AB",
     HtpIntroductionBtnTextColor:"white",
     HtpIconNumberBackground:"#0078AB",
-
 
 };
 
@@ -163,6 +166,8 @@ export const colorSlice = createSlice({
                     state.HeaderPracticeTestQuestionColors = "white";
                     state.OnceTwiceProgressOnesBackground="#0079AC";
 
+                    state.CircularTrainerProgressBarColor= "#008BC8";
+
                     state.HptTitleColorText="#0078AB";
                     state.HtpPlateBackground="white";
                     state.HtpIntroductionBtnBackground="#0078AB";
@@ -218,6 +223,9 @@ export const colorSlice = createSlice({
 
                     state.OnceTwiceProgressOnesBackground="#F9921D";
 
+                    state.CircularTrainerProgressBarColor= "#FFF9D0";
+
+
                     state.HptTitleColorText="#000000";
                     state.HtpPlateBackground="white";
                     state.HtpIntroductionBtnBackground="#F9931C";
@@ -225,7 +233,7 @@ export const colorSlice = createSlice({
                     state.HtpIconNumberBackground="#0078AB";
 
 
-
+                    
                     break;
                 case 'frostedPearl':
                     state.headerColors = "#F9F9F9"; 
@@ -278,6 +286,8 @@ export const colorSlice = createSlice({
 
                     state.OnceTwiceProgressOnesBackground="#555555";
 
+                    state.CircularTrainerProgressBarColor= "#FFFFFF";
+
                     state.HptTitleColorText="#000000";
 
                     state.HtpPlateBackground="white";
@@ -285,6 +295,7 @@ export const colorSlice = createSlice({
                     state.HtpIntroductionBtnTextColor="#000000";
                     state.HtpIconNumberBackground="#555555";
 
+                    
 
                     break;
                 case 'violetMajesty':
@@ -336,6 +347,8 @@ export const colorSlice = createSlice({
                     state.HeaderPracticeTestQuestionColors = "white";
 
                     state.OnceTwiceProgressOnesBackground="#BC62C7";
+
+                    state.CircularTrainerProgressBarColor= "#F6EBF8";
 
 
                     state.HptTitleColorText="#5E299E";

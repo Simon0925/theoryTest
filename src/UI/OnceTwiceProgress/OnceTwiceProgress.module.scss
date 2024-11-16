@@ -5,7 +5,7 @@
     
     .once{
         background-color: #0079AC;
-        width: 175px;
+        width: 80%;
         height: 50%;           
     }
     .container{
@@ -29,14 +29,15 @@
     .circle{
         position: absolute;
         border-radius: 30rem;
-        width: 169px;
+        width: 175px;
         height: 100%;
-        right: -35px;
         top: 0;
+        left: 50%;
+        transform: translate(-12%, 0); 
     }
     .twice{
         background-color: #00BE5D;
-        width: 175px;
+        width: 80%;
         height: 50%;
     }
 }

@@ -8,6 +8,7 @@ import GoToLogin from '../../components/GoToLogin/GoToLogin';
 import useUserId from '../../hooks/useUserId';
 import { RootState } from '../../store/store';
 
+
 const TrainerTest = lazy(() => import('../../components/TrainerTest/TrainerTest'));
 const Results = lazy(() => import('../../components/Results/Results'));
 
@@ -19,22 +20,22 @@ export default function Trainer() {
     const [showResults, setShowResults] = useState(false);
     const [trainerProgress, setTrainerProgress] = useState<{ once: number | null, twice: number | null }>({ once: null, twice: null });
 
-    const { questions, isLoading } = useSelector(
+    const {isLoading } = useSelector(
         (state: RootState) => state.currentData.testsData["Trainer"],  
         shallowEqual
     );
     const auth = useSelector((state: RootState) => state.auth);
     const color = useSelector((state: RootState) => state.color);
 
-    const fetchTrainerData = useCallback(() => {
-        if (userId && questions.length === 0) {
+    const fetchTrainerData = useCallback(async() => {
+        if(userId){
             getDataStatistics(dispatch, setTrainerProgress, userId);
         }
-    }, [userId, questions.length, dispatch]);
+    }, [userId]);
 
     useEffect(() => {
         fetchTrainerData();
-    }, [fetchTrainerData]);
+    }, [userId]);
 
     const handleStartToggle = () => setIsTestStarted((prev) => !prev);
     const handleExitResult = (show: boolean) => {

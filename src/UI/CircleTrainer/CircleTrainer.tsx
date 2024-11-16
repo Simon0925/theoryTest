@@ -1,136 +1,185 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
-import styles from './CircleTrainer.module.scss';
+import { useEffect, useState } from "react";
 
-interface CircleTrainerProps {
-    colorCircle:string,
-    centerCircle:string,
-    textColor:string,
+interface CircleTrainerProps{
+    centerCirclebackgroundColor:string;
+    progressColor:string;
+    progressBarFill1Color:string;
+    progressBarFill2Color:string;
+    textColor:string;
+    onesData: number | null;
+    twiceData: number | null;
 }
 
-const CircleTrainer = ({colorCircle,centerCircle,textColor}:CircleTrainerProps) => {
-    const [curentPercent, setCurentPercent] = useState(0);
+export default function CircleTrainer ({
+    centerCirclebackgroundColor,
+    progressColor,
+    progressBarFill1Color,
+    progressBarFill2Color,
+    textColor,
+    twiceData,
+    onesData
+}:CircleTrainerProps) {
 
-    const [circleFilled, setCircleFilled] = useState({
-        filled: 25,
-        indent: 75,
-        circleBlueDashoffset: 0.75
-    });
+    const strokeWidth = 12; 
+    
+    const radius = 50 - strokeWidth / 2; 
+   
+    const circleLength = 2 * Math.PI * radius;
 
-    const r = 18.5;
-    const circleLength = useMemo(() => 2 * Math.PI * r, [r]); 
-    const x = 21;
-    const y = 21;
+    const [currentPercent, setCurrentPercent] = useState({
+        once: 0,
+        twice: 0,
+      });
 
-    const filled = useCallback((percent:number) => {
-        setCircleFilled((prev) => ({
-            filled: prev.filled === 76 ? 75 : prev.filled + percent,
-            indent: prev.indent === 24 ? 25 : prev.indent - percent,
-            circleBlueDashoffset: Number((prev.circleBlueDashoffset - (percent / 100)).toFixed(2))
-        }));
-    }, []);
+      const [segmentLength,setSegmentLength]= useState({
+        once: circleLength,
+        twice: circleLength,
+      });
 
-    const incrementPercent = useCallback(() => {
-        if (curentPercent <= 55) {
-            setTimeout(() => {
-                filled(1); 
-                setCurentPercent((prev) => prev + 1);
-            }, 3);
+    const [greenEndAngle,setGreenEndAngle] = useState(0)
+
+    const oncePercent =  typeof onesData === 'number' ?((onesData * 25) / 100)/100 : 0;
+
+    const twicePercent =  typeof twiceData === 'number' ||twiceData === 0? ((twiceData * 75) / 100)/100 : 0;
+
+  
+
+    const onesSegmentLength = circleLength - (circleLength * oncePercent) ;
+    const twiceSegmentLength =  Math.floor(circleLength  - (circleLength * twicePercent));
+
+    
+    const incrementPercenttwice = (
+        delay: number,
+        twicetarget: number,
+        setCurrentPercent: React.Dispatch<React.SetStateAction<{ once: number; twice: number }>>
+    ) => {
+    
+        const updateTwice = (currentValue: number) => {
+            if (currentValue <= twicetarget) {
+                setCurrentPercent((prev) => ({ ...prev, twice: currentValue}));
+                setTimeout(() => updateTwice(currentValue + 1), delay);
+            }
+        };
+        updateTwice(0); 
+       
+    };
+
+    const incrementPercentOnce = (
+        delay: number,
+        onestarget: number,
+        setCurrentPercent: React.Dispatch<React.SetStateAction<{ once: number; twice: number }>>
+    ) => {
+        const updateOnce = (currentValue: number) => {
+            if (currentValue <= onestarget) {
+                setCurrentPercent((prev) => ({ ...prev, once: currentValue}));
+                setTimeout(() => updateOnce(currentValue + 1), delay);
+            }
         }
-        else if(curentPercent <= 75) {
-            setTimeout(() => {
-                filled(1); 
-                setCurentPercent((prev) => prev + 1);
-            }, 20);
-        }
-    }, [curentPercent, filled]);
+        updateOnce(0)
+    };
 
     useEffect(() => {
-        if (curentPercent < 75) {
-            incrementPercent();
+        if(typeof twiceData === 'number' ){
+            incrementPercenttwice(20,twiceData, setCurrentPercent);    
+        }   
+    }, [twiceData]);
+
+    useEffect(() => {
+        if (segmentLength.twice === Math.floor(circleLength - (circleLength * twicePercent)) && typeof onesData === 'number' ) {
+            incrementPercentOnce(20,onesData, setCurrentPercent); 
         }
-    }, [curentPercent, incrementPercent]);
+      }, [segmentLength.twice,onesData]);
+
+    const progressBarTwice = () =>{
+        const twicePercent = ((currentPercent.twice * 75) / 100)/100;
+        const twiceSegmentLength =  Math.floor(circleLength  - (circleLength * twicePercent));
+        setSegmentLength((prev) => ({ ...prev, twice: twiceSegmentLength}));
+        setGreenEndAngle(270 + twicePercent * 360)
+
+    }
+
+
+    const progressBarOnce = () => {
+        const oncePercent = ((currentPercent.once * 25) / 100) / 100;
+        const onesSegmentLength = Math.floor(circleLength - (circleLength * oncePercent));
+        setSegmentLength((prev) => ({ ...prev, once: onesSegmentLength })); 
+    };
+        
+    useEffect(()=>{
+        progressBarTwice()
+
+    },[currentPercent.twice])
+
+   
+
+
+    useEffect(()=>{
+        progressBarOnce()
+    },[currentPercent.once])
+    
 
     return (
-                
-            <svg
-                width="100%"   
-                height="100%"   
-                viewBox="0 0 42 42" 
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <circle
-                    r={20}
-                    cx={x}
-                    cy={y}
-                    fill={centerCircle}  
-                    stroke="none"
-                />
-                <circle
-                    className={styles.circleBlue}
-                    r={r}
-                    cx={x}
-                    cy={y}
-                    fill="transparent"
-                    stroke="#0078AB"
-                    strokeWidth="5"
-                    strokeDasharray={circleLength}
-                    strokeDashoffset="0"
-                    transform="rotate(-90 21 21)"
-                />
-                <circle
-                    r={r}
-                    cx={x}
-                    cy={y}
-                    fill="transparent"
-                    stroke="#00BE5D"
-                    strokeWidth="5"
-                    strokeDasharray={`${ circleFilled.filled} ${circleFilled.indent}`}
-                    strokeDashoffset="0"
-                    transform="rotate(-55 21 21)"
-                />
-                <circle
-                    r={r}
-                    cx={x}
-                    cy={y}
-                    fill="transparent"
-                    stroke={colorCircle}
-                    strokeWidth="5"
-                    strokeDasharray={`${circleLength * 0.25} ${circleLength * 0.75}`}
-                    strokeDashoffset={circleLength * circleFilled.circleBlueDashoffset}
-                    transform="rotate(180 21 21)"
-                />
+        <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+             <circle 
+                cx="50"
+                cy="50"
+                r={radius}
+                fill={centerCirclebackgroundColor}
+                stroke="none"
+            />
+            <g  textAnchor="middle" dominantBaseline="middle" fill={textColor} fontSize="13"  >
                 <text
-                    x="50%" 
-                    y="35%" 
-                    textAnchor="middle" 
-                    dominantBaseline="middle" 
-                    fill={textColor} 
-                    fontSize="4" 
+                    x="50" 
+                    y="35" 
                 >
                     in total
                 </text>
                 <text
-                    x="50%" 
-                    y="50%" 
-                    textAnchor="middle" 
-                    dominantBaseline="middle" 
-                    fill={textColor} 
-                    fontSize="5" 
+                    x="50" 
+                    y="50" 
                 >
                     746
                 </text>
                 <text
-                    x="50%" 
-                    y="65%" 
-                    textAnchor="middle" 
-                    dominantBaseline="middle" 
-                    fill={textColor} 
-                    fontSize="4" 
+                    x="50" 
+                    y="65" 
                 >
                     questions
                 </text>
-            </svg>
-    );
-};
-
-export default CircleTrainer;
+            </g>
+            <circle 
+                cx="50"
+                cy="50"
+                r={radius}
+                fill="transparent"
+                stroke={progressColor}
+                strokeWidth={strokeWidth}
+            />
+             <circle
+                className={'ones'}  
+                cx="50"
+                cy="50"
+                r={radius}
+                fill="transparent"
+                stroke={progressBarFill1Color}
+                strokeWidth={strokeWidth}
+                strokeDasharray={circleLength}
+                strokeDashoffset={segmentLength.once}
+                transform={`rotate(${greenEndAngle} 50 50)`} 
+            />
+            <circle
+                className={'twice'} 
+                cx="50"
+                cy="50"
+                r={radius}
+                fill="transparent"
+                stroke={progressBarFill2Color}
+                strokeWidth={strokeWidth}
+                strokeDasharray={circleLength}
+                strokeDashoffset={segmentLength.twice}
+                transform={`rotate(${270} 50 50)`} 
+            />
+           
+        </svg>
+    )
+}

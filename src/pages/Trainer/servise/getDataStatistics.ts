@@ -21,10 +21,11 @@ export const getDataStatistics = async (
       throw new Error(`Failed to fetch trainer data: ${response.status} ${response.statusText}`);
     }
     const data = await response.json();
+  
     setTrainerOnceTwice(prev => ({
       ...prev,
-      once: data.correctAnswersOnce,
-      twice: data.correctAnswersTwice,
+      once: Math.floor(data.correctAnswersOnce),
+      twice: Math.floor(data.correctAnswersTwice),
     }));
 
     return data;
