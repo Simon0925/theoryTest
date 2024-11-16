@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import CircleTrainer from "../CircleTrainer/CircleTrainer";
 import styles from "./OnceTwiceProgress.module.scss";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
+import CircleTrainer from "../CircleTrainer/CircleTrainer";
 
 interface OnceTwiceProgressProps {
   once: number | null;
@@ -17,42 +17,27 @@ export default function OnceTwiceProgress({ once, twice }: OnceTwiceProgressProp
     twice: 0,
   });
 
-  const incrementPercent = (
-    delay: number,
-    onesTarget: number,
-    twiceTarget: number,
-    setCurrentPercent: React.Dispatch<React.SetStateAction<{ once: number; twice: number }>>
-  ) => {
-    const updateTwice = () => {
-      let currentValueTwice = 0;
-      const intervalTwice = setInterval(() => {
-        if (currentValueTwice < twiceTarget) {
-          currentValueTwice += 1;
-          setCurrentPercent((prev) => ({ ...prev, twice: currentValueTwice }));
+
+  const incrementPercent = (delay: number, targets: { once: number; twice: number }) => {
+    const updatePercent = (target: number, key: 'once' | 'twice') => {
+      let currentValue = 0;
+      const interval = setInterval(() => {
+        if (currentValue < target) {
+          currentValue += 1;
+          setCurrentPercent((prev) => ({ ...prev, [key]: currentValue }));
         } else {
-          clearInterval(intervalTwice);
+          clearInterval(interval);
         }
       }, delay);
     };
 
-    const updateOnce = () => {
-      let currentValueOnce = 0;
-      const intervalOnce = setInterval(() => {
-        if (currentValueOnce < onesTarget) {
-          currentValueOnce += 1;
-          setCurrentPercent((prev) => ({ ...prev, once: currentValueOnce }));
-        } else {
-          clearInterval(intervalOnce);
-        }
-      }, delay);
-    };
-    updateTwice();
-    updateOnce();
+    updatePercent(targets.once, 'once');
+    updatePercent(targets.twice, 'twice');
   };
 
   useEffect(() => {
     if (typeof once === "number" && typeof twice === "number") {
-      incrementPercent(100, once, twice, setCurrentPercent);
+      incrementPercent(100, { once, twice });
     }
   }, [once, twice]);
 
@@ -75,11 +60,6 @@ export default function OnceTwiceProgress({ once, twice }: OnceTwiceProgressProp
       </div>
       <div className={styles["circle"]}>
         <CircleTrainer
-          centerCirclebackgroundColor={color.mainColor}
-          progressColor={color.CircularTrainerProgressBarColor}
-          progressBarFill2Color={"#00BE5D"}
-          progressBarFill1Color={color.OnceTwiceProgressOnesBackground}
-          textColor={color.VariantTitleColor}
           twiceData={twice}
           onesData={once}
         />

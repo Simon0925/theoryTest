@@ -1,112 +1,84 @@
+
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 interface CircleTrainerProps{
-    centerCirclebackgroundColor:string;
-    progressColor:string;
-    progressBarFill1Color:string;
-    progressBarFill2Color:string;
-    textColor:string;
     onesData: number | null;
     twiceData: number | null;
 }
 
 export default function CircleTrainer ({
-    centerCirclebackgroundColor,
-    progressColor,
-    progressBarFill1Color,
-    progressBarFill2Color,
-    textColor,
     twiceData,
     onesData
 }:CircleTrainerProps) {
 
-    const strokeWidth = 12; 
-    
-    const radius = 50 - strokeWidth / 2; 
-   
+    const {
+        OnceTwiceProgressOnesBackground,
+        VariantTitleColor,
+        mainColor,
+        CircularTrainerProgressBarColor
+    } = useSelector((state: RootState) => state.color);
+
+    const strokeWidth = 12;
+
+    const radius = 50 - strokeWidth / 2;
+
     const circleLength = 2 * Math.PI * radius;
 
-    const [currentPercent, setCurrentPercent] = useState({
+    const [currentPercent, setCurrentPercent] = useState({ 
         once: 0,
-        twice: 0,
-      });
-
-      const [segmentLength,setSegmentLength]= useState({
+        twice: 0 
+    });
+    const [segmentLength, setSegmentLength] = useState({
         once: circleLength,
         twice: circleLength,
-      });
+    });
     
- 
+    const [greenEndAngle, setGreenEndAngle] = useState(0);
 
-    const [greenEndAngle,setGreenEndAngle] = useState(0)
-
-    const oncePercent =  typeof onesData === 'number' ?((onesData * 25) / 100)/100 : 0;
-
-    const twicePercent =  typeof twiceData === 'number' ||twiceData === 0? ((twiceData * 75) / 100)/100 : 0;
-
-  
-
-    const onesSegmentLength = circleLength - (circleLength * oncePercent) ;
-    const twiceSegmentLength =  Math.floor(circleLength  - (circleLength * twicePercent));
-
-    
-    const incrementPercenttwice = (
+    const incrementPercent = (
         delay: number,
-        twicetarget: number,
-        setCurrentPercent: React.Dispatch<React.SetStateAction<{ once: number; twice: number }>>
+        target: number,
+        key: "once" | "twice"
     ) => {
-    
-        const updateTwice = (currentValue: number) => {
-            if (currentValue <= twicetarget) {
-                setCurrentPercent((prev) => ({ ...prev, twice: currentValue}));
-                setTimeout(() => updateTwice(currentValue + 1), delay);
+        const update = (currentValue: number) => {
+            if (currentValue <= target) {
+                setCurrentPercent((prev) => ({ ...prev, [key]: currentValue }));
+                setTimeout(() => update(currentValue + 1), delay);
             }
         };
-        updateTwice(0); 
-       
-    };
-
-    const incrementPercentOnce = (
-        delay: number,
-        onestarget: number,
-        setCurrentPercent: React.Dispatch<React.SetStateAction<{ once: number; twice: number }>>
-    ) => {
-        const updateOnce = (currentValue: number) => {
-            if (currentValue <= onestarget) {
-                setCurrentPercent((prev) => ({ ...prev, once: currentValue}));
-                setTimeout(() => updateOnce(currentValue + 1), delay);
-            }
-        }
-        updateOnce(0)
+        update(0);
     };
 
     useEffect(() => {
-        if(typeof twiceData === 'number'&&typeof onesData === 'number' ){
-            incrementPercenttwice(20,twiceData, setCurrentPercent);
-            incrementPercentOnce(20,onesData, setCurrentPercent);
-        }   
-    }, [twiceData,onesData]);
+        if (typeof twiceData === "number" && typeof onesData === "number") {
+            incrementPercent(20, twiceData, "twice");
+            incrementPercent(20, onesData, "once");
+        }
+    }, [twiceData, onesData]);
 
-
-    const progressBarTwice = () =>{
-        const twicePercent = ((currentPercent.twice * 75) / 100)/100;
-        const twiceSegmentLength =  circleLength  - (circleLength * twicePercent);
-        setSegmentLength((prev) => ({ ...prev, twice: twiceSegmentLength}));
-        setGreenEndAngle(270 + twicePercent * 360)
-
-    }
-
-    const progressBarOnce = () => {
-        const oncePercent = ((currentPercent.once * 25) / 100) / 100;
-        const onesSegmentLength = circleLength - (circleLength * oncePercent);
-        setSegmentLength((prev) => ({ ...prev, once: onesSegmentLength })); 
+    
+    const calculateSegment = (percent: number, totalPercent: number) => {
+        const scaledPercent = (percent * totalPercent) / 100 / 100;
+        return {
+            segmentLength: circleLength - circleLength * scaledPercent,
+            endAngle: 270 + scaledPercent * 360,
+        };
     };
-        
-    useEffect(()=>{
-        progressBarTwice()
-        progressBarOnce()
 
-    },[currentPercent.twice,currentPercent.once])
+    useEffect(() => {
+        const { segmentLength: twiceSegmentLength, endAngle } = calculateSegment(currentPercent.twice,75);
+
+        const { segmentLength: onceSegmentLength } = calculateSegment(currentPercent.once,25);
+
+        setSegmentLength({
+            twice: twiceSegmentLength,
+            once: onceSegmentLength,
+        });
+
+        setGreenEndAngle(endAngle);
+    }, [currentPercent]);
 
 
     return (
@@ -115,10 +87,10 @@ export default function CircleTrainer ({
                 cx="50"
                 cy="50"
                 r={radius}
-                fill={centerCirclebackgroundColor}
+                fill={mainColor}
                 stroke="none"
             />
-            <g  textAnchor="middle" dominantBaseline="middle" fill={textColor} fontSize="13"  >
+            <g  textAnchor="middle" dominantBaseline="middle" fill={VariantTitleColor} fontSize="13"  >
                 <text
                     x="50" 
                     y="35" 
@@ -143,7 +115,7 @@ export default function CircleTrainer ({
                 cy="50"
                 r={radius}
                 fill="transparent"
-                stroke={progressColor}
+                stroke={CircularTrainerProgressBarColor}
                 strokeWidth={strokeWidth}
             />
              <circle
@@ -152,7 +124,7 @@ export default function CircleTrainer ({
                 cy="50"
                 r={radius}
                 fill="transparent"
-                stroke={progressBarFill1Color}
+                stroke={OnceTwiceProgressOnesBackground}
                 strokeWidth={strokeWidth}
                 strokeDasharray={circleLength}
                 strokeDashoffset={segmentLength.once}
@@ -164,7 +136,7 @@ export default function CircleTrainer ({
                 cy="50"
                 r={radius}
                 fill="transparent"
-                stroke={progressBarFill2Color}
+                stroke={"#00BE5D"}
                 strokeWidth={strokeWidth}
                 strokeDasharray={circleLength}
                 strokeDashoffset={segmentLength.twice}
