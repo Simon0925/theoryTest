@@ -85,6 +85,9 @@ const VideoTest = ({ exit, completedVideosActive, isIntroduction }: VideoTestPro
             autoPlay
             onEnded={handleVideoEnd}
             ref={videoRef}
+            playsInline
+            disablePictureInPicture
+            controlsList="nodownload nofullscreen noremoteplayback"
         />   
     );
 

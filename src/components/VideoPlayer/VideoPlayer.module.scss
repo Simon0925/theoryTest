@@ -3,10 +3,11 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    height: 100dvh;
     .video {
         width: 100%;
-        height: 89vh;
         object-position: center;
+        user-select: none;
     }
   
   }

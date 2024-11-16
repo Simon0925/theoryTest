@@ -39,6 +39,9 @@ const VideoPlayer = () => {
         onLoadedMetadata={handleLoadedMetadata}
         className={styles.video}
         src={`${hostname}/video/introduction/introduction.mp4`}
+        controlsList="nodownload nofullscreen noremoteplayback"
+        playsInline
+        disablePictureInPicture
       />
       {isVisible && (
         <VideoControlPanel />

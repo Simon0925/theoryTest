@@ -52,7 +52,7 @@ const VideoControlPanel = () => {
                     <FastForwardSvg onClick={() => skipTime("backward")} transform={"rotate(180)"} />
                 </div>
                 <div className={styles.playBtn} onClick={togglePlayPause}>
-                    {isPlaying ? <PauseSvg /> : <PlayVectorSvg />}
+                    {isPlaying ? <PauseSvg color={"white"} /> : <PlayVectorSvg color={"white"} />}
                 </div>
                 <div className={styles.fastForward}>
                   <FastForwardSvg onClick={() => skipTime("forward")} transform={"rotate(0)"} />
