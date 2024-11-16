@@ -12,6 +12,7 @@ import SwitchColor from "../../components/SwitchColor/SwitchColor";
 import Modal from "../../components/Modal/Modal";
 import { resetStateAll, setTestInactive } from "../../store/currentData/currentData.slice";
 import ReactDOM from 'react-dom';
+import { updateBurgerMenu } from "../../store/burgerMenu/burgerMenu.slice";
 
 export default function BurgerMenu() {
     
@@ -60,6 +61,7 @@ export default function BurgerMenu() {
         dispatch(resetStateAll());
         dispatch(setTestInactive(false));
         navigate(pendingPath);
+        dispatch(updateBurgerMenu(false))
       }
 
       const checkTest =  (path:string,event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -69,6 +71,7 @@ export default function BurgerMenu() {
             setModalVisible(true);
         }else{
             navigate(path);
+           dispatch(updateBurgerMenu(false))
         }
       }
 

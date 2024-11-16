@@ -88,6 +88,7 @@ const VideoTest = ({ exit, completedVideosActive, isIntroduction }: VideoTestPro
             playsInline
             disablePictureInPicture
             controlsList="nodownload nofullscreen noremoteplayback"
+            
         />   
     );
 
