@@ -80,8 +80,8 @@ export default function OnceTwiceProgress({ once, twice }: OnceTwiceProgressProp
           progressBarFill2Color={"#00BE5D"}
           progressBarFill1Color={color.OnceTwiceProgressOnesBackground}
           textColor={color.VariantTitleColor}
-          twiceData={20}
-          onesData={100}
+          twiceData={twice}
+          onesData={once}
         />
       </div>
     </div>

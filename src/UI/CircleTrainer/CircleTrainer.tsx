@@ -35,6 +35,8 @@ export default function CircleTrainer ({
         once: circleLength,
         twice: circleLength,
       });
+    
+ 
 
     const [greenEndAngle,setGreenEndAngle] = useState(0)
 
@@ -79,44 +81,33 @@ export default function CircleTrainer ({
     };
 
     useEffect(() => {
-        if(typeof twiceData === 'number' ){
-            incrementPercenttwice(20,twiceData, setCurrentPercent);    
+        if(typeof twiceData === 'number'&&typeof onesData === 'number' ){
+            incrementPercenttwice(20,twiceData, setCurrentPercent);
+            incrementPercentOnce(20,onesData, setCurrentPercent);
         }   
-    }, [twiceData]);
+    }, [twiceData,onesData]);
 
-    useEffect(() => {
-        if (segmentLength.twice === Math.floor(circleLength - (circleLength * twicePercent)) && typeof onesData === 'number' ) {
-            incrementPercentOnce(20,onesData, setCurrentPercent); 
-        }
-      }, [segmentLength.twice,onesData]);
 
     const progressBarTwice = () =>{
         const twicePercent = ((currentPercent.twice * 75) / 100)/100;
-        const twiceSegmentLength =  Math.floor(circleLength  - (circleLength * twicePercent));
+        const twiceSegmentLength =  circleLength  - (circleLength * twicePercent);
         setSegmentLength((prev) => ({ ...prev, twice: twiceSegmentLength}));
         setGreenEndAngle(270 + twicePercent * 360)
 
     }
 
-
     const progressBarOnce = () => {
         const oncePercent = ((currentPercent.once * 25) / 100) / 100;
-        const onesSegmentLength = Math.floor(circleLength - (circleLength * oncePercent));
+        const onesSegmentLength = circleLength - (circleLength * oncePercent);
         setSegmentLength((prev) => ({ ...prev, once: onesSegmentLength })); 
     };
         
     useEffect(()=>{
         progressBarTwice()
-
-    },[currentPercent.twice])
-
-   
-
-
-    useEffect(()=>{
         progressBarOnce()
-    },[currentPercent.once])
-    
+
+    },[currentPercent.twice,currentPercent.once])
+
 
     return (
         <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
