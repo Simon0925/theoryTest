@@ -3,7 +3,7 @@ import styles from "./Results.module.scss";
 import OkVectorSvg from "../../SVG/OkVectorSvg/OkVectorSvg";
 import CrossSvg from "../../SVG/CrossSvg/CrossSvg";
 import HeaderResults from "../HeaderResults/HeaderResults";
-import CircularProgressBar from "../../UI/CircularProgressBar/CircularProgressBar";
+// import CircularProgressBar from "../../UI/CircularProgressBar/CircularProgressBar";
 import currentDate from "./service/date";
 import { QuestionResult, statisticData } from './interface/interface';
 import { mockTestData } from './service/mockTestData';
@@ -13,6 +13,8 @@ import hostname from "../../config/hostname";
 
 import postResult from './service/postResult';
 import useUserId from "../../hooks/useUserId";
+import CircularProgressBarTest from "../../UI/CircularProgressBarTest/CircularProgressBarTest";
+
 
 interface ResultsProps {
   exitResult: (e: boolean) => void;
@@ -115,7 +117,9 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
     }
   }, [results,questions,statisticData]);
 
-  
+  useEffect(()=>{
+    console.log("progressBar:",progressBar)
+  },[progressBar])
  
 
   return (
@@ -124,15 +128,18 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
         <HeaderResults exitResult={exitResult} typeOftest={typeOftest} />
 
         <div className={styles.statistic}>
-          <div className={styles.progressBar}>
-            <CircularProgressBar
-              mockTest={typeOftest === "MockTest"}
-              correct={progressBar.trueAnswer}
-              skipped={progressBar.pass}
-              incorrect={progressBar.falseAnswer}
-              colorText={color.textColor}
-              passColor={""}            />
+          <div className={styles.containerProgressBar}>
+            <div className={styles.progressBar}>
+                <CircularProgressBarTest 
+                  mockTest={typeOftest === "MockTest"}
+                  correct={progressBar.trueAnswer}
+                  skipped={progressBar.pass}
+                  incorrect={progressBar.falseAnswer}
+                />
+            </div>
           </div>
+          
+          
           {data.length > 0 && (
             <span style={{ color: color.textColor }} className={styles["title"]}>
               <p>You have answered</p>

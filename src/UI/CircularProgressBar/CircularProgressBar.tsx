@@ -6,11 +6,10 @@ interface CircularProgressBarProps {
   skipped: number;
   incorrect: number;
   mockTest?: boolean | undefined;
-  colorText:string;
-  passColor:string;
+
 }
 
-const CircularProgressBar = ({ correct, skipped, incorrect,mockTest,colorText,passColor }: CircularProgressBarProps) => {
+const CircularProgressBar = ({ correct, skipped, incorrect,mockTest }: CircularProgressBarProps) => {
 
   const color = useSelector((state: RootState) => state.color);
   

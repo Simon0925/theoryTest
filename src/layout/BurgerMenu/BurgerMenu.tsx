@@ -1,121 +1,102 @@
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import styles from "./BurgerMenu.module.scss";
-import { useEffect, useState } from "react";
-import PencilSvg from "../../SVG/PencilSvg/PencilSvg";
-import ClockSvg from "../../SVG/ClockSvg/ClockSvg";
-import LightSvg from "../../SVG/LightSvg/LightSvg";
-import CameraSvg from "../../SVG/CameraSvg/CameraSvg";
-import SettingsSvg from "../../SVG/SettingsSvg/SettingsSvg";
-import { RootState } from "../../store/store";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ReactDOM from "react-dom";
+
+import styles from "./BurgerMenu.module.scss";
 import SwitchColor from "../../components/SwitchColor/SwitchColor";
 import Modal from "../../components/Modal/Modal";
 import { resetStateAll, setTestInactive } from "../../store/currentData/currentData.slice";
-import ReactDOM from 'react-dom';
 import { updateBurgerMenu } from "../../store/burgerMenu/burgerMenu.slice";
+import { RootState } from "../../store/store";
+
+import { NAV_ITEMS, isActivePath } from "./service/pathKey";
 
 export default function BurgerMenu() {
-    
-    const dispatch = useDispatch();
-    
-    const location = useLocation();
-    const navigate = useNavigate();
-    const modalRoot = document.getElementById('modal-root');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation(); 
 
-    const { headerColors, textColor, hoverColor, headerSvgColor } = useSelector(
-        (state: RootState) => state.color
-      );
-    
-    const [modalVisible, setModalVisible] = useState(false);
+  const modalRoot = document.getElementById("modal-root");
 
-    const [pendingPath, setPendingPath] = useState("");
+  const { headerColors, textColor, hoverColor, headerSvgColor } = useSelector(
+    (state: RootState) => state.color
+  );
 
-    const currentTestInProgress = useSelector((state: RootState) => state.currentData.currentTestInProgress);
+  const currentTestInProgress = useSelector(
+    (state: RootState) => state.currentData.currentTestInProgress
+  );
 
-    const getActiveState = (path:string) => ({
-        practice: path === '' || path === '/',
-        mockTest: path === 'mock-test',
-        trainer: path === 'trainer',
-        hpt: path === 'hpt',
-        settings: path === 'settings',
-    });
+  const [modalVisible, setModalVisible] = useState(false);
+  const [pendingPath, setPendingPath] = useState("");
 
-    const [active, setActive] = useState(getActiveState(location.pathname.substr(1)));
+  const handleCloseTest = () => {
+    setModalVisible(false);
+    dispatch(resetStateAll());
+    dispatch(setTestInactive(false));
+    navigate(pendingPath);
+    dispatch(updateBurgerMenu(false));
+  };
 
-    useEffect(() => {
-        setActive(getActiveState(location.pathname.substr(1)));
-    }, [location]);
+  const checkTest = (path: string, event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (currentTestInProgress) {
+      event.preventDefault();
+      setPendingPath(path);
+      setModalVisible(true);
+    } else {
+      navigate(path);
+      dispatch(updateBurgerMenu(false));
+    }
+  };
 
-    
-    
-    const navItems = [
-        { path: '/', icon: PencilSvg, label: 'Practice' },
-        { path: '/mock-test', icon: ClockSvg, label: 'Mock Test' },
-        { path: '/trainer', icon: LightSvg, label: 'Trainer' },
-        { path: '/hpt', icon: CameraSvg, label: 'HPT' },
-        { path: '/settings', icon: SettingsSvg, label: 'Settings' },
-      ];
+  return (
+    <div
+      style={{
+        backgroundColor: headerColors,
+        borderRight: `1px solid ${hoverColor}`,
+      }}
+      className={styles.wrap}
+    >
+      <div style={{ color: textColor }} className={styles.title}>
+        <h3>Theory Test</h3>
+      </div>
 
-      const handleCloseTest = () => {
-        setModalVisible(false);
-        dispatch(resetStateAll());
-        dispatch(setTestInactive(false));
-        navigate(pendingPath);
-        dispatch(updateBurgerMenu(false))
-      }
+      <nav className={styles.nav}>
+        {NAV_ITEMS.map(({ path, icon: Icon, label }) => (
+          <NavLink
+            key={path}
+            onClick={(e) => checkTest(path, e)}
+            className={isActivePath(path, location.pathname) ? styles["nav-btn"] : styles["not-active"]}
+            to={path}
+            style={{
+              "--header-bg-color": headerColors,
+              "--text-color": textColor,
+              "--hover-bg-color": hoverColor,
+              "--header-svg-color": headerSvgColor,
+            } as React.CSSProperties}
+          >
+            <Icon />
+            <span>{label}</span>
+          </NavLink>
+        ))}
+      </nav>
 
-      const checkTest =  (path:string,event: React.MouseEvent<HTMLAnchorElement>) => {
-        if(currentTestInProgress){
-            event.preventDefault();
-            setPendingPath(path)
-            setModalVisible(true);
-        }else{
-            navigate(path);
-           dispatch(updateBurgerMenu(false))
-        }
-      }
+      <div className={styles.containerColor}>
+        <SwitchColor svgColor={headerSvgColor} />
+      </div>
 
-    return (
-        <div style={{ backgroundColor: headerColors,borderRight:`1px solid${hoverColor}` }} className={styles.wrap}>
-            <div style={{color:textColor}} className={styles.title}>
-                <h3>Theory Test</h3>
-            </div>
-            <nav className={styles.nav}>
-            {navItems.map(({ path, icon: Icon, label }) => {
-                const isActive = active[path === '/' ? 'practice' : path.slice(1).replace('-', '') as keyof typeof active];
-                return (
-                    <NavLink
-                    key={path}
-                    onClick={(e) => checkTest(path, e)}
-                    className={isActive ? styles['nav-btn'] : styles['not-active']}
-                    to={path}
-                    style={{
-                        '--header-bg-color': headerColors,
-                        '--text-color': textColor,
-                        '--hover-bg-color': hoverColor,
-                        '--header-svg-color': headerSvgColor,
-                      } as React.CSSProperties}
-                    >
-                    <Icon />
-                    <span >{label}</span>
-                    </NavLink>
-                );
-            })}
-            </nav>
-            <div className={styles.containerColor}>
-                <SwitchColor svgColor={headerSvgColor}  />
-            </div>
-            {modalVisible &&modalRoot &&
-            ReactDOM.createPortal( 
-                <Modal
-                title="Are you sure you want to exit from the test?"
-                cancel
-                cancelClick={() => setModalVisible(false)}
-                close={handleCloseTest}
-                blueBtnText="Exit Test"
-                text={''}
-                />,modalRoot)
-            }
-        </div>
-    );
+      {modalVisible && modalRoot &&
+        ReactDOM.createPortal(
+          <Modal
+            title="Are you sure you want to exit the test?"
+            cancel
+            cancelClick={() => setModalVisible(false)}
+            close={handleCloseTest}
+            blueBtnText="Exit Test"
+            text=""
+          />,
+          modalRoot
+        )}
+    </div>
+  );
 }

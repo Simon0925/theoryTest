@@ -12,11 +12,21 @@
     padding-bottom: 1rem;
     .statistic{
         width: 100%;
-        .progressBar{
+        padding-top: 3rem;
+        .containerProgressBar{
             width: 100%;
             display: flex;
-            justify-content: center
+            align-items: center;
+            justify-content: center;
+            .progressBar{
+                width: 350px;
+                height: 200px;
+                display: flex;
+                justify-content: center
+                
+            }
         }
+        
         .title{
             padding-bottom: 1rem;
             width: 100%;
@@ -27,6 +37,8 @@
             color: white;
             font-size: 24px;
         }
+
+        
     }
     .question{
         display: grid;
