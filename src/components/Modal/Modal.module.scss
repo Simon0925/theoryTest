@@ -39,8 +39,10 @@
         width: 100%;
         gap: 1rem;
         .btn1{
-            padding: 0.4rem;
+            padding: 0.5rem 1rem;
             width: 100%;
+            font-size: 16px;
+            font-weight: 600;
             border-radius: 0.35rem;
             border: none;
             cursor: pointer;
@@ -48,8 +50,10 @@
             color: white;
         }
         .btn2{
-            padding: 0.4rem;
+            padding: 0.5rem 1rem;
             width: 100%;
+            font-size: 16px;
+            font-weight: 600;
             border-radius: 0.35rem;
             border: none;
             cursor: pointer;

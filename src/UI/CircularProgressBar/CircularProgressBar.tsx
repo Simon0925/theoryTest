@@ -16,13 +16,19 @@ const CircularProgressBar= ({ correct, skipped, incorrect, mockTest }: CircularP
    
   const total = correct + incorrect + skipped;
 
-  if (total === 0 || typeof total === 'undefined' || Number.isNaN(total)) {
-    return <div>Total{total}</div>;
+    if (
+      typeof correct === 'undefined'||  
+      typeof skipped === 'undefined'  ||
+      typeof incorrect === 'undefined'  ||
+      total === 0  ||
+      Number.isNaN(total)
+  ) {
+      return <></>;
   }
 
   if (!color) {
     return null;
-}
+  }
   const strokeWidth = 10;
   const radius = 50 - strokeWidth / 2;
   const circleLength = 2 * Math.PI * radius;
@@ -86,7 +92,9 @@ const CircularProgressBar= ({ correct, skipped, incorrect, mockTest }: CircularP
   }), [animatedPercentages.correct, animatedPercentages.incorrect]);
 
  
-  const title = Math.round(percentages.correct) >= 88 ? "PASSED" : "FAILED";
+  const title = Number.isFinite(percentages.correct) && Math.round(percentages.correct) >= 88 
+    ? "PASSED" 
+    : "FAILED";
 
   return (
     <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">

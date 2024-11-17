@@ -76,7 +76,7 @@ export default function BurgerMenu() {
             } as React.CSSProperties}
           >
             <Icon />
-            <span>{label}</span>
+            <span className={styles.label}>{label}</span>
           </NavLink>
         ))}
       </nav>

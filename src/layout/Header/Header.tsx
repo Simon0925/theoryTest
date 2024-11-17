@@ -13,7 +13,7 @@ import { updateBurgerMenu, updateVisible } from '../../store/burgerMenu/burgerMe
 import ArrowPrevSmallSvg from '../../SVG/ArrowPrevSmallSvg/ArrowPrevSmallSvg';
 import { resetStateAll, setTestInactive } from '../../store/currentData/currentData.slice';
 import Modal from '../../components/Modal/Modal';
-
+import ReactDOM from "react-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -22,6 +22,8 @@ const Header = () => {
     (state: RootState) => state.color
   );
   const currentTestInProgress = useSelector((state: RootState) => state.currentData.currentTestInProgress);
+  
+  const modalRoot = document.getElementById("modal-root");
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -123,16 +125,18 @@ const Header = () => {
           );
         })}
       </nav>
-      {modalVisible && (
-        <Modal
-          title="Are you sure you want to exit from the test?"
-          cancel
-          cancelClick={() => setModalVisible(false)}
-          close={handleCloseTest}
-          blueBtnText="Exit Test"
-          text={''}
-        />
-      )}
+      {modalVisible && modalRoot &&
+        ReactDOM.createPortal(
+          <Modal
+            title="Are you sure you want to exit the test?"
+            cancel
+            cancelClick={() => setModalVisible(false)}
+            close={handleCloseTest}
+            blueBtnText="Exit Test"
+            text=""
+          />,
+          modalRoot
+        )}
     </div>
   );
 };
