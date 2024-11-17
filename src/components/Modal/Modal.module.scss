@@ -12,11 +12,10 @@
 
 
 .content {
-    width: 250px;
     background-color: #2b3239;
     border-radius: 0.625rem;
     border: 1px solid #555b62;
-    padding: 1rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -39,7 +38,7 @@
         width: 100%;
         gap: 1rem;
         .btn1{
-            padding: 0.5rem 1rem;
+            padding: 0.5rem;
             width: 100%;
             font-size: 16px;
             font-weight: 600;
@@ -48,9 +47,14 @@
             cursor: pointer;
             background-color: #1470D2;
             color: white;
+            transition: background-color 0.5s ease, transform 0.5s ease; 
+            &:hover{
+                background-color:  #479ffc;
+                transform: scale(1.05);
+            }
         }
         .btn2{
-            padding: 0.5rem 1rem;
+            padding: 0.5rem;
             width: 100%;
             font-size: 16px;
             font-weight: 600;
@@ -59,6 +63,11 @@
             cursor: pointer;
             background-color: #686F76;
             color: white;
+            transition: background-color 0.5s ease, transform 0.5s ease; 
+            &:hover{
+                background-color:  #cacaca;
+                transform: scale(1.05);
+            }
         }
     }
 }

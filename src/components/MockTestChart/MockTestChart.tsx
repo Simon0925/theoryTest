@@ -1,6 +1,8 @@
 import { useEffect, useState, useMemo } from 'react';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
+import styles from './MockTestChart.module.scss';
+import ChartPointSvg from '../../SVG/ChartPointSvg/ChartPointSvg';
 
 interface ChartData {
   percentage: string;
@@ -23,8 +25,26 @@ interface GridLine {
 }
 
 const MockTestChart = ({ data }: { data: Data[] | null }) => {
-
   const color = useSelector((state: RootState) => state.color);
+  const [aspectRatio, setAspectRatio] = useState('none');
+
+  useEffect(() => {
+    const updateAspectRatio = () => {
+      if (window.innerWidth < 600) {
+        setAspectRatio('xMidYMid'); 
+      } else {
+        setAspectRatio('none'); 
+      }
+    };
+
+    updateAspectRatio();
+
+    window.addEventListener('resize', updateAspectRatio);
+
+    return () => {
+      window.removeEventListener('resize', updateAspectRatio);
+    };
+  }, []);
 
   const defaultData: ChartData[] = [
     { percentage: '20%' },
@@ -53,7 +73,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
 
   const points: Point[] = useMemo(() => {
     return [
-      { x: 0, y: maxY }, 
+      { x: 0, y: maxY },
       ...currentData.map((item, index) => {
         const x = ((index + 1) / currentData.length) * maxX;
         const y = maxY - parseInt(item.percentage);
@@ -62,23 +82,21 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
     ];
   }, [currentData]);
 
-
   useEffect(() => {
     if (points.length > 1 && currentData.length > 0) {
       const lastPercentage = parseInt(currentData[currentData.length - 1]?.percentage);
-      
+
       if (lastPercentage === 0) {
         points[points.length - 1] = {
           ...points[points.length - 1],
-          y: maxY, 
-          x: maxX - 2 
+          y: maxY,
+          x: maxX - 2,
         };
-      } 
-      else if (lastPercentage > 0) {
+      } else if (lastPercentage > 0) {
         points[points.length - 1] = {
           ...points[points.length - 1],
-          y: points[points.length - 1].y + 2, 
-          x: points[points.length - 1].x - 2 
+          y: points[points.length - 1].y + 2,
+          x: points[points.length - 1].x - 2,
         };
       }
     }
@@ -94,9 +112,9 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
   const generateVariableSmoothPath = useMemo(() => {
     return (points: Point[]) => {
       if (points.length < 2) return '';
-    
+
       let path = `M${points[0].x},${maxY}`;
-    
+
       if (points.length > 2) {
         const firstPoint = points[1];
         path += ` L${firstPoint.x},${firstPoint.y}`;
@@ -109,7 +127,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
       } else {
         path += ` L${points[1].x},${points[1].y}`;
       }
-    
+
       for (let i = 3; i < points.length; i++) {
         const curr = points[i - 1];
         const next = points[i];
@@ -174,12 +192,13 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
 
   return (
     <svg
+      className={styles.wrap}
       width="100%"
       height="350px"
       viewBox={`0 0 ${maxX} ${maxY + 1}`}
-      preserveAspectRatio="none"
+      preserveAspectRatio={aspectRatio}
       style={{
-        background: color.MockTestChartBackground
+        background: color.MockTestChartBackground,
       }}
     >
       {gridLines.map((line, index) => (
@@ -193,27 +212,25 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
             strokeDasharray={line.label === '86%' ? 'none' : '3 3'}
             strokeWidth="0.5"
           />
-          <text x="1" y={line.y - 2} fill={data?.length !== 0 ? color.MockTestChartLabel : '#7DC1E2'} fontSize="3.5" textAnchor="start">
+          <text className={styles.textSize} x="1" y={line.y - 2} fill={data?.length !== 0 ? color.MockTestChartLabel : '#7DC1E2'} fontSize="4" textAnchor="start">
             {line.label}
           </text>
         </g>
       ))}
-
       <path
         d={linePath}
-        stroke={data?.length !== 0 ? color.MockTestChartLinePath: '#12B9CB'}
+        stroke={data?.length !== 0 ? color.MockTestChartLinePath : '#12B9CB'}
         strokeWidth="0.5"
         fill="none"
         strokeDasharray={lineLength}
         strokeDashoffset={lineLength - progress}
       />
-
       {points.map((point, index) => (
         index !== 0 && (
           <circle key={index} cx={point.x} cy={point.y} r="0.8" fill={data?.length !== 0 ? color.MockTestChartPoints : '#7DC1E2'} />
         )
       ))}
-
+       
       <text
         x={130}
         y={50}
@@ -230,3 +247,5 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
 };
 
 export default MockTestChart;
+
+
