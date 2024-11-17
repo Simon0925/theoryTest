@@ -67,7 +67,11 @@ export default function MockTest() {
   if (auth.loading || !auth.isLogin) return <div className={styles.spinner}><Spinner color="white" /></div>;
 
   return (
-    <Suspense fallback={<Spinner color="white" />}>
+    <Suspense fallback={
+      <div className={styles.spinner}>
+        <Spinner color="white" />
+      </div>
+    }>
       {result ? (
         <Results
           time={curentTimeFormat}
@@ -94,9 +98,7 @@ export default function MockTest() {
           )}
         </div>
       ) : (
-        <div className={styles.spinner}>
-          <Spinner color="white" />
-        </div>
+       null
       )}
     </Suspense>
   );

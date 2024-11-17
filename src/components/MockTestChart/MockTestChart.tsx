@@ -26,14 +26,14 @@ interface GridLine {
 
 const MockTestChart = ({ data }: { data: Data[] | null }) => {
   const color = useSelector((state: RootState) => state.color);
-  const [aspectRatio, setAspectRatio] = useState('xMidYMid meet');
+  const [aspectRatio, setAspectRatio] = useState(300);
 
   useEffect(() => {
     const updateAspectRatio = () => {
       if (window.innerWidth < 600) {
-        setAspectRatio('xMinYMid');
+        setAspectRatio(200);
       } else {
-        setAspectRatio('none'); 
+        setAspectRatio(300); 
       }
     };
 
@@ -68,7 +68,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
   const [linePath, setLinePath] = useState('');
   const [progress, setProgress] = useState(0);
 
-  const maxX = 300;
+  const maxX = aspectRatio;
   const maxY = 100;
 
   const points: Point[] = useMemo(() => {

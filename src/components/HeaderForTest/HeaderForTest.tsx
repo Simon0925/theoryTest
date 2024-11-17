@@ -1,12 +1,12 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import ButtonTest from '../../UI/ButtonTest/ButtonTest';
+import React, { useState, useCallback, useMemo } from 'react';
 import styles from './HeaderForTest.module.scss';
 import Modal from '../Modal/Modal';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { resetPracticeState, resetPracticeStateThunk } from '../../store/practice/practice.slice'; 
-import { resetState } from '../../store/currentData/currentData.slice';
+import { resetState, resetStateAll } from '../../store/currentData/currentData.slice';
 import getName from "./service/getName"
+import ReactDOM from "react-dom";
 
 interface HeaderForTestProps {
   onExitClick: (e: boolean) => void;
@@ -32,6 +32,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
 
   const color = useSelector((state: RootState) => state.color, shallowEqual);
 
+  const modalRoot = document.getElementById("modal-root");
   
   const { questions, currentPage,visibleQuestions} = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],  
@@ -53,6 +54,8 @@ const HeaderForTest = React.memo(function HeaderForTest({
       case "PracticeTest":
         dispatch(resetPracticeState());
         dispatch(resetPracticeStateThunk());
+        dispatch(resetState({ testId: typeOftest }));
+        console.log("typeOftest:",typeOftest)
         break;
       case "MockTest":
         dispatch(resetState({ testId: typeOftest }));
@@ -107,7 +110,8 @@ const HeaderForTest = React.memo(function HeaderForTest({
         {finish}
       </button>
     </div>
-    {showExitModal && (
+    {showExitModal&& modalRoot &&
+        ReactDOM.createPortal(
         <Modal 
           close={handleExit} 
           text="" 
@@ -115,9 +119,10 @@ const HeaderForTest = React.memo(function HeaderForTest({
           cancelClick={handleModalCancel}
           cancel={true} 
           blueBtnText="Exit test" 
-        />
-      )}
-      {showResultsModal && typeOftest !== "MockTest" && (
+        /> ,modalRoot
+        )}
+      {showResultsModal && typeOftest !== "MockTest" && modalRoot &&(
+        ReactDOM.createPortal(
         <Modal 
           close={handleResultsModalClose} 
           text="Are you sure you want to finish current test and see the test results?" 
@@ -125,8 +130,8 @@ const HeaderForTest = React.memo(function HeaderForTest({
           cancelClick={handleResultsModalCancel}
           cancel={true} 
           blueBtnText="Show results" 
-        />
-      )}
+        />,modalRoot
+      ))}
     </>
   );
 });

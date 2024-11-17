@@ -14,6 +14,7 @@ import  {assessmentData}from './service/assessmentData';
 import useUserId from '../../hooks/useUserId';
 import QuestionWithAnswers from '../QuestionWithAnswers/QuestionWithAnswers';
 import PauseSvg from '../../SVG/PauseSvg/PauseSvg';
+import ReactDOM from "react-dom";
 
 
 
@@ -46,6 +47,8 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
   const typeOftest = 'MockTest';
   const dispatch = useDispatch();
   const color = useSelector((state: RootState) => state.color);
+
+  const modalRoot = document.getElementById("modal-root");
 
 
   const [reviewModal, setReviewModal] = useState(false);
@@ -137,7 +140,7 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
      >
       {isLoading && (visibleQuestions?.length ?? 0) <= 0 ? (
         <div className={styles.spinner} style={{ position: 'absolute', top: '40%' }}>
-          <Spinner color="black" />
+          <Spinner color="white" />
         </div>
       ) : (
         <>
@@ -187,7 +190,8 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
         />
       )}
 
-      {reviewModal && (
+      {reviewModal && modalRoot &&(
+        ReactDOM.createPortal(
         <ReviewModal
           setShowFlagged={() => handleReviewModeChange('flagged')}
           cancelClick={setReviewModal}
@@ -196,8 +200,8 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
           setShowUnansweredOnly={() => handleReviewModeChange('unanswered')}
           setShowAllOnly={() => handleReviewModeChange('all')}
           results={result}
-        />
-      )}
+        />,modalRoot
+      ))}
     </div>
   );
 }

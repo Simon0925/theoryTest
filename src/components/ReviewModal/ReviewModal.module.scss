@@ -9,10 +9,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
+    padding: 1rem;
 
 .content {
-    width: 230px;
+    width: 350px;
     background-color: #2b3239;
     border-radius: 0.625rem;
     border: 1px solid #555b62;
@@ -45,14 +45,18 @@
             gap: 0.5rem;
         }
         .btn1{
-            padding: 0.4rem;
+            padding: 0.5rem;
             width: 100%;
             border-radius: 0.35rem;
             border: none;
             cursor: pointer;
             background-color: #1470D2;
             color: white;
-
+            transition: background-color 0.5s ease, transform 0.5s ease; 
+            &:hover{
+                background-color:  #479ffc;
+                transform: scale(1.05);
+            }
         }
         .btn2{
             padding: 0.4rem;
@@ -62,6 +66,11 @@
             cursor: pointer;
             background-color: #686F76;
             color: white;
+            transition: background-color 0.5s ease, transform 0.5s ease; 
+            &:hover{
+                background-color:  #cacaca;
+                transform: scale(1.05);
+            }
         }
         .btnHiddenLine {
             position: relative; 
