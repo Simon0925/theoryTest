@@ -3,7 +3,8 @@ import styles from './Par.module.scss';
 import { CirclePercent } from '../../UI/CirclePercent/CirclePercent';
 import { RootState } from '../../store/store';
 import { updateQuestion } from '../../store/practice/practice.slice';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import CirclehundredPercents from '../CirclehundredPercents/CirclehundredPercents';
 
 interface ParProps {
     name: string;
@@ -52,7 +53,8 @@ const Par = ({ name, quantity, percent, svg, id }: ParProps) => {
                 <span>{name} ({quantity})</span>
             </div>
             <div className={styles.containerPercent}>
-                <CirclePercent currentPercent={percent} />
+                
+                {percent >= 100?<CirclehundredPercents currentPercent={percent}  /> :<CirclePercent currentPercent={percent} />}
             </div>
         </div>
     );

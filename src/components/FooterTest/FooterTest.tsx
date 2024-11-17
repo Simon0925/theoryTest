@@ -82,7 +82,7 @@ export default function FooterTest({ result, typeOftest }: FooterTestProps) {
           color={color.TestcolorText}
           backgroundColor={color.FooterBackgroundBtn}
           svg
-          svgColor={questions[currentPage].flag ? true : color.FlagColorSvgBtn}
+          svgColor={questions[currentPage]?.flag? true : color.FlagColorSvgBtn}
         />
         <ButtonTest
           click={() => setIsExplanationVisible(true)}
@@ -102,7 +102,7 @@ export default function FooterTest({ result, typeOftest }: FooterTestProps) {
           <ArrowPrevSmallSvg color={color.textColor}  width="30px" height="30px" /> Prev
         </button>
         <button style={{ backgroundColor: color.headerColors}}  onClick={changeFlag} className={styles.flagBtn}>
-          <FlagSvg color={questions[currentPage].flag ? '#F9921A' : color.textColor} width="24px" height="24px" />
+          <FlagSvg color={questions[currentPage]?.flag ? '#F9921A' : color.textColor} width="24px" height="24px" />
         </button>
         <button style={{ backgroundColor: color.headerColors,color:color.textColor }} onClick={() => setIsExplanationVisible(true)} className={styles.explanationBtn}>
           ?

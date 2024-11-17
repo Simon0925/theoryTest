@@ -4,7 +4,7 @@ import Modal from '../Modal/Modal';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { resetPracticeState, resetPracticeStateThunk } from '../../store/practice/practice.slice'; 
-import { resetState, resetStateAll } from '../../store/currentData/currentData.slice';
+import { resetState, resetStateAll, setTestInactive } from '../../store/currentData/currentData.slice';
 import getName from "./service/getName"
 import ReactDOM from "react-dom";
 
@@ -59,13 +59,15 @@ const HeaderForTest = React.memo(function HeaderForTest({
         dispatch(resetPracticeState());
         dispatch(resetPracticeStateThunk());
         dispatch(resetState({ testId: typeOftest }));
-        // console.log("typeOftest:",typeOftest)
+        dispatch(setTestInactive(false));
         break;
       case "MockTest":
         dispatch(resetState({ testId: typeOftest }));
+        dispatch(setTestInactive(false));
         break;
         case "Trainer":
         dispatch(resetState({ testId: typeOftest }));
+        dispatch(setTestInactive(false));
         break;
       default:
         console.error(`Test ID "${typeOftest}" does not exist in state.`);
