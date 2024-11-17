@@ -26,25 +26,25 @@ interface GridLine {
 
 const MockTestChart = ({ data }: { data: Data[] | null }) => {
   const color = useSelector((state: RootState) => state.color);
-  const [aspectRatio, setAspectRatio] = useState(300);
+  // const [aspectRatio, setAspectRatio] = useState(300);
 
-  useEffect(() => {
-    const updateAspectRatio = () => {
-      if (window.innerWidth < 600) {
-        setAspectRatio(200);
-      } else {
-        setAspectRatio(300); 
-      }
-    };
+  // useEffect(() => {
+  //   const updateAspectRatio = () => {
+  //     if (window.innerWidth < 600) {
+  //       setAspectRatio(200);
+  //     } else {
+  //       setAspectRatio(300); 
+  //     }
+  //   };
 
-    updateAspectRatio();
+  //   updateAspectRatio();
 
-    window.addEventListener('resize', updateAspectRatio);
+  //   window.addEventListener('resize', updateAspectRatio);
 
-    return () => {
-      window.removeEventListener('resize', updateAspectRatio);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('resize', updateAspectRatio);
+  //   };
+  // }, []);
 
   const defaultData: ChartData[] = [
     { percentage: '20%' },
@@ -68,7 +68,7 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
   const [linePath, setLinePath] = useState('');
   const [progress, setProgress] = useState(0);
 
-  const maxX = aspectRatio;
+  const maxX = 300;
   const maxY = 100;
 
   const points: Point[] = useMemo(() => {

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import styles from './HeaderForTest.module.scss';
 import Modal from '../Modal/Modal';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -40,6 +40,10 @@ const HeaderForTest = React.memo(function HeaderForTest({
 );
 
   const handleModalClose = useCallback(() => setShowExitModal(true), []);
+
+  useEffect(() => {
+    console.log("typeOftest:", typeOftest);
+  }, [typeOftest]);
   
   const handleResults = useCallback(() => {
     if (typeOftest === "MockTest" && reviewClick) {
@@ -55,7 +59,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
         dispatch(resetPracticeState());
         dispatch(resetPracticeStateThunk());
         dispatch(resetState({ testId: typeOftest }));
-        console.log("typeOftest:",typeOftest)
+        // console.log("typeOftest:",typeOftest)
         break;
       case "MockTest":
         dispatch(resetState({ testId: typeOftest }));
