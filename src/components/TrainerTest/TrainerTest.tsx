@@ -2,7 +2,6 @@ import { useCallback, useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import HeaderForTest from "../HeaderForTest/HeaderForTest";
 import FooterTrainerTest from "../FooterTrainerTest/FooterTrainerTest";
-import Spinner from "../../UI/Spinner/Spinner";
 import styles from "./TrainerTest.module.scss";
 import useUserId from "../../hooks/useUserId";
 import { getData } from "./service/getData";
@@ -59,11 +58,7 @@ export default function TrainerTest({ onExitClick, result }: TrainerTestProps) {
 
     return (
         <>
-            {!isLoading && questions.length > 0 ? renderContent() : (
-                <div className={styles.spinner}>
-                    <Spinner color="white" />
-                </div>
-            )}
+            {!isLoading && questions.length > 0 ? renderContent() : null}
         </>
     );
 }

@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import SwitchColor from "../../components/SwitchColor/SwitchColor";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
-import CircularProgressBarTest from "../../UI/CircularProgressBar/CircularProgressBar";
+
 
 
 

@@ -196,7 +196,8 @@ const MockTestChart = ({ data }: { data: Data[] | null }) => {
       width="100%"
       height="350px"
       viewBox={`0 0 ${maxX} ${maxY + 1}`}
-      preserveAspectRatio={aspectRatio}
+      // preserveAspectRatio={aspectRatio}
+      preserveAspectRatio="none"
       style={{
         background: color.MockTestChartBackground,
       }}

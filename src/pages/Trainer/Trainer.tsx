@@ -69,7 +69,11 @@ export default function Trainer() {
     }
 
     return (
-        <Suspense fallback={<Spinner color="white" />}>
+        <Suspense fallback={
+            <div className={styles.spinner}>
+                <Spinner color="white" />
+            </div>
+        }>
             {!isTestStarted && !showResults && (
                 <TrainerTest result={setShowResults} onExitClick={setIsTestStarted} />
             )}
