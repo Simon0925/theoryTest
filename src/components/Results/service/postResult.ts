@@ -3,7 +3,7 @@ import hostname from "../../../config/hostname";
 import status from './status'
 
 interface UserQuestionsResult {
-    userId: string;
+    userId: string| null ;
     data: Data[];
 }
 interface Data {
@@ -11,12 +11,13 @@ interface Data {
     question: string;
     status: boolean|string;
 }
+export const postResult = async (questionsGroup: UserQuestionsResult, typeOftest: string): Promise<any> => {
+    
+    if (!questionsGroup.userId) {
+        throw new Error("User ID is null or invalid");
+    }
 
-const postResult = async (questionsGroup: UserQuestionsResult,typeOftest:string): Promise<any> => {
-
-    console.log("questionsGroup:",questionsGroup)
-
-    const dataToSend = status.status(questionsGroup,typeOftest)
+    const dataToSend = status.status(questionsGroup, typeOftest);
 
     const jsonString = JSON.stringify(dataToSend);
 
@@ -34,14 +35,9 @@ const postResult = async (questionsGroup: UserQuestionsResult,typeOftest:string)
         }
 
         const data = await response.json();
-       
         return data;
     } catch (error) {
         console.error("Error posting questions group:", error);
         throw error;
     }
-}; 
-
-export default {
-    postResult
-}
+};

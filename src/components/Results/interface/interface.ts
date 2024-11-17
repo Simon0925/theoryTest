@@ -13,12 +13,7 @@ export interface statisticData {
     percentage:number | undefined;
 }
 
-interface ParData {
-    answer: string;
-    tOF: boolean;
-    photo: string | boolean  ;
-  }
-  
+
 export interface Question {
     id: string;
     question: string;

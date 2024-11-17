@@ -1,5 +1,5 @@
 interface UserQuestionsResult {
-    userId: string;
+    userId: string|null;
     data: Data[];
     statisticData?: any; 
 }
@@ -32,7 +32,6 @@ const status = (data: UserQuestionsResult, typeOftest: string) => {
         };
     }
 
-    console.log("newData:", newData);
     return newData;
 };
 

@@ -33,15 +33,11 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
     }, [answeredVariants, currentPage, practice]);
 
     const addAnswer = () => {
-        console.log("addAnswer");
-    
         const practiceCheck = answeredVariants.some(e =>
             typeOftest === "MockTest"
                 ? visibleQuestions?.[currentPage]?.id === e.id
                 : questions[currentPage].id === e.id
         );
-    
-        console.log("practiceCheck", practiceCheck);
     
         if (!practiceCheck) {
             const currentQuestionId = typeOftest === "MockTest" && visibleQuestions

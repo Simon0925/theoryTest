@@ -11,7 +11,7 @@ import { shallowEqual, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import hostname from "../../config/hostname";
 
-import postResult from './service/postResult';
+import {postResult} from './service/postResult';
 import useUserId from "../../hooks/useUserId";
 import CircularProgressBarTest from "../../UI/CircularProgressBarTest/CircularProgressBarTest";
 
@@ -100,7 +100,9 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
     if (results.length > 0 && typeOftest !== "MockTest") {
       try {
         const dataToSend = { userId: userId, data: results };
-        postResult.postResult(dataToSend,typeOftest);
+        if(dataToSend.userId !== null){
+           postResult(dataToSend,typeOftest);
+        } 
       } catch (error) {
         console.error("Error posting local storage data:", error);
       }
@@ -111,16 +113,12 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
         statisticData,
         mockTest: typeOftest,
       };
-      console.log("dataToSend",dataToSend)
-
-      postResult.postResult(dataToSend,typeOftest);
+  
+      postResult(dataToSend,typeOftest);
     }
   }, [results,questions,statisticData]);
 
-  useEffect(()=>{
-    console.log("progressBar:",progressBar)
-  },[progressBar])
- 
+
 
   return (
     <>
@@ -138,8 +136,6 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
                 />
             </div>
           </div>
-          
-          
           {data.length > 0 && (
             <span style={{ color: color.textColor }} className={styles["title"]}>
               <p>You have answered</p>
