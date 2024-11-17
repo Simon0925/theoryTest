@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import SwitchColor from "../../components/SwitchColor/SwitchColor";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
-import CircularProgressBarTest from "../../UI/CircularProgressBarTest/CircularProgressBarTest";
+import CircularProgressBarTest from "../../UI/CircularProgressBar/CircularProgressBar";
 
 
 
@@ -34,7 +34,7 @@ export default function Settings() {
         {
             !isAccount&&(
             <div className={styles.wrap}>
-                {/* <div className={styles.container}>
+                <div className={styles.container}>
                     <div style={{
                             "--button-color": color.headerColors,
                             "--button-hover-color": color.hoverColor,
@@ -46,17 +46,7 @@ export default function Settings() {
                         <button>Clear all flags</button>
                     </div>
                     <SwitchColor svgColor={"white"}  />
-                </div> */}
-                <div className={styles.circle}>
-                    <CircularProgressBarTest
-                            mockTest={false}
-                            correct={50}
-                            incorrect={25}
-                            skipped={25}
-                           
-                />
                 </div>
-               
             </div>
             )
         }

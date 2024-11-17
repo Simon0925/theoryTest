@@ -3,7 +3,7 @@ import styles from "./Results.module.scss";
 import OkVectorSvg from "../../SVG/OkVectorSvg/OkVectorSvg";
 import CrossSvg from "../../SVG/CrossSvg/CrossSvg";
 import HeaderResults from "../HeaderResults/HeaderResults";
-// import CircularProgressBar from "../../UI/CircularProgressBar/CircularProgressBar";
+import CircularProgressBar from "../../UI/CircularProgressBar/CircularProgressBar";
 import currentDate from "./service/date";
 import { QuestionResult, statisticData } from './interface/interface';
 import { mockTestData } from './service/mockTestData';
@@ -13,7 +13,7 @@ import hostname from "../../config/hostname";
 
 import {postResult} from './service/postResult';
 import useUserId from "../../hooks/useUserId";
-import CircularProgressBarTest from "../../UI/CircularProgressBarTest/CircularProgressBarTest";
+
 
 
 interface ResultsProps {
@@ -128,12 +128,19 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
         <div className={styles.statistic}>
           <div className={styles.containerProgressBar}>
             <div className={styles.progressBar}>
-                <CircularProgressBarTest 
+            {
+              Number.isFinite(progressBar.trueAnswer) &&
+              Number.isFinite(progressBar.pass) &&
+              Number.isFinite(progressBar.falseAnswer) &&
+              (progressBar.trueAnswer > 0 || progressBar.pass > 0 || progressBar.falseAnswer > 0) && (
+                <CircularProgressBar 
                   mockTest={typeOftest === "MockTest"}
                   correct={progressBar.trueAnswer}
                   skipped={progressBar.pass}
                   incorrect={progressBar.falseAnswer}
                 />
+              )
+              }
             </div>
           </div>
           {data.length > 0 && (
