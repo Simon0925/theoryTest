@@ -8,6 +8,13 @@
     justify-content: center;
     flex-direction: column;
     overflow: auto;
+    position: relative;
+    .message{
+        position: absolute;
+        top: 10em;
+        font-size: 18px;
+        font-weight: 600;
+    }
     .container{
         width: 250px;
         display: flex;

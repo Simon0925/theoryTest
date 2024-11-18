@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { resetPracticeState, resetPracticeStateThunk } from '../../store/practice/practice.slice';
 import { resetState, setTestInactive } from '../../store/currentData/currentData.slice';
+import ReactDOM from "react-dom";
 
 interface HeaderResultsProps {
     exitResult:(e:boolean) => void;
@@ -18,6 +19,7 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
     const dispatch = useDispatch<AppDispatch>();
     const color = useSelector((state: RootState) => state.color);
 
+    const modalRoot = document.getElementById("modal-root");
 
     const handleModalClose = useCallback(() => {
       switch (typeOftest) {
@@ -29,6 +31,7 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
           break;
         case "MockTest":
           dispatch(resetState({ testId: typeOftest }));
+          dispatch(setTestInactive(false));
           break;
         default:
           console.error(`Test ID "${typeOftest}" does not exist in state.`);
@@ -57,17 +60,17 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
                 <span style={{width:"100px"}}></span>
             </div>
            {
-            showExitModal && (
-                <Modal 
+            showExitModal && modalRoot&&(
+              ReactDOM.createPortal(
+              <Modal 
                   close={handleModalClose} 
                   text={""} 
                   title="Are you sure you want to exit from the test results?" 
                   cancelClick={handleModal}
                   cancel={true} 
                   blueBtnText={'Exit'} 
-                />
-              )}
-           
+                />,modalRoot
+              ))}
         </>
     )
 }
