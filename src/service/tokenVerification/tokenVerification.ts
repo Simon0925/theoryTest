@@ -1,8 +1,9 @@
 import hostname from "../../config/hostname";
 import { isLoading } from "../../store/auth/auth";
 
-async function tokenVerification(dispatch: any) { 
-    const token = localStorage.getItem('accessToken');
+async function tokenVerification(dispatch: any,token:string) { 
+  
+
     if (!token) return null;
 
     try {

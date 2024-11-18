@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
 import styles from './MockTestChart.module.scss';
-import ChartPointSvg from '../../SVG/ChartPointSvg/ChartPointSvg';
+
 
 interface ChartData {
   percentage: string;

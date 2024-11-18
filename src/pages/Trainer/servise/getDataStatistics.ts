@@ -10,9 +10,9 @@ interface TrainerOnceTwice {
 export const getDataStatistics = async (
   dispatch: Dispatch<any>,
   setTrainerOnceTwice: React.Dispatch<React.SetStateAction<TrainerOnceTwice>>,
-  idUser: string
+  token: string
 ) => {
-  const requestUrl = `${hostname}/api/trainer?id=${idUser}`;
+  const requestUrl = `${hostname}/api/trainer?token=${token}`;
 
   try {
     dispatch(setLoading({ testId: "Trainer", isLoading: true }));

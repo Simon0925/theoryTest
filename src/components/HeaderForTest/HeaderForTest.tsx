@@ -26,6 +26,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
   trainerTest,
   typeOftest,
 }: HeaderForTestProps) {
+
   const [showExitModal, setShowExitModal] = useState(false);
   const [showResultsModal, setShowResultsModal] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -40,10 +41,6 @@ const HeaderForTest = React.memo(function HeaderForTest({
 );
 
   const handleModalClose = useCallback(() => setShowExitModal(true), []);
-
-  useEffect(() => {
-    console.log("typeOftest:", typeOftest);
-  }, [typeOftest]);
   
   const handleResults = useCallback(() => {
     if (typeOftest === "MockTest" && reviewClick) {
@@ -84,19 +81,20 @@ const HeaderForTest = React.memo(function HeaderForTest({
 
 
   const questionCounter = useMemo(() => {
-    if (trainerTest) {
-      return <div className={styles['groupName']}>{getName(questions[currentPage].group)}</div>;
-    }
-    return (
-      <div style={{ color: color.HeaderPracticeTestQuestionColors }} className={styles['count-questions']}>
-        <span className={styles.questions} >Question</span>
-        <span className={styles.questionsM} >Q</span>
-        <span>{currentPage + 1}</span>
-        <span>of</span>
-        <span>{typeOftest === "MockTest" ?visibleQuestions?.length :questions.length}</span>
-      </div>
-    );
-  }, [trainerTest, color.textColor, currentPage,questions]);
+  if (trainerTest) {
+    return <div className={styles['groupName']}>{getName(questions[currentPage].group)}</div>;
+  }
+  return (
+    <div style={{ color: color.HeaderPracticeTestQuestionColors }} className={styles['count-questions']}>
+      <span className={styles.questions} >Question</span>
+      <span className={styles.questionsM} >Q</span>
+      <span>{currentPage + 1}</span>
+      <span>of</span>
+      <span>{typeOftest === "MockTest" ? visibleQuestions?.length : questions.length}</span>
+    </div>
+  );
+}, [trainerTest, color.HeaderPracticeTestQuestionColors, currentPage, questions.length, visibleQuestions?.length]);
+
 
   return (
     <>

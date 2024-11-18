@@ -1,11 +1,11 @@
 import hostname from "../../../config/hostname";
 
 
-const questionFilter = async (type: { type: string; userId:string;flagged:boolean;quantity:string; questions: { id: string }[] }) => {
+const questionFilter = async (type: { type: string; token:string| null;flagged:boolean;quantity:string; questions: { id: string }[] }) => {
     
     const jsonString = JSON.stringify(type);
     try {
-        const response = await fetch(`${hostname}/api/questions`, {
+        const response = await fetch(`${hostname}/api/questions-filter`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

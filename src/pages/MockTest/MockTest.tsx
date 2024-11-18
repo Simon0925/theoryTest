@@ -4,10 +4,10 @@ import { RootState } from '../../store/store';
 import styles from './MockTest.module.scss';
 import Spinner from '../../UI/Spinner/Spinner';
 import GoToLogin from '../../components/GoToLogin/GoToLogin';
-import useUserId from '../../hooks/useUserId';
 import { formatTime } from './service/formatTime';
 import { mockTestStatistics } from './service/mockTestStatistics';
 import { statisticsData } from './interface';
+import useCookie from '../../hooks/useCookie';
 
 const Results = lazy(() => import('../../components/Results/Results'));
 const Assessment = lazy(() => import('../../components/Assessment/Assessment'));
@@ -23,28 +23,28 @@ export default function MockTest() {
   const [data, setData] = useState<statisticsData[] | null>(null);
 
   const auth = useSelector((state: RootState) => state.auth);
-  const userId = useUserId();
+  const accessToken = useCookie('accessToken');
+  
 
   const { results } = useSelector(
     (state: RootState) => state.currentData.testsData["MockTest"],  
     shallowEqual
   );
 
-  const fetchStatistics = useCallback(async () => {
-    if (!userId) return;
+  const fetchStatistics = useCallback(async (accessToken:string) => {
     try {
-      const statistics = await mockTestStatistics(userId);
+      const statistics = await mockTestStatistics(accessToken);
       if (statistics) setData(statistics);
     } catch (error) {
       console.error("Error fetching mock test statistics:", error);
     }
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
-    if (userId && !data && results.length === 0) {
-      fetchStatistics();
+    if(accessToken){
+      fetchStatistics(accessToken);
     }
-  }, [results, userId]);
+  }, [results,accessToken]);
 
   useEffect(() => {
     if (result) {

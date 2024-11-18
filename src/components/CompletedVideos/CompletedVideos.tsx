@@ -6,7 +6,7 @@ import getResult from './service/getResult';
 import VideosSet from "../VideosSet/VideosSet";
 import Spinner from "../../UI/Spinner/Spinner";
 import { resetVideo } from "../../store/hpt/hpt.slice";
-import useUserId from "../../hooks/useUserId";
+import useCookie from "../../hooks/useCookie";
 
 interface VideoData {
   id: string;
@@ -26,18 +26,20 @@ export default function CompletedVideos({
   completedVideosActive,
 }: CompletedVideosProps) {
 
-  const userId = useUserId();
     
   const [newResult, setNewResult] = useState<VideoData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const results = useSelector((state: RootState) => state.hptData.results);
 
+  const accessToken = useCookie('accessToken');
+
   useEffect(() => {
-    const fetchData = async () => {
+    
+    const fetchData = async (accessToken:string) => {
       setIsLoading(true);
       try {
-        const data = await getResult(results,userId);
+        const data = await getResult(results,accessToken);
         setNewResult(data.data || []);
       } catch (error) {
         console.error("Error fetching results:", error);
@@ -45,8 +47,10 @@ export default function CompletedVideos({
         setIsLoading(false);
       }
     };
-    fetchData();
-  }, [results]);
+    if(accessToken){
+        fetchData(accessToken);
+    }
+  }, [results,accessToken]);
 
   const exitHandler = () => {
     isIntroduction(false);

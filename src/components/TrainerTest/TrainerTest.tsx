@@ -3,11 +3,11 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import HeaderForTest from "../HeaderForTest/HeaderForTest";
 import FooterTrainerTest from "../FooterTrainerTest/FooterTrainerTest";
 import styles from "./TrainerTest.module.scss";
-import useUserId from "../../hooks/useUserId";
 import { getData } from "./service/getData";
 import { RootState } from "../../store/store";
 import QuestionWithAnswers from "../QuestionWithAnswers/QuestionWithAnswers";
 import { setTestInactive } from "../../store/currentData/currentData.slice";
+import useCookie from "../../hooks/useCookie";
 
 interface TrainerTestProps {
     onExitClick: (exit: boolean) => void;
@@ -16,28 +16,28 @@ interface TrainerTestProps {
 
 export default function TrainerTest({ onExitClick, result }: TrainerTestProps) {
     const dispatch = useDispatch();
-    const userId = useUserId();
+    const accessToken = useCookie('accessToken');
 
     const { questions, currentPage, isLoading } = useSelector(
         (state: RootState) => state.currentData.testsData["Trainer"],  
         shallowEqual
     );
 
-    const fetchTrainerQuestions = useCallback(() => {
-        if (userId && questions.length === 0) {
-            getData(dispatch, userId);
-        }
-    }, [userId, questions.length, dispatch]);
+    const fetchTrainerQuestions = useCallback((accessToken:string) => {
+        getData(dispatch, accessToken);
+    }, [dispatch]);
 
     useEffect(() => {
-        fetchTrainerQuestions();
-    }, [fetchTrainerQuestions]);
+        if(accessToken && questions.length <= 0){
+        fetchTrainerQuestions(accessToken);
+        }
+    }, [accessToken,fetchTrainerQuestions]);
 
     useEffect(()=>{
         if(questions.length > 0){
           dispatch(setTestInactive(true))
         }
-      },[questions])
+    },[questions,dispatch])
 
     const renderContent = () => (
         <div className={styles.wrap}>

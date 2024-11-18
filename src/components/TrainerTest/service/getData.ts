@@ -2,10 +2,12 @@ import { Dispatch } from "react";
 import hostname from "../../../config/hostname";
 import { setCurrentQuestions, setLoading } from "../../../store/currentData/currentData.slice";
 
-export const getData = async (dispatch: Dispatch<any>, userId: string) => {
-    const requestUrl = `${hostname}/api/trainer?id=${userId}`;
+export const getData = async (dispatch: Dispatch<any>, token: string) => {
+
+    const requestUrl = `${hostname}/api/trainer?token=${token}`;
 
     try {
+        
         dispatch(setLoading({ testId: "Trainer", isLoading: true }));
 
         const response = await fetch(requestUrl);

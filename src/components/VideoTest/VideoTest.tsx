@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import Modal from '../Modal/Modal';
 import FlagSvg from '../../SVG/FlagSvg/FlagSvg';
 import { addVideoResult, resetVideo } from '../../store/hpt/hpt.slice';
-import VideoProgressCircle from '../../UI/CircularProgressVideoSvg/CircularProgressVideoSvg';
+
 
 interface VideoTestProps {
     exit: (e: boolean) => void;

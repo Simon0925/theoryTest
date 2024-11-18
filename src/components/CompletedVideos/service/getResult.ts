@@ -13,10 +13,10 @@ export interface Hpt {
     results: Results[];
 }
 
-const getResult = async (data:Results[],idUser:string) => {
+const getResult = async (data:Results[],token:string) => {
 
     const jsonString =  JSON.stringify({
-        userId:idUser,
+        token:token,
         result:data
     }); 
     

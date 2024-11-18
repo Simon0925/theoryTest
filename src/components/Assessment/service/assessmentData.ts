@@ -2,7 +2,7 @@ import { Dispatch } from "react";
 import { setCurrentQuestions, setLoading } from "../../../store/currentData/currentData.slice";
 import hostname from "../../../config/hostname";
 
-export const assessmentData = async (dispatch: Dispatch<any>, userId: string) => {
+export const assessmentData = async (dispatch: Dispatch<any>,token:string) => {
 
 
   try {
@@ -11,7 +11,7 @@ export const assessmentData = async (dispatch: Dispatch<any>, userId: string) =>
       isLoading: true,
     }));
 
-    const response = await fetch(`${hostname}/api/mock-test?id=${userId}`);
+    const response = await fetch(`${hostname}/api/mock-test?token=${token}`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

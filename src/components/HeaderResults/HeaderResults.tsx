@@ -5,13 +5,12 @@ import Modal from '../Modal/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { resetPracticeState, resetPracticeStateThunk } from '../../store/practice/practice.slice';
-import { resetState } from '../../store/currentData/currentData.slice';
+import { resetState, setTestInactive } from '../../store/currentData/currentData.slice';
 
 interface HeaderResultsProps {
     exitResult:(e:boolean) => void;
     typeOftest:string;
 }
-
 
 export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProps) {
 
@@ -23,8 +22,10 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
     const handleModalClose = useCallback(() => {
       switch (typeOftest) {
         case "PracticeTest":
+          dispatch(resetState({ testId: typeOftest }));
           dispatch(resetPracticeState());
           dispatch(resetPracticeStateThunk());
+          dispatch(setTestInactive(false));
           break;
         case "MockTest":
           dispatch(resetState({ testId: typeOftest }));
@@ -53,7 +54,7 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
                   </button>
                 </div>
                 <span style={{color:color.textColor}} className={styles.title}>Nice Try!</span>
-                <span></span>
+                <span style={{width:"100px"}}></span>
             </div>
            {
             showExitModal && (

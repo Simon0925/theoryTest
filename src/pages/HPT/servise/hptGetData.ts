@@ -1,9 +1,9 @@
 import hostname from "../../../config/hostname";
 
 
-export const hptGetData = async (idUser:string) =>{
+export const hptGetData = async (token:string) =>{
     try {
-        const response = await fetch(`${hostname}/api/htp-videos?id=${idUser}`);
+        const response = await fetch(`${hostname}/api/htp-videos?token=${token}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

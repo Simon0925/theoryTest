@@ -3,9 +3,9 @@ import { shallowEqual, useSelector } from 'react-redux';
 import styles from './HPT.module.scss';
 import { hptGetData } from './servise/hptGetData';
 import { RootState } from '../../store/store';
-import useUserId from '../../hooks/useUserId';
 import Spinner from '../../UI/Spinner/Spinner';
 import GoToLogin from '../../components/GoToLogin/GoToLogin';
+import useCookie from '../../hooks/useCookie';
 
 
 const FooterHPT = lazy(() => import('../../components/FooterHPT/FooterHPT'));
@@ -29,19 +29,21 @@ const HPT = () => {
     const [videosData, setVideosData] = useState<VideoData[]>([]);
 
     const color = useSelector((state: RootState) => state.color, shallowEqual);
-    const userId = useUserId();
     const auth = useSelector((state: RootState) => state.auth);
 
+    const accessToken = useCookie('accessToken');
+
+
     const fetchData = useCallback(async () => {
-        if (userId && videosData.length === 0) {
+        if (accessToken && videosData.length === 0) {
             try {
-                const videos = await hptGetData(userId);
+                const videos = await hptGetData(accessToken);
                 setVideosData(videos);
             } catch (error) {
                 console.error("Error fetching videos:", error);
             }
         }
-    }, [userId, videosData.length]);
+    }, [accessToken, videosData.length]);
 
     useEffect(() => {
         fetchData();

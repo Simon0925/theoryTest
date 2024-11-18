@@ -1,5 +1,5 @@
 interface UserQuestionsResult {
-    userId: string|null;
+    token: string|null;
     data: Data[];
     statisticData?: any; 
 }
@@ -20,14 +20,14 @@ const status = (data: UserQuestionsResult, typeOftest: string) => {
 
     if (typeOftest === 'MockTest') {
         newData = {
-            userId: data.userId,
+            token: data.token,
             data: updatedData,
             statisticData: data.statisticData,
             mockTest: "MockTest"
         };
     } else {
         newData = {
-            userId: data.userId,
+            token: data.token,
             data: updatedData
         };
     }

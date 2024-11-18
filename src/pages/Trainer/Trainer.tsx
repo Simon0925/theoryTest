@@ -5,8 +5,8 @@ import { getDataStatistics } from './servise/getDataStatistics';
 import OnceTwiceProgress from '../../UI/OnceTwiceProgress/OnceTwiceProgress';
 import Spinner from '../../UI/Spinner/Spinner';
 import GoToLogin from '../../components/GoToLogin/GoToLogin';
-import useUserId from '../../hooks/useUserId';
 import { RootState } from '../../store/store';
+import useCookie from '../../hooks/useCookie';
 
 
 const TrainerTest = lazy(() => import('../../components/TrainerTest/TrainerTest'));
@@ -14,7 +14,8 @@ const Results = lazy(() => import('../../components/Results/Results'));
 
 export default function Trainer() {
     const dispatch = useDispatch();
-    const userId = useUserId();
+ 
+    const accessToken = useCookie('accessToken');
 
     const [isTestStarted, setIsTestStarted] = useState(true);
     const [showResults, setShowResults] = useState(false);
@@ -28,14 +29,14 @@ export default function Trainer() {
     const color = useSelector((state: RootState) => state.color);
 
     const fetchTrainerData = useCallback(async() => {
-        if(userId){
-            getDataStatistics(dispatch, setTrainerProgress, userId);
+        if(accessToken){
+            getDataStatistics(dispatch, setTrainerProgress, accessToken);
         }
-    }, [userId]);
+    }, [accessToken]);
 
     useEffect(() => {
         fetchTrainerData();
-    }, [userId]);
+    }, [accessToken]);
 
     const handleStartToggle = () => setIsTestStarted((prev) => !prev);
     const handleExitResult = (show: boolean) => {

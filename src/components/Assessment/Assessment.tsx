@@ -9,12 +9,11 @@ import { getUnansweredQuestions } from './service/getUnansweredQuestions';
 import { RootState } from '../../store/store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { setTestInactive, updateCurrentPage, updatevisibleQuestions } from '../../store/currentData/currentData.slice';
-
 import  {assessmentData}from './service/assessmentData';
-import useUserId from '../../hooks/useUserId';
 import QuestionWithAnswers from '../QuestionWithAnswers/QuestionWithAnswers';
 import PauseSvg from '../../SVG/PauseSvg/PauseSvg';
 import ReactDOM from "react-dom";
+import useCookie from '../../hooks/useCookie';
 
 
 
@@ -50,6 +49,7 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
 
   const modalRoot = document.getElementById("modal-root");
 
+  const accessToken = useCookie('accessToken');
 
   const [reviewModal, setReviewModal] = useState(false);
   const [reviewMode, setReviewMode] = useState<'all' | 'unanswered' | 'flagged'>('all');
@@ -59,9 +59,7 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
 
   const [currentAll,setCurrentAll] = useState(0)
 
-  const userId = useUserId();
-
-
+  
   const {
     questions,
     currentPage,
@@ -74,23 +72,22 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
   );
 
 
-  const fetchAssessmentData = useCallback(() => {
-    if(userId){
+  const fetchAssessmentData = useCallback((accessToken:string) => {
       if (questions.length <= 0) {
-        assessmentData(dispatch,userId);
+        assessmentData(dispatch,accessToken);
       }
-    }
-  }, [questions.length]);
+  }, [dispatch]);
 
   useEffect(() => {
-    fetchAssessmentData();
-  }, []);
+    if(accessToken){
+      fetchAssessmentData(accessToken);
+    }
+  }, [accessToken,fetchAssessmentData]);
 
  
   const unansweredQuestions = useMemo(() => {
     return getUnansweredQuestions(answeredVariants, questions);
   }, [answeredVariants, questions]);
-
 
 
   useEffect(() => {
@@ -131,7 +128,7 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
     if(questions.length > 0){
       dispatch(setTestInactive(true))
     }
-  },[questions])
+  },[questions,dispatch])
 
   return (
     <div

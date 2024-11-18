@@ -1,9 +1,9 @@
 import hostname from "../../../config/hostname"
 
-export const mockTestStatistics = async (userId: string) => {
-  
+export const mockTestStatistics = async (token:string) => {
+
     try {
-        const response = await fetch(`${hostname}/api/userGetStatisticsMockTest?id=${userId}`);
+        const response = await fetch(`${hostname}/api/userGetStatisticsMockTest?token=${token}`);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }

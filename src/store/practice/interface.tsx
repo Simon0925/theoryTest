@@ -4,13 +4,6 @@ export interface Question {
 }
 
 
-interface Result {
-    question: string;
-    status: boolean | string;
-    id: string;
-}
-
-
 
 export interface PracticeData {
     question: Question[];         

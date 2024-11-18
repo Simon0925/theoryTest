@@ -3,7 +3,7 @@ import hostname from "../../../config/hostname";
 import status from './status'
 
 interface UserQuestionsResult {
-    userId: string| null ;
+    token: string | null; 
     data: Data[];
 }
 interface Data {
@@ -12,9 +12,10 @@ interface Data {
     status: boolean|string;
 }
 export const postResult = async (questionsGroup: UserQuestionsResult, typeOftest: string): Promise<any> => {
+
     
-    if (!questionsGroup.userId) {
-        throw new Error("User ID is null or invalid");
+    if (!questionsGroup.token) {
+        throw new Error("Token is null or invalid");
     }
 
     const dataToSend = status.status(questionsGroup, typeOftest);
@@ -22,7 +23,7 @@ export const postResult = async (questionsGroup: UserQuestionsResult, typeOftest
     const jsonString = JSON.stringify(dataToSend);
 
     try {
-        const response = await fetch(`${hostname}/api/usersPost`, {
+        const response = await fetch(`${hostname}/api/result`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -11,6 +11,9 @@ interface PracticeSettingsProps {
     practiceTest: (e: boolean) => void;
 }
 import { AppDispatch } from '../../store/store'; 
+import DotTyping from '../../UI/DotTyping/DotTyping';
+import useCookie from '../../hooks/useCookie';
+
 
 
 export default function PracticeSettings({ practiceTest }: PracticeSettingsProps) {
@@ -21,6 +24,8 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
 
 
     const dispatch: AppDispatch = useDispatch();
+
+    const accessToken = useCookie('accessToken');
 
     const color = useSelector((state: RootState) => state.color);
 
@@ -40,8 +45,10 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
     };
  
     useEffect(() => {
-        dispatch(fetchQuestions({ testId: 'PracticeTest' }));
-    }, [practice.question,practice.allQuestionLength,practice.flagged,practice.numberOfQuestions,practice.type]);
+        if(accessToken){
+            dispatch(fetchQuestions({ testId: 'PracticeTest',token:accessToken }));
+        }
+    }, [practice.question,practice.allQuestionLength,practice.flagged,practice.numberOfQuestions,practice.type,accessToken]);
 
     return (
         <div  className={styles['wrap']}>
@@ -51,8 +58,25 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
             </div>
             <PracticeTools  />
             <NumberOfQuestions  />
-            <div className={!isLoading && questions.length > 0 ? styles['btn'] :styles['btnIsLoading'] }>
-                <button onClick={start} >{isLoading ? 'Loading...' : 'Start'}</button> 
+            <div
+            className={
+                !isLoading && questions.length > 0
+                ? styles['btn']
+                : styles['btnIsLoading']
+            }
+                >
+                <button className={styles.startBtn} onClick={start}>
+                    {isLoading ? (
+                    <>
+                        Loadin <DotTyping />
+                    </>
+                    ) : (
+                        <>
+                        Start
+                        </>
+                    
+                    )}
+                </button>
             </div>
         </div>
     );

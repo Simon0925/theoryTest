@@ -12,8 +12,7 @@ import { RootState } from "../../store/store";
 import hostname from "../../config/hostname";
 
 import {postResult} from './service/postResult';
-import useUserId from "../../hooks/useUserId";
-
+import useCookie from "../../hooks/useCookie";
 
 
 interface ResultsProps {
@@ -25,14 +24,14 @@ interface ResultsProps {
 export default function Results({ exitResult, time, typeOftest }: ResultsProps) {
 
   const color = useSelector((state: RootState) => state.color);
+
+  const accessToken = useCookie('accessToken');
+
   
   const {results, questions } = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],
     shallowEqual
   );
-
-  const userId = useUserId();
-
   
   const [statisticData, setStatisticData] = useState<statisticData>();
   const [data, setData] = useState<QuestionResult[]>([]);
@@ -97,10 +96,11 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
 
 
   useEffect(() => {
-    if (results.length > 0 && typeOftest !== "MockTest") {
+
+    if (results.length > 0 && typeOftest !== "MockTest"&&accessToken) {
       try {
-        const dataToSend = { userId: userId, data: results };
-        if(dataToSend.userId !== null){
+        const dataToSend = { token: accessToken, data: results };
+        if(dataToSend.token !== null){
            postResult(dataToSend,typeOftest);
         } 
       } catch (error) {
@@ -108,7 +108,7 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
       }
     } else if (data.length > 0 && typeOftest === "MockTest" && statisticData !== undefined) {
       const dataToSend = {
-        userId: userId,
+        token: accessToken,
         data: results,
         statisticData,
         mockTest: typeOftest,
@@ -116,7 +116,7 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
   
       postResult(dataToSend,typeOftest);
     }
-  }, [results,questions,statisticData]);
+  }, [results,questions,statisticData,accessToken]);
 
 
 

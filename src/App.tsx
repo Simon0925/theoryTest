@@ -4,7 +4,7 @@ import { RootState } from './store/store';
 import tokenVerification from './service/tokenVerification/tokenVerification';
 import { login } from './store/auth/auth';
 import styles from './App.module.scss';
-
+import useCookie from './hooks/useCookie';
 
 
 const Main = lazy(() => import('./layout/Main/Main'));
@@ -18,8 +18,10 @@ export interface TokenVerificationStatus {
 }
 
 function App() {
+
   const dispatch = useDispatch();
- 
+  const accessToken = useCookie('accessToken');
+  
   const isMenuOpen = useSelector((state: RootState) => state.menu.open);
 
   const { headerColors} = useSelector(
@@ -27,21 +29,22 @@ function App() {
   );
   
   const verifyTokenAndLogin = useCallback(async () => {
-    const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
-      const status = (await tokenVerification(dispatch)) as TokenVerificationStatus | boolean;
+      const status = (await tokenVerification(dispatch,accessToken)) as TokenVerificationStatus | boolean;
       if (status && typeof status !== 'boolean') {
         dispatch(login({ login: status.areEqual, id: status.id, userName: status.userName }));
       } else {
         dispatch(login({ login: false, id: "", userName: "" }));
       }
     }
-  }, [dispatch]);
+  }, [dispatch,accessToken]);
 
 
   useEffect(() => {
-    verifyTokenAndLogin();
-  }, [verifyTokenAndLogin]);
+    if (accessToken) {
+          verifyTokenAndLogin();
+    }
+  }, [verifyTokenAndLogin, accessToken]);
 
 
   const menuClassName = useMemo(() => {

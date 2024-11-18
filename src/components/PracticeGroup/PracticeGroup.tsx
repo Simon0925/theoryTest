@@ -6,11 +6,8 @@ import Spinner from "../../UI/Spinner/Spinner";
 import Par from "../Par/Par";
 import { useEffect, useState } from "react";
 import parsMap from "./service/parsItem";
-
-
-
 import {getQuestionsGroup} from './service/getQuestionsGroup'
-import useUserId from "../../hooks/useUserId";
+import useCookie from "../../hooks/useCookie";
 
 interface QuestionGroup {
     name: string;
@@ -25,14 +22,14 @@ export default function PracticeGroup () {
     const [loading, setLoading] = useState(true);
     const [questionsGroup, setQuestionsGroup] = useState<QuestionGroup[]>([]);
     const color = useSelector((state: RootState) => state.color);
-    const userId = useUserId();
+    const accessToken = useCookie('accessToken');
 
 
     useEffect(() => {
-      if(userId){
+      if(accessToken){
         const fetchData = async () => {
           try {
-            const groupTest = await getQuestionsGroup(userId);
+            const groupTest = await getQuestionsGroup(accessToken);
             setQuestionsGroup(groupTest || []);
           } catch (error) {
             console.error("Error fetching data:", error);
@@ -42,7 +39,7 @@ export default function PracticeGroup () {
         };
         fetchData();
       }
-      }, [userId]);
+    }, [accessToken]);
 
     return(
         <>

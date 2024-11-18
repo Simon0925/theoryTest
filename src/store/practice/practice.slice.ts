@@ -26,15 +26,16 @@ const initialState: PracticeData = {
 
 export const fetchQuestions = createAsyncThunk<
   void, 
-  { testId: string }, 
+  { testId: string; token: string }, 
   { rejectValue: string }
 >(
   'practice/fetchQuestions',
-  async ({ testId }, { getState, rejectWithValue, dispatch }) => {
+  async ({ testId,token }, { getState, rejectWithValue, dispatch }) => {
     
     const state: any = getState();
-    const userId = state.auth.userId; 
+  
     const practice = state.practice;
+    
 
     dispatch(setLoading({ testId, isLoading: true }));
 
@@ -42,7 +43,7 @@ export const fetchQuestions = createAsyncThunk<
       const data = await service.questionFilter({
         type: practice.type,
         questions: practice.question,
-        userId: userId,
+        token: token,
         quantity: practice.numberOfQuestions,
         flagged: practice.flagged,
       });

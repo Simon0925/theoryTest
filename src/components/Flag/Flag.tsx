@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateFlagged } from '../../store/practice/practice.slice';
 import { RootState } from '../../store/store';
 import {getFlags} from './service/getFlags'
-import useUserId from "../../hooks/useUserId";
+import useCookie from "../../hooks/useCookie";
+
 
 
 export default function Flag() {
@@ -13,12 +14,11 @@ export default function Flag() {
     const [active, setActive] = useState(false);
     const [selected, setSelected] = useState(false);
     const [currentFlags, setCurrentFlags] = useState({ quantity: 0 });
+    const accessToken = useCookie('accessToken');
 
     const flagged = useSelector((state: RootState) => state.practice.flagged);
     const allQuestionLength = useSelector((state: RootState) => state.practice.allQuestionLength);
     const color = useSelector((state: RootState) => state.color);
-
-    const userId = useUserId();
 
     useEffect(() => {
         setSelected(flagged && currentFlags.quantity > 0);
@@ -29,11 +29,11 @@ export default function Flag() {
     }, [currentFlags]);
 
     useEffect(() => {
-        if(userId){
+        if(accessToken){
         const fetchData = async () => {
             if (currentFlags.quantity === 0) {
                 try {
-                    const groupTest = await getFlags(userId);
+                    const groupTest = await getFlags(accessToken);
                     setCurrentFlags({ quantity: groupTest.quantity });
                 } catch (error) {
                     console.error("Error fetching data in useEffect:", error);
@@ -41,8 +41,8 @@ export default function Flag() {
             }
         };
         fetchData();
-    }
-    }, [currentFlags.quantity,userId]);
+        }
+    }, [currentFlags.quantity,accessToken]);
 
     const marker = useCallback(() => {
         if (currentFlags.quantity <= 0) return null;

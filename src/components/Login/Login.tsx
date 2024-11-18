@@ -38,6 +38,9 @@ export default function Login() {
             } else {
                 const token = response.accessToken;
                 if (token) {
+                    document.cookie = `accessToken=${token}; path=/; max-age=2592000; secure; samesite=lax;`;//for test 
+                    // document.cookie = `token=${token}; path=/; max-age=2592000; secure; samesite=strict;`; for deploy
+
                     localStorage.setItem("accessToken", token);
                 }
                 dispatch(login({
