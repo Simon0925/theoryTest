@@ -71,12 +71,12 @@ const MockTestChartTest = ({ data }: { data: Data[]}) => {
   }, [pathD]);
 
   useEffect(() => {
-    const handleResize = () => {
+    const handleResize = debounce(() => {
       setDimensions({
         maxX: window.innerWidth,
         maxY: window.innerHeight * 0.45,
       });
-    };
+    }, 200);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
