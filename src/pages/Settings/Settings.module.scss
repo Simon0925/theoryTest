@@ -39,9 +39,10 @@
                 color: var(--text-color);
                 cursor: pointer;
                 width: 100%;
-    
+                transition: all 0.4s ease;
                 &:hover {
                     background-color: var(--button-hover-color);
+                    transform: scale(1.1);
                 }
             }
            

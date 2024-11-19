@@ -26,25 +26,7 @@ interface GridLine {
 
 const MockTestChart = ({ data }: { data: Data[] | null }) => {
   const color = useSelector((state: RootState) => state.color);
-  // const [aspectRatio, setAspectRatio] = useState(300);
-
-  // useEffect(() => {
-  //   const updateAspectRatio = () => {
-  //     if (window.innerWidth < 600) {
-  //       setAspectRatio(200);
-  //     } else {
-  //       setAspectRatio(300); 
-  //     }
-  //   };
-
-  //   updateAspectRatio();
-
-  //   window.addEventListener('resize', updateAspectRatio);
-
-  //   return () => {
-  //     window.removeEventListener('resize', updateAspectRatio);
-  //   };
-  // }, []);
+  
 
   const defaultData: ChartData[] = [
     { percentage: '20%' },
