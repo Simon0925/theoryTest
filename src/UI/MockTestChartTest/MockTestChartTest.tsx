@@ -4,12 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 import { defaultData } from "./service/defaultData";
 import { GridLine,Data,ChartData } from "./interface";
 import {generateVariableSmoothPath,calculateYPosition} from './service/chartUtils'
+import debounce from "lodash/debounce";
 
 const MockTestChartTest = ({ data }: { data: Data[]}) => {
   const color = useSelector((state: RootState) => state.color);
   const [pathLength, setPathLength] = useState(0);
-  const [currentData, setCurrentData] = useState<ChartData[]>([]);
+  const [currentData, setCurrentData] = useState<ChartData[]>([]);  
 
+  
   useEffect(() => {
       if (data.length > 0) {
         const updatedData = data.map((element) => ({
@@ -72,7 +74,7 @@ const MockTestChartTest = ({ data }: { data: Data[]}) => {
     const handleResize = () => {
       setDimensions({
         maxX: window.innerWidth,
-        maxY: window.innerHeight * 0.3,
+        maxY: window.innerHeight * 0.45,
       });
     };
     window.addEventListener("resize", handleResize);
@@ -81,10 +83,10 @@ const MockTestChartTest = ({ data }: { data: Data[]}) => {
 
   return (
     <svg
-      min-width={dimensions.maxX}
-      min-height={dimensions.maxY}
+      width={dimensions.maxX}
+      height={dimensions.maxY}
       viewBox={`0 0 ${dimensions.maxX} ${dimensions.maxY}`}
-      preserveAspectRatio="xMidYMid meet"
+      preserveAspectRatio="none"
       style={{
         background: data?.length !== 0? color.MockTestChartBackground :"",
       }}
