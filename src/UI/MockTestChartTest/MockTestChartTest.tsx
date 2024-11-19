@@ -24,7 +24,7 @@ const MockTestChartTest = ({ data }: { data: Data[]}) => {
 
   const [dimensions, setDimensions] = useState({
     maxX: window.innerWidth,
-    maxY: window.innerHeight * 0.5,
+    maxY: window.innerHeight * 0.45,
   });
 
   const gridLines: GridLine[] = useMemo(
@@ -50,7 +50,7 @@ const MockTestChartTest = ({ data }: { data: Data[]}) => {
       points.push({ x, y });
     });
     return points;3
-  }, [currentData]);
+  }, [currentData,dimensions]);
 
   
   
@@ -81,8 +81,8 @@ const MockTestChartTest = ({ data }: { data: Data[]}) => {
 
   return (
     <svg
-      width={dimensions.maxX}
-      height={dimensions.maxY}
+      min-width={dimensions.maxX}
+      min-height={dimensions.maxY}
       viewBox={`0 0 ${dimensions.maxX} ${dimensions.maxY}`}
       preserveAspectRatio="xMidYMid meet"
       style={{

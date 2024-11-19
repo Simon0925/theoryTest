@@ -15,7 +15,6 @@ export const defaultData: ChartData[] = [
     { percentage: '15%' },
     { percentage: '86%' },
     { percentage: '100%' },
-
   ];
 
 
