@@ -57,7 +57,7 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
                   </button>
                 </div>
                 <span style={{color:color.textColor}} className={styles.title}>Nice Try!</span>
-                <span style={{width:"100px"}}></span>
+                <span className={styles.plug}></span>
             </div>
            {
             showExitModal && modalRoot&&(
