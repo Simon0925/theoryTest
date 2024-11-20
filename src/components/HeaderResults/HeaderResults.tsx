@@ -19,7 +19,9 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
     const dispatch = useDispatch<AppDispatch>();
     const color = useSelector((state: RootState) => state.color);
 
+
     const modalRoot = document.getElementById("modal-root");
+
 
     const handleModalClose = useCallback(() => {
       switch (typeOftest) {
@@ -43,7 +45,8 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
     const handleModal =  () => {
         setShowExitModal(!showExitModal);
     };
-      
+    
+ 
 
     return(
         <>

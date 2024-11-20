@@ -12,6 +12,7 @@ import {
   updateResult,
 } from '../../store/currentData/currentData.slice';
 import { updateQuestionsAndResults } from '../../service/serviceFooter/updateQuestionsAndResults';
+import ReactDOM from "react-dom";
 
 interface FooterTestProps {
   result?: (e: boolean) => void;
@@ -29,7 +30,8 @@ export default function FooterTest({ result, typeOftest }: FooterTestProps) {
   const color = useSelector((state: RootState) => state.color);
   const [isExplanationVisible, setIsExplanationVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const modalRoot = document.getElementById("modal-root");
+  
   const isAnswerSelected = useMemo(
     () => answeredVariants.some((e) => questions[currentPage]?.id === e.id),
     [answeredVariants, currentPage, questions]
@@ -111,16 +113,18 @@ export default function FooterTest({ result, typeOftest }: FooterTestProps) {
           Next <ArrowPrevSmallSvg color={color.textColor} width="30px" height="30px" />
         </button>
       </div>
-      {isModalVisible && (
+     
+         {isModalVisible&& modalRoot &&
+          ReactDOM.createPortal(
         <Modal
           close={handleResultModal}
           text="End of test reached"
-          title="End of test reached"
+          title="Would you like to see the test results?"
           cancel
           cancelClick={() => setModalVisible(false)}
           blueBtnText="Show results"
-        />
-      )}
+        />,modalRoot
+        )}
       {isExplanationVisible && (
         <Modal
           close={() => setIsExplanationVisible(false)}

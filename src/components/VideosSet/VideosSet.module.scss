@@ -20,18 +20,26 @@
             opacity: 0.5;
             cursor: pointer; 
         } 
-        .notActive{
+        .loaded{
             width: 7rem;
             height: 6rem;  
             object-fit: cover;
+            filter: blur(0);
             opacity: 1; 
             cursor: pointer; 
 
         }
+        .loading {
+            width: 7rem;
+            height: 6rem;  
+            object-fit: cover;
+            filter: blur(10px); 
+            opacity: 0.5;
+            background: #f0f0f0;
+        }
     
 
         .number{
-            // background-color: #0078AB;
             width: 1.5rem;
             height: 1.5rem;
             display: flex;

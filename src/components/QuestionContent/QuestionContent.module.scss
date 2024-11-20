@@ -24,16 +24,33 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding-left: 1rem;
+       
+       
         .question{
             font-size: 18px;
             font-weight: 600;
         }
+        .question-photo{
+                padding-left: 1rem;
+                position: relative;
+                
+            .image{
+                max-width: 350px;
+                max-height: 250px;
     
-        .img{
-            max-width: 350px;
-            max-height: 250px;
+                &.loaded {
+                    filter: blur(0); 
+                    opacity: 1;      
+                }
+    
+                &.loading {
+                    filter: blur(10px); 
+                    opacity: 0.5;
+                    background: #f0f0f0;
+                }
+            }
         }
+        
     }
    
 }
@@ -59,6 +76,9 @@
                 width: 100%;
                 display: flex;
                 justify-content: center;
+                .loader{
+                    padding-top: 1rem;
+                }
                 .img{
                     max-width: 150px;
                     max-height: 100px;

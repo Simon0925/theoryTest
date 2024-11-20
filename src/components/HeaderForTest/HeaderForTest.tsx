@@ -4,7 +4,7 @@ import Modal from '../Modal/Modal';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { resetPracticeState, resetPracticeStateThunk } from '../../store/practice/practice.slice'; 
-import { resetState, resetStateAll, setTestInactive } from '../../store/currentData/currentData.slice';
+import { resetState, setTestInactive } from '../../store/currentData/currentData.slice';
 import getName from "./service/getName"
 import ReactDOM from "react-dom";
 
@@ -35,7 +35,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
 
   const modalRoot = document.getElementById("modal-root");
   
-  const { questions, currentPage,visibleQuestions} = useSelector(
+  const { questions, currentPage,visibleQuestions,answeredVariants} = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],  
     shallowEqual
 );
@@ -78,7 +78,12 @@ const HeaderForTest = React.memo(function HeaderForTest({
     if (result) result(true);
   }, [result]);
 
-
+  useEffect(()=>{
+    const practiceCheck = answeredVariants.some(e => questions[currentPage].id === e.id);
+    if(practiceCheck &&questions.length - 1 ){
+      setShowResultsModal(true)
+    }
+  },[questions,answeredVariants])
 
   const questionCounter = useMemo(() => {
   if (trainerTest) {

@@ -27,7 +27,7 @@ export default function VideosSet({
     const videos = useSelector((state: RootState) => state.hptData.videos);
     const [isActive, setIsActive] = useState(false);
     const color = useSelector((state: RootState) => state.color);
-
+    const [loaded, setLoaded] = useState(false); 
 
     const toggleVideoForTest = () => {
         if (completedVideos || !video) return;
@@ -45,9 +45,11 @@ export default function VideosSet({
         <div onClick={toggleVideoForTest} className={styles.wrap}>
             <div className={styles.videoPicture}>
                 <img
-                    className={isActive ? styles.videoActive : styles.notActive}
+                    className={isActive ? styles.videoActive : loaded ? styles.loaded : styles.loading}
                     src={`${hostname}/${poster}`}
                     alt="Video Thumbnail"
+                    loading="lazy"
+                    onLoad={() => setLoaded(true)}
                 />
                 <div style={{background:color.HtpIconNumberBackground}} className={styles.number}>{numberOfVideo}</div>
                 {stars > 0 && <Stars starColor={stars} />}

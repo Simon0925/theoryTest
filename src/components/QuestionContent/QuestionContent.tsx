@@ -2,32 +2,10 @@ import styles from "./QuestionContent.module.scss";
 import { RootState } from '../../store/store';
 import hostname from "../../config/hostname";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { updateResult } from '../../store/currentData/currentData.slice';
-
-interface QuestionContentProps {    
-    typeOftest: string;
-    question: Question ; 
-}
-
-interface Question {
-    correctAnswers: number;
-    explanation: string;
-    flag: boolean | undefined;
-    group: string;
-    id: string;
-    incorrectAnswers: number;
-    par: ParData[];
-    photo: boolean | string;
-    question: string;
-    status: boolean | string;
-}
-
-interface ParData {
-    answer: string;
-    photo: boolean | string;
-    tOF: boolean;
-}
+import {QuestionContentProps} from './interface'
+import Loader from "../../UI/Loader/Loader";
 
 export default function QuestionContent({ typeOftest, question }: QuestionContentProps) {
 
@@ -35,12 +13,21 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
 
     const color = useSelector((state: RootState) => state.color);
 
+    const [loaded, setLoaded] = useState(false); 
+
+    const imageRef = useRef<HTMLImageElement | null>(null);
 
     const { currentPage, results } = useSelector(
         (state: RootState) => state.currentData.testsData[typeOftest],  
         shallowEqual
     );
-
+    
+    useEffect(() => {
+        if (imageRef.current) {
+            setLoaded(false); 
+            imageRef.current.onload = () => setLoaded(true);
+        }
+    }, [question.photo]);
 
     useEffect(() => {
         if (question) {
@@ -62,9 +49,11 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
         }
     }, [currentPage, question]); 
 
-    if (!question) {
-        return <div className={styles['spiner']}>Loading question...</div>;
-    }
+  
+    useEffect(() => {
+        setLoaded(false);
+    }, [question.id]);
+
 
     return (
         <div 
@@ -79,13 +68,16 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
                 className={styles['question']}>
                     <p style={{color:color.TestcolorText}}>{question.question}</p>
                 </span>
-                <div className={styles['question-photo']} >
+                <div className={styles['question-photo']}>
+                    {!loaded && question.photo && <div className={styles.loader}> <Loader /> </div>}
                     {question.photo && (
                         <img
-                            className={styles['img']}
+                            ref={imageRef}
+                            key={question.id}
+                            className={`${styles.image}`}
                             src={`${hostname}${question.photo}`}
-                            alt="Related to the question" 
-                            loading="lazy" 
+                            alt="Related to the question"
+                            loading="lazy"
                         />
                     )}
                 </div>

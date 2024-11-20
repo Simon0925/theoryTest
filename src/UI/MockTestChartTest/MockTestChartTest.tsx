@@ -26,7 +26,7 @@ const MockTestChartTest = ({ data }: { data: Data[]}) => {
 
   const [dimensions, setDimensions] = useState({
     maxX: window.innerWidth,
-    maxY: window.innerHeight * 0.45,
+    maxY: window.innerHeight * 0.4,
   });
 
   const gridLines: GridLine[] = useMemo(
@@ -74,7 +74,7 @@ const MockTestChartTest = ({ data }: { data: Data[]}) => {
     const handleResize = debounce(() => {
       setDimensions({
         maxX: window.innerWidth,
-        maxY: window.innerHeight * 0.45,
+        maxY: window.innerHeight * 0.4,
       });
     }, 200);
     window.addEventListener("resize", handleResize);
@@ -103,7 +103,7 @@ const MockTestChartTest = ({ data }: { data: Data[]}) => {
               data?.length !== 0 ? color.MockTestChartLabel : "#7DC1E2"
             }
             strokeDasharray={line.label === "86%" ? "none" : "3 3"}
-            strokeWidth="2"
+            strokeWidth="1"
           />
           <text
             x="5"
