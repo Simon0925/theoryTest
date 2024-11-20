@@ -1,4 +1,4 @@
-import {AnsweredVariantsInterface,VisibleQuestionsInterface} from '../interface'
+import {AnsweredVariantsInterface,VisibleQuestionsInterface,Question,CoolorState} from '../interface'
 
 
 const getVariantColor = (
@@ -7,9 +7,9 @@ const getVariantColor = (
     currentPage: number,
     typeOftest: string,
     index: number,
-    questions: any[],
+    questions: Question[],
     correct: boolean,
-    stateColor: any,
+    stateColor: CoolorState,
     practiceCorrect:boolean,
 ) => {
     const checkAnswer = answeredVariants.some(e =>

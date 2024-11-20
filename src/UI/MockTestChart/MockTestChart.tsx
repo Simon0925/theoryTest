@@ -6,7 +6,7 @@ import { GridLine,Data,ChartData } from "./interface";
 import {generateVariableSmoothPath,calculateYPosition} from './service/chartUtils'
 import debounce from "lodash/debounce";
 
-const MockTestChartTest = ({ data }: { data: Data[]}) => {
+const MockTestChart = ({ data }: { data: Data[]}) => {
   const color = useSelector((state: RootState) => state.color);
   const [pathLength, setPathLength] = useState(0);
   const [currentData, setCurrentData] = useState<ChartData[]>([]);  
@@ -167,4 +167,4 @@ const MockTestChartTest = ({ data }: { data: Data[]}) => {
   );
 };
 
-export default MockTestChartTest;
+export default MockTestChart;

@@ -1,12 +1,13 @@
 import { updateAnsweredVariants, updateResult, updateCurrentPage } from '../../../store/currentData/currentData.slice';
+import {AnsweredVariantsInterface,VisibleQuestionsInterface,Question} from '../interface'
 
 export const addAnswer = (
-    answeredVariants: any[],
+    answeredVariants: AnsweredVariantsInterface,
     typeOftest: string,
-    visibleQuestions: any[] | undefined,
+    visibleQuestions: VisibleQuestionsInterface| undefined,
     currentPage: number,
     correct: boolean,
-    questions: any[],
+    questions: Question[],
     results: any[],
     dispatch: any,
     practice: boolean,

@@ -6,10 +6,11 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { VariantProps } from "./interface";
 import hostname from '../../config/hostname';
-import { addAnswer as handleAnswer } from './service/addAnswer';
-
-import getVariantColor from './service/getVariantColor'
+import { addAnswer as handleAnswer } from './utils/addAnswer';
+import getVariantColor from './utils/getVariantColor'
 import Loader from '../../UI/Loader/Loader';
+import {CoolorState} from './interface'
+
 
 const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, correct }) => {
     const practiceCorrect = useSelector((state: RootState) => state.practice.correct);
@@ -38,7 +39,6 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
     const dispatch = useDispatch();
 
     const icon = useMemo(() => {
-        // const checkAnswer = answeredVariants.some(e => questions[currentPage].id === e.id && index === e.index);
         const practiceCheck = answeredVariants.some(e => questions[currentPage].id === e.id);
 
         if (typeOftest === "MockTest" || typeOftest === "Trainer") {
@@ -47,11 +47,10 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
             console.log("PracticeTest")
             return correct ? <OkVectorSvg /> : <CrossSvg />;
         }else if ( (!practiceCorrect && practiceCheck && typeOftest === "PracticeTest")) {
-            console.log("Test")
             return correct;
         }
         return null;
-    }, [answeredVariants, currentPage, practiceCorrect]);
+    }, [ currentPage]);
 
     const addAnswer = () => {
         handleAnswer(
@@ -77,13 +76,12 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
             index,
             questions,
             correct,
-            stateColor,
+            stateColor as unknown as CoolorState, 
             practiceCorrect
         );
         setColor(color);
-    }, [correct, currentPage, answeredVariants, visibleQuestions, stateColor]);
+    }, [currentPage]);
 
-    
 
     return (
         <div onClick={addAnswer} style={{ background: color.backgroundColor }} className={styles['wrap']}>

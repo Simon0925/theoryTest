@@ -8,12 +8,11 @@ import { formatTime } from './service/formatTime';
 import { mockTestStatistics } from './service/mockTestStatistics';
 import { statisticsData } from './interface';
 import useCookie from '../../hooks/useCookie';
-import MockTestChartTest from '../../UI/MockTestChartTest/MockTestChartTest';
 
 const Results = lazy(() => import('../../components/Results/Results'));
 const Assessment = lazy(() => import('../../components/Assessment/Assessment'));
 const FooterMockTest = lazy(() => import('../../components/FooterMockTest/FooterMockTest'));
-const MockTestChart = lazy(() => import('../../components/MockTestChart/MockTestChart'));
+const MockTestChart = lazy(() => import('../../UI/MockTestChart/MockTestChart'));
 const DataStatisticsAssessment = lazy(() => import('../../components/DataStatisticsAssessment/DataStatisticsAssessment'));
 
 export default function MockTest() {
@@ -83,8 +82,7 @@ export default function MockTest() {
         <div className={styles.mockTestContainer}>
           {!isTestStarted && (
             <div className={styles.statistics}>
-              {/* <MockTestChart data={data} /> */}
-              <MockTestChartTest data={data} />
+              <MockTestChart data={data} />
               <DataStatisticsAssessment data={data} />
             </div>
           )}

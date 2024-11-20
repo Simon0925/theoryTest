@@ -9,7 +9,7 @@ export interface AnsweredVariant {
     id: string;
     index: number;
 }
-interface Question {
+export interface Question {
     correctAnswers: number;
     explanation: string;
     flag: boolean | undefined;
@@ -26,6 +26,26 @@ interface Question {
     photo: boolean | string;
     tOF: boolean;
 }
+
+
+interface Result {
+    flag:boolean;
+    group:string;
+    id:string;
+    photo:string;
+    question:string;
+    status:boolean
+}
+
+
 export type AnsweredVariantsInterface = AnsweredVariant[];
 
 export type VisibleQuestionsInterface = Question[]
+
+export type ResultInterface = Result []
+
+export type CoolorState = {
+    [key: string]: string; 
+};
+
+
