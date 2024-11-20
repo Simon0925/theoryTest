@@ -28,7 +28,7 @@ export default function VideosSet({
     const [isActive, setIsActive] = useState(false);
     const color = useSelector((state: RootState) => state.color);
     const [loaded, setLoaded] = useState(false); 
-
+    
     const toggleVideoForTest = () => {
         if (completedVideos || !video) return;
 
