@@ -38,14 +38,17 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
     const dispatch = useDispatch();
 
     const icon = useMemo(() => {
-        const checkAnswer = answeredVariants.some(e => questions[currentPage].id === e.id && index === e.index);
+        // const checkAnswer = answeredVariants.some(e => questions[currentPage].id === e.id && index === e.index);
         const practiceCheck = answeredVariants.some(e => questions[currentPage].id === e.id);
 
         if (typeOftest === "MockTest" || typeOftest === "Trainer") {
             return correct;
-        }
-        if (checkAnswer || (practiceCorrect && practiceCheck && typeOftest === "PracticeTest")) {
+        }else if ((practiceCorrect && practiceCheck && typeOftest === "PracticeTest")) {
+            console.log("PracticeTest")
             return correct ? <OkVectorSvg /> : <CrossSvg />;
+        }else if ( (!practiceCorrect && practiceCheck && typeOftest === "PracticeTest")) {
+            console.log("Test")
+            return correct;
         }
         return null;
     }, [answeredVariants, currentPage, practiceCorrect]);
@@ -80,9 +83,7 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
         setColor(color);
     }, [correct, currentPage, answeredVariants, visibleQuestions, stateColor]);
 
-    useEffect(()=>{
-        console.log("visibleQuestions:",visibleQuestions)
-    },[visibleQuestions])
+    
 
     return (
         <div onClick={addAnswer} style={{ background: color.backgroundColor }} className={styles['wrap']}>

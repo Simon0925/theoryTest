@@ -1,5 +1,3 @@
-import { type } from "os";
-
 export interface VariantProps {
     answer: string;
     photo: boolean | string;

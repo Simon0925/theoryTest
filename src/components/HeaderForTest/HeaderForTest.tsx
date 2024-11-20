@@ -85,7 +85,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
 
   useEffect(()=>{
     const practiceCheck = answeredVariants.some(e => questions[currentPage].id === e.id);
-    if(practiceCheck &&questions.length - 1 ){
+    if(practiceCheck && (questions[currentPage].id === questions[questions.length - 1].id)){
       setShowResultsModal(true)
     }
   },[questions,answeredVariants])
