@@ -57,19 +57,24 @@ const HeaderForTest = React.memo(function HeaderForTest({
         dispatch(resetPracticeStateThunk());
         dispatch(resetState({ testId: typeOftest }));
         dispatch(setTestInactive(false));
+        onExitClick(true);
+
         break;
       case "MockTest":
         dispatch(resetState({ testId: typeOftest }));
         dispatch(setTestInactive(false));
+        onExitClick(true);
+
         break;
         case "Trainer":
         dispatch(resetState({ testId: typeOftest }));
         dispatch(setTestInactive(false));
+        onExitClick(true);
+
         break;
       default:
         console.error(`Test ID "${typeOftest}" does not exist in state.`);
     }
-    onExitClick(true);
   }, [dispatch, onExitClick, typeOftest]);
 
   const handleModalCancel = useCallback(() => setShowExitModal(false), []);

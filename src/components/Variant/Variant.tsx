@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import CrossSvg from '../../SVG/CrossSvg/CrossSvg';
 import OkVectorSvg from '../../SVG/OkVectorSvg/OkVectorSvg';
 import styles from './Variant.module.scss';
@@ -8,9 +8,14 @@ import { VariantProps } from "./interface";
 import hostname from '../../config/hostname';
 import { addAnswer as handleAnswer } from './service/addAnswer';
 
+import getVariantColor from './service/getVariantColor'
+import Loader from '../../UI/Loader/Loader';
+
 const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, correct }) => {
-    const practice = useSelector((state: RootState) => state.practice.correct);
+    const practiceCorrect = useSelector((state: RootState) => state.practice.correct);
     const stateColor = useSelector((state: RootState) => state.color);
+    const [loaded, setLoaded] = useState(false); 
+    const imageRef = useRef<HTMLImageElement | null>(null);
 
     const { answeredVariants, questions, currentPage, results, visibleQuestions } = useSelector(
         (state: RootState) => state.currentData.testsData[typeOftest],
@@ -22,6 +27,14 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
         color: stateColor.VariantTextColor,
     });
 
+    useEffect(() => {
+        if (imageRef.current && photo) {
+            setLoaded(false); 
+            imageRef.current.onload = () => setLoaded(true);
+            imageRef.current.onerror = () => setLoaded(true); 
+        }
+    }, [photo]);
+
     const dispatch = useDispatch();
 
     const icon = useMemo(() => {
@@ -31,11 +44,11 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
         if (typeOftest === "MockTest" || typeOftest === "Trainer") {
             return correct;
         }
-        if (checkAnswer || (practice && practiceCheck && typeOftest === "PracticeTest")) {
+        if (checkAnswer || (practiceCorrect && practiceCheck && typeOftest === "PracticeTest")) {
             return correct ? <OkVectorSvg /> : <CrossSvg />;
         }
         return null;
-    }, [answeredVariants, currentPage, practice]);
+    }, [answeredVariants, currentPage, practiceCorrect]);
 
     const addAnswer = () => {
         handleAnswer(
@@ -47,46 +60,35 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
             questions,
             results,
             dispatch,
-            practice,
+            practiceCorrect,
             index
         );
     };
 
     useEffect(() => {
-        const checkAnswer = answeredVariants.some(e =>
-            (typeOftest === "MockTest"
-                ? visibleQuestions?.[currentPage]?.id === e.id && index === e.index
-                : questions[currentPage].id === e.id && index === e.index
-            )
+        const color = getVariantColor(
+            answeredVariants,
+            visibleQuestions,
+            currentPage,
+            typeOftest,
+            index,
+            questions,
+            correct,
+            stateColor,
+            practiceCorrect
         );
-
-        if (checkAnswer && typeOftest === "PracticeTest") {
-            setColor({
-                backgroundColor: correct ? "rgb(0, 182, 118)" : "rgb(170, 59, 54)",
-                color: stateColor.VariantSelectedOption,
-            });
-        } else if (checkAnswer && typeOftest === "MockTest") {
-            setColor({
-                backgroundColor: stateColor.VariantSelectedMockBackground,
-                color: stateColor.VariantSelectedMockTestOption,
-            });
-        } else if (checkAnswer && typeOftest === "Trainer") {
-            setColor({
-                backgroundColor: correct ? "rgb(0, 182, 118)" : "rgb(170, 59, 54)",
-                color: stateColor.VariantSelectedOption,
-            });
-        } else {
-            setColor({
-                backgroundColor: stateColor.VariantBackground,
-                color: stateColor.TestcolorText,
-            });
-        }
+        setColor(color);
     }, [correct, currentPage, answeredVariants, visibleQuestions, stateColor]);
+
+    useEffect(()=>{
+        console.log("visibleQuestions:",visibleQuestions)
+    },[visibleQuestions])
 
     return (
         <div onClick={addAnswer} style={{ background: color.backgroundColor }} className={styles['wrap']}>
             <span style={{ color: color.color }}>{answer}</span>
-            {photo && <img className={styles['img']} src={`${hostname}${photo}`} alt="Variant" />}
+            {!loaded && photo && <div className={styles.loader}><Loader /></div>}
+            {photo && <img ref={imageRef}  loading="lazy" className={styles['img']} src={`${hostname}${photo}`} alt="Variant" />}
             <div className={styles['box']}>{icon}</div>
         </div>
     );

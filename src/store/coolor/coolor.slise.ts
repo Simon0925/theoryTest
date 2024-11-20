@@ -214,7 +214,7 @@ export const colorSlice = createSlice({
                     state.VariantBackground="white";
                     state.VariantTextColor="#000000";
                     state.VariantSelectedOption="white";
-                    state.VariantSelectedMockTestOption="#0078AB";
+                    state.VariantSelectedMockTestOption="#000000";
                     state.VariantSelectedMockBackground="#FFEC4B";
 
                     state.FooterBackgroundNextBtnSelectedOption="#FFEC4B";
