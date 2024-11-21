@@ -20,8 +20,11 @@ export default function Account({back}:AccountProps){
     const name = useSelector((state: RootState) => state.auth.userName);
     const { headerColors, textColor} = useSelector((state: RootState) => state.color.themeData);
 
+    function deleteCookie(name: string): void {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    }
     const logOut = () =>{
-        localStorage.setItem("accessToken", "");
+        deleteCookie("accessToken")
         dispatch(login({ login: false, id: "", userName: "" }));
     }
 
