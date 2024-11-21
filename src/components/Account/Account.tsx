@@ -16,10 +16,9 @@ interface AccountProps{
 export default function Account({back}:AccountProps){
     const dispatch = useDispatch();
 
-
     const isLogin = useSelector((state: RootState) => state.auth.isLogin);
     const name = useSelector((state: RootState) => state.auth.userName);
-    const { headerColors, textColor} = useSelector((state: RootState) => state.color);
+    const { headerColors, textColor} = useSelector((state: RootState) => state.color.themeData);
 
     const logOut = () =>{
         localStorage.setItem("accessToken", "");

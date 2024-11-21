@@ -3,7 +3,7 @@ import styles from './ResetPassword.module.scss';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
 import { FormValues, FormErrors } from './interface';
-import send from './service/send';
+import send from './services/send';
 
 interface ResetPasswordProps {
     reset: (e: boolean) => void;

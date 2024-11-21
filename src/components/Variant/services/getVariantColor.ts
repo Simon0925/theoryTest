@@ -32,6 +32,7 @@ const getVariantColor = (
             color: stateColor.VariantSelectedMockTestOption,
         };
     } else if (checkAnswer && typeOftest === "MockTest") {
+        console.log(checkAnswer)
         return {
             backgroundColor: stateColor.VariantSelectedMockBackground,
             color: stateColor.VariantSelectedMockTestOption,

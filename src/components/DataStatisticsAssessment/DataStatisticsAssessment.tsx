@@ -2,17 +2,7 @@ import { useSelector } from 'react-redux';
 import { CirclePercent } from '../../UI/CirclePercent/CirclePercent'
 import { RootState } from '../../store/store';
 import styles from './DataStatisticsAssessment.module.scss'
-
-interface Data {
-    date:string;
-    time:string;
-    percentage:number;
-}
-
-interface DataStatisticsAssessmentProps {
-    data:Data[]
-}
-
+import {DataStatisticsAssessmentProps} from './interface'
 
 
 export default function DataStatisticsAssessment({ data }: DataStatisticsAssessmentProps) {

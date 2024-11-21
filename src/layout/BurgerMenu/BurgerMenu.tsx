@@ -10,7 +10,7 @@ import { resetStateAll, setTestInactive } from "../../store/currentData/currentD
 import { updateBurgerMenu } from "../../store/burgerMenu/burgerMenu.slice";
 import { RootState } from "../../store/store";
 
-import { NAV_ITEMS, isActivePath } from "./service/pathKey";
+import { NAV_ITEMS, isActivePath } from "./services/pathKey";
 
 export default function BurgerMenu() {
   const dispatch = useDispatch();

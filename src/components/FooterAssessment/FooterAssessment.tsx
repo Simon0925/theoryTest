@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState, useCallback } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { RootState } from "../../store/store";
 import { setCurrentQuestions, updateCurrentPage, updateResult } from "../../store/currentData/currentData.slice";
-import { updateQuestionsAndResults } from '../../service/serviceFooter/updateQuestionsAndResults';
+import { updateQuestionsAndResults } from '../../services/serviceFooter/updateQuestionsAndResults';
 import FlagSvg from "../../SVG/FlagSvg/FlagSvg";
 import ArrowPrevSmallSvg from "../../SVG/ArrowPrevSmallSvg/ArrowPrevSmallSvg";
 import PlayVectorSvg from "../../SVG/PlayVectorSvg/PlayVectorSvg";

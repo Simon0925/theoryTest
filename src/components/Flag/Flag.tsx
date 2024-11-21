@@ -4,7 +4,7 @@ import styles from "./Flag.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { updateFlagged } from '../../store/practice/practice.slice';
 import { RootState } from '../../store/store';
-import {getFlags} from './service/getFlags'
+import {getFlags} from './services/getFlags'
 import useCookie from "../../hooks/useCookie";
 
 

@@ -13,7 +13,7 @@ interface FooterMockTestProps {
 
 export default function FooterMockTest({ onTestStart }: FooterMockTestProps) {
     
-    const color = useSelector((state: RootState) => state.color.themeData);
+    const {DataStatisticsAssessmentFooter,DataStatisticsAssessmentFooterTextbtn,DataStatisticsAssessmentFooterBackgroundBtn} = useSelector((state: RootState) => state.color.themeData);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -26,7 +26,7 @@ export default function FooterMockTest({ onTestStart }: FooterMockTestProps) {
             <div 
                 className={styles.wrap}
                 style={{
-                    backgroundColor:color.DataStatisticsAssessmentFooter
+                    backgroundColor:DataStatisticsAssessmentFooter
                 }}
             >
                 <div className={styles.container}>
@@ -34,8 +34,8 @@ export default function FooterMockTest({ onTestStart }: FooterMockTestProps) {
                     <ButtonTest
                         click={toggleModal}
                         name="About Mock Test"
-                        color={color.DataStatisticsAssessmentFooterTextbtn}
-                        backgroundColor={color.DataStatisticsAssessmentFooterBackgroundBtn}
+                        color={DataStatisticsAssessmentFooterTextbtn}
+                        backgroundColor={DataStatisticsAssessmentFooterBackgroundBtn}
                         svg={false}
                         svgColor={false}
                     />

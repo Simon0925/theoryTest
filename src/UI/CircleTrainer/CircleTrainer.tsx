@@ -18,7 +18,7 @@ export default function CircleTrainer ({
         VariantTitleColor,
         mainColor,
         CircularTrainerProgressBarColor
-    } = useSelector((state: RootState) => state.color).themeData;
+    } = useSelector((state: RootState) => state.color.themeData);
 
     const strokeWidth = 12;
 
@@ -38,25 +38,35 @@ export default function CircleTrainer ({
     const [greenEndAngle, setGreenEndAngle] = useState(0);
 
     const incrementPercent = (
-        delay: number,
+        duration: number, 
         target: number,
         key: "once" | "twice"
     ) => {
-        const update = (currentValue: number) => {
-            if (currentValue <= target) {
-                setCurrentPercent((prev) => ({ ...prev, [key]: currentValue }));
-                setTimeout(() => update(currentValue + 1), delay);
+        const start = performance.now(); 
+    
+        const animate = (time: number) => {
+            const elapsed = time - start; 
+            const progress = Math.min(elapsed / duration, 1);
+    
+            const currentValue = Math.round(progress * target); 
+            setCurrentPercent((prev) => ({ ...prev, [key]: currentValue }));
+    
+            if (progress < 1) {
+                requestAnimationFrame(animate); 
             }
         };
-        update(0);
+    
+        requestAnimationFrame(animate);
     };
+    
 
     useEffect(() => {
         if (typeof twiceData === "number" && typeof onesData === "number") {
-            incrementPercent(20, twiceData, "twice");
-            incrementPercent(20, onesData, "once");
+            incrementPercent(1000, twiceData, "twice"); 
+            incrementPercent(1000, onesData, "once");  
         }
     }, [twiceData, onesData]);
+    
 
     
     const calculateSegment = (percent: number, totalPercent: number) => {

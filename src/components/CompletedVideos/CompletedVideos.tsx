@@ -2,23 +2,13 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import styles from "./CompletedVideos.module.scss";
-import getResult from './service/getResult';
+import getResult from './services/getResult';
 import VideosSet from "../VideosSet/VideosSet";
 import Spinner from "../../UI/Spinner/Spinner";
 import { resetVideo } from "../../store/hpt/hpt.slice";
 import useCookie from "../../hooks/useCookie";
+import  {VideoData,CompletedVideosProps} from './interface'
 
-interface VideoData {
-  id: string;
-  poster: string;
-  stars: number;
-}
-
-interface CompletedVideosProps {
-  isIntroduction: (e: boolean) => void;
-  testIsActive: (e: boolean) => void;
-  completedVideosActive: (e: boolean) => void;
-}
 
 export default function CompletedVideos({
   isIntroduction,

@@ -2,8 +2,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import styles from "./ProgressBar.module.scss";
 import { useVideo } from "../../context/VideoContext/VideoContext.tsx.tsx";
 
-
-
 const ProgressBar = () => {
     const {
         progressPercentage,

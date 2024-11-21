@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './Login.module.scss';
-import dataTosend from './service/dataTosend';
+import dataTosend from './services/dataTosend';
 import { FormErrors } from './interface';
 import FormValues from './interface';
 import { isLoading, login } from '../../store/auth/auth';

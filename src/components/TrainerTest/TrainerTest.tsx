@@ -3,7 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import HeaderForTest from "../HeaderForTest/HeaderForTest";
 import FooterTrainerTest from "../FooterTrainerTest/FooterTrainerTest";
 import styles from "./TrainerTest.module.scss";
-import { getData } from "./service/getData";
+import { getData } from "./services/getData";
 import { RootState } from "../../store/store";
 import QuestionWithAnswers from "../QuestionWithAnswers/QuestionWithAnswers";
 import { setTestInactive } from "../../store/currentData/currentData.slice";

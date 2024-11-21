@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 export default function GoToLogin() {
 
-    const color = useSelector((state: RootState) => state.color.themeData);
+    const {headerColors,textColor} = useSelector((state: RootState) => state.color.themeData);
 
     const navigate = useNavigate();
 
@@ -15,8 +15,8 @@ export default function GoToLogin() {
 
     return (
         <div  className={styles.wrap}>
-            <h3 style={{color:color.textColor}}>Please log in to access the practice test.</h3>
-            <button style={{background:color.headerColors,color:color.textColor}}  onClick={login}>
+            <h3 style={{color:textColor}}>Please log in to access the practice test.</h3>
+            <button style={{background:headerColors,color:textColor}}  onClick={login}>
                 Login
             </button>
         </div>

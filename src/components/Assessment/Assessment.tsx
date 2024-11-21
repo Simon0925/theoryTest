@@ -5,47 +5,23 @@ import HeaderForTest from '../HeaderForTest/HeaderForTest';
 import FooterAssessment from '../FooterAssessment/FooterAssessment';
 import Modal from '../Modal/Modal';
 import ReviewModal from '../ReviewModal/ReviewModal';
-import { getUnansweredQuestions } from './service/getUnansweredQuestions';
+import { getUnansweredQuestions } from './services/getUnansweredQuestions';
 import { RootState } from '../../store/store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { setTestInactive, updateCurrentPage, updatevisibleQuestions } from '../../store/currentData/currentData.slice';
-import  {assessmentData}from './service/assessmentData';
+import  {assessmentData}from './services/assessmentData';
 import QuestionWithAnswers from '../QuestionWithAnswers/QuestionWithAnswers';
 import PauseSvg from '../../SVG/PauseSvg/PauseSvg';
 import ReactDOM from "react-dom";
 import useCookie from '../../hooks/useCookie';
+import {AssessmentProps} from './interface'
 
 
-
-interface AssessmentProps {
-  onClose: (e: boolean) => void;
-  result: (e: boolean) => void;
-  getTime: (e: number | undefined) => void;
-}
-
-export interface Question {
-  correctAnswers: number;
-  explanation: string;
-  flag: boolean ;
-  group: string;
-  id: string;
-  incorrectAnswers: number;
-  par: ParData[];
-  photo: boolean | string;
-  question: string;
-  status: boolean | string;
-}
-
-interface ParData {
-  answer: string;
-  tOF: boolean;
-  photo: string | boolean;
-}
 
 export default function Assessment({ onClose, result, getTime }: AssessmentProps) {
   const typeOftest = 'MockTest';
   const dispatch = useDispatch();
-  const color = useSelector((state: RootState) => state.color.themeData);
+  const {TestBackground,textColor} = useSelector((state: RootState) => state.color.themeData);
 
   const modalRoot = document.getElementById("modal-root");
 
@@ -131,7 +107,7 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
 
   return (
     <div
-      style={ {background:color.TestBackground}}
+      style={ {background:TestBackground}}
      className={styles.wrap}
      >
       {isLoading && (visibleQuestions?.length ?? 0) <= 0 ? (
@@ -154,9 +130,9 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
             />
              
             ) : (
-              <div style={{ color:color.textColor }}className={styles.pausedMessage}>
+              <div style={{ color:textColor }}className={styles.pausedMessage}>
                 Test paused
-                <PauseSvg color={color.textColor} />
+                <PauseSvg color={textColor} />
               </div>
             )}
       

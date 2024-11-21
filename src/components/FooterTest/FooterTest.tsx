@@ -11,7 +11,7 @@ import {
   updateCurrentPage,
   updateResult,
 } from '../../store/currentData/currentData.slice';
-import { updateQuestionsAndResults } from '../../service/serviceFooter/updateQuestionsAndResults';
+import { updateQuestionsAndResults } from '../../services/serviceFooter/updateQuestionsAndResults';
 import ReactDOM from "react-dom";
 
 interface FooterTestProps {

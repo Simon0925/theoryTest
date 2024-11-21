@@ -6,8 +6,8 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { VariantProps } from "./interface";
 import hostname from '../../config/hostname';
-import { addAnswer as handleAnswer } from './utils/addAnswer';
-import getVariantColor from './utils/getVariantColor'
+import { addAnswer as handleAnswer } from './services/addAnswer';
+import getVariantColor from './services/getVariantColor'
 import Loader from '../../UI/Loader/Loader';
 import {CoolorState} from './interface'
 

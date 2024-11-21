@@ -5,18 +5,10 @@ import Flag from "../Flag/Flag";
 import Spinner from "../../UI/Spinner/Spinner";
 import Par from "../Par/Par";
 import { useEffect, useState } from "react";
-import parsMap from "./service/parsItem";
-import {getQuestionsGroup} from './service/getQuestionsGroup'
+import parsMap from "./services/parsItem";
+import {getQuestionsGroup} from './services/getQuestionsGroup'
 import useCookie from "../../hooks/useCookie";
-
-interface QuestionGroup {
-    name: string;
-    quantity: number;
-    percent: number;
-    id: string;
-  }
-
-
+import {QuestionGroup} from "./interface";
 
 export default function PracticeGroup () {
     const [loading, setLoading] = useState(true);

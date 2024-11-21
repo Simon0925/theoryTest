@@ -11,7 +11,7 @@ interface FooterHPTProps {
 
 export default function FooterHPT ({isIntroduction,isTestStart}:FooterHPTProps) {
 
-    const color = useSelector((state: RootState) => state.color);
+    const {HtpIntroductionBtnBackground,HtpIntroductionBtnTextColor} = useSelector((state: RootState) => state.color.themeData);
     const videos = useSelector((state: RootState) => state.hptData.videos);
 
 
@@ -25,7 +25,7 @@ export default function FooterHPT ({isIntroduction,isTestStart}:FooterHPTProps) 
     return(
         <>
             <div className={styles.wrap}>
-                <button style={{background:color.HtpIntroductionBtnBackground,color:color.HtpIntroductionBtnTextColor}} onClick={()=>isIntroduction(true)} className={styles.introduction}>
+                <button style={{background:HtpIntroductionBtnBackground,color:HtpIntroductionBtnTextColor}} onClick={()=>isIntroduction(true)} className={styles.introduction}>
                     Introduction
                 </button>
                 <button onClick={start} className={styles.start}>

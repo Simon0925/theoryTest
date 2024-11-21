@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import ButtonTest from '../../UI/ButtonTest/ButtonTest';
 import styles from './FooterTrainerTest.module.scss';
 import Modal from '../Modal/Modal';
-import { updateQuestionsAndResults } from '../../service/serviceFooter/updateQuestionsAndResults';
+import { updateQuestionsAndResults } from '../../services/serviceFooter/updateQuestionsAndResults';
 import { setCurrentQuestions, updateCurrentPage, updateResult } from '../../store/currentData/currentData.slice';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';

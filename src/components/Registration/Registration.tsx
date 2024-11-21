@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import styles from './Registration.module.scss';
 import { FormValues, FormErrors } from './interface';
-import validateForm from './service/validateForm';
-import dataTosend from './service/dataTosend';
+import validateForm from './services/validateForm';
+import dataTosend from './services/dataTosend';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
 

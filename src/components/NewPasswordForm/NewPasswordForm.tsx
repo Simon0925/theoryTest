@@ -3,8 +3,8 @@ import { useState } from 'react';
 import styles from './NewPasswordForm.module.scss';
 import { RootState } from '../../store/store';
 import { FormValues, FormErrors } from './interface';
-import dataToSend  from './service/dataToSend'
-import validateForm from './service/validateForm';
+import dataToSend  from './services/dataToSend'
+import validateForm from './services/validateForm';
 import { useNavigate } from 'react-router-dom';
 
 interface NewPasswordFormProps {

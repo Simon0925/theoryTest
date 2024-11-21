@@ -1,7 +1,7 @@
 import styles from "./VariantsOfAnswers.module.scss";
 import { useEffect, useState } from 'react';
 import Variant from '../../components/Variant/Variant';
-import { shuffleArray } from './service/shuffleArray';
+import { shuffleArray } from './services/shuffleArray';
 import { VariantsOfAnswersProps } from "./interface";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";

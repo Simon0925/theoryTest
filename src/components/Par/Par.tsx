@@ -5,14 +5,8 @@ import { RootState } from '../../store/store';
 import { updateQuestion } from '../../store/practice/practice.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import CirclehundredPercents from '../CirclehundredPercents/CirclehundredPercents';
+import ParProps from './interface';
 
-interface ParProps {
-    name: string;
-    quantity: number;
-    percent: number;
-    svg: React.ReactNode;
-    id: string;
-}
 
 const Par = ({ name, quantity, percent, svg, id }: ParProps) => {
     const dispatch = useDispatch();
