@@ -18,7 +18,8 @@ export default function Flag() {
 
     const flagged = useSelector((state: RootState) => state.practice.flagged);
     const allQuestionLength = useSelector((state: RootState) => state.practice.allQuestionLength);
-    const color = useSelector((state: RootState) => state.color);
+    const color = useSelector((state: RootState) => state.color.themeData);
+
 
     useEffect(() => {
         setSelected(flagged && currentFlags.quantity > 0);

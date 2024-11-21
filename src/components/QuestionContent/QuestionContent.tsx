@@ -9,7 +9,7 @@ import Loader from "../../UI/Loader/Loader";
 
 export default function QuestionContent({ typeOftest, question }: QuestionContentProps) {
     const dispatch = useDispatch();
-    const color = useSelector((state: RootState) => state.color);
+    const color = useSelector((state: RootState) => state.color.themeData);
     const {results } = useSelector(
         (state: RootState) => state.currentData.testsData[typeOftest],
         shallowEqual

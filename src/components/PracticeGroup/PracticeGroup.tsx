@@ -21,7 +21,9 @@ interface QuestionGroup {
 export default function PracticeGroup () {
     const [loading, setLoading] = useState(true);
     const [questionsGroup, setQuestionsGroup] = useState<QuestionGroup[]>([]);
-    const color = useSelector((state: RootState) => state.color);
+    
+    const color = useSelector((state: RootState) => state.color.themeData);
+
     const accessToken = useCookie('accessToken');
 
 

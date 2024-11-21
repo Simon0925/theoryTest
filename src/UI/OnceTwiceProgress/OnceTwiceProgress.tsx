@@ -10,7 +10,7 @@ interface OnceTwiceProgressProps {
 }
 
 export default function OnceTwiceProgress({ once, twice }: OnceTwiceProgressProps) {
-  const color = useSelector((state: RootState) => state.color);
+  const color = useSelector((state: RootState) => state.color.themeData);
 
   const [currentPercent, setCurrentPercent] = useState({
     once: 0,

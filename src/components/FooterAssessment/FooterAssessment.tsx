@@ -28,7 +28,8 @@ export default function FooterAssessment({
   const [pause, setPause] = useState(false);
   const [time, setTime] = useState<number | undefined>();
   const dispatch = useDispatch();
-  const color = useSelector((state: RootState) => state.color);
+  const color = useSelector((state: RootState) => state.color.themeData);
+
   
   const { questions, currentPage, answeredVariants, results, visibleQuestions } = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],

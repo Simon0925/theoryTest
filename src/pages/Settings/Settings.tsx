@@ -17,7 +17,7 @@ export default function Settings() {
 
     const [isAccount,setIsAccount] = useState(false)
     
-    const color = useSelector((state: RootState) => state.color);
+    const color = useSelector((state: RootState) => state.color.themeData);
 
     const accessToken = useCookie('accessToken');
 

@@ -27,7 +27,8 @@ export default function FooterTest({ result, typeOftest }: FooterTestProps) {
     shallowEqual
   );
 
-  const color = useSelector((state: RootState) => state.color);
+  const color = useSelector((state: RootState) => state.color.themeData);
+
   const [isExplanationVisible, setIsExplanationVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const modalRoot = document.getElementById("modal-root");

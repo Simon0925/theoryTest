@@ -8,8 +8,7 @@ import { useSelector } from "react-redux";
 
 export default function Auth() {
 
-    const { headerColors, textColor,hoverColor} = useSelector((state: RootState) => state.color);
-
+    const { headerColors, textColor,hoverColor} = useSelector((state: RootState) => state.color.themeData);
 
     const [active, setActive] = useState("login");
 

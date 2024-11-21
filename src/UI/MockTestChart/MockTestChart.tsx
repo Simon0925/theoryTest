@@ -7,7 +7,7 @@ import {generateVariableSmoothPath,calculateYPosition} from './service/chartUtil
 import debounce from "lodash/debounce";
 
 const MockTestChart = ({ data }: { data: Data[]}) => {
-  const color = useSelector((state: RootState) => state.color);
+  const color = useSelector((state: RootState) => state.color.themeData);
   const [pathLength, setPathLength] = useState(0);
   const [currentData, setCurrentData] = useState<ChartData[]>([]);  
 

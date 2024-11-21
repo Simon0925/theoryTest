@@ -17,8 +17,7 @@ export default function HeaderResults ({exitResult,typeOftest}:HeaderResultsProp
 
     const [showExitModal, setShowExitModal] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
-    const color = useSelector((state: RootState) => state.color);
-
+    const color = useSelector((state: RootState) => state.color.themeData);
 
     const modalRoot = document.getElementById("modal-root");
 

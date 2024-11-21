@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 export default function GoToLogin() {
 
-    const color = useSelector((state: RootState) => state.color);
+    const color = useSelector((state: RootState) => state.color.themeData);
 
     const navigate = useNavigate();
 

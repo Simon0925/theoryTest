@@ -13,8 +13,7 @@ interface FooterMockTestProps {
 
 export default function FooterMockTest({ onTestStart }: FooterMockTestProps) {
     
-    const color = useSelector((state: RootState) => state.color);
-
+    const color = useSelector((state: RootState) => state.color.themeData);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 

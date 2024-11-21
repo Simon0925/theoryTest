@@ -14,7 +14,8 @@ import {CoolorState} from './interface'
 
 const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, correct }) => {
     const practiceCorrect = useSelector((state: RootState) => state.practice.correct);
-    const stateColor = useSelector((state: RootState) => state.color);
+    const themeData = useSelector((state: RootState) => state.color.themeData);
+
     const [loaded, setLoaded] = useState(false); 
     const imageRef = useRef<HTMLImageElement | null>(null);
 
@@ -24,8 +25,8 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
     );
 
     const [color, setColor] = useState({
-        backgroundColor: stateColor.VariantBackground,
-        color: stateColor.VariantTextColor,
+        backgroundColor: themeData.VariantBackground,
+        color: themeData.VariantTextColor,
     });
 
     useEffect(() => {
@@ -76,7 +77,7 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
             index,
             questions,
             correct,
-            stateColor as unknown as CoolorState, 
+            themeData as unknown as CoolorState, 
             practiceCorrect
         );
         setColor(color);

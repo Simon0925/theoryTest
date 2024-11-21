@@ -4,15 +4,16 @@ import Toggle from '../../UI/Toggle/Toggle';
 import styles from './SwitchColor.module.scss';
 import { RootState } from '../../store/store';
 import { useEffect, useState } from 'react';
-import { updateColor, updateCurrentState } from '../../store/coolor/coolor.slise';
-
+import { updateTheme } from '../../store/color/color.slise';
+import {Themes} from '../../store/color/interface'
 interface SwitchColorProps {
     svgColor: string;
 }
 
 export default function SwitchColor({ svgColor }: SwitchColorProps) {
     const dispatch = useDispatch();
-    const color = useSelector((state: RootState) => state.color);
+    const {themeData,currentTheme} = useSelector((state: RootState) => state.color);
+
     const [nightMode, setNightMode] = useState(false);
 
     const [active, setActive] = useState({
@@ -25,22 +26,21 @@ export default function SwitchColor({ svgColor }: SwitchColorProps) {
 
     useEffect(() => {
         setActive({
-            frostedPearl: color.currentState === 'frostedPearl' && !nightMode,
-            amberSunset: color.currentState === 'amberSunset' && !nightMode,
-            oceanicBlue: color.currentState === 'oceanicBlue' && !nightMode,
-            violetMajesty: color.currentState === 'violetMajesty' && !nightMode,
-            nightMode: color.currentState === 'nightMode',
+            frostedPearl: currentTheme === 'frostedPearl' && !nightMode,
+            amberSunset: currentTheme === 'amberSunset' && !nightMode,
+            oceanicBlue: currentTheme === 'oceanicBlue' && !nightMode,
+            violetMajesty: currentTheme === 'violetMajesty' && !nightMode,
+            nightMode: currentTheme === 'nightMode',
         });
         const themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
         if (themeColorMetaTag) {
-            themeColorMetaTag.setAttribute('content', color.headerColors);
+            themeColorMetaTag.setAttribute('content', themeData.headerColors);
         }
-    }, [color.currentState, nightMode]);
+    }, [currentTheme, nightMode]);
 
-    const changeColor = (value: string) => {
+    const changeColor = (value: keyof Themes) => {
         if (nightMode) setNightMode(false); 
-        dispatch(updateColor(value));
-        dispatch(updateCurrentState(value));
+        dispatch(updateTheme(value));
     };
 
     const toggleNightMode = () => {
@@ -48,8 +48,7 @@ export default function SwitchColor({ svgColor }: SwitchColorProps) {
         setNightMode(newNightModeState);
 
         const value = newNightModeState ? 'nightMode' : 'oceanicBlue'; 
-        dispatch(updateColor(value));
-        dispatch(updateCurrentState(value));
+        dispatch(updateTheme(value));
 
     };
 
@@ -62,7 +61,7 @@ export default function SwitchColor({ svgColor }: SwitchColorProps) {
                 </div>
                 <Toggle initialSwitch={active.nightMode} toggle={toggleNightMode} />
             </div>
-            <div style={{ background: color.hoverColor }} className={styles.coolors}>
+            <div style={{ background: themeData.hoverColor }} className={styles.coolors}>
                 <div onClick={() => changeColor('frostedPearl')} className={styles.coolor1}>
                     {active.frostedPearl && <div className={styles.dote}></div>}
                 </div>

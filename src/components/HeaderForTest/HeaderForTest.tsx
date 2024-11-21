@@ -31,7 +31,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
   const [showResultsModal, setShowResultsModal] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  const color = useSelector((state: RootState) => state.color, shallowEqual);
+  const color = useSelector((state: RootState) => state.color.themeData);
 
   const modalRoot = document.getElementById("modal-root");
   

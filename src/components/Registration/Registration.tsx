@@ -16,8 +16,7 @@ export default function Registration() {
     const [errors, setErrors] = useState<FormErrors>({});
     const [serverMessage, setServerMessage] = useState<string | null>(null); 
 
-    const { textColor,hoverColor,headerColors} = useSelector((state: RootState) => state.color);
-
+    const { textColor,hoverColor,headerColors} = useSelector((state: RootState) => state.color.themeData);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

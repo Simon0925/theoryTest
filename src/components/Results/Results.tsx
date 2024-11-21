@@ -23,10 +23,9 @@ interface ResultsProps {
 
 export default function Results({ exitResult, time, typeOftest }: ResultsProps) {
 
-  const color = useSelector((state: RootState) => state.color);
+  const color = useSelector((state: RootState) => state.color.themeData);
 
   const accessToken = useCookie('accessToken');
-
   
   const {results, questions } = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],

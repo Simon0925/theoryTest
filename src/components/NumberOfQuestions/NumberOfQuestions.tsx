@@ -14,7 +14,8 @@ export default function NumberOfQuestions () {
     const dispatch = useDispatch();
 
     const practice = useSelector((state: RootState) => state.practice);
-    const color = useSelector((state: RootState) => state.color);
+    const color = useSelector((state: RootState) => state.color.themeData);
+    
     const [allQuestionLength , setAllQuestionLength] = useState(practice.allQuestionLength)
 
 

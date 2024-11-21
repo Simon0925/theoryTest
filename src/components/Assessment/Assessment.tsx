@@ -45,7 +45,7 @@ interface ParData {
 export default function Assessment({ onClose, result, getTime }: AssessmentProps) {
   const typeOftest = 'MockTest';
   const dispatch = useDispatch();
-  const color = useSelector((state: RootState) => state.color);
+  const color = useSelector((state: RootState) => state.color.themeData);
 
   const modalRoot = document.getElementById("modal-root");
 
@@ -59,7 +59,6 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
 
   const [currentAll,setCurrentAll] = useState(0)
 
-  
   const {
     questions,
     currentPage,

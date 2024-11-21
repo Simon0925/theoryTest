@@ -27,7 +27,7 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
 
     const accessToken = useCookie('accessToken');
 
-    const color = useSelector((state: RootState) => state.color);
+    const color = useSelector((state: RootState) => state.color.themeData);
 
     const practice = useSelector((state: RootState) => state.practice);
 

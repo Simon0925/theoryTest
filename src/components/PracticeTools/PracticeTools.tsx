@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function PracticeTools() {
     const dispatch = useDispatch();
     const practice = useSelector((state: RootState) => state.practice);
-    const color = useSelector((state: RootState) => state.color);
+    const color = useSelector((state: RootState) => state.color.themeData);
     
     const [active, setActive] = useState({
         all:practice.type === "all",

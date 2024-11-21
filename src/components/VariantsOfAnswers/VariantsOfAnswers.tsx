@@ -13,8 +13,7 @@ export default function VariantsOfAnswers({
 
     const [shuffledAnswers, setShuffledAnswers] = useState<{ [key: string]: any[] }>({});
 
-    const color = useSelector((state: RootState) => state.color);
-
+    const themeData = useSelector((state: RootState) => state.color.themeData);
 
     useEffect(() => {
         if (question && !shuffledAnswers[question.id]) {
@@ -30,11 +29,11 @@ export default function VariantsOfAnswers({
     return (
         <div 
             className={styles.wrap}
-            style={{backgroundColor:color.TestBackground}}
+            style={{backgroundColor:themeData.TestBackground}}
         >
             <span 
             className={styles.title}
-            style={{color:color.VariantTitleColor}}
+            style={{color:themeData.VariantTitleColor}}
             >
                 Choose 1 answer
             </span>

@@ -15,7 +15,7 @@ export default function NewPasswordForm({ token }: NewPasswordFormProps) {
     const navigate = useNavigate();
 
 
-    const { textColor, hoverColor } = useSelector((state: RootState) => state.color);
+    const { textColor, hoverColor } = useSelector((state: RootState) => state.color.themeData);
 
     const [formValues, setFormValues] = useState<FormValues>({
         password: '',

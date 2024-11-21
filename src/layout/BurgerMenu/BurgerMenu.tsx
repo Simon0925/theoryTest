@@ -20,7 +20,7 @@ export default function BurgerMenu() {
   const modalRoot = document.getElementById("modal-root");
 
   const { headerColors, textColor, hoverColor, headerSvgColor } = useSelector(
-    (state: RootState) => state.color
+    (state: RootState) => state.color.themeData
   );
 
   const currentTestInProgress = useSelector(

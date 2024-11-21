@@ -12,7 +12,7 @@ interface CircularProgressBarProps {
 
 const CircularProgressBar= ({ correct, skipped, incorrect, mockTest }: CircularProgressBarProps) => {
   
-  const color = useSelector((state: RootState) => state.color);
+  const color = useSelector((state: RootState) => state.color.themeData);
    
   const total = correct + incorrect + skipped;
 

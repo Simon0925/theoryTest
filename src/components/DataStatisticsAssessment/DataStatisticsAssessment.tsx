@@ -17,7 +17,8 @@ interface DataStatisticsAssessmentProps {
 
 export default function DataStatisticsAssessment({ data }: DataStatisticsAssessmentProps) {
     
-    const color = useSelector((state: RootState) => state.color);
+    const color = useSelector((state: RootState) => state.color.themeData);
+
 
     return (
         <>

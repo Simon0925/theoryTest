@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import practiceReducer from './practice/practice.slice'; 
-import colorReducer from './coolor/coolor.slise';
+
 import questionsReducer from './currentData/currentData.slice'; 
 import hptReducer from './hpt/hpt.slice';
 import burgerMenuReducer from './burgerMenu/burgerMenu.slice';
 import authReducer from './auth/auth'
+
+import colorReducer from './color/color.slise';
+
 
 const store = configureStore({
     reducer: {
@@ -13,7 +16,8 @@ const store = configureStore({
         currentData: questionsReducer,
         hptData: hptReducer,
         menu:burgerMenuReducer,
-        auth:authReducer
+        auth:authReducer,
+        color2:colorReducer
     },
 });
 

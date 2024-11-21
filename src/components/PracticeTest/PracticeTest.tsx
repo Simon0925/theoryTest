@@ -17,7 +17,7 @@ export default function PracticeTest({ closeTest, result }: PracticeTestProps) {
 
   const [exit, setExit] = useState(false);
 
-  const color = useSelector((state: RootState) => state.color);
+  const color = useSelector((state: RootState) => state.color.themeData);
 
   const dispatch = useDispatch();
  

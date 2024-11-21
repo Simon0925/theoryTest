@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, Suspense, lazy } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import {useSelector } from 'react-redux';
 import styles from './HPT.module.scss';
 import { hptGetData } from './servise/hptGetData';
 import { RootState } from '../../store/store';
@@ -28,7 +28,7 @@ const HPT = () => {
     const [completedVideosActive, setCompletedVideosActive] = useState(false);
     const [videosData, setVideosData] = useState<VideoData[]>([]);
 
-    const color = useSelector((state: RootState) => state.color, shallowEqual);
+    const color = useSelector((state: RootState) => state.color.themeData);
     const auth = useSelector((state: RootState) => state.auth);
 
     const accessToken = useCookie('accessToken');

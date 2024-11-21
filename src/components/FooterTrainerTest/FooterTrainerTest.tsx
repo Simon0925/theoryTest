@@ -19,8 +19,7 @@ export default function FooterTrainerTest({result}:FooterTrainerTestProps) {
 
     const maxPage = 756
 
-    const color = useSelector((state: RootState) => state.color);
-
+    const color = useSelector((state: RootState) => state.color.themeData);
 
     const { questions, currentPage, answeredVariants,results} = useSelector(
         (state: RootState) => state.currentData.testsData["Trainer"],  

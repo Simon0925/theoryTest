@@ -19,7 +19,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const { open: isMenuOpen, visible } = useSelector((state: RootState) => state.menu);
   const { headerColors, textColor, hoverColor, headerSvgColor } = useSelector(
-    (state: RootState) => state.color
+    (state: RootState) => state.color.themeData
   );
   const currentTestInProgress = useSelector((state: RootState) => state.currentData.currentTestInProgress);
   

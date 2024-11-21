@@ -14,12 +14,11 @@ export default function PracticeQuestionsManagerMobile({ practiceTest }: Practic
     const dispatch: AppDispatch = useDispatch();
     const visible = useSelector((state: RootState) => state.menu.visible);
     const {
-        color,
         practice,
         questions,
         isLoading,
       } = useSelector((state: RootState) => ({
-        color: state.color,
+        color: state.color.themeData,
         practice: state.practice,
         questions: state.currentData.testsData["PracticeTest"]?.questions || [],
         isLoading: state.currentData.testsData["PracticeTest"]?.isLoading || false,

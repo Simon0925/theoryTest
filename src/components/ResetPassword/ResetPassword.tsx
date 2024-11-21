@@ -13,7 +13,8 @@ export default function ResetPassword({ reset }: ResetPasswordProps) {
     const [formValues, setFormValues] = useState<FormValues>({ email: '' });
     const [errors, setErrors] = useState<FormErrors>({});
     const [serverMessage, setServerMessage] = useState<string | null>(null);
-    const { textColor, hoverColor } = useSelector((state: RootState) => state.color);
+    const { textColor, hoverColor } = useSelector((state: RootState) => state.color.themeData);
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

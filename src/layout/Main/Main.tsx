@@ -11,10 +11,10 @@ import HPT from '../../pages/HPT/HPT';
 import NewPassword from '../../pages/NewPassword/NewPassword';
 
 export default function Main() {
-    const color = useSelector((state: RootState) => state.color);
+    const {mainColor} = useSelector((state: RootState) => state.color.themeData);
     return (
         <main>
-            <div  style={{backgroundColor:color.mainColor}} className={styles['wrap-main']}>
+            <div  style={{backgroundColor:mainColor}} className={styles['wrap-main']}>
                 <Routes>
                     <Route path='/' element={<Practice />} />
                     <Route path="/settings" element={<Settings />} />

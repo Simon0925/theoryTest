@@ -19,7 +19,7 @@ export default function Login() {
     const [serverMessage, setServerMessage] = useState<string | null>(null);
     const [reset, setReset] = useState(false);
 
-    const { textColor,hoverColor,headerColors} = useSelector((state: RootState) => state.color);
+    const { textColor,hoverColor,headerColors} = useSelector((state: RootState) => state.color.themeData);
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

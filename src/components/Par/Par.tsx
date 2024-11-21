@@ -18,8 +18,7 @@ const Par = ({ name, quantity, percent, svg, id }: ParProps) => {
     const dispatch = useDispatch();
     
     const practice = useSelector((state: RootState) => state.practice);
-    const color = useSelector((state: RootState) => state.color);
-
+    const color = useSelector((state: RootState) => state.color.themeData);
 
     const [isSelected, setIsSelected] = useState(false);
 

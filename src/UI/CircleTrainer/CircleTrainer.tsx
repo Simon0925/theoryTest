@@ -18,7 +18,7 @@ export default function CircleTrainer ({
         VariantTitleColor,
         mainColor,
         CircularTrainerProgressBarColor
-    } = useSelector((state: RootState) => state.color);
+    } = useSelector((state: RootState) => state.color).themeData;
 
     const strokeWidth = 12;
 

@@ -1,4 +1,3 @@
-import { color } from 'chart.js/helpers';
 import styles from './Spinner.module.scss';
 
 interface SpinnerProps {

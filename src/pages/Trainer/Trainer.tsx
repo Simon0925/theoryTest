@@ -26,7 +26,7 @@ export default function Trainer() {
         shallowEqual
     );
     const auth = useSelector((state: RootState) => state.auth);
-    const color = useSelector((state: RootState) => state.color);
+    const color = useSelector((state: RootState) => state.color.themeData);
 
     const fetchTrainerData = useCallback(async() => {
         if(accessToken){

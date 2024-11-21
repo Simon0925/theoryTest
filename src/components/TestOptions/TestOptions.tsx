@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from '../../store/store';
 import { fetchQuestions, updateCorrect } from '../../store/practice/practice.slice';
 import PracticeTools from '../PracticeTools/PracticeTools';
 import NumberOfQuestions from '../NumberOfQuestions/NumberOfQuestions';
+import useCookie from '../../hooks/useCookie';
 
 
 export default function TestOptions() {
@@ -15,15 +16,20 @@ export default function TestOptions() {
     color,
     practice,
   } = useSelector((state: RootState) => ({
-    color: state.color,
+    color: state.color.themeData,
     practice: state.practice,
   }), shallowEqual);
+
+  const accessToken = useCookie('accessToken');
+
 
   const [isChecked, setIsChecked] = useState(practice.correct);
 
   useEffect(() => {
-    dispatch(fetchQuestions({ testId: 'PracticeTest' }));
-  }, [practice.question, practice.allQuestionLength, practice.flagged, practice.numberOfQuestions, practice.type, dispatch]);
+    if(accessToken){
+      dispatch(fetchQuestions({ testId: 'PracticeTest',token:accessToken}));
+    }
+  }, [practice.question, practice.allQuestionLength, practice.flagged, practice.numberOfQuestions, practice.type, dispatch,accessToken]);
 
   useEffect(() => {
     dispatch(updateCorrect(isChecked));

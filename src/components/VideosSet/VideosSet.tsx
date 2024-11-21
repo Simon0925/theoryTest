@@ -26,7 +26,7 @@ export default function VideosSet({
     const dispatch = useDispatch();
     const videos = useSelector((state: RootState) => state.hptData.videos);
     const [isActive, setIsActive] = useState(false);
-    const color = useSelector((state: RootState) => state.color);
+    const themeData = useSelector((state: RootState) => state.color.themeData);
     const [loaded, setLoaded] = useState(false); 
     
     const toggleVideoForTest = () => {
@@ -51,7 +51,7 @@ export default function VideosSet({
                     loading="lazy"
                     onLoad={() => setLoaded(true)}
                 />
-                <div style={{background:color.HtpIconNumberBackground}} className={styles.number}>{numberOfVideo}</div>
+                <div style={{background:themeData.HtpIconNumberBackground}} className={styles.number}>{numberOfVideo}</div>
                 {stars > 0 && <Stars starColor={stars} />}
             </div>
         </div>
