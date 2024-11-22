@@ -8,9 +8,8 @@ export const allData = async (dispatch: Dispatch<any>, token: string,typeOftest:
 
     try {
         
-        console.log("allData:")
         
-        // dispatch(setLoading({ testId: typeOftest, isLoading: true }));
+        dispatch(setLoading({ testId: typeOftest, isLoading: true }));
 
         const response = await fetch(requestUrl);
         if (!response.ok) {
@@ -19,15 +18,14 @@ export const allData = async (dispatch: Dispatch<any>, token: string,typeOftest:
 
         const data = await response.json();
 
-        console.log("data:",data)
 
-        // dispatch(setCurrentQuestions({ testId: typeOftest, questions: data.trainerQuestions }));
-        // dispatch(setLoading({ testId: typeOftest, isLoading: false }));
+        dispatch(setCurrentQuestions({ testId: typeOftest, questions: data.data }));
+        dispatch(setLoading({ testId: typeOftest, isLoading: false }));
 
         return data;
     } catch (error) {
         console.error("Error fetching trainer data:", error);
-        // dispatch(setLoading({ testId: typeOftest, isLoading: false })); 
+        dispatch(setLoading({ testId: typeOftest, isLoading: false })); 
         throw error;
     }
 };

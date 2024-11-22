@@ -40,8 +40,8 @@ export default function PracticeQuestionsManagerMobile({ practiceTest }: Practic
     }, [practice.question, dispatch,setModalVisible]);
 
     const stertWithOutTopic = async () =>{
-        // setModalVisible(false)
-        // practiceTest(true)
+        setModalVisible(false)
+        practiceTest(true)
         if(accessToken){
         try{
             await allData(dispatch,accessToken,"PracticeTest")
