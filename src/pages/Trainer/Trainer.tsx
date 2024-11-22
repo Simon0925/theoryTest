@@ -64,7 +64,7 @@ export default function Trainer() {
     if (isLoading) {
         return (
             <div className={styles.spinner}>
-                <Spinner color="white" />
+                <Spinner />
             </div>
         );
     }
@@ -72,7 +72,7 @@ export default function Trainer() {
     return (
         <Suspense fallback={
             <div className={styles.spinner}>
-                <Spinner color="white" />
+                <Spinner />
             </div>
         }>
             {!isTestStarted && !showResults && (

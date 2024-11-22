@@ -8,6 +8,9 @@
     span{
         padding: 0.9rem 0rem;
         font-size: 18px;
+        user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
     }
     .img{
         max-width: 150px;

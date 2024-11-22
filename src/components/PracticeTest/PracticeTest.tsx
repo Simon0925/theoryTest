@@ -40,7 +40,7 @@ export default function PracticeTest({ closeTest, result }: PracticeTestProps) {
   return (
     <>
       {isLoading ?
-       <Spinner color={'blue'} />
+      <div className={styles.spinner}><Spinner  /></div> 
       :
       <div 
       style={{

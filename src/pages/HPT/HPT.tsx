@@ -87,12 +87,12 @@ const HPT = () => {
     if (!auth.isLogin && !auth.loading) return <GoToLogin />;
     if (!auth.isLogin || auth.loading || videosData.length === 0) return (
         <div className={styles.spinner}>
-            <Spinner color="white" />
+            <Spinner />
         </div>
     );
 
     return (
-        <Suspense fallback={<div className={styles.spinner}><Spinner color="white" /></div>}>
+        <Suspense fallback={<div className={styles.spinner}><Spinner /></div>}>
             {!isIntroduction && !testIsActive && !completedVideosActive && renderMainView()}
             {completedVideosActive && !isIntroduction && !testIsActive && (
                 <CompletedVideos

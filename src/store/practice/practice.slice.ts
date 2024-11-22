@@ -35,8 +35,7 @@ export const fetchQuestions = createAsyncThunk<
     const state: any = getState();
   
     const practice = state.practice;
-    
-
+ 
     dispatch(setLoading({ testId, isLoading: true }));
 
     try {

@@ -1,16 +1,19 @@
+import { useSelector } from 'react-redux';
 import styles from './Spinner.module.scss';
+import { RootState } from '../../store/store';
 
-interface SpinnerProps {
-    color:string;
-}
+export default function Spinner() {
 
-export default function Spinner({color}:SpinnerProps) {
+  const { headerColors, textColor, hoverColor, headerSvgColor } = useSelector(
+    (state: RootState) => state.color.themeData
+  );
+
   return (
     <div className={styles.loader}>
       <svg className={styles.car} width="102" height="40" xmlns="http://www.w3.org/2000/svg">
         <g
           transform="translate(2 1)"
-          stroke={color}
+          stroke={textColor}
           fill="none"
           fillRule="evenodd"
           strokeLinecap="round"

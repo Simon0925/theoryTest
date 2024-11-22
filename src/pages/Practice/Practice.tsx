@@ -30,10 +30,10 @@ export default function Practice() {
   }, [result, auth.isLogin]);
 
   if (!auth.isLogin && !auth.loading) return <GoToLogin />;
-  if (auth.loading || !auth.isLogin) return <div className={styles.spinner}><Spinner color="white" /></div>;
+  if (auth.loading || !auth.isLogin) return <div className={styles.spinner}><Spinner /></div>;
 
   return (
-    <Suspense fallback={<div className={styles.spinner}><Spinner color="white" /></div>}>
+    <Suspense fallback={<div className={styles.spinner}><Spinner /></div>}>
       {result ? (
         <Results typeOftest="PracticeTest" exitResult={setResult} />
       ) : (

@@ -29,6 +29,9 @@
         .question{
             font-size: 18px;
             font-weight: 600;
+            user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
         }
         .question-photo{
                 padding-left: 1rem;

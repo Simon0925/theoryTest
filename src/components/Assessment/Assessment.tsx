@@ -112,7 +112,7 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
      >
       {isLoading && (visibleQuestions?.length ?? 0) <= 0 ? (
         <div className={styles.spinner} style={{ position: 'absolute', top: '40%' }}>
-          <Spinner color="white" />
+          <Spinner />
         </div>
       ) : (
         <>

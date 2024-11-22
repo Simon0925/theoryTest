@@ -1,27 +1,26 @@
-import { useEffect, useState} from 'react';
+import { useCallback, useEffect, useState} from 'react';
 import Toggle from '../../UI/Toggle/Toggle';
 import NumberOfQuestions from '../NumberOfQuestions/NumberOfQuestions';
 import PracticeTools from '../PracticeTools/PracticeTools';
 import styles from './PracticeSettings.module.scss';
-import {  shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { fetchQuestions, updateCorrect } from '../../store/practice/practice.slice';
+import ReactDOM from "react-dom";
+import {allData} from '../../services/allData/allData'
+import { AppDispatch } from '../../store/store'; 
+import useCookie from '../../hooks/useCookie';
+import Modal from '../Modal/Modal';
 
 interface PracticeSettingsProps {
     practiceTest: (e: boolean) => void;
 }
-import { AppDispatch } from '../../store/store'; 
-import DotTyping from '../../UI/DotTyping/DotTyping';
-import useCookie from '../../hooks/useCookie';
-
-
 
 export default function PracticeSettings({ practiceTest }: PracticeSettingsProps) {
-    const { questions } = useSelector(
-        (state: RootState) => state.currentData.testsData["PracticeTest"],  
-        shallowEqual
-    );
-
+    
+    const modalRoot = document.getElementById("modal-root");
+    
+    const [modalVisible, setModalVisible] = useState(false);
 
     const dispatch: AppDispatch = useDispatch();
 
@@ -31,19 +30,29 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
 
     const practice = useSelector((state: RootState) => state.practice);
 
-    const isLoading = useSelector((state: RootState) => state.currentData.testsData["PracticeTest"].isLoading);
-
     const [isChecked, setIsChecked] = useState(practice.correct);
 
     useEffect(()=>{
         dispatch(updateCorrect(isChecked));
     },[isChecked])
 
+   
+    const stertWithOutTopic = async () =>{
+        setModalVisible(false)
+        practiceTest(true)
+        if(accessToken){
+        try{
+            await allData(dispatch,accessToken,"PracticeTest")
+        }catch(error){
+            console.log(error)
+        }
+      }
+    }
 
-    const start = () => {
-        if (questions.length > 0) practiceTest(true);
-    };
- 
+    const start = useCallback(() => {
+        practice.question.length === 0 ?  setModalVisible(true) : practiceTest(true)
+    }, [practice.question,dispatch, practiceTest]);
+
     useEffect(() => {
         if(accessToken){
             dispatch(fetchQuestions({ testId: 'PracticeTest',token:accessToken }));
@@ -58,26 +67,24 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
             </div>
             <PracticeTools  />
             <NumberOfQuestions  />
-            <div
-            className={
-                !isLoading && questions.length > 0
-                ? styles['btn']
-                : styles['btnIsLoading']
-            }
-                >
+            <div className={styles['btn']} >
                 <button className={styles.startBtn} onClick={start}>
-                    {isLoading ? (
-                    <>
-                        Loadin <DotTyping />
-                    </>
-                    ) : (
-                        <>
-                        Start
-                        </>
-                    
-                    )}
-                </button>
+                    Start
+                 </button>
             </div>
+            {modalVisible && modalRoot &&
+                ReactDOM.createPortal(
+                    <Modal
+                        title="A test cannot be generated with your current settings"
+                        cancel
+                        cancelClick={() => setModalVisible(false)}
+                        close={stertWithOutTopic}
+                        blueBtnText="Quick Test"
+                        text="Please select at least one topic. 
+                        Alternatively, you can do a quick test by letting us pick the right questions for you!"
+                    />,
+                modalRoot
+            )}
         </div>
     );
 }
