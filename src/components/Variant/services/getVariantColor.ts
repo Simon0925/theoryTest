@@ -20,19 +20,16 @@ const getVariantColor = (
     );
 
     if (checkAnswer && practiceCorrect && typeOftest === "PracticeTest") {
-        console.log("PracticeTest")
         return {
             backgroundColor: correct ? "rgb(0, 182, 118)" : "rgb(170, 59, 54)",
             color: stateColor.VariantSelectedOption,
         };
     } else if (checkAnswer &&!practiceCorrect &&  typeOftest === "PracticeTest") {
-        console.log("PracticeTest")
         return {
             backgroundColor: stateColor.VariantSelectedMockBackground,
             color: stateColor.VariantSelectedMockTestOption,
         };
     } else if (checkAnswer && typeOftest === "MockTest") {
-        console.log(checkAnswer)
         return {
             backgroundColor: stateColor.VariantSelectedMockBackground,
             color: stateColor.VariantSelectedMockTestOption,

@@ -133,8 +133,8 @@ const CircularProgressBar= ({ correct, skipped, incorrect, mockTest }: CircularP
       />
 
       <text
-        x="50%"
-        y={mockTest ? "35%" : "50%"}
+        x="50"
+        y={mockTest ? "35" : "50"}
         dominantBaseline="middle"
         textAnchor="middle"
         fontWeight="900"
@@ -143,6 +143,13 @@ const CircularProgressBar= ({ correct, skipped, incorrect, mockTest }: CircularP
       >
         {Math.round(percentages.correct)}%
       </text>
+
+      <g dominantBaseline="middle" fill={color.textColor} textAnchor="middle" fontWeight="900" fontSize="9">
+        <text x="118" y="45">PASS</text>
+        <text x="118" y="55">mark</text>
+      </g>
+
+      <line x1="90" y1="47" x2="108" y2="50" stroke={color.textColor} strokeWidth="1" />
 
       {mockTest && (
         <text

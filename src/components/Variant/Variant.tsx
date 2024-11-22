@@ -45,13 +45,12 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
         if (typeOftest === "MockTest" || typeOftest === "Trainer") {
             return correct;
         }else if ((practiceCorrect && practiceCheck && typeOftest === "PracticeTest")) {
-            console.log("PracticeTest")
             return correct ? <OkVectorSvg /> : <CrossSvg />;
         }else if ( (!practiceCorrect && practiceCheck && typeOftest === "PracticeTest")) {
             return correct;
         }
         return null;
-    }, [ currentPage]);
+    }, [ currentPage,answeredVariants]);
 
     const addAnswer = () => {
         handleAnswer(
@@ -81,7 +80,7 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
             practiceCorrect
         );
         setColor(color);
-    }, [currentPage]);
+    }, [currentPage,answeredVariants,visibleQuestions,themeData]);
 
 
     return (
