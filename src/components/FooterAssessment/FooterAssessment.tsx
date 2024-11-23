@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import AssessmentFooterDesktopButtons from "../AssessmentFooterDesktopButtons/AssessmentFooterDesktopButtons";
-import { usePageNavigation } from "../../hooks/usePageNavigation";
+import { usePageNavigation } from "../../hooks/useFooterHooks/usePageNavigation";
 import AssessmentFooterMobileButtons from "../AssessmentFooterMobileButtons/AssessmentFooterMobileButtons";
 
 

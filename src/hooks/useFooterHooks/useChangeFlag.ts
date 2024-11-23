@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentQuestions, updateResult } from '../store/currentData/currentData.slice';
-import { updateQuestionsAndResults } from '../services/serviceFooter/updateQuestionsAndResults';
-import { RootState } from '../store/store';
+import { setCurrentQuestions, updateResult } from '../../store/currentData/currentData.slice';
+import { updateQuestionsAndResults } from '../../services/serviceFooter/updateQuestionsAndResults';
+import { RootState } from '../../store/store';
 
 export function useChangeFlag(typeOftest: string) {
   const dispatch = useDispatch();

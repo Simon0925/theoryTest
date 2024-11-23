@@ -5,7 +5,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
 import TrainerFooterDesktopButtons from '../TrainerFooterDesktopButtons/TrainerFooterDesktopButtons';
-import { usePageNavigation } from '../../hooks/usePageNavigation';
+import { usePageNavigation } from '../../hooks/useFooterHooks/usePageNavigation';
 import TrainerFooterMobileButtons from '../TrainerFooterMobileButtons/TrainerFooterMobileButtons';
 
 interface TrainerFooterProps {

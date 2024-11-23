@@ -5,7 +5,7 @@ import styles from './PracticeFooter.module.scss';
 import { RootState } from '../../store/store';
 
 import ReactDOM from "react-dom";
-import { usePageNavigation } from '../../hooks/usePageNavigation';
+import { usePageNavigation } from '../../hooks/useFooterHooks/usePageNavigation';
 import PracticeFooterMobileButtons from '../PracticeFooterMobileButtons/PracticeFooterMobileButtons';
 import PracticeFooterDesktopButtons from '../PracticeFooterDesktopButtons/PracticeFooterDesktopButtons';
 

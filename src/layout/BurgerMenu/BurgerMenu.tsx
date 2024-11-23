@@ -1,20 +1,17 @@
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import ReactDOM from "react-dom";
 
 import styles from "./BurgerMenu.module.scss";
 import SwitchColor from "../../components/SwitchColor/SwitchColor";
 import Modal from "../../components/Modal/Modal";
-import { resetStateAll, setTestInactive } from "../../store/currentData/currentData.slice";
-import { updateBurgerMenu } from "../../store/burgerMenu/burgerMenu.slice";
 import { RootState } from "../../store/store";
 
 import { NAV_ITEMS, isActivePath } from "./services/pathKey";
+import { useHandleCloseTest } from "../../hooks/useHeaderHooks/useHandleCloseTest";
+import { useCheckTest } from "../../hooks/useHeaderHooks/useCheckTest";
 
 export default function BurgerMenu() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation(); 
 
   const modalRoot = document.getElementById("modal-root");
@@ -27,27 +24,8 @@ export default function BurgerMenu() {
     (state: RootState) => state.currentData.currentTestInProgress
   );
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [pendingPath, setPendingPath] = useState("");
-
-  const handleCloseTest = () => {
-    setModalVisible(false);
-    dispatch(resetStateAll());
-    dispatch(setTestInactive(false));
-    navigate(pendingPath);
-    dispatch(updateBurgerMenu(false));
-  };
-
-  const checkTest = (path: string, event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (currentTestInProgress) {
-      event.preventDefault();
-      setPendingPath(path);
-      setModalVisible(true);
-    } else {
-      navigate(path);
-      dispatch(updateBurgerMenu(false));
-    }
-  };
+  const { modalVisible, setModalVisible, pendingPath, checkTest } = useCheckTest(currentTestInProgress);
+  const handleCloseTest = useHandleCloseTest(setModalVisible, pendingPath);
 
   return (
     <div

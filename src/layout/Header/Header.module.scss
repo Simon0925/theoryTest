@@ -88,17 +88,7 @@
     .wrap .nav {
         display: none;
     }
-    .wrap {
-        width: 100%;
-        height: 60px;
-        position: fixed;
-        z-index: 9999;
-        top: 0;
-        left: 0;
-        display: flex;
-        align-items: center;
-     
-    }
+   
     .wrap .title{
         position: relative;
         display: flex;
@@ -106,9 +96,6 @@
         justify-content: center;
         width: 100%;
         .burgerMenu{
-            position: absolute;
-            left: 0;
-            top: -5px;
             display: block;
         }
 
@@ -122,13 +109,6 @@
             justify-content: center;
             align-items: center;
         }
-    }
-
-    .wrap .arrow{
-        position: absolute;
-        left: 0;
-        display: block;
-        top: -10px;
     }
 }
 
@@ -138,17 +118,7 @@
     .wrap .nav {
         display: none;
     }
-    .wrap {
-        width: 100%;
-        height: 60px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-     
-    }
+    
     .wrap .title{
         position: relative;
         display: flex;
@@ -156,9 +126,6 @@
         justify-content: center;
         width: 100%;
         .burgerMenu{
-            position: absolute;
-            left: 0;
-            top: -5px;
             display: block;
         }
 
@@ -172,13 +139,6 @@
             justify-content: center;
             align-items: center;
         }
-    }
-
-    .wrap .arrow{
-        position: absolute;
-        left: 0;
-        display: block;
-        top: -10px;
     }
 }
 

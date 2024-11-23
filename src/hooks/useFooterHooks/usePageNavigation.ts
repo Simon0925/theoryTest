@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { updateCurrentPage } from '../store/currentData/currentData.slice';
-import { RootState } from '../store/store';
+import { updateCurrentPage } from '../../store/currentData/currentData.slice';
+import { RootState } from '../../store/store';
 
 interface UsePageNavigationProps {
   typeOftest: string;

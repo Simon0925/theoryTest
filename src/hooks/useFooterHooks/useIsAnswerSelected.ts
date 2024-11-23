@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+import { RootState } from '../../store/store';
 
 export const useIsAnswerSelected = (typeOftest:string) => {
     const { questions, currentPage, answeredVariants,visibleQuestions } = useSelector(
