@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import AssessmentFooterDesktopButtons from "../AssessmentFooterDesktopButtons/AssessmentFooterDesktopButtons";
 import { usePageNavigation } from "../../hooks/usePageNavigation";
+import AssessmentFooterMobileButtons from "../AssessmentFooterMobileButtons/AssessmentFooterMobileButtons";
 
 
 interface FooterAssessmentProps {
@@ -54,6 +55,16 @@ export default function FooterAssessment({
           pause={pause}
        />
       </div>
+      <div className={styles.mobileContainer} >
+          <AssessmentFooterMobileButtons 
+            navigatePage={navigatePage}
+            typeOftest={typeOftest} 
+            time={setTime}
+            startPause={startPause}
+            pause={pause}
+          />
+      </div>
+      
     </div>
   );
 }

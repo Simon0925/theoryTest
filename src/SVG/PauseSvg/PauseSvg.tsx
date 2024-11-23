@@ -1,10 +1,12 @@
 import { useRef } from "react";
 
 interface PauseSvgProps {
-  color:string
+  color:string;
+  width:string;
+  height:string;
 }
 
-const PauseSvg = ({color}:PauseSvgProps) => {
+const PauseSvg = ({color,width,height}:PauseSvgProps) => {
   const refSvg = useRef<SVGSVGElement>(null);
 
   const press = () => {
@@ -14,8 +16,8 @@ const PauseSvg = ({color}:PauseSvgProps) => {
   };
   return(
   <svg
-    width="30px"
-    height="30px"
+    width={width}
+    height={height}
     viewBox="-1 0 8 8"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"

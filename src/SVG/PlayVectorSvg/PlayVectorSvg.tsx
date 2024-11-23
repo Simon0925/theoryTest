@@ -2,9 +2,11 @@ import { useRef } from "react";
 
 interface PlayVectorSvgProps {
   color:string;
+  height:string;
+  width:string;
 }
 
-const PlayVectorSvg = ({color}:PlayVectorSvgProps) => {
+const PlayVectorSvg = ({color,height,width}:PlayVectorSvgProps) => {
 
   const refSvg = useRef<SVGSVGElement>(null);
 
@@ -18,8 +20,8 @@ const PlayVectorSvg = ({color}:PlayVectorSvgProps) => {
     
     
   <svg
-    width="30px"
-    height="30px"
+    width={width}
+    height={height}
     viewBox="-3 0 28 28"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"

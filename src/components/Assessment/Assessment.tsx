@@ -132,7 +132,7 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
             ) : (
               <div style={{ color:textColor }}className={styles.pausedMessage}>
                 Test paused
-                <PauseSvg color={textColor} />
+                <PauseSvg color={textColor} width={'30px'} height={'30px'} />
               </div>
             )}
       

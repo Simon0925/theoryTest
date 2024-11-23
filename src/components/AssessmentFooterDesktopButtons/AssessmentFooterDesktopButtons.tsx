@@ -56,7 +56,7 @@ const AssessmentFooterDesktopButtons = ({
             svg
             svgColor={questions[currentPage]?.flag? true : color.FlagColorSvgBtn}
             />
-            <TimerAssessment color={color.textColor } time={time} pause={pause} />
+            <TimerAssessment color={color.textColor} time={time} pause={pause} fontSize={"24px"} />
             <ButtonTest
                 click={startPause}
                 name={pause ? "Resume" : "Pause"}

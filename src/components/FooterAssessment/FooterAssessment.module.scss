@@ -10,39 +10,14 @@
         display: none;
     }
 
-        .prevBtn,
-        .nextBtn,
-        .explanationBtn,
-        .btnPause,
-        .flagBtn {
-            border: none;
-            outline: none;
-            font-size: 18px;
-            font-weight: 500;
-        }
-        
-        .btnPause{
-            svg{
-                width: 20px;
-            }
-        }
-        
-
-        .nextBtn{
-            svg{
-                transform: rotate(180deg);
-            }
-        }
+       
 }
 
 @media (max-width: 800px) {
 
     .wrap{
         .mobileContainer{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.5rem;
+           display: block;
         }
         .container{
             display: none;
@@ -54,10 +29,7 @@
 @media (max-width: 1024px) and  (max-height: 600px){
     .wrap{
         .mobileContainer{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.5rem;
+         display: block;
         }
         .container{
             display: none;

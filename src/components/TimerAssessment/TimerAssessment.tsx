@@ -4,10 +4,11 @@ import styles from './TimerAssessment.module.scss';
 interface TimerAssessmentProps {
   color:string;
   pause: boolean;
+  fontSize:string;
   time:(e:number) => void;
 }
 
-export default function TimerAssessment({ pause,time,color }: TimerAssessmentProps) {
+export default function TimerAssessment({ pause,time,color,fontSize }: TimerAssessmentProps) {
   const [timeLeft, setTimeLeft] = useState(57 * 60);
 
 
@@ -36,7 +37,7 @@ export default function TimerAssessment({ pause,time,color }: TimerAssessmentPro
   }, [timeLeft]); 
 
   return (
-    <div style={{color:color}} className={styles.timer}>
+    <div style={{color:color,fontSize}} className={styles.timer}>
       {formatTime(timeLeft)}
     </div>
   );
