@@ -1,6 +1,6 @@
 import hostname from "../../../config/hostname";
 
-const getQuestionsGroup = async (token:string) => {
+const getQuestionsTopics = async (token:string) => {
 
     try {
         const response = await fetch(`${hostname}/api/questionsGroup?token=${token}`);
@@ -17,5 +17,5 @@ const getQuestionsGroup = async (token:string) => {
 };
 
 export  {
-    getQuestionsGroup
+    getQuestionsTopics
 };

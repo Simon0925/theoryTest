@@ -1,12 +1,12 @@
 
-export interface Question {
+export interface Topic {
     id: string;
 }
 
 
 
 export interface PracticeData {
-    question: Question[];         
+    topic: Topic[];         
     type: string;                  
     numberOfQuestions: string;     
     correct: boolean;                          
@@ -15,20 +15,7 @@ export interface PracticeData {
 }
 
 
-interface ParData {
-    answer: string;
-    photo: boolean | string;
-    tOF: boolean; 
-}
 
-export interface Questions {
-    _id: string;
-    group: string;
-    photo: boolean | string;
-    question: string;
-    par: ParData[]; 
-    flag: boolean; 
-}
 
   
  

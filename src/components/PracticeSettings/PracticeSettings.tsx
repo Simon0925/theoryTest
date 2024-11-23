@@ -36,7 +36,6 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
         dispatch(updateCorrect(isChecked));
     },[isChecked])
 
-   
     const stertWithOutTopic = async () =>{
         setModalVisible(false)
         practiceTest(true)
@@ -50,14 +49,20 @@ export default function PracticeSettings({ practiceTest }: PracticeSettingsProps
     }
 
     const start = useCallback(() => {
-        practice.question.length === 0 ?  setModalVisible(true) : practiceTest(true)
-    }, [practice.question,dispatch, practiceTest]);
+        if (practice.topic.length <= 0 && !practice.flagged) {
+            setModalVisible(true);
+        } else {
+            practiceTest(true);
+        }
+    }, [practice.topic, practice.flagged, practiceTest]);
 
     useEffect(() => {
         if(accessToken){
             dispatch(fetchQuestions({ testId: 'PracticeTest',token:accessToken }));
         }
-    }, [practice.question,practice.allQuestionLength,practice.flagged,practice.numberOfQuestions,practice.type,accessToken]);
+    }, [practice.topic,practice.allQuestionLength,practice.flagged,practice.numberOfQuestions,practice.type,accessToken]);
+
+
 
     return (
         <div  className={styles['wrap']}>

@@ -3,16 +3,16 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import Flag from "../Flag/Flag";
 import Spinner from "../../UI/Spinner/Spinner";
-import Par from "../Par/Par";
+import Topic from "../Topic/Topic";
 import { useEffect, useState } from "react";
-import parsMap from "./services/parsItem";
-import {getQuestionsGroup} from './services/getQuestionsGroup'
+import topicsMap from "./services/topicsMap";
+import {getQuestionsTopics} from './services/getQuestionsTopics'
 import useCookie from "../../hooks/useCookie";
-import {QuestionGroup} from "./interface";
+import {TopicInterface} from "./interface";
 
 export default function PracticeGroup () {
     const [loading, setLoading] = useState(true);
-    const [questionsGroup, setQuestionsGroup] = useState<QuestionGroup[]>([]);
+    const [questionsGroup, setQuestionsGroup] = useState<TopicInterface[]>([]);
     
     const color = useSelector((state: RootState) => state.color.themeData);
 
@@ -23,7 +23,7 @@ export default function PracticeGroup () {
       if(accessToken){
         const fetchData = async () => {
           try {
-            const groupTest = await getQuestionsGroup(accessToken);
+            const groupTest = await getQuestionsTopics(accessToken);
             setQuestionsGroup(groupTest || []);
           } catch (error) {
             console.error("Error fetching data:", error);
@@ -49,13 +49,13 @@ export default function PracticeGroup () {
                       justifyContent: "center",
                     }}
                   >
-                    <Spinner color="#0078AB" />
+                    <Spinner />
                   </div> 
                 ) : (
                   questionsGroup.map((elem) => {
-                    const svg = parsMap[elem.name] || null; 
+                    const svg = topicsMap[elem.name] || null; 
                     return (
-                      <Par
+                      <Topic
                         key={elem.id}
                         id={elem.id}
                         name={elem.name}

@@ -1,15 +1,15 @@
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import PracticeGroup from "../PracticeGroup/PracticeGroup";
-import styles from "./PracticeQuestionsManagerMobile.module.scss";
 import TestOptions from "../TestOptions/TestOptions";
-import { updateVisible } from "../../store/burgerMenu/burgerMenu.slice";
-import { useCallback, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
 import Modal from "../Modal/Modal";
+import { updateVisible } from "../../store/burgerMenu/burgerMenu.slice";
+import { useCallback, useState } from "react";
+import ReactDOM from "react-dom";
 import useCookie from "../../hooks/useCookie";
 import { allData } from "../../services/allData/allData";
 
+import styles from "./PracticeQuestionsManagerMobile.module.scss";
 
 interface PracticeQuestionsManagerMobileProps {
     practiceTest: (e: boolean) => void;
@@ -17,78 +17,63 @@ interface PracticeQuestionsManagerMobileProps {
 
 export default function PracticeQuestionsManagerMobile({ practiceTest }: PracticeQuestionsManagerMobileProps) {
     const modalRoot = document.getElementById("modal-root");
+
     const [modalVisible, setModalVisible] = useState(false);
+
     const accessToken = useCookie('accessToken');
-
     const dispatch: AppDispatch = useDispatch();
+
     const visible = useSelector((state: RootState) => state.menu.visible);
-    const {
-        practice,
-        questions,
-      } = useSelector((state: RootState) => ({
-        color: state.color.themeData,
-        practice: state.practice,
-        questions: state.currentData.testsData["PracticeTest"]?.questions || [],
-      }), shallowEqual);
+    const { topic, flagged } = useSelector((state: RootState) => state.practice);
 
-    const next = useCallback(() => {
-        if (practice.question?.length > 0 || practice.flagged) {
-            dispatch(updateVisible(false));
-        }else if(practice.question.length === 0){
-            setModalVisible(true)
+    const handleNext = useCallback(() => {
+        if (topic.length > 0 || flagged) {
+            dispatch(updateVisible(false)); 
+        } else {
+            setModalVisible(true); 
         }
-    }, [practice.question, dispatch,setModalVisible]);
+    }, [topic, flagged, dispatch]);
 
-    const stertWithOutTopic = async () =>{
-        setModalVisible(false)
+    const handleStartWithoutTopic = async () => {
+        setModalVisible(false);
+        practiceTest(true);
+        if (accessToken) {
+            try {
+                await allData(dispatch, accessToken, "PracticeTest");
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+    };
+
+    const start = useCallback(() =>{
         practiceTest(true)
-        if(accessToken){
-        try{
-            await allData(dispatch,accessToken,"PracticeTest")
-        }catch(error){
-            console.log(error)
-        }
-      }
-    }
+        dispatch(updateVisible(true)); 
+    },[dispatch,practiceTest])
 
-    const start = useCallback(() => {
-        if (questions.length > 0) {
-          practiceTest(true);
-          dispatch(updateVisible(true));
-        }
-      }, [questions.length, dispatch, practiceTest]);
-
-   
     return (
         <div className={styles.wrap}>
-            {visible && (
-                <>
-                    <PracticeGroup /> 
-                   
-                </>
-            )}
-            {!visible && (
-                <>
-                    <TestOptions />
-                </>
-            )}
-           
-                <button onClick={visible ?next : start}  className={styles.btn }>
-                    Start
-                </button>
+            {visible ? <PracticeGroup /> : <TestOptions />}
+
+            <button
+                onClick={visible ? handleNext : start}
+                className={styles.btn}
+            >
+                Start
+            </button>
+
             {modalVisible && modalRoot &&
                 ReactDOM.createPortal(
                     <Modal
                         title="A test cannot be generated with your current settings"
                         cancel
                         cancelClick={() => setModalVisible(false)}
-                        close={stertWithOutTopic}
+                        close={handleStartWithoutTopic}
                         blueBtnText="Quick Test"
-                        text="Please select at least one topic. 
-                        Alternatively, you can do a quick test by letting us pick the right questions for you!"
+                        text="Please select at least one topic. Alternatively, you can do a quick test by letting us pick the right questions for you!"
                     />,
-                modalRoot
-            )}
+                    modalRoot
+                )}
         </div>
     );
 }

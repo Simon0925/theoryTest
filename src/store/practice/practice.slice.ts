@@ -1,22 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Question } from './interface';
+import { PracticeData,Topic} from './interface';
 import service from './sevice/questionFilter';
 import { setCurrentQuestions,setLoading } from '../currentData/currentData.slice';
 import {updateResult} from '../currentData/currentData.slice'
 
 
-interface PracticeData {
-    question: Question[];
-    type: string;
-    numberOfQuestions: string;
-    correct: boolean;
-    flagged: boolean;
-    allQuestionLength: number;
-  
-}
+
 
 const initialState: PracticeData = {
-    question: [],
+    topic: [],
     type: 'all',
     numberOfQuestions: 'all',
     correct: false,
@@ -41,13 +33,13 @@ export const fetchQuestions = createAsyncThunk<
     try {
       const data = await service.questionFilter({
         type: practice.type,
-        questions: practice.question,
+        topics: practice.topic,
         token: token,
         quantity: practice.numberOfQuestions,
         flagged: practice.flagged,
       });
             
-      dispatch(updateAllQuestionLength(data.allDataLength));
+      dispatch(updateTopicLength(data.allDataLength));
       dispatch(setCurrentQuestions({
         testId, 
         questions: data.data, 
@@ -90,13 +82,13 @@ export const practiceSlice = createSlice({
         updateFlagged: (state, action: PayloadAction<boolean>) => {
             state.flagged = action.payload;
         },
-        updateAllQuestionLength: (state, action: PayloadAction<number>) => {
+        updateTopicLength: (state, action: PayloadAction<number>) => {
             state.allQuestionLength = action.payload;
-        }, updateQuestion: (state, action: PayloadAction<Question[]>) => {
-            state.question = action.payload;
+        }, updateTopic: (state, action: PayloadAction<Topic[]>) => {
+            state.topic = action.payload;
         },resetPracticeState: (state) => {
           state.flagged = false;
-          state.question = [];
+          state.topic = [];
           state.allQuestionLength = 0;
           state.correct = false;
       }
@@ -108,8 +100,8 @@ export const {
     updateType, 
     updateCorrect, 
     updateFlagged,
-    updateAllQuestionLength,
-    updateQuestion,
+    updateTopicLength,
+    updateTopic,
     resetPracticeState,
 } = practiceSlice.actions;
 

@@ -14,7 +14,7 @@ import SteeringWheelSvg from "../../../SVG/SteeringWheelSvg/SteeringWheelSvg";
 import TrafficSignSvg from "../../../SVG/TrafficSignSvg/TrafficSignSvg";
 
 
-  const parsMap: { [key: string]: JSX.Element } = {
+  const topicsMap: { [key: string]: JSX.Element } = {
     "Alertness": <AlertSvg />,
     "Attitude": <AttitudeSvg />,
     "Safety and your vehicle": <CarWheelSvg />,
@@ -31,4 +31,4 @@ import TrafficSignSvg from "../../../SVG/TrafficSignSvg/TrafficSignSvg";
     "Vehicle loading": <CarSvg />,
   };
 
-  export default parsMap
+  export default topicsMap

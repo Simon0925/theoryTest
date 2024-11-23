@@ -1,4 +1,4 @@
-export interface QuestionGroup {
+export interface TopicInterface {
     name: string;
     quantity: number;
     percent: number;

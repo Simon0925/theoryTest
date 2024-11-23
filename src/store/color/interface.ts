@@ -29,10 +29,13 @@ export interface Colors {
     TestcolorText:string;
     VariantTitleColor:string;
     CircularTrainerProgressBarColor:string;
-    PreviousTestBackgroundBtn:string;
     FlagColorSvgBtn:string;
     QuestionContentBackground:string;
     FooterBackgroundBtn:string;
+    FooterBackgroundBtnDesktop:string;
+    FooterTextBtn:string;
+    FooterTextBtnDesktop:string;
+    FooterFlagMobileButton:string;
     VariantBackground:string;
     VariantTextColor:string;
     VariantSelectedOption:string;

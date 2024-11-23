@@ -1,14 +1,14 @@
 import { useEffect, useState, useMemo, memo } from 'react';
-import styles from './Par.module.scss';
+import styles from './Topic.module.scss';
 import { CirclePercent } from '../../UI/CirclePercent/CirclePercent';
 import { RootState } from '../../store/store';
-import { updateQuestion } from '../../store/practice/practice.slice';
+import { updateTopic } from '../../store/practice/practice.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import CirclehundredPercents from '../CirclehundredPercents/CirclehundredPercents';
-import ParProps from './interface';
+import TopicProps from './interface';
 
 
-const Par = ({ name, quantity, percent, svg, id }: ParProps) => {
+const Topic = ({ name, quantity, percent, svg, id }: TopicProps) => {
     const dispatch = useDispatch();
     
     const practice = useSelector((state: RootState) => state.practice);
@@ -16,7 +16,7 @@ const Par = ({ name, quantity, percent, svg, id }: ParProps) => {
 
     const [isSelected, setIsSelected] = useState(false);
 
-    const active = useMemo(() => practice.question.some((element) => element.id === id), [practice.question, id]);
+    const active = useMemo(() => practice.topic.some((element) => element.id === id), [practice.topic, id]);
 
     useEffect(() => {
         setIsSelected(active);
@@ -26,9 +26,9 @@ const Par = ({ name, quantity, percent, svg, id }: ParProps) => {
         const newSelectedState = !isSelected;
         setIsSelected(newSelectedState);
         const updatedQuestions = newSelectedState
-            ? [...practice.question, { id }]
-            : practice.question.filter((element) => element.id !== id);
-        dispatch(updateQuestion(updatedQuestions));
+            ? [...practice.topic, { id }]
+            : practice.topic.filter((element) => element.id !== id);
+        dispatch(updateTopic(updatedQuestions));
     };
 
 
@@ -53,4 +53,4 @@ const Par = ({ name, quantity, percent, svg, id }: ParProps) => {
     );
 };
 
-export default memo(Par);
+export default memo(Topic);

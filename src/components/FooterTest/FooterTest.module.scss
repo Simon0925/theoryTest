@@ -2,12 +2,7 @@
     width: 100%;
         
     .container{
-        padding: 1rem;
-        display: flex;
-        justify-content: space-between;
-        box-sizing: border-box;
-        width: 100%;
-        max-width: 100vw;
+       display: block;
     }
     .mobileContainer{
         display: none;
@@ -22,35 +17,7 @@
         }
 
         .mobileContainer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.5rem;
-
-            .prevBtn,
-            .nextBtn,
-            .explanationBtn,
-            .flagBtn {
-                border: none;
-                outline: none;
-            }
-
-            .prevBtn,
-            .nextBtn {
-                display: flex;
-                align-items: center;
-                font-size: 18px;
-                font-weight: 500;
-            }
-
-            .explanationBtn {
-                font-size: 24px;
-                font-weight: 600;
-            }
-
-            .nextBtn svg {
-                transform: rotate(180deg);
-            }
+           display: block;
         }
     }
 }
@@ -64,35 +31,7 @@
         }
 
         .mobileContainer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.5rem;
-
-            .prevBtn,
-            .nextBtn,
-            .explanationBtn,
-            .flagBtn {
-                border: none;
-                outline: none;
-            }
-
-            .prevBtn,
-            .nextBtn {
-                display: flex;
-                align-items: center;
-                font-size: 18px;
-                font-weight: 500;
-            }
-
-            .explanationBtn {
-                font-size: 24px;
-                font-weight: 600;
-            }
-
-            .nextBtn svg {
-                transform: rotate(180deg);
-            }
-        }
+            display: block;
+         }
     }
 }

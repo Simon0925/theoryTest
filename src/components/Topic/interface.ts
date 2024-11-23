@@ -1,4 +1,4 @@
-export default interface ParProps {
+export default interface TopicProps {
     name: string;
     quantity: number;
     percent: number;
