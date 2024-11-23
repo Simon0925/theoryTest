@@ -52,7 +52,7 @@ export default function CompletedVideos({
   return (
     <>
       {isLoading ? (
-        <Spinner color="white" />
+        <Spinner />
       ) : (
         <div className={styles.wrap}>
           <div className={styles.title}>

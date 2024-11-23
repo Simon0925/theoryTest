@@ -26,12 +26,14 @@ const Header = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [pendingPath, setPendingPath] = useState("");
+  const [title,setTitle] = useState('')
 
   useEffect(() => {
     const currentNavItem = NAV_ITEMS.find((item) => item.path === location.pathname);
     if (currentNavItem) {
-      document.title = currentNavItem.label; 
+      setTitle(currentNavItem.label)
     }
+    console.log("currentNavItem:",currentNavItem)
   }, [location]);
 
   const renderVisibilityToggle = useCallback(() => (
@@ -74,6 +76,7 @@ const Header = () => {
       <div className={styles.title} style={{ color: textColor }}>
         {renderVisibilityToggle()}
         <h3 className={styles.titleText}>Theory Test</h3>
+        <h3 className={styles.pageName}>{title} </h3>
       </div>
       <nav className={styles.nav}>
         {NAV_ITEMS.map(({ path, icon: Icon, label }) => (
@@ -96,6 +99,7 @@ const Header = () => {
           </NavLink>
         ))}
       </nav>
+
       {modalVisible && modalRoot &&
         ReactDOM.createPortal(
           <Modal
