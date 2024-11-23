@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import HeaderForTest from "../HeaderForTest/HeaderForTest";
-import FooterTrainerTest from "../FooterTrainerTest/FooterTrainerTest";
+import TrainerFooter from "../TrainerFooter/TrainerFooter";
 import styles from "./TrainerTest.module.scss";
 import { getData } from "./services/getData";
 import { RootState } from "../../store/store";
@@ -49,10 +49,13 @@ export default function TrainerTest({ onExitClick, result }: TrainerTestProps) {
                     typeOftest="Trainer"
                 />
                <QuestionWithAnswers
-                typeOftest="Trainer" 
-                question={questions[currentPage]}  
+                    typeOftest="Trainer" 
+                    question={questions[currentPage]}  
                 />
-                <FooterTrainerTest result={result} />
+                <TrainerFooter
+                    typeOftest="Trainer" 
+                    result={result}
+                />
         </div>
     );
 

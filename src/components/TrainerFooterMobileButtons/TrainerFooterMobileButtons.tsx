@@ -4,28 +4,22 @@ import FooterButton from "../../UI/FooterButton/FooterButton";
 import { RootState } from "../../store/store";
 import { useChangeFlag } from "../../hooks/useChangeFlag";
 import { useIsAnswerSelected } from "../../hooks/useIsAnswerSelected";
-import styles from "./AssessmentFooterMobileButtons.module.scss";
+import styles from "./TrainerFooterMobileButtons.module.scss";
 import ArrowPrevSmallSvg from "../../SVG/ArrowPrevSmallSvg/ArrowPrevSmallSvg";
-import PlayVectorSvg from "../../SVG/PlayVectorSvg/PlayVectorSvg";
-import PauseSvg from "../../SVG/PauseSvg/PauseSvg";
-import TimerAssessment from "../TimerAssessment/TimerAssessment";
 
 
-interface AssessmentFooterMobileButtonsProps {
+
+interface TrainerFooterMobileButtonsProps {
     typeOftest:string;
+    setIsExplanationVisible: (value: boolean) => void;
     navigatePage: (direction: 'previous' | 'next') => void; 
-    time:(e:number) => void;
-    startPause:()=>void;
-    pause:boolean;
 }
 
-const AssessmentFooterMobileButtons = ({ 
+const TrainerFooterMobileButtons = ({ 
     typeOftest,
-    navigatePage,
-    time,
-    startPause,
-    pause
-}:AssessmentFooterMobileButtonsProps) => { 
+    setIsExplanationVisible,
+    navigatePage
+}:TrainerFooterMobileButtonsProps) => { 
 
     const isAnswerSelected = useIsAnswerSelected(typeOftest);
 
@@ -40,15 +34,7 @@ const AssessmentFooterMobileButtons = ({
 
     return(
         <div className={styles.wrap}>
-            <FooterButton
-                fontSize={'20px'}
-                onClick={() => navigatePage('previous')}
-                name="Prev"
-                svg={<ArrowPrevSmallSvg color={color.textColor}  width="30px" height="30px" /> }
-                color={color.FooterTextBtn}
-                backgroundColor={color.FooterBackgroundBtn}
-                opacity={currentPage > 0 ? '1':'0.5'}
-            />
+           
             <FooterButton
                 onClick={changeFlag}
                 name=""
@@ -64,19 +50,12 @@ const AssessmentFooterMobileButtons = ({
                 />
                 }
             />
-            <TimerAssessment color={color.textColor} time={time} pause={pause} fontSize={"20px"} />
             <FooterButton
-                onClick={startPause}
-                name={""}
-                svg={ 
-                    pause ?  
-                    <PlayVectorSvg color={color.FooterTextBtn} height={"20px"} width={"20px"} />
-                        :
-                    <PauseSvg color={color.FooterTextBtn} width={"20px"} height={"20px"} />
-                }
+                onClick={() => setIsExplanationVisible(true)}
+                name="?"
                 color={color.FooterTextBtn}
                 backgroundColor={color.FooterBackgroundBtn}
-                fontSize={'18px'}
+                fontSize={'24px'}
             />
             <FooterButton
                 onClick={() => navigatePage('next')}
@@ -98,5 +77,5 @@ const AssessmentFooterMobileButtons = ({
     )
 };
 
-export default AssessmentFooterMobileButtons;
+export default TrainerFooterMobileButtons;
 
