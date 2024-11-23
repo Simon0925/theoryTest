@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import Modal from '../Modal/Modal';
-import styles from './FooterTest.module.scss';
+import styles from './PracticeFooter.module.scss';
 import { RootState } from '../../store/store';
 
 import ReactDOM from "react-dom";
@@ -14,7 +14,7 @@ interface FooterTestProps {
   typeOftest: string;
 }
 
-export default function FooterTest({ result, typeOftest }: FooterTestProps) {
+export default function PracticeFooter({ result, typeOftest }: FooterTestProps) {
 
   const { questions, currentPage } = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],

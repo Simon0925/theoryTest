@@ -137,10 +137,10 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
             )}
       
             <FooterAssessment
-              review={setReviewModal}
               getTime={setTime}
               statusPause={setPause}
               typeOftest={typeOftest}
+              setReviewModal={setReviewModal}
             />
           
         </>

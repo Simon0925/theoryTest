@@ -1,5 +1,5 @@
 import styles from './PracticeTest.module.scss';
-import FooterTest from '../FooterTest/FooterTest';
+import PracticeFooter from '../PracticeFooter/PracticeFooter';
 import { useEffect, useState } from 'react';
 import HeaderForTest from '../HeaderForTest/HeaderForTest';
 import Spinner from '../../UI/Spinner/Spinner';
@@ -57,7 +57,7 @@ export default function PracticeTest({ closeTest, result }: PracticeTestProps) {
           typeOftest="PracticeTest" 
           question={questions[currentPage]} 
         />
-          <FooterTest
+          <PracticeFooter
             result={result}
             typeOftest="PracticeTest"
           />

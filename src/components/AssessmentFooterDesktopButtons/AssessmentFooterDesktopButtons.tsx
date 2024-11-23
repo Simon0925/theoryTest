@@ -3,21 +3,28 @@ import { shallowEqual, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useChangeFlag } from "../../hooks/useChangeFlag";
 import { useIsAnswerSelected } from "../../hooks/useIsAnswerSelected";
-import styles from "./PracticeFooterDesktopButtons.module.scss";
+import styles from "./AssessmentFooterDesktopButtons.module.scss";
 
 import ButtonTest from "../../UI/ButtonTest/ButtonTest";
+import TimerAssessment from "../TimerAssessment/TimerAssessment";
 
-interface PracticeFooterDesktopButtonsProps {
+interface AssessmentFooterDesktopButtonsProps {
   typeOftest:string;
-  setIsExplanationVisible: (value: boolean) => void;
   navigatePage: (direction: 'previous' | 'next') => void; 
+  time:(e:number) => void;
+  startPause:()=>void;
+  pause:boolean;
 }
 
-const PracticeFooterDesktopButtons = ({ 
+const AssessmentFooterDesktopButtons = ({ 
   typeOftest,
-  setIsExplanationVisible,
-  navigatePage
-}:PracticeFooterDesktopButtonsProps) => { 
+  navigatePage,
+  time,
+  startPause,
+  pause
+}:AssessmentFooterDesktopButtonsProps) => { 
+
+
 
     const isAnswerSelected = useIsAnswerSelected(typeOftest);
 
@@ -30,6 +37,7 @@ const PracticeFooterDesktopButtons = ({
         shallowEqual
       );
 
+ 
     return(
         <div className={styles.wrap}>
           <div style={{opacity:currentPage > 0 ? "1":"0.5"}} >
@@ -48,20 +56,22 @@ const PracticeFooterDesktopButtons = ({
             svg
             svgColor={questions[currentPage]?.flag? true : color.FlagColorSvgBtn}
             />
+            <TimerAssessment color={color.textColor } time={time} pause={pause} />
             <ButtonTest
-            click={() => setIsExplanationVisible(true)}
-            name="Explanation"
-            color={color.FooterTextBtnDesktop}
-            backgroundColor={color.FooterBackgroundBtnDesktop}
+                click={startPause}
+                name={pause ? "Resume" : "Pause"}
+                color={color.FooterTextBtnDesktop}
+                backgroundColor={color.FooterBackgroundBtnDesktop}
             />
             <ButtonTest
-            click={() => navigatePage('next')}
-            name={questions.length === currentPage + 1 ? 'Results' : 'Next >'}
-            color={isAnswerSelected ? color.FooterColorNextBtnSelectedOption : color.FooterTextBtnDesktop}
-            backgroundColor={isAnswerSelected ? color.FooterBackgroundNextBtnSelectedOption : color.FooterBackgroundBtnDesktop}
+                click={() => navigatePage('next')}
+                name={questions.length === currentPage + 1 ? 'Results' : 'Next >'}
+                color={isAnswerSelected ? color.FooterColorNextBtnSelectedOption : color.FooterTextBtnDesktop}
+                backgroundColor={isAnswerSelected ? color.FooterBackgroundNextBtnSelectedOption : color.FooterBackgroundBtnDesktop}
             />
         </div>
     )
 };
 
-export default PracticeFooterDesktopButtons;
+export default AssessmentFooterDesktopButtons;
+;
