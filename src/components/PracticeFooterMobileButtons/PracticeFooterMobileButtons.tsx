@@ -4,7 +4,7 @@ import FlagSvg from "../../SVG/FlagSvg/FlagSvg";
 import FooterButton from "../../UI/FooterButton/FooterButton";
 import { RootState } from "../../store/store";
 import { useChangeFlag } from "../../hooks/useFooterHooks/useChangeFlag";
-import { useIsAnswerSelected } from "../../hooks/useFooterHooks/useIsAnswerSelected";
+import { useIsAnswerSelected } from "../../hooks/useIsAnswerSelected";
 import styles from "./PracticeFooterMobileButtons.module.scss";
 import ArrowPrevSmallSvg from "../../SVG/ArrowPrevSmallSvg/ArrowPrevSmallSvg";
 

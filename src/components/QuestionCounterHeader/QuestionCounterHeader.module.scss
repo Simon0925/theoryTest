@@ -1,0 +1,17 @@
+.groupName{
+    font-size: 20px;
+    color: white;
+    display: flex;
+    gap: 0.4rem;
+}
+
+.countQuestions{
+    font-size: 20px;
+    color: white;
+    display: flex;
+    gap: 0.4rem;
+
+    .questionsM{
+        display: none;
+    }
+}

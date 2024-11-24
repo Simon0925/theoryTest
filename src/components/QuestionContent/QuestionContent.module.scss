@@ -34,7 +34,6 @@
             -ms-user-select: none;
         }
         .question-photo{
-                padding-left: 1rem;
                 position: relative;
                 
             .image{
@@ -79,6 +78,10 @@
                 width: 100%;
                 display: flex;
                 justify-content: center;
+
+                .image{
+                    max-width: 250px;
+               
                 .loader{
                     padding-top: 1rem;
                 }
@@ -86,6 +89,7 @@
                     max-width: 150px;
                     max-height: 100px;
     
+                }
                 }
             }
         }

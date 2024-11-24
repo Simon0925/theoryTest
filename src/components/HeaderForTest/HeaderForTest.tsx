@@ -1,28 +1,24 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styles from './HeaderForTest.module.scss';
 import Modal from '../Modal/Modal';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { handleExit as exitHandler } from './services/handleExit';
-import getName from './services/getName';
 import ReactDOM from 'react-dom';
+import QuestionCounterHeader from '../QuestionCounterHeader/QuestionCounterHeader';
+import { useIsAnswerSelected } from '../../hooks/useIsAnswerSelected';
 
 interface HeaderForTestProps {
   onExitClick: (e: boolean) => void;
   finish: string;
-  mockTest?: boolean;
-  reviewClick?: (e: boolean) => void;
-  result?: (e: boolean) => void;
-  trainerTest?: boolean;
+  result: (e: boolean) => void;
   typeOftest: string;
 }
 
 const HeaderForTest = React.memo(function HeaderForTest({
   finish,
   onExitClick,
-  reviewClick,
   result,
-  trainerTest,
   typeOftest,
 }: HeaderForTestProps) {
   const [showExitModal, setShowExitModal] = useState(false);
@@ -33,63 +29,46 @@ const HeaderForTest = React.memo(function HeaderForTest({
 
   const modalRoot = document.getElementById('modal-root');
 
-  const { questions, currentPage, visibleQuestions, answeredVariants } = useSelector(
+  const { questions, currentPage } = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],
     shallowEqual
   );
 
-  const handleModalClose = useCallback(() => setShowExitModal(true), []);
-
   const handleResults = useCallback(() => {
-    if (typeOftest === 'MockTest' && reviewClick) {
-      reviewClick(true);
+    if (typeOftest === 'MockTest' && result) {
+      result(true);
     } else {
       setShowResultsModal((prev) => !prev);
     }
-  }, [typeOftest, reviewClick]);
+  }, [typeOftest, result]);
 
-  const handleModalCancel = useCallback(() => setShowExitModal(false), []);
-  const handleResultsModalCancel = useCallback(() => setShowResultsModal((prev) => !prev), []);
   const handleResultsModalClose = useCallback(() => {
     if (result) result(true);
   }, [result]);
 
-  const questionCounter = useMemo(() => {
-    if (trainerTest) {
-      return <div className={styles['groupName']}>{getName(questions[currentPage].group)}</div>;
-    }
-    return (
-      <div style={{ color: color.HeaderPracticeTestQuestionColors }} className={styles['count-questions']}>
-        <span className={styles.questions}>Question</span>
-        <span className={styles.questionsM}>Q</span>
-        <span>{currentPage + 1}</span>
-        <span>of</span>
-        <span>{typeOftest === 'MockTest' ? visibleQuestions?.length : questions.length}</span>
-      </div>
-    );
-  }, [trainerTest, color.HeaderPracticeTestQuestionColors, currentPage, questions.length, visibleQuestions?.length]);
-
+  const isAnswerSelected = useIsAnswerSelected(typeOftest);
+  
   useEffect(() => {
-    const practiceCheck = answeredVariants.some((e) => questions[currentPage].id === e.id);
-    if (practiceCheck && questions[currentPage].id === questions[questions.length - 1].id) {
-      setShowResultsModal(true);
+  
+    if (isAnswerSelected && questions[currentPage].id === questions[questions.length - 1].id) {
+      handleResults()
     }
-  }, [questions, answeredVariants]);
+  }, [questions, isAnswerSelected]);
 
   return (
     <>
       <div style={{ backgroundColor: color.headerColors }} className={styles.wrap}>
-        <button onClick={handleModalClose} className={`${styles.exitBtn}`}>
+        <button onClick={()=>setShowExitModal(true)} className={`${styles.exitBtn}`}>
           Exit
         </button>
         <button
           style={{ backgroundColor: color.headerColors, color: color.textColor }}
-          onClick={handleModalClose}
+          onClick={()=>setShowExitModal(true)}
           className={`${styles.exitBtnM}`}
         >
           Exit
         </button>
-        {questionCounter}
+        <QuestionCounterHeader typeOftest={typeOftest} />
         <button onClick={handleResults} className={styles.finishBtn}>
           {finish}
         </button>
@@ -108,7 +87,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
             close={() => exitHandler(typeOftest, dispatch, onExitClick)}
             text=""
             title="Are you sure you want to exit from the test?"
-            cancelClick={handleModalCancel}
+            cancelClick={()=>setShowExitModal(false)}
             cancel={true}
             blueBtnText="Exit test"
           />,
@@ -122,7 +101,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
             close={handleResultsModalClose}
             text="Are you sure you want to finish current test and see the test results?"
             title="End of test"
-            cancelClick={handleResultsModalCancel}
+            cancelClick={()=>setShowResultsModal(!showResultsModal)}
             cancel={true}
             blueBtnText="Show results"
           />,

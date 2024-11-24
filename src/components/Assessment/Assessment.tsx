@@ -117,10 +117,9 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
       ) : (
         <>
             <HeaderForTest
-              mockTest={true}
               onExitClick={() => onClose(false)}
               finish="Review"
-              reviewClick={() => setReviewModal(true)}
+              result={() => setReviewModal(true)}
               typeOftest={typeOftest}
             />
             {!pause && visibleQuestions ? (

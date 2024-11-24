@@ -44,7 +44,6 @@ export default function TrainerTest({ onExitClick, result }: TrainerTestProps) {
                 <HeaderForTest 
                     finish="Results"
                     onExitClick={onExitClick}
-                    trainerTest
                     result={result}
                     typeOftest="Trainer"
                 />

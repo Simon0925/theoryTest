@@ -2,7 +2,7 @@
 import { shallowEqual, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useChangeFlag } from "../../hooks/useFooterHooks/useChangeFlag";
-import { useIsAnswerSelected } from "../../hooks/useFooterHooks/useIsAnswerSelected";
+import { useIsAnswerSelected } from "../../hooks/useIsAnswerSelected";
 import styles from "./TrainerFooterDesktopButtons.module.scss";
 
 import ButtonTest from "../../UI/ButtonTest/ButtonTest";
