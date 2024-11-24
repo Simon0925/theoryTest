@@ -12,7 +12,7 @@ export const mockTestData = (questions: Question[], results: QuestionResult[]): 
         } else {
             const newResult: QuestionResult = {
                 flag: q.flag,
-                group: q.group,
+                topic: q.topic,
                 id: q.id.toString(),
                 question: q.question,
                 status: "pass", 

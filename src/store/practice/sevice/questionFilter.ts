@@ -1,8 +1,10 @@
 import hostname from "../../../config/hostname";
 
 
-const questionFilter = async (type: { type: string; token:string| null;flagged:boolean;quantity:string; topics: { id: string }[] }) => {
+const questionFilter = async (type: { type: string; token:string | null;flagged:boolean;quantity:string; topics: { id: string }[] }) => {
     const jsonString = JSON.stringify(type);
+
+    console.log("topics:",type)
   
     try {
         const response = await fetch(`${hostname}/api/questions-filter`, {
@@ -22,7 +24,7 @@ const questionFilter = async (type: { type: string; token:string| null;flagged:b
 
         return data;
     } catch (error) {
-        console.error("Error posting questions group:", error);
+        console.error("Error posting questions:", error);
         throw error;
     }
 };

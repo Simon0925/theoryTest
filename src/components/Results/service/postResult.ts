@@ -11,16 +11,17 @@ interface Data {
     question: string;
     status: boolean|string;
 }
-export const postResult = async (questionsGroup: UserQuestionsResult, typeOftest: string): Promise<any> => {
+export const postResult = async (questions: UserQuestionsResult, typeOftest: string): Promise<any> => {
 
     
-    if (!questionsGroup.token) {
+    if (!questions.token) {
         throw new Error("Token is null or invalid");
     }
 
-    const dataToSend = status.status(questionsGroup, typeOftest);
+    const dataToSend = status.status(questions, typeOftest);
 
     const jsonString = JSON.stringify(dataToSend);
+
 
     try {
         const response = await fetch(`${hostname}/api/result`, {
@@ -38,7 +39,7 @@ export const postResult = async (questionsGroup: UserQuestionsResult, typeOftest
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error("Error posting questions group:", error);
+        console.error("Error posting questions:", error);
         throw error;
     }
 };

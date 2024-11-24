@@ -3,7 +3,7 @@ export interface QuestionResult {
     id: string;
     question: string;
     status: boolean | string;
-    group: string;
+    topic: string;
     flag:boolean
 }
 
@@ -17,7 +17,7 @@ export interface statisticData {
 export interface Question {
     id: string;
     question: string;
-    group: string;
+    topic: string;
     flag: boolean;
     status: boolean | string;
     photo?: string | boolean;
@@ -27,7 +27,7 @@ export interface QuestionResult {
   id: string;
   question: string;
   status: boolean | string;
-  group: string;
+  topic: string;
   flag:boolean
   photo?: string | boolean;
 }

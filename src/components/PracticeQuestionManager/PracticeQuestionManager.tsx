@@ -1,4 +1,4 @@
-import PracticeGroup from "../PracticeGroup/PracticeGroup"
+import PracticeTopics from "../PracticeTopics/PracticeTopics"
 import PracticeSettings from "../PracticeSettings/PracticeSettings"
 import styles from "./PracticeQuestionManager.module.scss"
 
@@ -11,7 +11,7 @@ export default function PracticeQuestionManager ({practiceTest}:PracticeQuestion
     return(
         <div className={styles.wrap}>
             <div className={styles.group}>
-                <PracticeGroup />
+                <PracticeTopics />
             </div>
             <div className={styles.settings}>
                 <PracticeSettings practiceTest={practiceTest} />

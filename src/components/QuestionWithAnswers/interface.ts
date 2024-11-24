@@ -6,7 +6,7 @@ interface Question {
     correctAnswers: number;
     explanation: string;
     flag: boolean | undefined;
-    group: string;
+    topic: string;
     id: string;
     incorrectAnswers: number;
     par: ParData[];

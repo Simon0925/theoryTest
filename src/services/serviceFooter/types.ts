@@ -2,7 +2,7 @@ export interface Question {
     correctAnswers: number;
     explanation: string;
     flag: boolean ;
-    group: string;
+    topic: string;
     id: string;
     incorrectAnswers: number;
     par: ParData[];
@@ -18,7 +18,7 @@ export interface Question {
 }
 export interface Result {
     flag: boolean;
-    group: string;
+    topic: string;
     id: string;
     question: string;
     status: string | boolean;

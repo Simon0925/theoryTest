@@ -1,4 +1,4 @@
-import styles from "./PracticeGroup.module.scss"
+import styles from "./PracticeTopics.module.scss"
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import Flag from "../Flag/Flag";
@@ -10,9 +10,9 @@ import {getQuestionsTopics} from './services/getQuestionsTopics'
 import useCookie from "../../hooks/useCookie";
 import {TopicInterface} from "./interface";
 
-export default function PracticeGroup () {
+export default function PracticeTopics () {
     const [loading, setLoading] = useState(true);
-    const [questionsGroup, setQuestionsGroup] = useState<TopicInterface[]>([]);
+    const [PracticeTopic, setQuestionsTopic] = useState<TopicInterface[]>([]);
     
     const color = useSelector((state: RootState) => state.color.themeData);
 
@@ -23,8 +23,8 @@ export default function PracticeGroup () {
       if(accessToken){
         const fetchData = async () => {
           try {
-            const groupTest = await getQuestionsTopics(accessToken);
-            setQuestionsGroup(groupTest || []);
+            const topicTest = await getQuestionsTopics(accessToken);
+            setQuestionsTopic(topicTest || []);
           } catch (error) {
             console.error("Error fetching data:", error);
           } finally {
@@ -52,7 +52,7 @@ export default function PracticeGroup () {
                     <Spinner />
                   </div> 
                 ) : (
-                  questionsGroup.map((elem) => {
+                  PracticeTopic.map((elem) => {
                     const svg = topicsMap[elem.name] || null; 
                     return (
                       <Topic

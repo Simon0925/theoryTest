@@ -28,7 +28,7 @@ export const assessmentData = async (dispatch: Dispatch<any>,token:string) => {
       isLoading: false,
     }));
   } catch (error) {
-    console.error("Error posting questions group:", error);
+    console.error("Error posting questions:", error);
     throw error;
   }
 };

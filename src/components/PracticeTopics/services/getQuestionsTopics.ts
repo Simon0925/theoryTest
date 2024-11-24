@@ -3,7 +3,7 @@ import hostname from "../../../config/hostname";
 const getQuestionsTopics = async (token:string) => {
 
     try {
-        const response = await fetch(`${hostname}/api/questionsGroup?token=${token}`);
+        const response = await fetch(`${hostname}/api/questionsTopic?token=${token}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

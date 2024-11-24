@@ -38,7 +38,7 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
                 id: question.id,
                 question: question.question,
                 flag: question.flag ?? false,
-                group: question.group,
+                topic: question.topic,
                 status: "pass",
                 photo: question.photo,
             };

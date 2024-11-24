@@ -8,7 +8,7 @@ export interface AssessmentProps {
     correctAnswers: number;
     explanation: string;
     flag: boolean ;
-    group: string;
+    topic: string;
     id: string;
     incorrectAnswers: number;
     par: ParData[];

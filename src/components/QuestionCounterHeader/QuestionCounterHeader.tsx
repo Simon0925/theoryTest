@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import styles from './QuestionCounterHeader.module.scss';
-import getName from './services/getName';
+import getName  from './services/getName';
 import { shallowEqual, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
@@ -17,10 +17,14 @@ const QuestionCounterHeader = ({
         shallowEqual
       );
 
+   
+
   return useMemo(() => {
     if (typeOftest === 'Trainer' ) {
-      return <div className={styles.groupName}>{getName(questions[currentPage].group)}</div>;
+      return <div className={styles.groupName}>{getName(questions[currentPage].topic)}</div>;
     }
+
+    
 
     return (
       <div style={{ color: color.HeaderPracticeTestQuestionColors }} className={styles.countQuestions}>

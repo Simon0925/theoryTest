@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import PracticeGroup from "../PracticeGroup/PracticeGroup";
+import PracticeTopics from "../PracticeTopics/PracticeTopics";
 import TestOptions from "../TestOptions/TestOptions";
 import Modal from "../Modal/Modal";
 import { updateVisible } from "../../store/burgerMenu/burgerMenu.slice";
@@ -53,7 +53,7 @@ export default function PracticeQuestionsManagerMobile({ practiceTest }: Practic
 
     return (
         <div className={styles.wrap}>
-            {visible ? <PracticeGroup /> : <TestOptions />}
+            {visible ? <PracticeTopics /> : <TestOptions />}
 
             <button
                 onClick={visible ? handleNext : start}

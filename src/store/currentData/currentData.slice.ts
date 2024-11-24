@@ -4,7 +4,7 @@ interface Question {
   correctAnswers: number;
   explanation: string;
   flag: boolean ;
-  group: string;
+  topic: string;
   id: string;
   incorrectAnswers: number;
   par: ParData[];
@@ -23,7 +23,7 @@ interface Variant {
 interface Result {
     id: string;  
     question: string;
-    group: string;
+    topic: string;
     flag: boolean;
     status: boolean | string;
     photo?: string | boolean;

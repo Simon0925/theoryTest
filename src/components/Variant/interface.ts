@@ -13,7 +13,7 @@ export interface Question {
     correctAnswers: number;
     explanation: string;
     flag: boolean | undefined;
-    group: string;
+    topic: string;
     id: string;
     incorrectAnswers: number;
     par: ParData[];
@@ -30,7 +30,7 @@ export interface Question {
 
 interface Result {
     flag:boolean;
-    group:string;
+    topic:string;
     id:string;
     photo:string;
     question:string;

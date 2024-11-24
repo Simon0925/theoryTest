@@ -2,7 +2,7 @@ export interface QuestionResult {
     id: string;
     question: string;
     status: boolean | string;
-    group: string;
+    topic: string;
     flag:boolean
     photo?: string | boolean;
   }
@@ -10,7 +10,7 @@ export interface QuestionResult {
   export interface Question {
     id: string;
     question: string;
-    group: string;
+    topic: string;
     flag: boolean;
     status: boolean | string;
     photo?: string | boolean;

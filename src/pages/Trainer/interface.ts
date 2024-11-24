@@ -8,7 +8,7 @@ export interface Question {
   id: string;
   question: string;
   photo: string | boolean;  
-  group: string;
+  topic: string;
   par: ParData[];
   flag: boolean | undefined; 
   explanation: string;

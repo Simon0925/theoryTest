@@ -32,7 +32,7 @@ export const updateQuestionsAndResults = (
           id: questions[currentPage].id,
           question: questions[currentPage].question,
           flag: !questions[currentPage].flag,
-          group: questions[currentPage].group,
+          topic: questions[currentPage].topic,
           status: questions[currentPage].status,
         },
       ];
