@@ -29,7 +29,7 @@ export default function TestOptions() {
     if(accessToken){
       dispatch(fetchQuestions({ testId: 'PracticeTest',token:accessToken}));
     }
-  }, [practice.question, practice.allQuestionLength, practice.flagged, practice.numberOfQuestions, practice.type, dispatch,accessToken]);
+  }, [practice.topic, practice.allQuestionLength, practice.flagged, practice.numberOfQuestions, practice.type, dispatch,accessToken]);
 
   useEffect(() => {
     dispatch(updateCorrect(isChecked));
