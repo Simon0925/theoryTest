@@ -21,6 +21,7 @@ export default function ReviewModal({
 }: ReviewModalProps) {
 
     const [showButtons,setshowButtons] = useState(false)
+
     
     const goToResults = () => {
         results(true)
@@ -47,6 +48,7 @@ export default function ReviewModal({
             setshowButtons(false)
         }
     },[questionsUnanswered])
+
     return (
         <div className={styles.wrap}>
             <div className={styles.content}>
@@ -63,24 +65,26 @@ export default function ReviewModal({
                             Show results
                         </button>
                         
-                        <button  onClick={handleReviewAll} className={showButtons ?styles.btnHiddenLine : styles.btn2 }>
+                        <button  onClick={handleReviewAll} className={`${styles.btnHiddenLine} ${styles.all}`}>
                             Review all
                         </button>
                         
                         {showButtons ?
                         <>
-                        <button onClick={handleReviewUnanswered} className={questionsFlagged > 0  ?styles.btnHiddenLine : styles.btnHidden }>
+                        <button  onClick={handleReviewUnanswered} className={`${styles.btnHiddenLine} ${styles.unanswered} `}>
                             Review unanswered
                         </button>
+                       
                         {questionsFlagged > 0 ? 
-                            <button onClick={handleReviewFlagged}   className={styles.btnHidden}>
+                            <button  onClick={handleReviewFlagged}   className={`${styles.btnHiddenLine} ${styles.flagged}`}>
                             Review flagged
                            </button> :
                            null
                            }
                         </>
                         : null }
-                        
+                         <div className={styles.line1} />
+                         <div className={styles.line2} />
                     </div>
                     <button onClick={() => cancelClick(false)} className={styles.btn2}>
                         Cancel

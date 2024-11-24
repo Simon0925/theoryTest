@@ -57,58 +57,7 @@
         font-size: 24px;
         padding-top: 5rem;
     }
-    .variant {
-        padding: 1.2rem;
-        border-radius: 0.625rem;
-        background-color: white;
-        font-size: 18px;
-        gap:1rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-        position: relative;
-        overflow: hidden;
-        .content{
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            .img{
-                width: 75px;
-            }
-
-            span{
-                padding: .5rem;
-            }
-        }
-       
-        .box {
-            min-width: 25px;
-            min-height: 25px;
-            border-radius: 0.25rem;
-            border: 1px solid #e0dfe0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: white;
-        }
-
-        .marker {
-            top: 9px;
-            left: -12px;
-            min-width: 50px;
-            min-height: 10px;
-            background-color: #F9921A;
-            transform: rotate(135deg);
-            position: absolute;
-            display: block;
-            
-        }
-        
-        .inactive-marker{
-            display: none;
-        }
-    }
+    
 }
 
 

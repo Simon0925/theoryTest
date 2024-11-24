@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
 import styles from "./Results.module.scss";
-import OkVectorSvg from "../../SVG/OkVectorSvg/OkVectorSvg";
-import CrossSvg from "../../SVG/CrossSvg/CrossSvg";
 import HeaderResults from "../HeaderResults/HeaderResults";
 import CircularProgressBar from "../../UI/CircularProgressBar/CircularProgressBar";
-import currentDate from "./service/date";
-import { QuestionResult, statisticData } from './interface/interface';
-import { mockTestData } from './service/mockTestData';
 import { shallowEqual, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import hostname from "../../config/hostname";
-
 import {postResult} from './service/postResult';
 import useCookie from "../../hooks/useCookie";
+import ResultVariant from "../ResultVariant/ResultVariant";
+import { useProgressBar } from "../../hooks/useResultsHooks/useProgressBar";
+import { useMockTestData } from "../../hooks/useResultsHooks/useMockTestData";
+import { useStatisticData } from "../../hooks/useResultsHooks/useStatisticData";
 
 
 interface ResultsProps {
@@ -32,65 +29,15 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
     shallowEqual
   );
   
-  const [statisticData, setStatisticData] = useState<statisticData>();
-  const [data, setData] = useState<QuestionResult[]>([]);
-  const [answered, setAnswered] = useState(0);
-  const [mockTestTrueAnswer, setMockTestTrueAnswer] = useState<number>();
 
-  
-  const [progressBar, setProgressBar] = useState({
-    pass: 0,
-    falseAnswer: 0,
-    trueAnswer: 0,
-  });
+  const [answered, setAnswered] = useState(0);
+  const data = useMockTestData(typeOftest, questions, results);
+  const { progressBar, mockTestTrueAnswer } = useProgressBar(data);
+  const statisticData = useStatisticData(mockTestTrueAnswer, typeOftest, time);
 
   useEffect(() => {
     const correctAnswers = data.filter((elem) => elem.status === true).length;
     setAnswered(correctAnswers);
-  }, [data]);
-
-  useEffect(() => {
-    if (mockTestTrueAnswer !== undefined && typeOftest === "MockTest") {
-      const date = currentDate();
-      const percentage = mockTestTrueAnswer ? (mockTestTrueAnswer * 100) / 50 : 0;
-      setStatisticData({ time, date, percentage });
-    }
-  }, [mockTestTrueAnswer, time, typeOftest]);
-
-  useEffect(() => {
-    if (typeOftest === "MockTest" && questions.length > 0) {
-      if (data.length === 0) {
-        const mockTestResults = mockTestData(questions, results);
-        setData(mockTestResults);
-      }
-    } else if (results.length > 0) {
-      setData(results);
-    }
-  }, [questions, results, typeOftest]);
-
-
-  useEffect(() => {
-    if (data.length > 0) {
-      const total = data.length;
-      const counts = data.reduce(
-        (acc, e) => {
-          if (e.status === "pass" ||e.status === undefined ) acc.pass += 1;
-          else if (e.status === false) acc.falseAnswer += 1;
-          else if (e.status === true) acc.trueAnswer += 1;
-          return acc;
-        },
-        { pass: 0, falseAnswer: 0, trueAnswer: 0 }
-      );
-
-      if (total > 0) {
-        setProgressBar({
-          pass: Math.floor((counts.pass / total) * 100),
-          falseAnswer: Math.floor((counts.falseAnswer / total) * 100),
-          trueAnswer: Math.floor((counts.trueAnswer / total) * 100),
-        });
-        setMockTestTrueAnswer(counts.trueAnswer);
-      }
-    }
   }, [data]);
 
 
@@ -152,27 +99,13 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
         <div className={styles.question}>
           {data.length > 0 ? (
             data.map((elem, index) => (
-              <div style={{background:color.VariantBackground}} key={index} className={styles.variant}>
-                <div className={elem.flag ? styles["marker"] : styles["inactive-marker"]}></div>
-                <div className={styles.content}>
-                    {elem.photo && (
-                    <img
-                        className={styles.img}
-                        src={`${hostname}${elem.photo}`}
-                        alt="Related to the question" 
-                        loading="lazy" 
-                    />
-                    )}
-                  <span style={{color:color.TestcolorText}}>{elem.question}</span>
-                </div>
-                <div className={styles.box}>
-                {elem.status === null || elem.status === undefined || elem.status === "pass"
-                      ? null 
-                      : elem.status === false 
-                        ? <CrossSvg /> 
-                        : <OkVectorSvg />}
-                </div>
-              </div>
+              <ResultVariant
+                key={index} 
+                flag={elem.flag}
+                photo={elem.photo}
+                question={elem.question}
+                status={elem.status}
+              />
             ))
           ) : (
             <div className={styles["no-results"]}>

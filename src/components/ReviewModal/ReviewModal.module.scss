@@ -16,7 +16,7 @@
     background-color: #2b3239;
     border-radius: 0.625rem;
     border: 1px solid #555b62;
-    padding: 1rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,10 +43,43 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
-        }
+            position: relative;
+           
+            .all:hover ~ .line1 {
+                opacity: 0;
+            }
+            
+            .unanswered:hover ~ .line1,
+            .unanswered:hover ~ .line2 {
+                opacity: 0;
+            }
+            .flagged:hover ~ .line2 {
+                opacity: 0;
+            }
+            .line1 {
+                width: 100%;
+                position: absolute;
+                top: 5em;
+                left: 0;
+                background-color:  #555b62;
+                height: 1px
+            }
+
+            .line2 {
+                width: 100%;
+                position: absolute;
+                top: 7.7em;
+                left: 0;
+                background-color:  #555b62;
+                height: 1px
+            }
+            
+        
         .btn1{
             padding: 0.5rem;
             width: 100%;
+            font-size: 16px;
+            font-weight: 600;
             border-radius: 0.35rem;
             border: none;
             cursor: pointer;
@@ -58,65 +91,23 @@
                 transform: scale(1.05);
             }
         }
-        .btn2{
-            padding: 0.4rem;
-            width: 100%;
-            border-radius: 0.35rem;
-            border: none;
-            cursor: pointer;
-            background-color: #686F76;
-            color: white;
-            transition: background-color 0.5s ease, transform 0.5s ease; 
-            &:hover{
-                background-color:  #cacaca;
-                transform: scale(1.05);
-            }
-        }
+        
         .btnHiddenLine {
             position: relative; 
             background-color: #2b3239;
             color: #A8AEB5;
-            padding: 0.4rem;
+            padding: 0.5rem;
             width: 100%;
             border: none;
             cursor: pointer;
-    
-            &::after {
-                content: '';
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: 0; 
-                height: 1px; 
-                background-color: #A8AEB5; 
-            }
-            &:hover {
-                background-color: #686F76;
-                color: white;
-    
-                &::after {
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    right: 0;
-                    bottom: 0; 
-                    height: 0px; 
-                    background-color: #A8AEB5; 
-                }
-            }
+            font-size: 16px;
+            
+           
         }
 
        
-        .btnHidden{
-            background-color: #2b3239;
-            color: #A8AEB5;
-            padding: 0.4rem;
-            width: 100%;
-            border: none;
-            cursor: pointer;
-        }
         .btnHiddenLine:hover{
-            padding: 0.4rem;
+            padding: 0.5rem;
             width: 100%;
             border-radius: 0.35rem;
             border: none;
@@ -124,15 +115,23 @@
             background-color: #686F76;
             color: white;
         }
-        .btnHidden:hover{
-            padding: 0.4rem;
-            width: 100%;
-            border-radius: 0.35rem;
-            // border: none;
-            cursor: pointer;
-            background-color: #686F76;
-            color: white;
+    }
+    .btn2{
+        padding: 0.5rem;
+        width: 100%;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 0.35rem;
+        border: none;
+        cursor: pointer;
+        background-color: #686F76;
+        color: white;
+        transition: background-color 0.5s ease, transform 0.5s ease; 
+        &:hover{
+            background-color:  #cacaca;
+            transform: scale(1.05);
         }
+    }
     }
 }
 }

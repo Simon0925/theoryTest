@@ -10,6 +10,7 @@ import { addAnswer as handleAnswer } from './services/addAnswer';
 import getVariantColor from './services/getVariantColor'
 import Loader from '../../UI/Loader/Loader';
 import {CoolorState} from './interface'
+import { useIsAnswerSelected } from '../../hooks/useIsAnswerSelected';
 
 
 const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, correct }) => {
@@ -39,14 +40,15 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
 
     const dispatch = useDispatch();
 
-    const icon = useMemo(() => {
-        const practiceCheck = answeredVariants.some(e => questions[currentPage].id === e.id);
+    const isAnswerSelected = useIsAnswerSelected(typeOftest);
 
+    const icon = useMemo(() => {
+    
         if (typeOftest === "MockTest" || typeOftest === "Trainer") {
             return correct;
-        }else if ((practiceCorrect && practiceCheck && typeOftest === "PracticeTest")) {
+        }else if ((practiceCorrect && isAnswerSelected && typeOftest === "PracticeTest")) {
             return correct ? <OkVectorSvg /> : <CrossSvg />;
-        }else if ( (!practiceCorrect && practiceCheck && typeOftest === "PracticeTest")) {
+        }else if ( (!practiceCorrect && isAnswerSelected && typeOftest === "PracticeTest")) {
             return correct;
         }
         return null;
