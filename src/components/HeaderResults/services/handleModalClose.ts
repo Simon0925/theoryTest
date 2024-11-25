@@ -19,6 +19,10 @@ export const handleModalClose = (
       dispatch(resetState({ testId: typeOftest }));
       dispatch(setTestInactive(false));
       break;
+    case "Trainer":
+      dispatch(resetState({ testId: typeOftest }));
+      dispatch(setTestInactive(false));
+      break;
 
     default:
       console.error(`Test ID "${typeOftest}" does not exist in state.`);
