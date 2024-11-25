@@ -33,26 +33,7 @@
             -webkit-user-select: none;
             -ms-user-select: none;
         }
-        .question-photo{
-                position: relative;
-                
-            .image{
-                max-width: 350px;
-                max-height: 250px;
-    
-                &.loaded {
-                    filter: blur(0); 
-                    opacity: 1;      
-                }
-    
-                &.loading {
-                    filter: blur(10px); 
-                    opacity: 0.5;
-                    background: #f0f0f0;
-                }
-            }
-        }
-        
+       
     }
    
 }
@@ -69,29 +50,13 @@
 
         .container{
             flex-direction: column-reverse;
+            align-items: center;
+            justify-content: center;
             gap: 0.5rem;
             .question{
                 width: 100%;
             }
     
-            .question-photo{
-                width: 100%;
-                display: flex;
-                justify-content: center;
-
-                .image{
-                    max-width: 250px;
-               
-                .loader{
-                    padding-top: 1rem;
-                }
-                .img{
-                    max-width: 150px;
-                    max-height: 100px;
-    
-                }
-                }
-            }
         }
       
     }

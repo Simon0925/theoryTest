@@ -1,0 +1,10 @@
+.wrap {
+
+    .img {
+        max-width: 300px;
+        max-height: 250px;
+        height: auto;  
+        object-fit: cover; 
+        display: block;
+    }
+}

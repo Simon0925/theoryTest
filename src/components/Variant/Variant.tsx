@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo,  useState } from 'react';
 import CrossSvg from '../../SVG/CrossSvg/CrossSvg';
 import OkVectorSvg from '../../SVG/OkVectorSvg/OkVectorSvg';
 import styles from './Variant.module.scss';
@@ -8,17 +8,14 @@ import { VariantProps } from "./interface";
 import hostname from '../../config/hostname';
 import { addAnswer as handleAnswer } from './services/addAnswer';
 import getVariantColor from './services/getVariantColor'
-import Loader from '../../UI/Loader/Loader';
 import {CoolorState} from './interface'
 import { useIsAnswerSelected } from '../../hooks/useIsAnswerSelected';
+import ImageComponent from '../ImageComponent/ImageComponent';
 
 
 const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, correct }) => {
     const practiceCorrect = useSelector((state: RootState) => state.practice.correct);
     const themeData = useSelector((state: RootState) => state.color.themeData);
-
-    const [loaded, setLoaded] = useState(false); 
-    const imageRef = useRef<HTMLImageElement | null>(null);
 
     const { answeredVariants, questions, currentPage, results, visibleQuestions } = useSelector(
         (state: RootState) => state.currentData.testsData[typeOftest],
@@ -30,13 +27,6 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
         color: themeData.VariantTextColor,
     });
 
-    useEffect(() => {
-        if (imageRef.current && photo) {
-            setLoaded(false); 
-            imageRef.current.onload = () => setLoaded(true);
-            imageRef.current.onerror = () => setLoaded(true); 
-        }
-    }, [photo]);
 
     const dispatch = useDispatch();
 
@@ -88,8 +78,15 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
     return (
         <div onClick={addAnswer} style={{ background: color.backgroundColor }} className={styles['wrap']}>
             <span style={{ color: color.color }}>{answer}</span>
-            {!loaded && photo && <div className={styles.loader}><Loader /></div>}
-            {photo && <img ref={imageRef}  loading="lazy" className={styles['img']} src={`${hostname}${photo}`} alt="Variant" />}
+            {photo &&
+                <div className={styles.img}>
+                    <ImageComponent
+                        maxWidth='150px'
+                        maxHeight='65px'
+                        src={`${hostname}${photo}`}
+                        alt={'Variant'} />
+                </div>
+            }
             <div className={styles['box']}>{icon}</div>
         </div>
     );
