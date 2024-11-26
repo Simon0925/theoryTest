@@ -14,9 +14,12 @@ const ImageComponent = ({ src, alt, maxWidth, maxHeight }: ImageComponentProps) 
     const imageRef = useRef<HTMLImageElement | null>(null);
     const [loaded, setLoaded] = useState(false);
   
+  
     useEffect(() => {
       setLoaded(false);
     }, [src]);
+
+
   
     return (
       <div className={styles.wrap}>
@@ -26,7 +29,7 @@ const ImageComponent = ({ src, alt, maxWidth, maxHeight }: ImageComponentProps) 
           </div>
         )}
         <img
-          style={{ maxWidth, maxHeight, visibility: loaded ? "visible" : "hidden" }} 
+          style={{ maxWidth, maxHeight, opacity: loaded ? "1" : "0" }} 
           ref={imageRef}
           className={styles.img}
           src={src}

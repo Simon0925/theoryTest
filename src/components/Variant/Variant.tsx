@@ -21,6 +21,7 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
         (state: RootState) => state.currentData.testsData[typeOftest],
         shallowEqual
     );
+    
 
     const [color, setColor] = useState({
         backgroundColor: themeData.VariantBackground,
@@ -84,7 +85,10 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
                         maxWidth='150px'
                         maxHeight='65px'
                         src={`${hostname}${photo}`}
-                        alt={'Variant'} />
+                        alt={'Variant'} 
+                        
+                        />
+                        
                 </div>
             }
             <div className={styles['box']}>{icon}</div>

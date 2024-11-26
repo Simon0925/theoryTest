@@ -14,6 +14,7 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
         (state: RootState) => state.currentData.testsData[typeOftest],
         shallowEqual
     );
+    
 
     const checkResults = useMemo(
         () => results.some(e => e.id === question.id),
@@ -53,12 +54,15 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
                         >
                             <p style={{color: color?.TestcolorText || "#000"}}>{question.question}</p>
                         </span>
+            
                             {question.photo && 
-                            <ImageComponent
-                                src={`${hostname}/${question.photo}`} 
-                                alt={"Related to the question"}
-                                />
-                            }
+                                <ImageComponent
+                                    src={`${hostname}/${question.photo}`} 
+                                    alt={"Related to the question"}
+                                    />
+                                }
+                        
+                            
                     </div>
                 </>
             )}
