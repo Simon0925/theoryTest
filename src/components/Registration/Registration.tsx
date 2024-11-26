@@ -1,63 +1,77 @@
-import { useState } from 'react';
 import styles from './Registration.module.scss';
-import { FormValues, FormErrors } from './interface';
+import { FormValues } from './interface';
 import validateForm from './services/validateForm';
 import dataTosend from './services/dataTosend';
 import { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
+import { useFormHandler } from '../../hooks/useFormHandler/useFormHandler';
 
 export default function Registration() {
-    const [formValues, setFormValues] = useState<FormValues>({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-    });
-    const [errors, setErrors] = useState<FormErrors>({});
-    const [serverMessage, setServerMessage] = useState<string | null>(null); 
+    // const [formValues, setFormValues] = useState<FormValues>({
+    //     name: '',
+    //     email: '',
+    //     password: '',
+    //     confirmPassword: ''
+    // });
+    // const [errors, setErrors] = useState<FormErrors>({});
+    // const [serverMessage, setServerMessage] = useState<string | null>(null); 
 
     const { textColor,hoverColor,headerColors} = useSelector((state: RootState) => state.color.themeData);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
     
-        const validationErrors = validateForm(formValues);
+    //     const validationErrors = validateForm(formValues);
     
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            setServerMessage(null); 
-        } else {
-            try {
-                const response = await dataTosend(formValues);
+    //     if (Object.keys(validationErrors).length > 0) {
+    //         setErrors(validationErrors);
+    //         setServerMessage(null); 
+    //     } else {
+    //         try {
+    //             const response = await dataTosend(formValues);
     
-                if (response.errors) {
-                    setServerMessage(null);
-                    if (typeof response.errors === "string") {
-                        setServerMessage(response.errors);
-                    } else {
-                        setErrors(response.errors);
-                    }
-                } else {
-                    setServerMessage('Registration successful!');
-                    setFormValues({ name: '', email: '', password: '', confirmPassword: '' }); 
-                    setErrors({}); 
-                }
-            } catch (error) {
-                setServerMessage("Server error. Please try again later.");
-                console.error("Server error:", error);
-            }
-        }
-    };
+    //             if (response.errors) {
+    //                 setServerMessage(null);
+    //                 if (typeof response.errors === "string") {
+    //                     setServerMessage(response.errors);
+    //                 } else {
+    //                     setErrors(response.errors);
+    //                 }
+    //             } else {
+    //                 setServerMessage('Registration successful!');
+    //                 setFormValues({ name: '', email: '', password: '', confirmPassword: '' }); 
+    //                 setErrors({}); 
+    //             }
+    //         } catch (error) {
+    //             setServerMessage("Server error. Please try again later.");
+    //             console.error("Server error:", error);
+    //         }
+    //     }
+    // };
     
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
+    // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { name, value } = e.target;
+    //     setFormValues({ ...formValues, [name]: value });
 
-        if (errors[name as keyof FormErrors]) {
-            setErrors({ ...errors, [name]: '' }); 
-        }
-    };
+    //     if (errors[name as keyof FormErrors]) {
+    //         setErrors({ ...errors, [name]: '' }); 
+    //     }
+    // };
+    const {
+        formValues,
+        errors,
+        serverMessage,
+        handleChange,
+        handleSubmit,
+    } = useFormHandler<FormValues>({
+        initialValues: {name: '', email: '',password: '',confirmPassword: '' },
+        validate: validateForm,
+        onSubmit: async (values) => {
+            const response = await dataTosend(values);
+            return response;
+        },
+    });
 
     return (
         <form style={{background:headerColors,color:textColor}}  onSubmit={handleSubmit} className={styles.form}>

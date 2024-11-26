@@ -1,70 +1,46 @@
 import { useState } from 'react';
 import styles from './Login.module.scss';
 import dataTosend from './services/dataTosend';
-import { FormErrors } from './interface';
-import FormValues from './interface';
+import { FormValues } from './interface';
 import { isLoading, login } from '../../store/auth/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import ResetPassword from '../ResetPassword/ResetPassword';
 import { RootState } from '../../store/store';
-
+import { useFormHandler } from '../../hooks/useFormHandler/useFormHandler';
+import validateForm from './services/validateForm'
 export default function Login() {
     const dispatch = useDispatch();
-
-    const [formValues, setFormValues] = useState<FormValues>({
-        email: '',
-        password: '',
-    });
-    const [errors, setErrors] = useState<FormErrors>({});
-    const [serverMessage, setServerMessage] = useState<string | null>(null);
     const [reset, setReset] = useState(false);
 
     const { textColor,hoverColor,headerColors} = useSelector((state: RootState) => state.color.themeData);
+    const {
+        formValues,
+        errors,
+        serverMessage,
+        handleChange,
+        handleSubmit,
+    } = useFormHandler<FormValues>({
+        initialValues: { email: '', password: '', },
+        validate: validateForm,
+        onSubmit: async (values) => {
+            const response = await dataTosend(values);
+            const token = response.accessToken;
+            if (token) {
+            document.cookie = `accessToken=${token}; path=/; max-age=2592000; secure; samesite=lax;`;//for test 
+            // document.cookie = `token=${token}; path=/; max-age=2592000; secure; samesite=strict;`; for deploy
 
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        dispatch(isLoading(true));
-        try {
-            const response = await dataTosend(formValues);
-
-            if (response.errors) {
-                setServerMessage(null);
-                if (typeof response.errors === "string") {
-                    setServerMessage(response.errors);
-                } else {
-                    setErrors(response.errors);
-                }
-            } else {
-                const token = response.accessToken;
-                if (token) {
-                    document.cookie = `accessToken=${token}; path=/; max-age=2592000; secure; samesite=lax;`;//for test 
-                    // document.cookie = `token=${token}; path=/; max-age=2592000; secure; samesite=strict;`; for deploy
-
-                    localStorage.setItem("accessToken", token);
-                }
-                dispatch(login({
-                    login: true,
-                    id: response.id,   
-                    userName: response.userName
-                  }));
-                dispatch(isLoading(false));
-            }
-        } catch (error) {
-            console.error("Server error:", error);
-            setServerMessage("An error occurred while logging in. Please try again later.");
+            localStorage.setItem("accessToken", token);
+            dispatch(login({
+                login: true,
+                id: response.id,   
+                userName: response.userName
+                }));
             dispatch(isLoading(false));
-        }
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
-
-        if (errors[name as keyof FormErrors]) {
-            setErrors({ ...errors, [name]: '' });
-        }
-    };
+            }
+            
+            return response;
+        },
+    });
 
     return (
         <>

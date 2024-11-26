@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
 import styles from './NewPasswordForm.module.scss';
 import { RootState } from '../../store/store';
-import { FormValues, FormErrors } from './interface';
+import { FormValues } from './interface';
 import dataToSend  from './services/dataToSend'
 import validateForm from './services/validateForm';
 import { useNavigate } from 'react-router-dom';
+import { useFormHandler } from '../../hooks/useFormHandler/useFormHandler';
 
 interface NewPasswordFormProps {
     token: string | null;
@@ -17,52 +17,24 @@ export default function NewPasswordForm({ token }: NewPasswordFormProps) {
 
     const { textColor, hoverColor } = useSelector((state: RootState) => state.color.themeData);
 
-    const [formValues, setFormValues] = useState<FormValues>({
-        password: '',
-        confirmPassword: '',
-        token: token || ''
-    });
-    const [errors, setErrors] = useState<FormErrors>({});
-    const [serverMessage, setServerMessage] = useState<string | null>(null);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
-
-        if (errors[name as keyof FormErrors]) {
-            setErrors({ ...errors, [name]: '' });
-        }
-    };
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-
-        e.preventDefault();
-        const validationErrors = validateForm(formValues);
-
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            setServerMessage(null);
-        } else {
-            try {
-                const response = await dataToSend(formValues);
-
-                if (response.data.errors) {
-                    setServerMessage(typeof response.data.errors === "string" ? response.data.errors : null);
-                    setErrors(typeof response.data.errors === "string" ? {} : response.data.errors);
-                } else {
-                    setServerMessage('Password reset successful!');
-                    setFormValues({ password: '', confirmPassword: '' });
-                    setErrors({});
-                    if(response.status === 200){
-                        navigate('/settings#login');
-                    }
-                }
-            } catch (error) {
-                setServerMessage("Server error. Please try again later.");
-                console.error("Server error:", error);
+    
+    const {
+        formValues,
+        errors,
+        serverMessage,
+        handleChange,
+        handleSubmit,
+    } = useFormHandler<FormValues>({
+        initialValues: { password: '',confirmPassword: '', token: token || ''},
+        validate: validateForm,
+        onSubmit: async (values) => {
+            const response = await dataToSend(values);
+            if(response.status === 200){
+                navigate('/settings#login');
             }
-        }
-    };
+            return response;
+        },
+    });
 
     return (
         <form onSubmit={handleSubmit} className={styles.form}>

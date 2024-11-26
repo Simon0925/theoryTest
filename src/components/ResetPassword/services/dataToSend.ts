@@ -1,7 +1,7 @@
 import hostname from "../../../config/hostname";
 import { FormValues } from '../interface';
 
-const send = async (formValues: FormValues) => {
+const dataToSend = async (formValues: FormValues) => {
     const jsonString = JSON.stringify(formValues);
 
     try {
@@ -15,7 +15,7 @@ const send = async (formValues: FormValues) => {
 
         if (!response.ok) {
             const errorData = await response.json();
-            return { errors: errorData.errors || "An error occurred" };
+            return { errors: errorData.message || "An error occurred" };
         }
 
         const data = await response.json();
@@ -26,4 +26,4 @@ const send = async (formValues: FormValues) => {
     }
 };
 
-export default send;
+export default dataToSend;

@@ -1,4 +1,4 @@
-export default interface FormValues {
+export  interface FormValues {
     email:string;
     password:string;
 }

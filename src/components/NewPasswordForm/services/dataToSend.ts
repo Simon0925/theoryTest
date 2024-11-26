@@ -17,6 +17,7 @@ const dataToSend = async (formData: FormValues) => {
         }
 
         const responseData = await response.json();
+
         return { status, data: responseData };
 
     } catch (error) {

@@ -15,6 +15,7 @@ export default function NewPassword() {
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const tokenFromURL = queryParams.get('token');
+        console.log("tokenFromURL:",tokenFromURL)
         setToken(tokenFromURL);
     }, [location]);
 
@@ -34,7 +35,10 @@ export default function NewPassword() {
 
     useEffect(() => {
         if (token) {
+            setError(null)
             fetchData();
+        }else if (!token ) {
+            setError("The link is no longer valid");
         }
     }, [token]);
 
