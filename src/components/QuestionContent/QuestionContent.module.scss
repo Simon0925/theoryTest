@@ -24,7 +24,7 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-       
+        
        
         .question{
             font-size: 18px;
@@ -32,6 +32,11 @@
             user-select: none;
             -webkit-user-select: none;
             -ms-user-select: none;
+        }
+
+        .img{
+            width: 300px;
+            height: 250px;
         }
        
     }

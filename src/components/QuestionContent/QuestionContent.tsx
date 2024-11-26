@@ -54,15 +54,13 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
                         >
                             <p style={{color: color?.TestcolorText || "#000"}}>{question.question}</p>
                         </span>
-            
                             {question.photo && 
-                                <ImageComponent
-                                    src={`${hostname}/${question.photo}`} 
-                                    alt={"Related to the question"}
-                                    />
-                                }
-                        
-                            
+                            <ImageComponent
+                            src={`${hostname}/${question.photo}`}
+                            alt={"Related to the question"} 
+                            wrapWidth={"300px"}
+                            wrapHeight={"250px"}                                />
+                            }
                     </div>
                 </>
             )}

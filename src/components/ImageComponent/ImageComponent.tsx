@@ -7,10 +7,12 @@ interface ImageComponentProps {
     alt:string;
     maxWidth?:string;
     maxHeight?:string;
+    wrapWidth?:string;
+    wrapHeight?:string;
 }
 
 
-const ImageComponent = ({ src, alt, maxWidth, maxHeight }: ImageComponentProps) => {
+const ImageComponent = ({ src, alt, maxWidth, maxHeight,wrapWidth,wrapHeight }: ImageComponentProps) => {
     const imageRef = useRef<HTMLImageElement | null>(null);
     const [loaded, setLoaded] = useState(false);
   
@@ -22,7 +24,7 @@ const ImageComponent = ({ src, alt, maxWidth, maxHeight }: ImageComponentProps) 
 
   
     return (
-      <div className={styles.wrap}>
+      <div style={{width:wrapWidth,height:wrapHeight}} className={styles.wrap}>
         {!loaded && src && (
           <div className={styles.loader}>
             <Loader />
