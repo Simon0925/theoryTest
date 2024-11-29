@@ -7,57 +7,11 @@ import { useSelector } from 'react-redux';
 import { useFormHandler } from '../../hooks/useFormHandler/useFormHandler';
 
 export default function Registration() {
-    // const [formValues, setFormValues] = useState<FormValues>({
-    //     name: '',
-    //     email: '',
-    //     password: '',
-    //     confirmPassword: ''
-    // });
-    // const [errors, setErrors] = useState<FormErrors>({});
-    // const [serverMessage, setServerMessage] = useState<string | null>(null); 
+    
 
     const { textColor,hoverColor,headerColors} = useSelector((state: RootState) => state.color.themeData);
 
-    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
-    
-    //     const validationErrors = validateForm(formValues);
-    
-    //     if (Object.keys(validationErrors).length > 0) {
-    //         setErrors(validationErrors);
-    //         setServerMessage(null); 
-    //     } else {
-    //         try {
-    //             const response = await dataTosend(formValues);
-    
-    //             if (response.errors) {
-    //                 setServerMessage(null);
-    //                 if (typeof response.errors === "string") {
-    //                     setServerMessage(response.errors);
-    //                 } else {
-    //                     setErrors(response.errors);
-    //                 }
-    //             } else {
-    //                 setServerMessage('Registration successful!');
-    //                 setFormValues({ name: '', email: '', password: '', confirmPassword: '' }); 
-    //                 setErrors({}); 
-    //             }
-    //         } catch (error) {
-    //             setServerMessage("Server error. Please try again later.");
-    //             console.error("Server error:", error);
-    //         }
-    //     }
-    // };
-    
-
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const { name, value } = e.target;
-    //     setFormValues({ ...formValues, [name]: value });
-
-    //     if (errors[name as keyof FormErrors]) {
-    //         setErrors({ ...errors, [name]: '' }); 
-    //     }
-    // };
+  
     const {
         formValues,
         errors,

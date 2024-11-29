@@ -33,7 +33,7 @@ export const addAnswer = (
     
             dispatch(
             updateAnsweredVariants({
-                testId: typeOftest,
+                testId: "Result",
                 answeredVariants: updateAnswer
             }))
 
@@ -56,7 +56,7 @@ export const addAnswer = (
 
         dispatch(
             updateAnsweredVariants({
-                testId: typeOftest,
+                testId: "Result",
                 answeredVariants: [...answeredVariants, { id: currentQuestionId, index }]
             })
         );

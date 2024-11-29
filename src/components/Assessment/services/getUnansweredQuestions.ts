@@ -1,4 +1,4 @@
-import { Question } from "../interface";
+import { Question } from "../../../interface/questionsType";
 
 interface AnsweredQuestion {
   id: string;

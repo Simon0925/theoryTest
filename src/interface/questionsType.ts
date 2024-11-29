@@ -11,7 +11,7 @@ export interface Question {
     status: boolean | string;
   }
 
-  interface ParData {
+  export interface ParData {
     answer: string;
     photo: boolean | string;
     tOF: boolean;

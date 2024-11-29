@@ -38,13 +38,14 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
   const {
     questions,
     currentPage,
-    answeredVariants,
     visibleQuestions,
     isLoading
   } = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],
     shallowEqual
   );
+  
+  const answeredVariants = useSelector((state: RootState) => state.currentData.testsData["Result"].answeredVariants || []);
 
 
   const fetchAssessmentData = useCallback((accessToken:string) => {

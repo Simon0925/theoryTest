@@ -7,11 +7,16 @@ import { QuestionContentProps } from './interface';
 import ImageComponent from "../ImageComponent/ImageComponent";
 import hostname from "../../config/hostname";
 
-export default function QuestionContent({ typeOftest, question }: QuestionContentProps) {
+export default function QuestionContent({  question }: QuestionContentProps) {
+
     const dispatch = useDispatch();
+
     const color = useSelector((state: RootState) => state.color.themeData);
-    const results  = useSelector((state: RootState) => state.currentData.testsData["Result"].questions);
-    
+
+    const results = useSelector(
+        (state: RootState) => state.currentData.testsData["Result"].questions || []
+      );
+
 
     const checkResults = useMemo(
         () => results.some(e => e.id === question.id),
@@ -37,7 +42,7 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
                 questions: [...results, newResult]
             }));
         }
-    }, [checkResults, question, dispatch, typeOftest, results]);
+    }, [checkResults, question, dispatch, results]);
 
     return (
         <div 

@@ -1,4 +1,4 @@
-import { Question } from './types.ts'; 
+import { Question } from '../../interface/questionsType'; 
 
 export const updateQuestionsAndResults = (
   questions: Question[], 

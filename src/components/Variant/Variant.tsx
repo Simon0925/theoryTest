@@ -17,10 +17,12 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
     const practiceCorrect = useSelector((state: RootState) => state.practice.correct);
     const themeData = useSelector((state: RootState) => state.color.themeData);
 
-    const { answeredVariants, questions, currentPage,  visibleQuestions } = useSelector(
+    const {  questions, currentPage,  visibleQuestions } = useSelector(
         (state: RootState) => state.currentData.testsData[typeOftest],
         shallowEqual
     );
+
+    const answeredVariants = useSelector((state: RootState) => state.currentData.testsData["Result"].answeredVariants || []);
     
     const results =  useSelector((state: RootState) => state.currentData.testsData["Result"].questions);
 

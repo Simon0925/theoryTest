@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./Results.module.scss";
 import HeaderResults from "../HeaderResults/HeaderResults";
 import CircularProgressBar from "../../UI/CircularProgressBar/CircularProgressBar";
-import { shallowEqual, useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import {postResult} from './service/postResult';
 import useCookie from "../../hooks/useCookie";

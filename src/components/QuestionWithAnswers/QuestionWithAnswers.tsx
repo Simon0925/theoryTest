@@ -4,14 +4,13 @@ import styles from "./QuestionWithAnswers.module.scss";
 import {QuestionWithAnswersProps} from './interface';
 
 
-const QuestionWithAnswers: React.FC<QuestionWithAnswersProps> = ({
+const QuestionWithAnswers = ({
     typeOftest,
     question
-}) => {
+}:QuestionWithAnswersProps) => {
   return (
     <div className={styles.questionWrapper}>
         <QuestionContent 
-            typeOftest={typeOftest}
             question={question}/>
     
         <VariantsOfAnswers 

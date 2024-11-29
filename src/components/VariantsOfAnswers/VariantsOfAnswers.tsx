@@ -1,30 +1,43 @@
 import styles from "./VariantsOfAnswers.module.scss";
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import Variant from '../../components/Variant/Variant';
 import { shuffleArray } from './services/shuffleArray';
 import { VariantsOfAnswersProps } from "./interface";
 import { RootState } from "../../store/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setShuffledAnswers } from "../../store/currentData/currentData.slice";
 
 export default function VariantsOfAnswers({
     typeOftest,
     question
 }: VariantsOfAnswersProps) {
 
-    const [shuffledAnswers, setShuffledAnswers] = useState<{ [key: string]: any[] }>({});
+    const dispatch = useDispatch()
+
+
+    const shuffledAnswers = useSelector(
+        (state: RootState) => state.currentData.testsData["Result"].shuffledAnswers
+      );
 
     const themeData = useSelector((state: RootState) => state.color.themeData);
 
     useEffect(() => {
-        if (question && !shuffledAnswers[question.id]) {
-            setShuffledAnswers((prev) => ({
-                ...prev,
-                [question.id]: shuffleArray(question.par),
-            }));
+        if (question && (!shuffledAnswers || !shuffledAnswers[question.id])) {
+          const shuffled = shuffleArray(question.par);
+          dispatch(
+            setShuffledAnswers({
+              testId: "Result",
+              questionId: question.id,
+              shuffledAnswers: shuffled,
+            })
+          );
         }
-    }, [question, shuffledAnswers]);
+      }, [question, shuffledAnswers, dispatch]);
 
-    const answersToShow = question ? shuffledAnswers[question.id] || [] : [];
+      const answersToShow =
+      question && shuffledAnswers && shuffledAnswers[question.id]
+        ? shuffledAnswers[question.id]
+        : [];
 
     return (
         <div 

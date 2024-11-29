@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './HeaderCheckResultAnswer.module.scss';
 import { RootState } from '../../store/store';
-import { isActive, updateCurrentPage } from '../../store/currentData/currentData.slice';
+import { isActive } from '../../store/currentData/currentData.slice';
 import { useEffect } from 'react';
 import {getCurrentPage} from './service/getCurrentPage'
 

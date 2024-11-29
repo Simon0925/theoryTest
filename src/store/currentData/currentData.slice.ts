@@ -1,18 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Question {
-  correctAnswers: number;
-  explanation: string;
-  flag: boolean ;
-  topic: string;
-  id: string;
-  incorrectAnswers: number;
-  par: ParData[];
-  photo: boolean | string;
-  question: string;
-  status: boolean | string;
-}
-
+import {Question,ParData} from "../../interface/questionsType"
 
 
 interface Variant {
@@ -24,19 +12,16 @@ interface Variant {
 interface CurrentData {
   questions: Question[] ;
   currentPage: number;
-  answeredVariants: Variant[];
-  isLoading: boolean;
-  error: string | null;
+  answeredVariants?: Variant[];
+  isLoading?: boolean;
+  error?: string | null;
   visibleQuestions?:Question[]
   resultsAnswers?:boolean;
   startId?:string
+  shuffledAnswers?: { [questionId: string]: ParData[] };
 }
 
-interface ParData {
-  answer: string;
-  photo: boolean | string;
-  tOF: boolean;
-}
+
 
 interface TestsData {
   currentTestInProgress:boolean;
@@ -51,14 +36,12 @@ const initialState: TestsData = {
     PracticeTest: {
       questions: [],
       currentPage: 0,
-      answeredVariants: [],
       isLoading: false,
       error: null,
     },
     MockTest: {
       questions: [],
       currentPage: 0,
-      answeredVariants: [],
       isLoading: false,
       error: null,
       visibleQuestions:[]
@@ -66,7 +49,6 @@ const initialState: TestsData = {
     Trainer: {
       questions: [],
       currentPage: 0,
-      answeredVariants: [],
       isLoading: false,
       error: null,
     },
@@ -76,8 +58,7 @@ const initialState: TestsData = {
       questions: [],
       currentPage: 0,
       answeredVariants: [],
-      isLoading: false,
-      error: null,
+      shuffledAnswers: {},
     }
   },
 };
@@ -134,8 +115,13 @@ export const questionsSlice = createSlice({
       if (state.testsData[testId]) {
         state.testsData[testId].questions = [];
         state.testsData[testId].currentPage = 0;
-        state.testsData[testId].answeredVariants = [];
+        state.testsData["Result"].answeredVariants = [];
         state.testsData[testId].visibleQuestions = [];
+        state.testsData["Result"].resultsAnswers = false;
+        state.testsData["Result"].startId = '';
+        state.testsData["Result"].shuffledAnswers = {};
+        state.testsData["Result"].questions = [];
+
       }
     },
     resetStateAll: (state) => {
@@ -163,6 +149,20 @@ export const questionsSlice = createSlice({
        ) => {
       state.testsData["Result"].resultsAnswers = action.payload.resultsAnswers;
     },
+    setShuffledAnswers: (
+      state,
+      action: PayloadAction<{ testId: string; questionId: string; shuffledAnswers: ParData[] }>
+    ) => {
+      const { testId, questionId, shuffledAnswers } = action.payload;
+    
+      if (state.testsData[testId]) {
+        if (!state.testsData[testId].shuffledAnswers) {
+          state.testsData[testId].shuffledAnswers = {};
+        }
+        (state.testsData[testId].shuffledAnswers as any)[questionId] = shuffledAnswers;
+      }
+    },
+    
     setLoading: (
       state,
       action: PayloadAction<{ testId: string; isLoading: boolean }>
@@ -192,7 +192,8 @@ export const {
   resetStateAll,
   setTestInactive,
   isActive,
-  addStartId
+  addStartId,
+  setShuffledAnswers
 } = questionsSlice.actions;
 
 export default questionsSlice.reducer;
