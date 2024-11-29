@@ -7,6 +7,7 @@ import { RootState } from "../../store/store";
 import GoToLogin from "../../components/GoToLogin/GoToLogin";
 import Spinner from "../../UI/Spinner/Spinner";
 
+
 const PracticeTest = lazy(() => import("../../components/PracticeTest/PracticeTest"));
 const PracticeQuestionManager = lazy(() => import("../../components/PracticeQuestionManager/PracticeQuestionManager"));
 const Results = lazy(() => import("../../components/Results/Results"));
@@ -21,7 +22,7 @@ export default function Practice() {
   useEffect(() => {
     if (!result) {
       startTransition(() => {
-        dispatch(updateResult({ testId: "PracticeTest", result: [] }));
+        dispatch(updateResult({ questions: [] }));
       });
     } else {
       setTest(false);
@@ -35,7 +36,9 @@ export default function Practice() {
   return (
     <Suspense fallback={<div className={styles.spinner}><Spinner /></div>}>
       {result ? (
+        
         <Results typeOftest="PracticeTest" exitResult={setResult} />
+    
       ) : (
         <div className={styles.wrap}>
           {!test ? (

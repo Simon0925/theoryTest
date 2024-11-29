@@ -1,13 +1,12 @@
 import { Question } from './types.ts'; 
-import { Result } from './types.ts';  
 
 export const updateQuestionsAndResults = (
   questions: Question[], 
-  results: Result[], 
+  results: Question[], 
   currentPage: number,
   typeOftest?: string,
   visibleQuestions: Question[] = []
-): { updatedQuestions: Question[], updatedResults: Result[] } => {
+): { updatedQuestions: Question[], updatedResults: Question[] } => {
 
   const targetQuestions = typeOftest === "MockTest" ? visibleQuestions : questions;
 
@@ -18,10 +17,10 @@ export const updateQuestionsAndResults = (
     return element;
   });
 
-  const existingResult = results.find((e: Result) => questions[currentPage].id === e.id);
+  const existingResult = results.find((e: Question) => questions[currentPage].id === e.id);
 
   const updatedResults = existingResult
-    ? results.map((result: Result) =>
+    ? results.map((result: Question) =>
         result.id === questions[currentPage].id
           ? { ...result, flag: !result.flag }
           : result
@@ -34,6 +33,11 @@ export const updateQuestionsAndResults = (
           flag: !questions[currentPage].flag,
           topic: questions[currentPage].topic,
           status: questions[currentPage].status,
+          correctAnswers: questions[currentPage].correctAnswers,
+          explanation: questions[currentPage].explanation,
+          incorrectAnswers: questions[currentPage].incorrectAnswers,
+          par: questions[currentPage].par,
+          photo: questions[currentPage].photo,
         },
       ];
 

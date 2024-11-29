@@ -10,6 +10,7 @@ import ResultVariant from "../ResultVariant/ResultVariant";
 import { useProgressBar } from "../../hooks/useResultsHooks/useProgressBar";
 import { useMockTestData } from "../../hooks/useResultsHooks/useMockTestData";
 import { useStatisticData } from "../../hooks/useResultsHooks/useStatisticData";
+import CheckResultAnswer from "../CheckResultAnswer/CheckResultAnswer";
 
 
 interface ResultsProps {
@@ -20,15 +21,16 @@ interface ResultsProps {
 
 export default function Results({ exitResult, time, typeOftest }: ResultsProps) {
 
+
   const color = useSelector((state: RootState) => state.color.themeData);
 
   const accessToken = useCookie('accessToken');
   
-  const {results, questions } = useSelector(
-    (state: RootState) => state.currentData.testsData[typeOftest],
-    shallowEqual
-  );
+  const {questions } = useSelector((state: RootState) => state.currentData.testsData[typeOftest]);
+  const results  = useSelector((state: RootState) => state.currentData.testsData["Result"].questions);
+  const resultsAnswers  = useSelector((state: RootState) => state.currentData.testsData["Result"].resultsAnswers);
   
+ 
 
   const [answered, setAnswered] = useState(0);
   const data = useMockTestData(typeOftest, questions, results);
@@ -39,6 +41,7 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
     const correctAnswers = data.filter((elem) => elem.status === true).length;
     setAnswered(correctAnswers);
   }, [data]);
+
 
 
   useEffect(() => {
@@ -65,9 +68,10 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
   }, [results,questions,statisticData,accessToken]);
 
 
-
   return (
     <>
+    
+    {!resultsAnswers ?
       <div style={{ backgroundColor: color.hoverColor }}  className={styles.wrap}>
         <HeaderResults exitResult={exitResult} typeOftest={typeOftest} />
 
@@ -105,6 +109,7 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
                 photo={elem.photo}
                 question={elem.question}
                 status={elem.status}
+                id={elem.id}
               />
             ))
           ) : (
@@ -114,6 +119,9 @@ export default function Results({ exitResult, time, typeOftest }: ResultsProps) 
           )}
         </div>
       </div>
+      :
+      <CheckResultAnswer />
+      }
     </>
   );
 }

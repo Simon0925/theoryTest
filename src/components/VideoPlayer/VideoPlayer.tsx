@@ -3,7 +3,7 @@ import styles from "./VideoPlayer.module.scss";
 
 import hostname from "../../config/hostname.ts";
 
-import { useVideo } from "../../context/VideoContext/VideoContext.tsx.tsx";
+import { useVideo } from "../../context/VideoContext/VideoContext.tsx";
 import VideoControlPanel from "../VideoControlPanel/VideoControlPanel.tsx";
 
 

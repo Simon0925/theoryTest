@@ -7,7 +7,8 @@ import { RootState } from '../../store/store';
 export function useChangeFlag(typeOftest: string) {
   const dispatch = useDispatch();
 
-  const { questions, currentPage, results } = useSelector((state: RootState) => state.currentData.testsData[typeOftest]);
+  const { questions, currentPage } = useSelector((state: RootState) => state.currentData.testsData[typeOftest]);
+  const results = useSelector((state: RootState) => state.currentData.testsData["Result"].questions);
 
   const changeFlag = useCallback(() => {
     if (!questions[currentPage]) return;
@@ -18,8 +19,10 @@ export function useChangeFlag(typeOftest: string) {
       currentPage
     );
 
+
     dispatch(setCurrentQuestions({ testId: typeOftest, questions: updatedQuestions }));
-    dispatch(updateResult({ testId: typeOftest, result: updatedResults }));
+    
+    dispatch(updateResult({ questions: updatedResults }));
   }, [currentPage, questions, results, dispatch, typeOftest]);
 
   return { changeFlag };

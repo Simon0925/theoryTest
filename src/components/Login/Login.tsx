@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from './Login.module.scss';
 import dataTosend from './services/dataTosend';
 import { FormValues } from './interface';
-import { isLoading, login } from '../../store/auth/auth';
+import { isLoading, login } from '../../store/auth/auth.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import ResetPassword from '../ResetPassword/ResetPassword';
 import { RootState } from '../../store/store';
@@ -27,6 +27,7 @@ export default function Login() {
             const token = response.accessToken;
             if (token) {
             document.cookie = `accessToken=${token}; path=/; max-age=2592000; secure; samesite=lax;`;//for test 
+            // TODO: change for deploy
             // document.cookie = `token=${token}; path=/; max-age=2592000; secure; samesite=strict;`; for deploy
 
             localStorage.setItem("accessToken", token);

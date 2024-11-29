@@ -3,7 +3,7 @@ import ArrowPrevSmallSvg from "../../SVG/ArrowPrevSmallSvg/ArrowPrevSmallSvg";
 import { RootState } from "../../store/store";
 import Auth from "../Auth/Auth";
 import styles from "./Account.module.scss";
-import { login } from "../../store/auth/auth";
+import { login } from "../../store/auth/auth.slice";
 
 
 

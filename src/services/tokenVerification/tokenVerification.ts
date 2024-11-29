@@ -1,9 +1,8 @@
 import hostname from "../../config/hostname";
-import { isLoading } from "../../store/auth/auth";
+import { isLoading } from "../../store/auth/auth.slice";
 
 async function tokenVerification(dispatch: any,token:string) { 
-  
-
+    
     if (!token) return null;
 
     try {

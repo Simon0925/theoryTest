@@ -20,23 +20,16 @@ interface Variant {
   index: number;
 }
 
-interface Result {
-    id: string;  
-    question: string;
-    topic: string;
-    flag: boolean;
-    status: boolean | string;
-    photo?: string | boolean;
-}
 
 interface CurrentData {
   questions: Question[] ;
   currentPage: number;
   answeredVariants: Variant[];
-  results: Result[];
   isLoading: boolean;
   error: string | null;
   visibleQuestions?:Question[]
+  resultsAnswers?:boolean;
+  startId?:string
 }
 
 interface ParData {
@@ -59,16 +52,13 @@ const initialState: TestsData = {
       questions: [],
       currentPage: 0,
       answeredVariants: [],
-      results: [],
       isLoading: false,
       error: null,
-      visibleQuestions:[]
     },
     MockTest: {
       questions: [],
       currentPage: 0,
       answeredVariants: [],
-      results: [],
       isLoading: false,
       error: null,
       visibleQuestions:[]
@@ -77,11 +67,18 @@ const initialState: TestsData = {
       questions: [],
       currentPage: 0,
       answeredVariants: [],
-      results: [],
       isLoading: false,
       error: null,
-      visibleQuestions:[]
     },
+    Result: {
+      resultsAnswers:false,
+      startId:'',
+      questions: [],
+      currentPage: 0,
+      answeredVariants: [],
+      isLoading: false,
+      error: null,
+    }
   },
 };
 
@@ -117,10 +114,10 @@ export const questionsSlice = createSlice({
     },
     updateResult: (
       state,
-      action: PayloadAction<{ testId: string; result: Result[] }>
+      action: PayloadAction<{questions: Question[] }>
     ) => {
-      const { testId, result } = action.payload;
-      state.testsData[testId].results = result;
+      const {questions } = action.payload;
+      state.testsData["Result"].questions = questions;
     },
     updatevisibleQuestions: (
       state,
@@ -138,7 +135,6 @@ export const questionsSlice = createSlice({
         state.testsData[testId].questions = [];
         state.testsData[testId].currentPage = 0;
         state.testsData[testId].answeredVariants = [];
-        state.testsData[testId].results = [];
         state.testsData[testId].visibleQuestions = [];
       }
     },
@@ -149,12 +145,23 @@ export const questionsSlice = createSlice({
           questions: [],
           currentPage: 0,
           answeredVariants: [],
-          results: [],
           isLoading: false,
           error: null,
           visibleQuestions: [],
         };
       }
+    },
+    addStartId: (
+      state, 
+      action: PayloadAction<{ startId: string; }>
+      ) => {
+      state.testsData["Result"].startId = action.payload.startId;
+    },
+    isActive: (
+      state,
+      action: PayloadAction<{ resultsAnswers: boolean; }>
+       ) => {
+      state.testsData["Result"].resultsAnswers = action.payload.resultsAnswers;
     },
     setLoading: (
       state,
@@ -183,7 +190,9 @@ export const {
   updatevisibleQuestions,
   resetState,
   resetStateAll,
-  setTestInactive
+  setTestInactive,
+  isActive,
+  addStartId
 } = questionsSlice.actions;
 
 export default questionsSlice.reducer;

@@ -17,11 +17,12 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
     const practiceCorrect = useSelector((state: RootState) => state.practice.correct);
     const themeData = useSelector((state: RootState) => state.color.themeData);
 
-    const { answeredVariants, questions, currentPage, results, visibleQuestions } = useSelector(
+    const { answeredVariants, questions, currentPage,  visibleQuestions } = useSelector(
         (state: RootState) => state.currentData.testsData[typeOftest],
         shallowEqual
     );
     
+    const results =  useSelector((state: RootState) => state.currentData.testsData["Result"].questions);
 
     const [color, setColor] = useState({
         backgroundColor: themeData.VariantBackground,
@@ -41,6 +42,8 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
             return correct ? <OkVectorSvg /> : <CrossSvg />;
         }else if ( (!practiceCorrect && isAnswerSelected && typeOftest === "PracticeTest")) {
             return correct;
+        }else if ((typeOftest === "Result")){
+            return correct ? <OkVectorSvg /> : <CrossSvg />;
         }
         return null;
     }, [ currentPage,answeredVariants]);
@@ -58,6 +61,7 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
             practiceCorrect,
             index
         );
+
     };
 
     useEffect(() => {

@@ -2,7 +2,7 @@ import { useEffect, useCallback, useMemo, Suspense, lazy } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store/store';
 import tokenVerification from './services/tokenVerification/tokenVerification';
-import { login } from './store/auth/auth';
+import { login } from './store/auth/auth.slice';
 import styles from './App.module.scss';
 import useCookie from './hooks/useCookie';
 

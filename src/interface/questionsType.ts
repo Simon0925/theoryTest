@@ -15,4 +15,4 @@ export interface Question {
     answer: string;
     photo: boolean | string;
     tOF: boolean;
-}
+  }

@@ -1,6 +1,6 @@
 import styles from "./QuestionContent.module.scss";
 import { RootState } from '../../store/store';
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { updateResult } from '../../store/currentData/currentData.slice';
 import { QuestionContentProps } from './interface';
@@ -10,10 +10,7 @@ import hostname from "../../config/hostname";
 export default function QuestionContent({ typeOftest, question }: QuestionContentProps) {
     const dispatch = useDispatch();
     const color = useSelector((state: RootState) => state.color.themeData);
-    const {results } = useSelector(
-        (state: RootState) => state.currentData.testsData[typeOftest],
-        shallowEqual
-    );
+    const results  = useSelector((state: RootState) => state.currentData.testsData["Result"].questions);
     
 
     const checkResults = useMemo(
@@ -31,10 +28,13 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
                 topic: question.topic,
                 status: "pass",
                 photo: question.photo,
+                par:question.par,
+                explanation:question.explanation,
+                correctAnswers:question.correctAnswers,
+                incorrectAnswers:question.incorrectAnswers
             };
             dispatch(updateResult({
-                testId: typeOftest,
-                result: [...results, newResult]
+                questions: [...results, newResult]
             }));
         }
     }, [checkResults, question, dispatch, typeOftest, results]);
@@ -59,7 +59,8 @@ export default function QuestionContent({ typeOftest, question }: QuestionConten
                             src={`${hostname}/${question.photo}`}
                             alt={"Related to the question"} 
                             wrapWidth={"300px"}
-                            wrapHeight={"250px"}                                />
+                            wrapHeight={"250px"}                           
+                             />
                             }
                     </div>
                 </>

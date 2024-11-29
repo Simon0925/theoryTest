@@ -39,7 +39,13 @@ const getVariantColor = (
             backgroundColor: correct ? "rgb(0, 182, 118)" : "rgb(170, 59, 54)",
             color: stateColor.VariantSelectedOption,
         };
-    } else {
+    } else if ((typeOftest === "Result")){
+   
+        return {
+            backgroundColor: correct  ? "rgb(0, 182, 118)" : "rgb(170, 59, 54)",
+            color: stateColor.VariantSelectedOption,
+        };
+    }else {
         return {
             backgroundColor: stateColor.VariantBackground,
             color: stateColor.TestcolorText,

@@ -10,7 +10,7 @@ import ProgressBar from "../ProgressBar/ProgressBar.tsx";
 import FastForwardSvg from "../../SVG/FastForwardSvg/FastForwardSvg.tsx";
 import Selecte from "../Selecte/Selecte.tsx";
 import NextForwardArrowSvg from "../../SVG/NextForwardArrowSvg/NextForwardArrow.tsx";
-import { useVideo } from "../../context/VideoContext/VideoContext.tsx.tsx";
+import { useVideo } from "../../context/VideoContext/VideoContext.tsx";
 
 const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
