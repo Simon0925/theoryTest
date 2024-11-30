@@ -7,6 +7,7 @@ import { QuestionContentProps } from './interface';
 import ImageComponent from "../ImageComponent/ImageComponent";
 import hostname from "../../config/hostname";
 
+
 export default function QuestionContent({  question }: QuestionContentProps) {
 
     const dispatch = useDispatch();

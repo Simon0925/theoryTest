@@ -15,15 +15,15 @@
 
     button{
         font-size: 16px;
-        padding: 0.2rem 0.5rem;
+        padding: 0.2rem 0rem;
         border-radius: 0.25rem;
         border: none;
         outline: none;
         cursor: pointer;
-        transition: all ease 0.3s;
-        &:hover{
-            transition: all ease 0.3s;
-            scale: 1.1;
-        }
+        width: 70px;
+    }
+
+    span{
+        width: 70px;
     }
 }

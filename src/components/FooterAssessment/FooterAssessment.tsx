@@ -26,17 +26,8 @@ export default function FooterAssessment({
 
   const color = useSelector((state: RootState) => state.color.themeData);
 
-  ///TODO remove currentPage
-
-  const  visibleQuestions = useSelector((state: RootState) => state.currentData.testsData["MockTest"].visibleQuestions || []);
-
-  const  currentPage = useSelector((state: RootState) => state.currentData.testsData["MockTest"].currentPage);
-
-   
-
-  const { navigatePage, isModalVisible, setModalVisible } = usePageNavigation({typeOftest,totalQuestions:visibleQuestions});
-
-
+ 
+  const { navigatePage, isModalVisible, setModalVisible } = usePageNavigation({typeOftest});
  
   
   useEffect(() => {

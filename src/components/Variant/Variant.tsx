@@ -66,7 +66,7 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
         if (typeOftest === "PracticeTest" && practiceCorrect&& isAnswerSelected) {
             return correct ? <OkVectorSvg /> : <CrossSvg />;
         }
-        if (typeOftest === "Result"&& isAnswerSelected) {
+        if (typeOftest === "Result") {
             return correct ? <OkVectorSvg /> : <CrossSvg />;
         }
         return null;
@@ -88,7 +88,7 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
     };
 
     return (
-        <div onClick={addAnswer} style={{ background: color.backgroundColor }} className={styles['wrap']}>
+        <div onClick={typeOftest !== "Result" ?addAnswer : ()=>null} style={{ background: color.backgroundColor }} className={styles['wrap']}>
             <span style={{ color: color.color }}>{answer}</span>
             {photo && (
                 <div className={styles.img}>

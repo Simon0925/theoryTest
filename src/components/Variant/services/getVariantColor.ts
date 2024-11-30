@@ -1,4 +1,5 @@
-import {AnsweredVariantsInterface,VisibleQuestionsInterface,Question,CoolorState} from '../interface'
+import {AnsweredVariantsInterface,VisibleQuestionsInterface,CoolorState} from '../interface'
+import {Question} from "../../../interface/questionsType"
 
 
 const getVariantColor = (

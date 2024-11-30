@@ -1,5 +1,11 @@
-import { updateAnsweredVariants, updateResult, updateCurrentPage } from '../../../store/currentData/currentData.slice';
-import {AnsweredVariantsInterface,VisibleQuestionsInterface,Question} from '../interface'
+import {  updateCurrentPage } from '../../../store/currentData/currentData.slice';
+import {AnsweredVariantsInterface,VisibleQuestionsInterface} from '../interface'
+import {Question} from "../../../interface/questionsType"
+import { updateAnsweredVariantsHandler } from './addAnswerFunctions/updateAnsweredVariantsHandler';
+
+import { addNewAnswer } from './addAnswerFunctions/addNewAnswer';
+import { updateResultsHandler } from './addAnswerFunctions/updateResultsHandler';
+
 
 export const addAnswer = (
     answeredVariants: AnsweredVariantsInterface,
@@ -22,81 +28,23 @@ export const addAnswer = (
     );
 
   
-    if((typeOftest === "PracticeTest" || typeOftest === "MockTest" ) && !practiceCorrect && practiceCheck){
-
-            let updateAnswer = answeredVariants.map((element)=>{
-                if(element.id === questions[currentPage].id){
-                    return { ...element, index: index };
-                }
-                return element;
-            })
-    
-            dispatch(
-            updateAnsweredVariants({
-                testId: "Result",
-                answeredVariants: updateAnswer
-            }))
-
-            let updatedResults = results.map((element) => {
-                if (element.id === questions[currentPage].id) {
-                    return { ...element, status: correct };
-                }
-                return element;
-            });
-
-            dispatch(updateResult({questions: updatedResults}));
-     }
+    if ((typeOftest === "PracticeTest" || typeOftest === "MockTest") && !practiceCorrect && practiceCheck) {
+        updateAnsweredVariantsHandler( index, dispatch, answeredVariants, questions, currentPage);
+        updateResultsHandler( correct, dispatch, results, questions, currentPage);
+    } else if (!practiceCheck) {
+        addNewAnswer(correct, index, dispatch, typeOftest, questions, currentPage, results, answeredVariants, visibleQuestions);
+    }
      
-      ///TODO  make refactoring
 
-    if (!practiceCheck) {
-        const currentQuestionId = typeOftest === "MockTest" && visibleQuestions
-            ? visibleQuestions[currentPage]?.id
-            : questions[currentPage].id;
+    const isMockTest = typeOftest === "MockTest";
+    const questionLength = isMockTest ? visibleQuestions.length : questions.length;
 
-        dispatch(
-            updateAnsweredVariants({
-                testId: "Result",
-                answeredVariants: [...answeredVariants, { id: currentQuestionId, index }]
-            })
-        );
-
-        const existingResult = results.find(e => e.id === currentQuestionId);
-        const newResult = {
-            id: currentQuestionId,
-            question: questions[currentPage].question,
-            flag: questions[currentPage].flag ?? false,
-            topic: questions[currentPage].topic,
-            status: correct,
-            par:questions[currentPage].par
-        };
-
-        const updatedResults = existingResult
-            ? results.map(result =>
-                result.id === currentQuestionId
-                    ? { ...result, status: correct }
-                    : result
-            )
-            : [...results, newResult];
-
-        dispatch(updateResult({questions: updatedResults}));
-    }
-
-   
-    if (typeOftest === "MockTest") {
-        dispatch(
-            updateCurrentPage({
-                testId: typeOftest,
-                currentPage: currentPage + 1 < visibleQuestions.length ? currentPage + 1 : visibleQuestions.length - 1
-            })
-        );
-    }
-    if (typeOftest === "PracticeTest" && !practiceCorrect) {
-        dispatch(
-            updateCurrentPage({
-                testId: typeOftest,
-                currentPage: currentPage + 1 < questions.length ? currentPage + 1 : questions.length - 1
-            })
-        );
-    }
+    dispatch(
+        updateCurrentPage({
+            testId: typeOftest,
+            currentPage: currentPage + 1 < questionLength ? currentPage + 1 : questionLength - 1,
+        })
+    );
 };
+
+

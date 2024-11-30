@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import Modal from '../Modal/Modal';
 import styles from './PracticeFooter.module.scss';
@@ -12,16 +12,26 @@ import PracticeFooterDesktopButtons from '../PracticeFooterDesktopButtons/Practi
 interface FooterTestProps {
   result?: (e: boolean) => void;
   typeOftest: string;
+  modalState?:boolean;
 }
 
-export default function PracticeFooter({ result, typeOftest }: FooterTestProps) {
+export default function PracticeFooter({ result, typeOftest,modalState }: FooterTestProps) {
 
   const { questions, currentPage } = useSelector(
     (state: RootState) => state.currentData.testsData[typeOftest],
     shallowEqual
   );
   
-  const { navigatePage, isModalVisible, setModalVisible } = usePageNavigation({typeOftest,totalQuestions:questions});
+  const { navigatePage, isModalVisible, setModalVisible } = usePageNavigation({typeOftest});
+
+  useEffect(()=>{
+    if (result) result(isModalVisible) 
+  },[isModalVisible])
+
+  useEffect(()=>{
+    if(modalState === false)
+    setModalVisible(modalState)
+  },[modalState])
 
 
   const color = useSelector((state: RootState) => state.color.themeData);
@@ -30,10 +40,7 @@ export default function PracticeFooter({ result, typeOftest }: FooterTestProps) 
 
   const modalRoot = document.getElementById("modal-root");
   
-  const handleResultModal = useCallback(() => {
-    if (result) result(true);
-    setModalVisible(false);
-  }, [result]);
+  
 
   return (
     <div className={styles.wrap} style={{ backgroundColor: color.headerColors }}>
@@ -51,17 +58,6 @@ export default function PracticeFooter({ result, typeOftest }: FooterTestProps) 
             setIsExplanationVisible={ setIsExplanationVisible} 
           /> 
       </div>
-         {isModalVisible&& modalRoot &&
-          ReactDOM.createPortal(
-        <Modal
-          close={handleResultModal}
-          text="End of test reached"
-          title="Would you like to see the test results?"
-          cancel
-          cancelClick={() => setModalVisible(false)}
-          blueBtnText="Show results"
-        />,modalRoot
-        )}
       {isExplanationVisible &&modalRoot &&
           ReactDOM.createPortal (
         <Modal

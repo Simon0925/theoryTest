@@ -30,6 +30,13 @@ const PracticeFooterDesktopButtons = ({
         shallowEqual
       );
 
+      const nextBtnName = (() => {
+        if (questions.length === currentPage + 1) {
+          return typeOftest === 'Result' ? 'Back' : 'Results';
+        }
+        return 'Next >';
+      })();
+
     return(
         <div className={styles.wrap}>
           <div style={{opacity:currentPage > 0 ? "1":"0.5"}} >
@@ -56,9 +63,9 @@ const PracticeFooterDesktopButtons = ({
             />
             <ButtonTest
             click={() => navigatePage('next')}
-            name={questions.length === currentPage + 1 ? 'Results' : 'Next >'}
+            name={nextBtnName}
             color={isAnswerSelected ? color.FooterColorNextBtnSelectedOption : color.FooterTextBtnDesktop}
-            backgroundColor={isAnswerSelected ? color.FooterBackgroundNextBtnSelectedOption : color.FooterBackgroundBtnDesktop}
+            backgroundColor={isAnswerSelected &&typeOftest !== 'Result' ? color.FooterBackgroundNextBtnSelectedOption : color.FooterBackgroundBtnDesktop}
             />
         </div>
     )
