@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import styles from './HeaderForTest.module.scss';
 import Modal from '../Modal/Modal';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store/store';
-import { handleExit as exitHandler } from './services/handleExit';
+import { shallowEqual, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 import ReactDOM from 'react-dom';
 import QuestionCounterHeader from '../QuestionCounterHeader/QuestionCounterHeader';
 import { useIsAnswerSelected } from '../../hooks/useIsAnswerSelected';
+import { useHandleCloseTest } from '../../hooks/useHeaderHooks/useHandleCloseTest';
 
 interface HeaderForTestProps {
   onExitClick: (e: boolean) => void;
@@ -23,7 +23,8 @@ const HeaderForTest = React.memo(function HeaderForTest({
 }: HeaderForTestProps) {
   const [showExitModal, setShowExitModal] = useState(false);
   const [showResultsModal, setShowResultsModal] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
+
+  const handleModalClose = useHandleCloseTest();
 
   const color = useSelector((state: RootState) => state.color.themeData);
 
@@ -84,7 +85,7 @@ const HeaderForTest = React.memo(function HeaderForTest({
         modalRoot &&
         ReactDOM.createPortal(
           <Modal
-            close={() => exitHandler(typeOftest, dispatch, onExitClick)}
+          close={() => handleModalClose(typeOftest, onExitClick)}
             text=""
             title="Are you sure you want to exit from the test?"
             cancelClick={()=>setShowExitModal(false)}

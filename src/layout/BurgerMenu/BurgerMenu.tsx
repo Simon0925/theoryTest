@@ -8,8 +8,8 @@ import Modal from "../../components/Modal/Modal";
 import { RootState } from "../../store/store";
 
 import { NAV_ITEMS, isActivePath } from "./services/pathKey";
-import { useHandleCloseTest } from "../../hooks/useHeaderHooks/useHandleCloseTest";
 import { useCheckTest } from "../../hooks/useHeaderHooks/useCheckTest";
+import { useCloseTest } from "../../hooks/useNavHooks/useCloseTest";
 
 export default function BurgerMenu() {
   const location = useLocation(); 
@@ -25,7 +25,7 @@ export default function BurgerMenu() {
   );
 
   const { modalVisible, setModalVisible, pendingPath, checkTest } = useCheckTest(currentTestInProgress);
-  const handleCloseTest = useHandleCloseTest(setModalVisible, pendingPath);
+  const handleCloseTest = useCloseTest(setModalVisible, pendingPath);
 
   return (
     <div

@@ -115,17 +115,14 @@ export const questionsSlice = createSlice({
       if (state.testsData[testId]) {
         state.testsData[testId].questions = [];
         state.testsData[testId].currentPage = 0;
-        state.testsData["Result"].answeredVariants = [];
+        state.testsData[testId].isLoading = false;
+        state.testsData[testId].error = null;
         state.testsData[testId].visibleQuestions = [];
-        state.testsData["Result"].resultsAnswers = false;
-        state.testsData["Result"].startId = '';
-        state.testsData["Result"].shuffledAnswers = {};
-        state.testsData["Result"].questions = [];
-
+       
       }
     },
     resetStateAll: (state) => {
-      const typeOftests = ['PracticeTest', 'MockTest', 'Trainer'];
+      const typeOftests = ['PracticeTest', 'MockTest', 'Trainer',"Result"];
       for (const elem of typeOftests) {
         state.testsData[elem] = {
           questions: [],
@@ -134,6 +131,8 @@ export const questionsSlice = createSlice({
           isLoading: false,
           error: null,
           visibleQuestions: [],
+          resultsAnswers:false,
+          startId:''
         };
       }
     },

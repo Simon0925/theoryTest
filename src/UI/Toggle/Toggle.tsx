@@ -26,6 +26,7 @@ export default function Toggle({ toggle, initialSwitch = false }: ToggleProps) {
                 type="checkbox"
                 checked={isChecked}
                 onChange={handleToggle}
+                name={"Toggle"}
             />
             <span className={styles.slider}></span>
         </label>

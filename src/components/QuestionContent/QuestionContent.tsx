@@ -28,16 +28,16 @@ export default function QuestionContent({  question }: QuestionContentProps) {
     useEffect(() => {
         if (question && !checkResults) {
             const newResult = {
-                id: question.id,
-                question: question.question,
+                id: question.id || '',
+                question: question.question || "",
                 flag: question.flag ?? false,
                 topic: question.topic,
                 status: "pass",
                 photo: question.photo,
                 par:question.par,
-                explanation:question.explanation,
-                correctAnswers:question.correctAnswers,
-                incorrectAnswers:question.incorrectAnswers
+                explanation:question.explanation || '',
+                correctAnswers:question.correctAnswers || 0,
+                incorrectAnswers:question.incorrectAnswers || 0
             };
             dispatch(updateResult({
                 questions: [...results, newResult]

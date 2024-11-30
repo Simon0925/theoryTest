@@ -7,9 +7,9 @@ import { updateBurgerMenu, updateVisible } from '../../store/burgerMenu/burgerMe
 import Modal from '../../components/Modal/Modal';
 import ReactDOM from "react-dom";
 import { NAV_ITEMS } from "./services/pathKey";
-import { useHandleCloseTest } from '../../hooks/useHeaderHooks/useHandleCloseTest';
 import { useCheckTest } from '../../hooks/useHeaderHooks/useCheckTest';
 import VisibilityToggle from '../../components/VisibilityToggle/VisibilityToggle';
+import { useCloseTest } from '../../hooks/useNavHooks/useCloseTest';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const Header = () => {
   }, [location]);
  
   const { modalVisible, setModalVisible, pendingPath, checkTest } = useCheckTest(currentTestInProgress);
-  const handleCloseTest = useHandleCloseTest(setModalVisible, pendingPath);
+  const handleCloseTest = useCloseTest(setModalVisible, pendingPath);
 
   return (
     <div style={{ backgroundColor: headerColors }} className={styles.wrap}>
