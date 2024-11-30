@@ -84,7 +84,7 @@ export default function ReviewModal({
                         </>
                         : null }
                          <div className={styles.line1} />
-                         <div className={styles.line2} />
+                         {showButtons ?<div className={styles.line2} />:null}
                     </div>
                     <button onClick={() => cancelClick(false)} className={styles.btn2}>
                         Cancel

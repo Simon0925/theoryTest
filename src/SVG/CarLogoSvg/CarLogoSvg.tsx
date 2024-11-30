@@ -1,8 +1,8 @@
-const CarLogoSvg = ({ width = "60px", height = "50px" }) => (
+const CarLogoSvg = () => (
   <svg 
     fill={"#ffffff"}
-    width={width} 
-    height={height} 
+    width={"60px"} 
+    height={"50px"} 
     viewBox="0 -15.43 122.88 122.88" 
     version="1.1" 
     xmlns="http://www.w3.org/2000/svg" 
@@ -15,6 +15,7 @@ const CarLogoSvg = ({ width = "60px", height = "50px" }) => (
     </style>
     <g id="SVGRepo_iconCarrier">
       <path 
+        fill="#ffffff"
         className="st0" 
         d="M10.17,34.23c-10.98-5.58-9.72-11.8,1.31-11.15l2.47,4.63l5.09-15.83C21.04,5.65,24.37,0,30.9,0H96 
            c6.53,0,10.29,5.54,11.87,11.87l3.82,15.35l2.2-4.14c11.34-0.66,12.35,5.93,0.35,11.62l1.95,2.99

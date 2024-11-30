@@ -1,10 +1,11 @@
 import { Question } from "../../../../interface/questionsType";
 import { updateAnsweredVariants } from "../../../../store/currentData/currentData.slice";
+import { AppDispatch } from "../../../../store/store";
 import { AnsweredVariantsInterface } from "../../interface";
 
 export const updateAnsweredVariantsHandler = (
     index: number,
-    dispatch: any,
+    dispatch: AppDispatch,
     answeredVariants: AnsweredVariantsInterface,
     questions: Question[],
     currentPage: number

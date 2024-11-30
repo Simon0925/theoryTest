@@ -1,11 +1,12 @@
 import { Question } from "../../../../interface/questionsType";
 import { updateAnsweredVariants, updateResult } from "../../../../store/currentData/currentData.slice";
+import { AppDispatch } from "../../../../store/store";
 import { AnsweredVariantsInterface, VisibleQuestionsInterface } from "../../interface";
 
 export const addNewAnswer = ( 
     correct: boolean,
     index: number,
-    dispatch: any,
+    dispatch: AppDispatch,
     typeOftest: string,
     questions: Question[],
     currentPage: number,

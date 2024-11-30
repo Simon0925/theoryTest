@@ -5,6 +5,7 @@ import { updateAnsweredVariantsHandler } from './addAnswerFunctions/updateAnswer
 
 import { addNewAnswer } from './addAnswerFunctions/addNewAnswer';
 import { updateResultsHandler } from './addAnswerFunctions/updateResultsHandler';
+import { AppDispatch } from '../../../store/store';
 
 
 export const addAnswer = (
@@ -14,8 +15,8 @@ export const addAnswer = (
     currentPage: number,
     correct: boolean,
     questions: Question[],
-    results: any[],
-    dispatch: any,
+    results: Question[],
+    dispatch: AppDispatch,
     practiceCorrect: boolean,
     index: number,
     

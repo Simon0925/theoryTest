@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import Modal from '../Modal/Modal';
 import styles from './PracticeFooter.module.scss';

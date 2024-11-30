@@ -3,7 +3,7 @@ import CrossSvg from '../../SVG/CrossSvg/CrossSvg';
 import OkVectorSvg from '../../SVG/OkVectorSvg/OkVectorSvg';
 import styles from './Variant.module.scss';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { AppDispatch, RootState } from '../../store/store';
 import { VariantProps } from "./interface";
 import hostname from '../../config/hostname';
 import { addAnswer as handleAnswer } from './services/addAnswer';
@@ -12,10 +12,11 @@ import {CoolorState} from './interface'
 import { useIsAnswerSelected } from '../../hooks/useIsAnswerSelected';
 import ImageComponent from '../ImageComponent/ImageComponent';
 
-///TODO make better
-
 
 const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, correct }) => {
+    
+    const dispatch: AppDispatch = useDispatch();
+
     const practiceCorrect = useSelector((state: RootState) => state.practice.correct);
     const themeData = useSelector((state: RootState) => state.color.themeData);
 
@@ -39,7 +40,7 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
         shallowEqual
     );
 
-    const dispatch = useDispatch();
+   
     const isAnswerSelected = useIsAnswerSelected(typeOftest);
 
     const memoizedColor = useMemo(() => {
