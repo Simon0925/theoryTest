@@ -12,43 +12,65 @@ import {CoolorState} from './interface'
 import { useIsAnswerSelected } from '../../hooks/useIsAnswerSelected';
 import ImageComponent from '../ImageComponent/ImageComponent';
 
+///TODO make better
+
 
 const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, correct }) => {
     const practiceCorrect = useSelector((state: RootState) => state.practice.correct);
     const themeData = useSelector((state: RootState) => state.color.themeData);
 
-    const {  questions, currentPage,  visibleQuestions } = useSelector(
+    const { questions, currentPage } = useSelector(
         (state: RootState) => state.currentData.testsData[typeOftest],
         shallowEqual
     );
 
-    const answeredVariants = useSelector((state: RootState) => state.currentData.testsData["Result"].answeredVariants || []);
-    
-    const results =  useSelector((state: RootState) => state.currentData.testsData["Result"].questions);
+    const visibleQuestions = useSelector(
+        (state: RootState) => state.currentData.testsData[typeOftest].visibleQuestions || [],
+        shallowEqual
+    );
 
-    const [color, setColor] = useState({
-        backgroundColor: themeData.VariantBackground,
-        color: themeData.VariantTextColor,
-    });
+    const answeredVariants = useSelector(
+        (state: RootState) => state.currentData.testsData["Result"].answeredVariants || [],
+        shallowEqual
+    );
 
+    const results = useSelector(
+        (state: RootState) => state.currentData.testsData["Result"].questions,
+        shallowEqual
+    );
 
     const dispatch = useDispatch();
-
     const isAnswerSelected = useIsAnswerSelected(typeOftest);
 
+    const memoizedColor = useMemo(() => {
+        return getVariantColor(
+            answeredVariants,
+            visibleQuestions,
+            currentPage,
+            typeOftest,
+            index,
+            questions,
+            correct,
+            themeData as unknown as CoolorState, 
+            practiceCorrect
+        );
+    }, [answeredVariants, visibleQuestions, currentPage, typeOftest, index, correct, questions, themeData, practiceCorrect]);
+
+    const [color, setColor] = useState(memoizedColor);
+
+    useEffect(() => {
+        setColor(memoizedColor);
+    }, [memoizedColor]);
+
     const icon = useMemo(() => {
-    
-        if (typeOftest === "MockTest" || typeOftest === "Trainer") {
-            return correct;
-        }else if ((practiceCorrect && isAnswerSelected && typeOftest === "PracticeTest")) {
+        if (typeOftest === "PracticeTest" && practiceCorrect&& isAnswerSelected) {
             return correct ? <OkVectorSvg /> : <CrossSvg />;
-        }else if ( (!practiceCorrect && isAnswerSelected && typeOftest === "PracticeTest")) {
-            return correct;
-        }else if ((typeOftest === "Result")){
+        }
+        if (typeOftest === "Result"&& isAnswerSelected) {
             return correct ? <OkVectorSvg /> : <CrossSvg />;
         }
         return null;
-    }, [ currentPage,answeredVariants]);
+    }, [typeOftest, correct, isAnswerSelected]);
 
     const addAnswer = () => {
         handleAnswer(
@@ -63,40 +85,16 @@ const Variant: React.FC<VariantProps> = ({ answer, photo, typeOftest, index, cor
             practiceCorrect,
             index
         );
-
     };
-
-    useEffect(() => {
-        const color = getVariantColor(
-            answeredVariants,
-            visibleQuestions,
-            currentPage,
-            typeOftest,
-            index,
-            questions,
-            correct,
-            themeData as unknown as CoolorState, 
-            practiceCorrect
-        );
-        setColor(color);
-    }, [currentPage,answeredVariants,visibleQuestions,themeData]);
-
 
     return (
         <div onClick={addAnswer} style={{ background: color.backgroundColor }} className={styles['wrap']}>
             <span style={{ color: color.color }}>{answer}</span>
-            {photo &&
+            {photo && (
                 <div className={styles.img}>
-                    <ImageComponent
-                        maxWidth='150px'
-                        maxHeight='65px'
-                        src={`${hostname}${photo}`}
-                        alt={'Variant'} 
-                        
-                        />
-                        
+                    <ImageComponent maxWidth="150px" maxHeight="65px" src={`${hostname}${photo}`} alt="Variant" />
                 </div>
-            }
+            )}
             <div className={styles['box']}>{icon}</div>
         </div>
     );

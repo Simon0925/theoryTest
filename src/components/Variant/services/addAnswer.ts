@@ -4,7 +4,7 @@ import {AnsweredVariantsInterface,VisibleQuestionsInterface,Question} from '../i
 export const addAnswer = (
     answeredVariants: AnsweredVariantsInterface,
     typeOftest: string,
-    visibleQuestions: VisibleQuestionsInterface| undefined,
+    visibleQuestions: VisibleQuestionsInterface,
     currentPage: number,
     correct: boolean,
     questions: Question[],
@@ -47,7 +47,7 @@ export const addAnswer = (
             dispatch(updateResult({questions: updatedResults}));
      }
      
-
+      ///TODO  make refactoring
 
     if (!practiceCheck) {
         const currentQuestionId = typeOftest === "MockTest" && visibleQuestions
@@ -82,14 +82,12 @@ export const addAnswer = (
         dispatch(updateResult({questions: updatedResults}));
     }
 
-    
-
-
+   
     if (typeOftest === "MockTest") {
         dispatch(
             updateCurrentPage({
                 testId: typeOftest,
-                currentPage: currentPage + 1 < questions.length ? currentPage + 1 : questions.length - 1
+                currentPage: currentPage + 1 < visibleQuestions.length ? currentPage + 1 : visibleQuestions.length - 1
             })
         );
     }

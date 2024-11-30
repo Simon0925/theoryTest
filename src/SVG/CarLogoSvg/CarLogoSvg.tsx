@@ -1,6 +1,6 @@
-const CarLogoSvg = ({ width = "60px", height = "50px", fill = "white" }) => (
+const CarLogoSvg = ({ width = "60px", height = "50px" }) => (
   <svg 
-    fill={fill}
+    fill={"#ffffff"}
     width={width} 
     height={height} 
     viewBox="0 -15.43 122.88 122.88" 
@@ -8,7 +8,7 @@ const CarLogoSvg = ({ width = "60px", height = "50px", fill = "white" }) => (
     xmlns="http://www.w3.org/2000/svg" 
     xmlnsXlink="http://www.w3.org/1999/xlink" 
     xmlSpace="preserve" 
-    stroke={fill} 
+    stroke={"#ffffff"} 
   >
     <style type="text/css"> 
       {`.st0{fill-rule:evenodd;clip-rule:evenodd;}`}

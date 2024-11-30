@@ -26,7 +26,7 @@ export default function TrainerFooter({result,typeOftest}:TrainerFooterProps) {
     const [isExplanationVisible, setIsExplanationVisible] = useState(false);
 
     
-    const { navigatePage, isModalVisible, setModalVisible } = usePageNavigation({typeOftest});
+    const { navigatePage, isModalVisible, setModalVisible } = usePageNavigation({typeOftest,totalQuestions:questions});
     
     useEffect(()=>{
         if(isModalVisible){

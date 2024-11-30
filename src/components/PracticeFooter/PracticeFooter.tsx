@@ -21,7 +21,8 @@ export default function PracticeFooter({ result, typeOftest }: FooterTestProps) 
     shallowEqual
   );
   
-  const { navigatePage, isModalVisible, setModalVisible } = usePageNavigation({typeOftest});
+  const { navigatePage, isModalVisible, setModalVisible } = usePageNavigation({typeOftest,totalQuestions:questions});
+
 
   const color = useSelector((state: RootState) => state.color.themeData);
 
