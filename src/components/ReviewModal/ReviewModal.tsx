@@ -70,19 +70,18 @@ export default function ReviewModal({
                         </button>
                         
                         {showButtons ?
-                        <>
                         <button  onClick={handleReviewUnanswered} className={`${styles.btnHiddenLine} ${styles.unanswered} `}>
                             Review unanswered
                         </button>
-                       
+                        : null }
                         {questionsFlagged > 0 ? 
                             <button  onClick={handleReviewFlagged}   className={`${styles.btnHiddenLine} ${styles.flagged}`}>
                             Review flagged
                            </button> :
                            null
                            }
-                        </>
-                        : null }
+                        
+                        
                          <div className={styles.line1} />
                          {showButtons ?<div className={styles.line2} />:null}
                     </div>

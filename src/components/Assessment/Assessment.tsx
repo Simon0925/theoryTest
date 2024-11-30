@@ -6,9 +6,9 @@ import FooterAssessment from '../FooterAssessment/FooterAssessment';
 import Modal from '../Modal/Modal';
 import ReviewModal from '../ReviewModal/ReviewModal';
 import { getUnansweredQuestions } from './services/getUnansweredQuestions';
-import { AppDispatch, RootState } from '../../store/store';
+import { RootState } from '../../store/store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { setTestInactive, updateCurrentPage, updatevisibleQuestions } from '../../store/currentData/currentData.slice';
+import { setTestInactive } from '../../store/currentData/currentData.slice';
 import  {assessmentData}from './services/assessmentData';
 import QuestionWithAnswers from '../QuestionWithAnswers/QuestionWithAnswers';
 import PauseSvg from '../../SVG/PauseSvg/PauseSvg';
@@ -21,7 +21,7 @@ import { updateVisibleQuestionsAndPage } from './services/updateVisibleQuestions
 
 export default function Assessment({ onClose, result, getTime }: AssessmentProps) {
   const typeOftest = 'MockTest';
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch();
   const {TestBackground,textColor} = useSelector((state: RootState) => state.color.themeData);
 
   const modalRoot = document.getElementById("modal-root");
@@ -71,6 +71,7 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
     if(currentPage>currentAll && reviewMode === 'all')setCurrentAll(currentPage)
   },[currentPage])
 
+  
   useEffect(() => {
     updateVisibleQuestionsAndPage(reviewMode, unansweredQuestions, questions, currentAll, dispatch, typeOftest);
   }, [reviewMode, unansweredQuestions, questions, currentAll, dispatch]);
