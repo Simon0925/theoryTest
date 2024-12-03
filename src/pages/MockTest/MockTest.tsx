@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, lazy, Suspense } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import styles from './MockTest.module.scss';
 import Spinner from '../../UI/Spinner/Spinner';
@@ -25,7 +25,6 @@ export default function MockTest() {
   const auth = useSelector((state: RootState) => state.auth);
   const accessToken = useCookie('accessToken');
   
-
 
   const fetchStatistics = useCallback(async (accessToken:string) => {
     try {
