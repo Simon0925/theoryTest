@@ -21,9 +21,6 @@ export default function Trainer() {
     const [showResults, setShowResults] = useState(false);
     const [trainerProgress, setTrainerProgress] = useState<{ once: number | null, twice: number | null }>({ once: null, twice: null });
 
-    useEffect(()=>{
-        console.log("isTestStarted:",isTestStarted)
-    },[isTestStarted])
 
     const {isLoading } = useSelector(
         (state: RootState) => state.currentData.testsData["Trainer"],  
