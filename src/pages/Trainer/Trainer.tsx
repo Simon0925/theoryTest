@@ -17,9 +17,13 @@ export default function Trainer() {
  
     const accessToken = useCookie('accessToken');
 
-    const [isTestStarted, setIsTestStarted] = useState(true);
+    const [isTestStarted, setIsTestStarted] = useState(false);
     const [showResults, setShowResults] = useState(false);
     const [trainerProgress, setTrainerProgress] = useState<{ once: number | null, twice: number | null }>({ once: null, twice: null });
+
+    useEffect(()=>{
+        console.log("isTestStarted:",isTestStarted)
+    },[isTestStarted])
 
     const {isLoading } = useSelector(
         (state: RootState) => state.currentData.testsData["Trainer"],  
@@ -69,17 +73,19 @@ export default function Trainer() {
         );
     }
 
+  
+
     return (
         <Suspense fallback={
             <div className={styles.spinner}>
                 <Spinner />
             </div>
         }>
-            {!isTestStarted && !showResults && (
+            {isTestStarted && !showResults && (
                 <TrainerTest result={setShowResults} onExitClick={setIsTestStarted} />
             )}
             {showResults && <Results exitResult={handleExitResult} typeOftest={'Trainer'} />}
-            {isTestStarted && !showResults && (
+            {!isTestStarted && !showResults && (
                 <div className={styles.wrap}>
                     <div className={styles.container}>
                         <OnceTwiceProgress once={trainerProgress.once} twice={trainerProgress.twice} />

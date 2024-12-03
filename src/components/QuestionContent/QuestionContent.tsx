@@ -6,6 +6,7 @@ import { updateResult } from '../../store/currentData/currentData.slice';
 import { QuestionContentProps } from './interface';
 import ImageComponent from "../ImageComponent/ImageComponent";
 import hostname from "../../config/hostname";
+import { selectResultQuestions } from "../../store/currentData/selectors";
 
 
 export default function QuestionContent({  question }: QuestionContentProps) {
@@ -14,14 +15,11 @@ export default function QuestionContent({  question }: QuestionContentProps) {
 
     const color = useSelector((state: RootState) => state.color.themeData);
 
-    const results = useSelector(
-        (state: RootState) => state.currentData.testsData["Result"].questions || []
-      );
-
+    const resultQuestions = useSelector(selectResultQuestions);
 
     const checkResults = useMemo(
-        () => results.some(e => e.id === question.id),
-        [results, question]
+        () => resultQuestions.some(e => e.id === question.id),
+        [resultQuestions, question.id]
     );
 
    
@@ -40,10 +38,10 @@ export default function QuestionContent({  question }: QuestionContentProps) {
                 incorrectAnswers:question.incorrectAnswers || 0
             };
             dispatch(updateResult({
-                questions: [...results, newResult]
+                questions: [...resultQuestions, newResult]
             }));
         }
-    }, [checkResults, question, dispatch, results]);
+    }, [checkResults, question, dispatch, resultQuestions]);
 
     return (
         <div 

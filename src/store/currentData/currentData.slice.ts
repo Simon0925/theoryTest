@@ -1,34 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Question, ParData } from "../../interface/questionsType";
+import {  Variant, TestsData} from './interface';
 
-import {Question,ParData} from "../../interface/questionsType"
-
-
-interface Variant {
-  id: string;
-  index: number;
-}
-
-
-interface CurrentData {
-  questions: Question[] ;
-  currentPage: number;
-  answeredVariants?: Variant[];
-  isLoading?: boolean;
-  error?: string | null;
-  visibleQuestions?:Question[]
-  resultsAnswers?:boolean;
-  startId?:string
-  shuffledAnswers?: { [questionId: string]: ParData[] };
-}
-
-
-
-interface TestsData {
-  currentTestInProgress:boolean;
-  testsData: {
-    [key: string]: CurrentData;
-  };
-}
 
 const initialState: TestsData = {
   currentTestInProgress:false,
@@ -38,6 +11,7 @@ const initialState: TestsData = {
       currentPage: 0,
       isLoading: false,
       error: null,
+      visibleQuestions:[]
     },
     MockTest: {
       questions: [],
@@ -51,6 +25,7 @@ const initialState: TestsData = {
       currentPage: 0,
       isLoading: false,
       error: null,
+      visibleQuestions:[]
     },
     Result: {
       resultsAnswers:false,
@@ -59,6 +34,7 @@ const initialState: TestsData = {
       currentPage: 0,
       answeredVariants: [],
       shuffledAnswers: {},
+      visibleQuestions:[]
     }
   },
 };

@@ -96,6 +96,8 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
     }
   },[questions,dispatch])
 
+
+
   return (
     <div
       style={ {background:TestBackground}}
@@ -113,7 +115,7 @@ export default function Assessment({ onClose, result, getTime }: AssessmentProps
               result={() => setReviewModal(true)}
               typeOftest={typeOftest}
             />
-            {!pause && visibleQuestions ? (
+            {!pause && visibleQuestions.length > 0 ? (
               <QuestionWithAnswers
               typeOftest={typeOftest}
               question={visibleQuestions[currentPage]}

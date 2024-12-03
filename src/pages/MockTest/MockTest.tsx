@@ -26,10 +26,6 @@ export default function MockTest() {
   const accessToken = useCookie('accessToken');
   
 
-  const { results } = useSelector(
-    (state: RootState) => state.currentData.testsData["MockTest"],  
-    shallowEqual
-  );
 
   const fetchStatistics = useCallback(async (accessToken:string) => {
     try {
@@ -44,7 +40,7 @@ export default function MockTest() {
     if(accessToken){
       fetchStatistics(accessToken);
     }
-  }, [results,accessToken]);
+  }, [accessToken]);
 
   useEffect(() => {
     if (result) {

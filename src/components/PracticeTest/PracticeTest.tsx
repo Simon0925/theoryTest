@@ -16,7 +16,6 @@ interface PracticeTestProps {
 
 export default function PracticeTest({ closeTest, result }: PracticeTestProps) {
 
-  const [exit, setExit] = useState(false);
 
   const color = useSelector((state: RootState) => state.color.themeData);
 
@@ -35,10 +34,6 @@ export default function PracticeTest({ closeTest, result }: PracticeTestProps) {
     }
   },[questions])
 
-
-  useEffect(() => {
-    closeTest(!exit);
-  }, [exit]);
 
   const handleResultModal = useCallback(() => {
     result(true);
@@ -61,7 +56,7 @@ export default function PracticeTest({ closeTest, result }: PracticeTestProps) {
           <HeaderForTest
             typeOftest="PracticeTest"
             result={result}
-            onExitClick={setExit}
+            onExitClick={closeTest}
             finish="Results"
           />
         <QuestionWithAnswers
