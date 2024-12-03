@@ -42,7 +42,7 @@ export default function Trainer() {
     const handleStartToggle = () => setIsTestStarted((prev) => !prev);
     const handleExitResult = (show: boolean) => {
         setShowResults(show);
-        setIsTestStarted(!show);
+        setIsTestStarted(show);
     };
 
     const descriptionContent = useMemo(() => (
